@@ -1,0 +1,61 @@
+
+plugins {
+    id 'java'
+    id 'maven-publish'
+}
+
+repositories {
+    mavenLocal()
+    maven {
+        url = uri('https://repo.maven.apache.org/maven2/')
+    }
+}
+
+def dependencyVersions = [
+        junit_version: '5.6.0',
+        cucumber_version: '6.10.4'
+]
+
+dependencies {
+    testImplementation "io.cucumber:cucumber-java:${dependencyVersions.cucumber_version}",
+                       "io.cucumber:cucumber-junit:${dependencyVersions.cucumber_version}",
+                       "org.seleniumhq.selenium:selenium-java:3.141.59",
+                       "org.junit.jupiter:junit-jupiter-api:${dependencyVersions.junit_version}"
+
+    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:${dependencyVersions.junit_version}"
+}
+
+group = 'acceptance-tests'
+version = '1.0.0'
+description = 'acceptance-tests'
+
+java.sourceCompatibility = JavaVersion.VERSION_16
+
+configurations {
+    cucumberRuntime {
+        extendsFrom testImplementation
+    }
+}
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            from(components.java)
+        }
+    }
+}
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
+
+task cucumber() {
+    dependsOn assemble, testClasses
+    doLast {
+        javaexec {
+            main = "io.cucumber.core.cli.Main"
+            classpath = configurations.cucumberRuntime + sourceSets.main.output + sourceSets.test.output
+            args = ['--plugin', 'pretty', '--glue', 'uk.gov.di.test.acceptance', 'src/test/resources']
+        }
+    }
+}
