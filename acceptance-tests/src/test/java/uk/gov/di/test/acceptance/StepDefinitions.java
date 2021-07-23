@@ -33,6 +33,8 @@ public class StepDefinitions {
             System.getenv().getOrDefault("RP_URL","http://localhost:8081/")
     );
 
+    private static final int DEFAULT_PAGE_LOAD_WAIT_TIME = 20;
+
     private WebDriver driver;
 
     private String emailAddress;
@@ -102,6 +104,7 @@ public class StepDefinitions {
 
     @Then("the user is taken to the Identity Provider Login Page")
     public void theUserIsTakenToTheIdentityProviderLoginPage() {
+        waitForPageLoad("Sign in to or create your GOV.UK Account");
         assertEquals("/enter-email", URI.create(driver.getCurrentUrl()).getPath());
         assertEquals(IDP_URL.getHost(), URI.create(driver.getCurrentUrl()).getHost());
         assertEquals("Sign in to or create your GOV.UK Account - GOV.UK Account", driver.getTitle());
@@ -117,7 +120,7 @@ public class StepDefinitions {
 
     @Then("the user is asked to check their email")
     public void theUserIsAskedToCheckTheirEmail() {
-        new WebDriverWait(driver, 10).until(ExpectedConditions.titleContains("Check your email"));
+        waitForPageLoad("Check your email");
         assertEquals("/check-your-email", URI.create(driver.getCurrentUrl()).getPath());
         assertEquals("Check your email - GOV.UK Account", driver.getTitle());
     }
@@ -181,5 +184,9 @@ public class StepDefinitions {
     public void theUserIsShownAnErrorMessageOnTheEnterEmailPage() {
         WebElement emailDescriptionDetails = driver.findElement(By.id("error-summary-title"));
         assertTrue(emailDescriptionDetails.isDisplayed());
+    }
+
+    private void waitForPageLoad(String titleContains) {
+        new WebDriverWait(driver, DEFAULT_PAGE_LOAD_WAIT_TIME).until(ExpectedConditions.titleContains(titleContains));
     }
 }

@@ -8,7 +8,7 @@ Feature: Registration Journey
     And the user clicks "govuk-signin-button"
     Then the user is taken to the Identity Provider Login Page
     When the user enters their email address
-    Then the user is asked to check their email
+#    Then the user is asked to check their email
 
   Scenario: User registers with an insecure password
     Given the services are running
