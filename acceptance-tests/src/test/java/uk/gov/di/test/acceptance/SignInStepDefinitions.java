@@ -1,7 +1,5 @@
 package uk.gov.di.test.acceptance;
 
-import io.cucumber.java.Before;
-import io.cucumber.java.en.Given;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
@@ -13,12 +11,10 @@ import java.net.URL;
 
 public class SignInStepDefinitions {
     protected static final String SELENIUM_URL = System.getenv().get("SELENIUM_URL");
-    protected static final URI IDP_URL = URI.create(
-            System.getenv().getOrDefault("IDP_URL", "http://localhost:8080/")
-    );
-    protected static final URI RP_URL = URI.create(
-            System.getenv().getOrDefault("RP_URL", "http://localhost:8081/")
-    );
+    protected static final URI IDP_URL =
+            URI.create(System.getenv().getOrDefault("IDP_URL", "http://localhost:8080/"));
+    protected static final URI RP_URL =
+            URI.create(System.getenv().getOrDefault("RP_URL", "http://localhost:8081/"));
     protected static final int DEFAULT_PAGE_LOAD_WAIT_TIME = 20;
     protected WebDriver driver;
 

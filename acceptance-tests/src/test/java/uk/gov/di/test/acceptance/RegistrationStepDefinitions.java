@@ -34,8 +34,7 @@ public class RegistrationStepDefinitions extends SignInStepDefinitions {
     }
 
     @Given("the registration services are running")
-    public void theServicesAreRunning() {
-    }
+    public void theServicesAreRunning() {}
 
     @And("the new user has an invalid email format")
     public void theNewUserHasInvalidEmail() {
@@ -52,7 +51,7 @@ public class RegistrationStepDefinitions extends SignInStepDefinitions {
     @And("a new user has valid credentials")
     public void theNewUserHasValidCredential() {
         String randomString = UUID.randomUUID().toString();
-        emailAddress = "susan.bloggs+"+randomString+"@digital.cabinet-office.gov.uk";
+        emailAddress = "susan.bloggs+" + randomString + "@digital.cabinet-office.gov.uk";
         password = "passw0rd1";
     }
 
@@ -72,14 +71,16 @@ public class RegistrationStepDefinitions extends SignInStepDefinitions {
         waitForPageLoad("Sign in to or create your GOV.UK Account");
         assertEquals("/enter-email", URI.create(driver.getCurrentUrl()).getPath());
         assertEquals(IDP_URL.getHost(), URI.create(driver.getCurrentUrl()).getHost());
-        assertEquals("Sign in to or create your GOV.UK Account - GOV.UK Account", driver.getTitle());
+        assertEquals(
+                "Sign in to or create your GOV.UK Account - GOV.UK Account", driver.getTitle());
     }
 
     @When("the new user enters their email address")
     public void theNewUserEntersEmailAddress() {
         WebElement emailAddressField = driver.findElement(By.id("email"));
         emailAddressField.sendKeys(emailAddress);
-        WebElement continueButton = driver.findElement(By.xpath("//button[text()[normalize-space() = 'Continue']]"));
+        WebElement continueButton =
+                driver.findElement(By.xpath("//button[text()[normalize-space() = 'Continue']]"));
         continueButton.click();
     }
 
@@ -140,6 +141,7 @@ public class RegistrationStepDefinitions extends SignInStepDefinitions {
     }
 
     private void waitForPageLoad(String titleContains) {
-        new WebDriverWait(driver, DEFAULT_PAGE_LOAD_WAIT_TIME).until(ExpectedConditions.titleContains(titleContains));
+        new WebDriverWait(driver, DEFAULT_PAGE_LOAD_WAIT_TIME)
+                .until(ExpectedConditions.titleContains(titleContains));
     }
 }

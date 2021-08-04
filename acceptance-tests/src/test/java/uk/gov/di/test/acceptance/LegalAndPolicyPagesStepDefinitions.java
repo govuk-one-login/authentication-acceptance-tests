@@ -15,7 +15,6 @@ import java.net.MalformedURLException;
 import java.net.URI;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class LegalAndPolicyPagesStepDefinitions extends SignInStepDefinitions {
 
@@ -30,8 +29,7 @@ public class LegalAndPolicyPagesStepDefinitions extends SignInStepDefinitions {
     }
 
     @Given("the services are running")
-    public void theServicesAreRunning() {
-    }
+    public void theServicesAreRunning() {}
 
     @When("the user visits the stub relying party")
     public void theExistingUserVisitsTheStubRelyingParty() {
@@ -49,7 +47,8 @@ public class LegalAndPolicyPagesStepDefinitions extends SignInStepDefinitions {
         waitForPageLoad("Sign in to or create your GOV.UK Account");
         assertEquals("/enter-email", URI.create(driver.getCurrentUrl()).getPath());
         assertEquals(IDP_URL.getHost(), URI.create(driver.getCurrentUrl()).getHost());
-        assertEquals("Sign in to or create your GOV.UK Account - GOV.UK Account", driver.getTitle());
+        assertEquals(
+                "Sign in to or create your GOV.UK Account - GOV.UK Account", driver.getTitle());
     }
 
     @And("the user clicks link {string}")
@@ -68,6 +67,7 @@ public class LegalAndPolicyPagesStepDefinitions extends SignInStepDefinitions {
     }
 
     private void waitForPageLoad(String titleContains) {
-        new WebDriverWait(driver, DEFAULT_PAGE_LOAD_WAIT_TIME).until(ExpectedConditions.titleContains(titleContains));
+        new WebDriverWait(driver, DEFAULT_PAGE_LOAD_WAIT_TIME)
+                .until(ExpectedConditions.titleContains(titleContains));
     }
 }

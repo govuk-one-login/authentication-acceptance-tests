@@ -6,21 +6,13 @@ import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.firefox.FirefoxOptions;
-import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.net.MalformedURLException;
 import java.net.URI;
-import java.net.URL;
-import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -41,8 +33,7 @@ public class LoginStepDefinitions extends SignInStepDefinitions {
     }
 
     @Given("the login services are running")
-    public void theServicesAreRunning() {
-    }
+    public void theServicesAreRunning() {}
 
     @And("the existing user has valid credentials")
     public void theExistingUserHasValidCredentials() {
@@ -55,7 +46,6 @@ public class LoginStepDefinitions extends SignInStepDefinitions {
         emailAddress = "joe.bloggs@digital.cabinet-office.gov.uk";
         password = "wrong-password";
     }
-
 
     @When("the existing user visits the stub relying party")
     public void theExistingUserVisitsTheStubRelyingParty() {
@@ -73,14 +63,16 @@ public class LoginStepDefinitions extends SignInStepDefinitions {
         waitForPageLoad("Sign in to or create your GOV.UK Account");
         assertEquals("/enter-email", URI.create(driver.getCurrentUrl()).getPath());
         assertEquals(IDP_URL.getHost(), URI.create(driver.getCurrentUrl()).getHost());
-        assertEquals("Sign in to or create your GOV.UK Account - GOV.UK Account", driver.getTitle());
+        assertEquals(
+                "Sign in to or create your GOV.UK Account - GOV.UK Account", driver.getTitle());
     }
 
     @When("the existing user enters their email address")
     public void theExistingUserEntersEmailAddress() {
         WebElement emailAddressField = driver.findElement(By.id("email"));
         emailAddressField.sendKeys(emailAddress);
-        WebElement continueButton = driver.findElement(By.xpath("//button[text()[normalize-space() = 'Continue']]"));
+        WebElement continueButton =
+                driver.findElement(By.xpath("//button[text()[normalize-space() = 'Continue']]"));
         continueButton.click();
     }
 
@@ -95,8 +87,6 @@ public class LoginStepDefinitions extends SignInStepDefinitions {
         WebElement passwordField = driver.findElement(By.id("password"));
         passwordField.sendKeys(password);
     }
-
-
 
     @Then("the existing user is taken to the Service User Info page")
     public void theExistingUserIsTakenToTheServiceUserInfoPage() {
@@ -115,6 +105,7 @@ public class LoginStepDefinitions extends SignInStepDefinitions {
     }
 
     private void waitForPageLoad(String titleContains) {
-        new WebDriverWait(driver, DEFAULT_PAGE_LOAD_WAIT_TIME).until(ExpectedConditions.titleContains(titleContains));
+        new WebDriverWait(driver, DEFAULT_PAGE_LOAD_WAIT_TIME)
+                .until(ExpectedConditions.titleContains(titleContains));
     }
 }
