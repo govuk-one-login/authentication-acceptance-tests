@@ -1,12 +1,12 @@
 Feature: Login Journey
-  User walks through a login journey
+  Existing user walks through a login journey
 
-  Scenario: User is correctly prompted to login
-    Given the services are running
-    And the user has valid credentials
-    When the user visit the stub relying party
-    And the user clicks "govuk-signin-button"
-    Then the user is taken to the Identity Provider Login Page
+  Scenario: Existing user is correctly prompted to login
+    Given the login services are running
+    And the existing user has valid credentials
+    When the existing user visits the stub relying party
+    And the existing user clicks "govuk-signin-button"
+    Then the existing user is taken to the Identity Provider Login Page
 #    When the user enters their email address
 #    Then the user is prompted for password
 #    When the user enters their password
