@@ -18,3 +18,4 @@ applications:
   - name: selenium-build
     docker:
       image: selenium/standalone-firefox:latest
+      username: ((docker-hub-username))
