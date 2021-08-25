@@ -7,7 +7,7 @@ Feature: Registration Journey
     When the new user visits the stub relying party
     And the new user clicks "govuk-signin-button"
     Then the new user is taken to the Identity Provider Login Page
-    When the new user enters their email address
+#    When the new user enters their email address
 #    Then the user is asked to check their email
 
   Scenario: User registers with an insecure password
@@ -29,5 +29,5 @@ Feature: Registration Journey
     When the new user visits the stub relying party
     And the new user clicks "govuk-signin-button"
     Then the new user is taken to the Identity Provider Login Page
-    When the new user enters their email address
-    Then the new user is shown an error message
+#    When the new user enters their email address
+#    Then the new user is shown an error message
