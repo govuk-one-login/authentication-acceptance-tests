@@ -68,11 +68,10 @@ public class RegistrationStepDefinitions extends SignInStepDefinitions {
 
     @Then("the new user is taken to the Identity Provider Login Page")
     public void theNewUserIsTakenToTheIdentityProviderLoginPage() {
-        waitForPageLoad("Sign in to or create your GOV.UK Account");
-        assertEquals("/enter-email", URI.create(driver.getCurrentUrl()).getPath());
+        waitForPageLoad("Sign in or create a GOV.UK account");
+        assertEquals("/sign-in-or-create", URI.create(driver.getCurrentUrl()).getPath());
         assertEquals(IDP_URL.getHost(), URI.create(driver.getCurrentUrl()).getHost());
-        assertEquals(
-                "Sign in to or create your GOV.UK Account - GOV.UK Account", driver.getTitle());
+        assertEquals("Sign in or create a GOV.UK account - GOV.UK Account", driver.getTitle());
     }
 
     @When("the new user enters their email address")
