@@ -8,8 +8,6 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.net.MalformedURLException;
 import java.net.URI;
@@ -63,10 +61,5 @@ public class LegalAndPolicyPagesStepDefinitions extends SignInStepDefinitions {
     @And("the user navigates back")
     public void theUserNavigatesBack() {
         driver.navigate().back();
-    }
-
-    private void waitForPageLoad(String titleContains) {
-        new WebDriverWait(driver, DEFAULT_PAGE_LOAD_WAIT_TIME)
-                .until(ExpectedConditions.titleContains(titleContains));
     }
 }

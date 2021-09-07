@@ -48,6 +48,7 @@ sleep 5
 export SELENIUM_URL="http://localhost:4444/wd/hub"
 export IDP_URL="https://front.build.auth.ida.digital.cabinet-office.gov.uk/"
 export RP_URL="https://di-auth-stub-relying-party-build.london.cloudapps.digital/"
+export AM_URL="https://account-management.build.auth.ida.digital.cabinet-office.gov.uk/"
 
 ./gradlew cucumber
 
