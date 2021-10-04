@@ -42,10 +42,10 @@ public class LegalAndPolicyPagesStepDefinitions extends SignInStepDefinitions {
 
     @Then("the user is taken to the Identity Provider Login Page")
     public void theExistingUserIsTakenToTheIdentityProviderLoginPage() {
-        waitForPageLoad("Sign in or create a GOV.UK account");
+        waitForPageLoad("Create a GOV.UK account or sign in");
         assertEquals("/sign-in-or-create", URI.create(driver.getCurrentUrl()).getPath());
         assertEquals(IDP_URL.getHost(), URI.create(driver.getCurrentUrl()).getHost());
-        assertEquals("Sign in or create a GOV.UK account - GOV.UK Account", driver.getTitle());
+        assertEquals("Create a GOV.UK account or sign in - GOV.UK account", driver.getTitle());
     }
 
     @And("the user clicks link {string}")

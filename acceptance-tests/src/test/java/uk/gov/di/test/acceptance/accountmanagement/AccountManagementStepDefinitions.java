@@ -44,9 +44,9 @@ public class AccountManagementStepDefinitions extends SignInStepDefinitions {
 
     @Then("the existing account management user is taken to the Identity Provider Login Page")
     public void theExistingAccountManagementUserIsTakenToTheIdentityProviderLoginPage() {
-        waitForPageLoad("Sign in or create a GOV.UK account");
+        waitForPageLoad("Create a GOV.UK account or sign in");
         assertEquals("/sign-in-or-create", URI.create(driver.getCurrentUrl()).getPath());
         assertEquals(IDP_URL.getHost(), URI.create(driver.getCurrentUrl()).getHost());
-        assertEquals("Sign in or create a GOV.UK account - GOV.UK Account", driver.getTitle());
+        assertEquals("Create a GOV.UK account or sign in - GOV.UK account", driver.getTitle());
     }
 }
