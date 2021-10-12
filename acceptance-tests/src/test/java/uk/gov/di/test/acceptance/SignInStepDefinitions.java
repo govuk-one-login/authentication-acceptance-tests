@@ -1,6 +1,8 @@
 package uk.gov.di.test.acceptance;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
@@ -11,6 +13,8 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class SignInStepDefinitions {
     protected static final String SELENIUM_URL = System.getenv().get("SELENIUM_URL");
@@ -41,5 +45,17 @@ public class SignInStepDefinitions {
     protected void waitForPageLoad(String titleContains) {
         new WebDriverWait(driver, DEFAULT_PAGE_LOAD_WAIT_TIME)
                 .until(ExpectedConditions.titleContains(titleContains));
+    }
+
+    protected void waitForPageLoadThenValidate(AuthenticationJourneyPages page) {
+        waitForPageLoad(page.getShortTitle());
+        assertEquals(page.getRoute(), URI.create(driver.getCurrentUrl()).getPath());
+        assertEquals(page.getFullTitle(), driver.getTitle());
+    }
+
+    protected void findAndClickContinue() {
+        WebElement continueButton =
+                driver.findElement(By.xpath("//button[text()[normalize-space() = 'Continue']]"));
+        continueButton.click();
     }
 }

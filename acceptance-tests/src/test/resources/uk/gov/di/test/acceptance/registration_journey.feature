@@ -7,27 +7,15 @@ Feature: Registration Journey
     When the new user visits the stub relying party
     And the new user clicks "govuk-signin-button"
     Then the new user is taken to the Identity Provider Login Page
-#    When the new user enters their email address
-#    Then the user is asked to check their email
-
-  Scenario: User registers with an insecure password
-    Given the registration services are running
-    And a new user has an insecure password
-    When the new user visits the stub relying party
-    And the new user clicks "govuk-signin-button"
-    Then the new user is taken to the Identity Provider Login Page
-#    When the user enters their email address
-#    Then the user is asked to create a password
-#    When the user registers their password
-#    And the user clicks "continue"
-#    Then the user is shown an error message
-#    And the user is asked again to create a password
-
-  Scenario: User registers with an invalid email
-    Given the registration services are running
-    And the new user has an invalid email format
-    When the new user visits the stub relying party
-    And the new user clicks "govuk-signin-button"
-    Then the new user is taken to the Identity Provider Login Page
-#    When the new user enters their email address
-#    Then the new user is shown an error message
+    When the new user selects create an account
+    Then the new user is taken to the enter your email page
+    When the new user enters their email address
+    Then the new user is asked to check their email
+    When the new user enters the six digit security code from their email
+    Then the new user is taken to the create your password page
+    When the new user creates a valid password
+    Then the new user is taken to the enter phone number page
+    When the new user enters their mobile phone number
+    Then the new user is taken to the check your phone page
+    When the new user enters the six digit security code from their phone
+    Then the new user is taken to the account created page
