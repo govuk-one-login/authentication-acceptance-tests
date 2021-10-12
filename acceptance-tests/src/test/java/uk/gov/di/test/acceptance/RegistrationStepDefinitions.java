@@ -11,15 +11,24 @@ import org.openqa.selenium.WebElement;
 
 import java.net.MalformedURLException;
 import java.net.URI;
-import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static uk.gov.di.test.acceptance.AuthenticationJourneyPages.ACCOUNT_CREATED;
+import static uk.gov.di.test.acceptance.AuthenticationJourneyPages.CHECK_YOUR_EMAIL;
+import static uk.gov.di.test.acceptance.AuthenticationJourneyPages.CHECK_YOUR_PHONE;
+import static uk.gov.di.test.acceptance.AuthenticationJourneyPages.CREATE_PASSWORD;
+import static uk.gov.di.test.acceptance.AuthenticationJourneyPages.ENTER_EMAIL;
+import static uk.gov.di.test.acceptance.AuthenticationJourneyPages.ENTER_PHONE_NUMBER;
+import static uk.gov.di.test.acceptance.AuthenticationJourneyPages.SIGN_IN_OR_CREATE;
 
 public class RegistrationStepDefinitions extends SignInStepDefinitions {
 
     private String emailAddress;
     private String password;
+    private String phoneNumber;
+    private String sixDigitCodeEmail;
+    private String sixDigitCodePhone;
 
     @Before
     public void setupWebdriver() throws MalformedURLException {
@@ -48,9 +57,11 @@ public class RegistrationStepDefinitions extends SignInStepDefinitions {
 
     @And("a new user has valid credentials")
     public void theNewUserHasValidCredential() {
-        String randomString = UUID.randomUUID().toString();
-        emailAddress = "susan.bloggs+" + randomString + "@digital.cabinet-office.gov.uk";
-        password = "passw0rd1";
+        emailAddress = System.getenv().get("TEST_USER_EMAIL");
+        password = System.getenv().get("TEST_USER_PASSWORD");
+        phoneNumber = System.getenv().get("TEST_USER_PHONE_NUMBER");
+        sixDigitCodeEmail = System.getenv().get("TEST_USER_EMAIL_CODE");
+        sixDigitCodePhone = System.getenv().get("TEST_USER_PHONE_CODE");
     }
 
     @When("the new user visits the stub relying party")
@@ -66,52 +77,81 @@ public class RegistrationStepDefinitions extends SignInStepDefinitions {
 
     @Then("the new user is taken to the Identity Provider Login Page")
     public void theNewUserIsTakenToTheIdentityProviderLoginPage() {
-        waitForPageLoad("Create a GOV.UK account or sign in");
-        assertEquals("/sign-in-or-create", URI.create(driver.getCurrentUrl()).getPath());
-        assertEquals(IDP_URL.getHost(), URI.create(driver.getCurrentUrl()).getHost());
-        assertEquals("Create a GOV.UK account or sign in - GOV.UK account", driver.getTitle());
+        waitForPageLoadThenValidate(SIGN_IN_OR_CREATE);
+    }
+
+    @When("the new user selects create an account")
+    public void theNewUserSelectsCreateAnAccount() {
+        WebElement radioCreateAccount = driver.findElement(By.id("create-account-true"));
+        radioCreateAccount.click();
+        findAndClickContinue();
+    }
+
+    @Then("the new user is taken to the enter your email page")
+    public void theNewUserIsTakenToTheEnterYourEmailPage() {
+        waitForPageLoadThenValidate(ENTER_EMAIL);
     }
 
     @When("the new user enters their email address")
     public void theNewUserEntersEmailAddress() {
         WebElement emailAddressField = driver.findElement(By.id("email"));
         emailAddressField.sendKeys(emailAddress);
-        WebElement continueButton =
-                driver.findElement(By.xpath("//button[text()[normalize-space() = 'Continue']]"));
-        continueButton.click();
+        findAndClickContinue();
     }
 
     @Then("the new user is asked to check their email")
     public void theNewUserIsAskedToCheckTheirEmail() {
-        waitForPageLoad("Check your email");
-        assertEquals("/check-your-email", URI.create(driver.getCurrentUrl()).getPath());
-        assertEquals("Check your email - GOV.UK Account", driver.getTitle());
+        waitForPageLoadThenValidate(CHECK_YOUR_EMAIL);
     }
 
-    @Then("the new user is asked to create a password")
+    @When("the new user enters the six digit security code from their email")
+    public void theNewUserEntersTheSixDigitSecurityCodeFromTheirEmail() {
+        WebElement sixDigitSecurityCodeField = driver.findElement(By.id("code"));
+        sixDigitSecurityCodeField.sendKeys(sixDigitCodeEmail);
+        findAndClickContinue();
+    }
+
+    @Then("the new user is taken to the create your password page")
     public void theNewUserIsAskedToCreateAPassword() {
-        assertEquals("/registration", URI.create(driver.getCurrentUrl()).getPath());
-        assertEquals("Create your GOV.UK account password", driver.getTitle());
+        waitForPageLoadThenValidate(CREATE_PASSWORD);
     }
 
-    @Then("the new user is asked again to create a password")
-    public void theNewUserIsAskedAgainToCreateAPassword() {
-        assertEquals("/registration/validate", URI.create(driver.getCurrentUrl()).getPath());
-        assertEquals("Create your GOV.UK account password", driver.getTitle());
+    @When("the new user creates a valid password")
+    public void theNewUserCreatesAValidPassword() {
+        WebElement enterPasswordField = driver.findElement(By.id("password"));
+        enterPasswordField.sendKeys(password);
+        WebElement confirmPasswordField = driver.findElement(By.id("confirm-password"));
+        confirmPasswordField.sendKeys(password);
+        findAndClickContinue();
     }
 
-    @When("the new user registers their password")
-    public void theNewUserEntersANewPassword() {
-        WebElement passwordField = driver.findElement(By.id("password"));
-        passwordField.sendKeys(password);
-        WebElement passwordConfirmField = driver.findElement(By.id("password-confirm"));
-        passwordConfirmField.sendKeys(password);
+    @Then("the new user is taken to the enter phone number page")
+    public void theNewUserIsTakenToTheEnterPhoneNumberPage() {
+        waitForPageLoadThenValidate(ENTER_PHONE_NUMBER);
     }
 
-    @Then("the new user is taken to the Success page")
+    @When("the new user enters their mobile phone number")
+    public void theNewUserEntersTheirMobilePhoneNumber() {
+        WebElement phoneNumberField = driver.findElement(By.id("phoneNumber"));
+        phoneNumberField.sendKeys(phoneNumber);
+        findAndClickContinue();
+    }
+
+    @Then("the new user is taken to the check your phone page")
+    public void theNewUserIsTakenToTheCheckYourPhonePage() {
+        waitForPageLoadThenValidate(CHECK_YOUR_PHONE);
+    }
+
+    @When("the new user enters the six digit security code from their phone")
+    public void theNewUserEntersTheSixDigitSecurityCodeFromTheirPhone() {
+        WebElement sixDigitSecurityCodeField = driver.findElement(By.id("code"));
+        sixDigitSecurityCodeField.sendKeys(sixDigitCodePhone);
+        findAndClickContinue();
+    }
+
+    @Then("the new user is taken to the account created page")
     public void theNewUserIsTakenToTheSuccessPage() {
-        assertEquals("/login/validate", URI.create(driver.getCurrentUrl()).getPath());
-        assertEquals("Sign-in to GOV.UK - Success", driver.getTitle());
+        waitForPageLoadThenValidate(ACCOUNT_CREATED);
     }
 
     @Then("the new user is taken to the successfully registered page")
