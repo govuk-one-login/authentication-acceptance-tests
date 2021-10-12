@@ -7,8 +7,12 @@ Feature: Login Journey
     When the existing user visits the stub relying party
     And the existing user clicks "govuk-signin-button"
     Then the existing user is taken to the Identity Provider Login Page
-#    When the user enters their email address
-#    Then the user is prompted for password
+    When the existing user selects sign in
+    Then the existing user is taken to the enter your email page
+    When the existing user enters their email address
+    Then the existing user is prompted for their password
+    When the existing user enters their password
+    Then the existing user is taken to the enter code page
 #    When the user enters their password
 #    And the user clicks "continue"
 #    Then the user is taken to the Success page

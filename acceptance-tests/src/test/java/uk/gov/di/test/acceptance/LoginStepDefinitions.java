@@ -14,11 +14,16 @@ import java.net.URI;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static uk.gov.di.test.acceptance.AuthenticationJourneyPages.ENTER_CODE;
+import static uk.gov.di.test.acceptance.AuthenticationJourneyPages.ENTER_EMAIL_EXISTING_USER;
+import static uk.gov.di.test.acceptance.AuthenticationJourneyPages.ENTER_PASSWORD;
+import static uk.gov.di.test.acceptance.AuthenticationJourneyPages.SIGN_IN_OR_CREATE;
 
 public class LoginStepDefinitions extends SignInStepDefinitions {
 
     private String emailAddress;
     private String password;
+    private String sixDigitCodePhone;
 
     @Before
     public void setupWebdriver() throws MalformedURLException {
@@ -35,8 +40,9 @@ public class LoginStepDefinitions extends SignInStepDefinitions {
 
     @And("the existing user has valid credentials")
     public void theExistingUserHasValidCredentials() {
-        emailAddress = "joe.bloggs@digital.cabinet-office.gov.uk";
-        password = "password";
+        emailAddress = System.getenv().get("TEST_USER_EMAIL");
+        password = System.getenv().get("TEST_USER_PASSWORD");
+        sixDigitCodePhone = System.getenv().get("TEST_USER_PHONE_CODE");
     }
 
     @And("the existing user has invalid credentials")
@@ -58,31 +64,50 @@ public class LoginStepDefinitions extends SignInStepDefinitions {
 
     @Then("the existing user is taken to the Identity Provider Login Page")
     public void theExistingUserIsTakenToTheIdentityProviderLoginPage() {
-        waitForPageLoad("Create a GOV.UK account or sign in");
-        assertEquals("/sign-in-or-create", URI.create(driver.getCurrentUrl()).getPath());
-        assertEquals(IDP_URL.getHost(), URI.create(driver.getCurrentUrl()).getHost());
-        assertEquals("Create a GOV.UK account or sign in - GOV.UK account", driver.getTitle());
+        waitForPageLoadThenValidate(SIGN_IN_OR_CREATE);
+    }
+
+    @When("the existing user selects sign in")
+    public void theExistingUserSelectsSignIn() {
+        WebElement radioCreateAccount = driver.findElement(By.id("create-account-false"));
+        radioCreateAccount.click();
+        findAndClickContinue();
+    }
+
+    @Then("the existing user is taken to the enter your email page")
+    public void theNewUserIsTakenToTheEnterYourEmailPage() {
+        waitForPageLoadThenValidate(ENTER_EMAIL_EXISTING_USER);
     }
 
     @When("the existing user enters their email address")
     public void theExistingUserEntersEmailAddress() {
         WebElement emailAddressField = driver.findElement(By.id("email"));
         emailAddressField.sendKeys(emailAddress);
-        WebElement continueButton =
-                driver.findElement(By.xpath("//button[text()[normalize-space() = 'Continue']]"));
-        continueButton.click();
+        findAndClickContinue();
     }
 
-    @Then("the existing user is prompted for password")
+    @Then("the existing user is prompted for their password")
     public void theExistingUserIsPromptedForPassword() {
-        assertEquals("/login", URI.create(driver.getCurrentUrl()).getPath());
-        assertEquals("Sign-in to GOV.UK - Password", driver.getTitle());
+        waitForPageLoadThenValidate(ENTER_PASSWORD);
     }
 
     @When("the existing user enters their password")
     public void theExistingUserEntersTheirPassword() {
         WebElement passwordField = driver.findElement(By.id("password"));
         passwordField.sendKeys(password);
+        findAndClickContinue();
+    }
+
+    @Then("the existing user is taken to the enter code page")
+    public void theExistingUserIsTakenToTheEnterCodePage() {
+        waitForPageLoadThenValidate(ENTER_CODE);
+    }
+
+    @When("the existing user enters the six digit security code from their phone")
+    public void theExistingUserEntersTheSixDigitSecurityCodeFromTheirPhone() {
+        WebElement sixDigitSecurityCodeField = driver.findElement(By.id("code"));
+        sixDigitSecurityCodeField.sendKeys(sixDigitCodePhone);
+        findAndClickContinue();
     }
 
     @Then("the existing user is taken to the Service User Info page")
