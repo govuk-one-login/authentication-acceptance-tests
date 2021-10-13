@@ -20,6 +20,7 @@ import static uk.gov.di.test.acceptance.AuthenticationJourneyPages.CHECK_YOUR_PH
 import static uk.gov.di.test.acceptance.AuthenticationJourneyPages.CREATE_PASSWORD;
 import static uk.gov.di.test.acceptance.AuthenticationJourneyPages.ENTER_EMAIL;
 import static uk.gov.di.test.acceptance.AuthenticationJourneyPages.ENTER_PHONE_NUMBER;
+import static uk.gov.di.test.acceptance.AuthenticationJourneyPages.SHARE_INFO;
 import static uk.gov.di.test.acceptance.AuthenticationJourneyPages.SIGN_IN_OR_CREATE;
 
 public class RegistrationStepDefinitions extends SignInStepDefinitions {
@@ -154,12 +155,29 @@ public class RegistrationStepDefinitions extends SignInStepDefinitions {
         waitForPageLoadThenValidate(ACCOUNT_CREATED);
     }
 
-    @Then("the new user is taken to the successfully registered page")
-    public void theNewUserIsTakenToTheSuccessfullyRegisteredPage() {
-        assertEquals("/registration/validate", URI.create(driver.getCurrentUrl()).getPath());
-        WebElement element = driver.findElement(By.id("successfully-created-account"));
-        assertEquals("You have successfully created your GOV.UK Account", element.getText().trim());
+    @When("the new user clicks the go back to gov.uk link")
+    public void theNewUserClicksTheGoBackToGovUkLink() {
+        WebElement goBackLink =
+                driver.findElement(
+                        By.xpath(
+                                "//a[text()[normalize-space() = 'Go back to GOV.UK to continue']]"));
+        goBackLink.click();
     }
+
+    @Then("the new user is taken the the share info page")
+    public void theNewUsereIsTakenTheTheShareInfoPage() {
+        waitForPageLoadThenValidate(SHARE_INFO);
+    }
+
+    @When("the new user agrees to share their info")
+    public void theNewUserAgreesToShareTheirInfo() {
+        WebElement radioShareInfoAccept = driver.findElement(By.id("share-info-accepted"));
+        radioShareInfoAccept.click();
+        findAndClickContinue();
+    }
+
+    @Then("the new user is returned to the service")
+    public void theNewUserIsReturnedToTheService() {}
 
     @Then("the new user is taken to the Service User Info page")
     public void theNewUserIsTakenToTheServiceUserInfoPage() {

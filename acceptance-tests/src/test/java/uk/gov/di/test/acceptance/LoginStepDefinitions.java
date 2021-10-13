@@ -110,6 +110,9 @@ public class LoginStepDefinitions extends SignInStepDefinitions {
         findAndClickContinue();
     }
 
+    @Then("the existing user is returned to the service")
+    public void theExistingUserIsReturnedToTheService() {}
+
     @Then("the existing user is taken to the Service User Info page")
     public void theExistingUserIsTakenToTheServiceUserInfoPage() {
         assertEquals("/oidc/callback", URI.create(driver.getCurrentUrl()).getPath());
