@@ -18,5 +18,5 @@ applications:
   - name: selenium-build
     disk_quota: 2G
     docker:
-      image: selenium/standalone-firefox@sha256:310bc1151faf62015fae3d48efccc2c7fa655cac167db864c4e9e5fa6f068630
+      image: selenium/standalone-firefox@sha256:861b3b47803aa87009de4bc34c1625cfa35e18cda63b5dd8843189787abaa9ba
       username: ((docker-hub-username))
