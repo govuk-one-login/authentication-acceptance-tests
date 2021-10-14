@@ -16,6 +16,7 @@ applications:
       ALLOWED_IPS: ((allowed-ips))
 
   - name: selenium-build
+    disk_quota: 2G
     docker:
       image: selenium/standalone-firefox:latest
       username: ((docker-hub-username))
