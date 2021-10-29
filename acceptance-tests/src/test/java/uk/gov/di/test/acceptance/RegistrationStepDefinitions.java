@@ -194,4 +194,16 @@ public class RegistrationStepDefinitions extends SignInStepDefinitions {
         WebElement emailDescriptionDetails = driver.findElement(By.id("error-summary-title"));
         assertTrue(emailDescriptionDetails.isDisplayed());
     }
+
+    @When("the new user clicks by name {string}")
+    public void theNewUserClicksByName(String buttonName) {
+        WebElement button = driver.findElement(By.name(buttonName));
+        button.click();
+    }
+
+    @Then("the new user is taken to the signed out page")
+    public void theNewUsereIsTakenToTheSignedOutPage() {
+        waitForPageLoad("Signed out");
+        assertEquals("/signed-out", URI.create(driver.getCurrentUrl()).getPath());
+    }
 }

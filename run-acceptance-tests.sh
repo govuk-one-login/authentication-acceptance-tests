@@ -31,7 +31,7 @@ function build_docker_service() {
 
 printf "\nBuilding di-authentication-acceptance-tests...\n"
 
-./gradlew clean build -x :acceptance-tests:test
+./gradlew clean spotlessApply build -x :acceptance-tests:test
 
 build_and_test_exit_code=$?
 if [ ${build_and_test_exit_code} -ne 0 ]

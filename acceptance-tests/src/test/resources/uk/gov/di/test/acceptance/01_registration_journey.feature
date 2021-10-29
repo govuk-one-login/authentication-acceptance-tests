@@ -23,3 +23,5 @@ Feature: Registration Journey
     Then the new user is taken the the share info page
     When the new user agrees to share their info
     Then the new user is returned to the service
+    When the new user clicks by name "logout"
+    Then the new user is taken to the signed out page

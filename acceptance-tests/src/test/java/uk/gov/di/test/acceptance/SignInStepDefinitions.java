@@ -3,7 +3,6 @@ package uk.gov.di.test.acceptance;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -29,11 +28,7 @@ public class SignInStepDefinitions {
     protected void setupWebdriver() throws MalformedURLException {
         FirefoxOptions firefoxOptions = new FirefoxOptions();
         firefoxOptions.setHeadless(true);
-        if (SELENIUM_URL == null) {
-            driver = new FirefoxDriver(firefoxOptions);
-        } else {
-            driver = new RemoteWebDriver(new URL(SELENIUM_URL), firefoxOptions);
-        }
+        driver = new RemoteWebDriver(new URL(SELENIUM_URL), firefoxOptions);
     }
 
     protected void closeWebdriver() {
