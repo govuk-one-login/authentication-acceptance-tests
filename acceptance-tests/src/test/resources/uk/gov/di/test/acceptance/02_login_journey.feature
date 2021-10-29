@@ -11,8 +11,8 @@ Feature: Login Journey
     Then the existing user is taken to the enter your email page
     When the existing user enters their email address
     Then the existing user is prompted for their password
-#    When the existing user enters their password
-#    Then the existing user is taken to the enter code page
-#    When the existing user enters the six digit security code from their phone
-#    Then the existing user is returned to the service
+    When the existing user enters their password
+    Then the existing user is taken to the enter code page
+    When the existing user enters the six digit security code from their phone
+    Then the existing user is returned to the service
     
