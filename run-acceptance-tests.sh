@@ -42,7 +42,7 @@ fi
 
 printf "\nRunning di-authentication-acceptance-tests...\n"
 
-start_docker_services selenium
+start_docker_services selenium-firefox selenium-chrome
 sleep 5
 
 export $(grep -v '^#' .env | xargs)

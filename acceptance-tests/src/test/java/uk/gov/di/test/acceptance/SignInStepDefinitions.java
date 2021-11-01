@@ -3,6 +3,9 @@ package uk.gov.di.test.acceptance;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -15,6 +18,8 @@ import java.net.URL;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class SignInStepDefinitions {
+    protected static final String CHROME_BROWSER = "chrome";
+    protected static final String FIREFOX_BROWSER = "firefox";
     protected static final String SELENIUM_URL = System.getenv().get("SELENIUM_URL");
     protected static final URI IDP_URL =
             URI.create(System.getenv().getOrDefault("IDP_URL", "http://localhost:8080/"));
@@ -22,14 +27,34 @@ public class SignInStepDefinitions {
             URI.create(System.getenv().getOrDefault("RP_URL", "http://localhost:8081/"));
     protected static final URI AM_URL =
             URI.create(System.getenv().getOrDefault("AM_URL", "http://localhost:8081/"));
+    protected static final Boolean SELENIUM_LOCAL =
+            Boolean.parseBoolean(System.getenv().getOrDefault("SELENIUM_LOCAL", "false"));
+    protected static final String SELENIUM_BROWSER =
+            System.getenv().getOrDefault("SELENIUM_BROWSER", FIREFOX_BROWSER);
     protected static final int DEFAULT_PAGE_LOAD_WAIT_TIME = 20;
     protected static WebDriver driver;
 
     protected void setupWebdriver() throws MalformedURLException {
         if (driver == null) {
-            FirefoxOptions firefoxOptions = new FirefoxOptions();
-            firefoxOptions.setHeadless(true);
-            driver = new RemoteWebDriver(new URL(SELENIUM_URL), firefoxOptions);
+            switch (SELENIUM_BROWSER) {
+                case CHROME_BROWSER:
+                    ChromeOptions chromeOptions = new ChromeOptions();
+                    chromeOptions.setHeadless(SELENIUM_LOCAL);
+                    if (SELENIUM_LOCAL) {
+                        driver = new ChromeDriver(chromeOptions);
+                    } else {
+                        driver = new RemoteWebDriver(new URL(SELENIUM_URL), chromeOptions);
+                    }
+                    break;
+                default:
+                    FirefoxOptions firefoxOptions = new FirefoxOptions();
+                    firefoxOptions.setHeadless(SELENIUM_LOCAL);
+                    if (SELENIUM_LOCAL) {
+                        driver = new FirefoxDriver(firefoxOptions);
+                    } else {
+                        driver = new RemoteWebDriver(new URL(SELENIUM_URL), firefoxOptions);
+                    }
+            }
         }
     }
 
