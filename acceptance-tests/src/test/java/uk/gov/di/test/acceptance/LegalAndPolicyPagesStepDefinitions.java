@@ -1,18 +1,18 @@
 package uk.gov.di.test.acceptance;
 
-import io.cucumber.java.After;
+import static org.junit.Assert.assertEquals;
+
+import java.net.MalformedURLException;
+import java.net.URI;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
+
 import io.cucumber.java.Before;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
-
-import java.net.MalformedURLException;
-import java.net.URI;
-
-import static org.junit.Assert.assertEquals;
 
 public class LegalAndPolicyPagesStepDefinitions extends SignInStepDefinitions {
 
@@ -21,11 +21,7 @@ public class LegalAndPolicyPagesStepDefinitions extends SignInStepDefinitions {
         super.setupWebdriver();
     }
 
-    @After
-    public void closeWebdriver() {
-        super.closeWebdriver();
-    }
-
+    
     @Given("the services are running")
     public void theServicesAreRunning() {}
 

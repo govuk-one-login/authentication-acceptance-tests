@@ -13,7 +13,6 @@ import java.net.URI;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
-import io.cucumber.java.After;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
@@ -29,11 +28,6 @@ public class LoginStepDefinitions extends SignInStepDefinitions {
     @Before
     public void setupWebdriver() throws MalformedURLException {
         super.setupWebdriver();
-    }
-
-    @After
-    public void closeWebdriver() {
-        super.closeWebdriver();
     }
 
     @Given("the login services are running")
