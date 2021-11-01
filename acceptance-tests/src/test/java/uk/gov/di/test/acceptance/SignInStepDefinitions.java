@@ -23,16 +23,21 @@ public class SignInStepDefinitions {
     protected static final URI AM_URL =
             URI.create(System.getenv().getOrDefault("AM_URL", "http://localhost:8081/"));
     protected static final int DEFAULT_PAGE_LOAD_WAIT_TIME = 20;
-    protected WebDriver driver;
+    protected static WebDriver driver;
 
     protected void setupWebdriver() throws MalformedURLException {
-        FirefoxOptions firefoxOptions = new FirefoxOptions();
-        firefoxOptions.setHeadless(true);
-        driver = new RemoteWebDriver(new URL(SELENIUM_URL), firefoxOptions);
+        if (driver == null) {
+            FirefoxOptions firefoxOptions = new FirefoxOptions();
+            firefoxOptions.setHeadless(true);
+            driver = new RemoteWebDriver(new URL(SELENIUM_URL), firefoxOptions);
+        }
     }
 
     protected void closeWebdriver() {
-        driver.quit();
+        if (driver != null) {
+            driver.quit();
+            driver = null;
+        }
     }
 
     protected void waitForPageLoad(String titleContains) {
