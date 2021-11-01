@@ -1,6 +1,5 @@
 package uk.gov.di.test.acceptance;
 
-import io.cucumber.java.After;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
@@ -34,11 +33,6 @@ public class RegistrationStepDefinitions extends SignInStepDefinitions {
     @Before
     public void setupWebdriver() throws MalformedURLException {
         super.setupWebdriver();
-    }
-
-    @After
-    public void closeWebdriver() {
-        super.closeWebdriver();
     }
 
     @Given("the registration services are running")
