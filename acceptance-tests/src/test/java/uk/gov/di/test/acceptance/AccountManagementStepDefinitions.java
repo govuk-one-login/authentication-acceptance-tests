@@ -1,24 +1,22 @@
 package uk.gov.di.test.acceptance;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static uk.gov.di.test.acceptance.AccountJourneyPages.CHANGE_PASSWORD;
-import static uk.gov.di.test.acceptance.AccountJourneyPages.ENTER_PASSWORD_CHANGE_PASSWORD;
-import static uk.gov.di.test.acceptance.AccountJourneyPages.MANAGE_YOUR_ACCOUNT;
-import static uk.gov.di.test.acceptance.AccountJourneyPages.PASSWORD_UPDATED_CONFIRMATION;
-
-import java.net.MalformedURLException;
-import java.net.URI;
-import java.util.UUID;
-
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
-
-import io.cucumber.java.After;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
+
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.util.UUID;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static uk.gov.di.test.acceptance.AccountJourneyPages.CHANGE_PASSWORD;
+import static uk.gov.di.test.acceptance.AccountJourneyPages.ENTER_PASSWORD_CHANGE_PASSWORD;
+import static uk.gov.di.test.acceptance.AccountJourneyPages.MANAGE_YOUR_ACCOUNT;
+import static uk.gov.di.test.acceptance.AccountJourneyPages.PASSWORD_UPDATED_CONFIRMATION;
 
 public class AccountManagementStepDefinitions extends SignInStepDefinitions {
 
@@ -29,11 +27,6 @@ public class AccountManagementStepDefinitions extends SignInStepDefinitions {
     @Before
     public void setupWebdriver() throws MalformedURLException {
         super.setupWebdriver();
-    }
-
-    @After
-    public void closeWebdriver() {
-        super.closeWebdriver();
     }
 
     @Given("the account management services are running")
