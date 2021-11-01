@@ -1,4 +1,4 @@
-package uk.gov.di.test.acceptance.accountmanagement;
+package uk.gov.di.test.acceptance;
 
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
@@ -6,12 +6,12 @@ import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import uk.gov.di.test.acceptance.SignInStepDefinitions;
 
 import java.net.MalformedURLException;
 import java.net.URI;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static uk.gov.di.test.acceptance.AccountJourneyPages.MANAGE_YOUR_ACCOUNT;
 
 public class AccountManagementStepDefinitions extends SignInStepDefinitions {
 
@@ -42,11 +42,14 @@ public class AccountManagementStepDefinitions extends SignInStepDefinitions {
         driver.get(AM_URL.toString());
     }
 
-    @Then("the existing account management user is taken to the Identity Provider Login Page")
-    public void theExistingAccountManagementUserIsTakenToTheIdentityProviderLoginPage() {
-        waitForPageLoad("Create a GOV.UK account or sign in");
-        assertEquals("/sign-in-or-create", URI.create(driver.getCurrentUrl()).getPath());
-        assertEquals(IDP_URL.getHost(), URI.create(driver.getCurrentUrl()).getHost());
-        assertEquals("Create a GOV.UK account or sign in - GOV.UK account", driver.getTitle());
+    @Then("the existing account management user is taken to the manage your account page")
+    public void theExistingAccountManagementUserIsTakenToTheManageYourAccountPage() {
+        waitForPageLoadThenValidate(MANAGE_YOUR_ACCOUNT);
+    }
+
+    private void waitForPageLoadThenValidate(AccountJourneyPages page) {
+        waitForPageLoad(page.getShortTitle());
+        assertEquals(page.getRoute(), URI.create(driver.getCurrentUrl()).getPath());
+        assertEquals(page.getFullTitle(), driver.getTitle());
     }
 }
