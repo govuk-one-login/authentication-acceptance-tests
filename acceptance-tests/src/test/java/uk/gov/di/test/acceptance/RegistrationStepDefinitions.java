@@ -15,10 +15,12 @@ import java.util.Random;
 import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static uk.gov.di.test.acceptance.AuthenticationJourneyPages.ACCOUNT_CREATED;
+import static uk.gov.di.test.acceptance.AuthenticationJourneyPages.ACCOUNT_NOT_FOUND;
 import static uk.gov.di.test.acceptance.AuthenticationJourneyPages.CHECK_YOUR_EMAIL;
 import static uk.gov.di.test.acceptance.AuthenticationJourneyPages.CHECK_YOUR_PHONE;
 import static uk.gov.di.test.acceptance.AuthenticationJourneyPages.CREATE_PASSWORD;
 import static uk.gov.di.test.acceptance.AuthenticationJourneyPages.ENTER_EMAIL;
+import static uk.gov.di.test.acceptance.AuthenticationJourneyPages.ENTER_EMAIL_EXISTING_USER;
 import static uk.gov.di.test.acceptance.AuthenticationJourneyPages.ENTER_PHONE_NUMBER;
 import static uk.gov.di.test.acceptance.AuthenticationJourneyPages.SECURITY_CODE_INVALID;
 import static uk.gov.di.test.acceptance.AuthenticationJourneyPages.SHARE_INFO;
@@ -98,12 +100,29 @@ public class RegistrationStepDefinitions extends SignInStepDefinitions {
         waitForPageLoadThenValidate(ENTER_EMAIL);
     }
 
+    @When("the new user selects sign in")
+    public void theNewUserSelectsSignIn() {
+        WebElement radioSignIn = driver.findElement(By.id("create-account-false"));
+        radioSignIn.click();
+        findAndClickContinue();
+    }
+
+    @Then("the new user is taken to the sign in to your account page")
+    public void theNewUserIsTakenToTheSignInToYourAccountPage() {
+        waitForPageLoadThenValidate(ENTER_EMAIL_EXISTING_USER);
+    }
+
     @When("the new user enters their email address")
     public void theNewUserEntersEmailAddress() {
         WebElement emailAddressField = driver.findElement(By.id("email"));
         emailAddressField.clear();
         emailAddressField.sendKeys(emailAddress);
         findAndClickContinue();
+    }
+
+    @Then("the new user is taken to the account not found page")
+    public void theNewUserIsTakenToTheAccountNotFoundPage() {
+        waitForPageLoadThenValidate(ACCOUNT_NOT_FOUND);
     }
 
     @Then("the new user is asked to check their email")
@@ -222,6 +241,11 @@ public class RegistrationStepDefinitions extends SignInStepDefinitions {
     public void theNewUserClicksByName(String buttonName) {
         WebElement button = driver.findElement(By.name(buttonName));
         button.click();
+    }
+
+    @When("the new user clicks link by href {string}")
+    public void theNewUserClicksLinkByHref(String href) {
+        driver.findElement(By.xpath("//a[@href=\"" + href + "\"]")).click();
     }
 
     @Then("the new user is taken to the signed out page")

@@ -19,8 +19,8 @@ public class NotLoggedInStepDefinitions extends SignInStepDefinitions {
     @Given("the not logged in services are running")
     public void theServicesAreRunning() {}
 
-    @When("the not logged in user navigates to account management")
-    public void theNotLoggedInUserVisitsTheStubRelyingParty() {
+    @When("the not logged in user navigates to account root")
+    public void theNotLoggedInUserNavigatesToAccountRoot() {
         driver.get(AM_URL.toString());
     }
 

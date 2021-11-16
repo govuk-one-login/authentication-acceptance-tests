@@ -1,6 +1,20 @@
 Feature: Registration Journey
   New user walks through a registration journey
 
+  Scenario: User selects sign in without having an account
+    Given the registration services are running
+    And a new user has valid credentials
+    And the new user clears cookies
+    When the new user visits the stub relying party
+    And the new user clicks "govuk-signin-button"
+    Then the new user is taken to the Identity Provider Login Page
+    When the new user selects sign in
+    Then the new user is taken to the sign in to your account page
+    When the new user enters their email address
+    Then the new user is taken to the account not found page
+    When the new user clicks link by href "/enter-email?type=sign-in"
+    Then the new user is taken to the sign in to your account page
+
   Scenario: User registration unsuccessful with invalid email, six digit code and password
     Given the registration services are running
     And the new user has an invalid email format

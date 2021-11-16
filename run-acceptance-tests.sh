@@ -51,7 +51,7 @@ export $(grep -v '^#' .env | xargs)
 
 build_and_test_exit_code=$?
 
-stop_docker_services selenium
+stop_docker_services selenium-firefox selenium-chrome
 
 if [ ${build_and_test_exit_code} -ne 0 ]
 then

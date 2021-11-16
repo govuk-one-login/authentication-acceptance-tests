@@ -3,6 +3,5 @@ Feature: Not logged in
 
   Scenario: User launches account management
     Given the not logged in services are running
-    When the not logged in user navigates to account management
+    When the not logged in user navigates to account root
     Then the not logged in user is taken to the Identity Provider Login Page
-
