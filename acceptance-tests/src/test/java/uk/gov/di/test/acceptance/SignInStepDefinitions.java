@@ -81,4 +81,11 @@ public class SignInStepDefinitions {
                 driver.findElement(By.xpath("//button[text()[normalize-space() = 'Continue']]"));
         continueButton.click();
     }
+
+    protected void findAndClickButtonByText(String buttonText) {
+        WebElement continueButton =
+                driver.findElement(
+                        By.xpath("//button[text()[normalize-space() = '" + buttonText + "']]"));
+        continueButton.click();
+    }
 }

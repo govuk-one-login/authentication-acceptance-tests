@@ -10,11 +10,13 @@ import org.openqa.selenium.WebElement;
 
 import java.net.MalformedURLException;
 import java.net.URI;
-import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static uk.gov.di.test.acceptance.AccountJourneyPages.ACCOUNT_DELETED_CONFIRMATION;
 import static uk.gov.di.test.acceptance.AccountJourneyPages.CHANGE_PASSWORD;
+import static uk.gov.di.test.acceptance.AccountJourneyPages.DELETE_ACCOUNT;
 import static uk.gov.di.test.acceptance.AccountJourneyPages.ENTER_PASSWORD_CHANGE_PASSWORD;
+import static uk.gov.di.test.acceptance.AccountJourneyPages.ENTER_PASSWORD_DELETE_ACCOUNT;
 import static uk.gov.di.test.acceptance.AccountJourneyPages.MANAGE_YOUR_ACCOUNT;
 import static uk.gov.di.test.acceptance.AccountJourneyPages.PASSWORD_UPDATED_CONFIRMATION;
 
@@ -70,12 +72,12 @@ public class AccountManagementStepDefinitions extends SignInStepDefinitions {
         waitForPageLoadThenValidate(CHANGE_PASSWORD);
     }
 
-    @When("the existing account management user chooses a new password")
+    @When("the existing account management user uses their updated password")
     public void theExistingAccountManagementUserChoosesANewPassword() {
-        newPassword = UUID.randomUUID().toString();
+        newPassword = System.getenv().get("TEST_USER_NEW_PASSWORD");
     }
 
-    @And("the existing account management user enters their new password")
+    @And("the existing account management user enters their updated password")
     public void theExistingAccountManagementUserEntersTheirNewPassword() {
         WebElement enterPasswordField = driver.findElement(By.id("password"));
         enterPasswordField.sendKeys(newPassword);
@@ -84,9 +86,36 @@ public class AccountManagementStepDefinitions extends SignInStepDefinitions {
         findAndClickContinue();
     }
 
+    @And("the existing account management user enters their updated password to delete account")
+    public void theExistingAccountManagementUserEntersTheirUpdatedPasswordToDeleteAccount() {
+        WebElement enterPasswordField = driver.findElement(By.id("password"));
+        enterPasswordField.sendKeys(newPassword);
+        findAndClickContinue();
+    }
+
     @Then("the existing account management user is taken to password updated confirmation page")
     public void theExistingAccountManagementUserIsTakenToThePasswordUpdatedConfirmation() {
         waitForPageLoadThenValidate(PASSWORD_UPDATED_CONFIRMATION);
+    }
+
+    @Then("the existing account management user is asked to enter their password")
+    public void theExistingAccountManagementUserIsAskedToEnterTheirPassword() {
+        waitForPageLoadThenValidate(ENTER_PASSWORD_DELETE_ACCOUNT);
+    }
+
+    @Then("the existing account management user is taken to the delete account page")
+    public void theExistingAccountManagementUserIsTakenToTheDeleteAccountPage() {
+        waitForPageLoadThenValidate(DELETE_ACCOUNT);
+    }
+
+    @Then("the existing account management user is taken to the account deleted confirmation page")
+    public void theExistingAccountManagementUserIsTakenToTheAccountDeletedConfirmationPage() {
+        waitForPageLoadThenValidate(ACCOUNT_DELETED_CONFIRMATION);
+    }
+
+    @When("the user clicks button by text {}")
+    public void theUserClicksButtonByText(String buttonText) {
+        findAndClickButtonByText(buttonText);
     }
 
     private void waitForPageLoadThenValidate(AccountJourneyPages page) {
