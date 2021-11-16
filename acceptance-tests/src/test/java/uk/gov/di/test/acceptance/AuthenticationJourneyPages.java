@@ -11,7 +11,9 @@ public enum AuthenticationJourneyPages {
     ENTER_PASSWORD("/enter-password", "Enter your password"),
     ENTER_CODE("/enter-code", "Check your phone"),
     ENTER_EMAIL_EXISTING_USER("/enter-email", "Sign in to your GOV.UK account"),
-    SHARE_INFO("/share-info", "Share information from your GOV.UK account");
+    SHARE_INFO("/share-info", "Share information from your GOV.UK account"),
+    SECURITY_CODE_INVALID(
+            "/security-code-invalid", "You entered the wrong security code too many times");
 
     private static final String PRODUCT_NAME = "GOV.UK account";
 

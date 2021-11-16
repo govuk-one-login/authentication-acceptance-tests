@@ -10,6 +10,7 @@ import org.openqa.selenium.WebElement;
 
 import java.net.MalformedURLException;
 import java.net.URI;
+import java.util.Random;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -19,6 +20,7 @@ import static uk.gov.di.test.acceptance.AuthenticationJourneyPages.CHECK_YOUR_PH
 import static uk.gov.di.test.acceptance.AuthenticationJourneyPages.CREATE_PASSWORD;
 import static uk.gov.di.test.acceptance.AuthenticationJourneyPages.ENTER_EMAIL;
 import static uk.gov.di.test.acceptance.AuthenticationJourneyPages.ENTER_PHONE_NUMBER;
+import static uk.gov.di.test.acceptance.AuthenticationJourneyPages.SECURITY_CODE_INVALID;
 import static uk.gov.di.test.acceptance.AuthenticationJourneyPages.SHARE_INFO;
 import static uk.gov.di.test.acceptance.AuthenticationJourneyPages.SIGN_IN_OR_CREATE;
 
@@ -44,9 +46,8 @@ public class RegistrationStepDefinitions extends SignInStepDefinitions {
         password = "password";
     }
 
-    @And("a new user has an insecure password")
+    @When("the new user has an invalid password")
     public void theUserHasInvalidPassword() {
-        emailAddress = "joe.bloggs+1@digital.cabinet-office.gov.uk";
         password = "password";
     }
 
@@ -57,6 +58,16 @@ public class RegistrationStepDefinitions extends SignInStepDefinitions {
         phoneNumber = System.getenv().get("TEST_USER_PHONE_NUMBER");
         sixDigitCodeEmail = System.getenv().get("TEST_USER_EMAIL_CODE");
         sixDigitCodePhone = System.getenv().get("TEST_USER_PHONE_CODE");
+    }
+
+    @And("the new user clears cookies")
+    public void theNewUserClearsCookies() {
+        driver.manage().deleteAllCookies();
+    }
+
+    @When("the new user has a valid email address")
+    public void theNewUserHasValidEmailAddress() {
+        emailAddress = System.getenv().get("TEST_USER_EMAIL");
     }
 
     @When("the new user visits the stub relying party")
@@ -90,6 +101,7 @@ public class RegistrationStepDefinitions extends SignInStepDefinitions {
     @When("the new user enters their email address")
     public void theNewUserEntersEmailAddress() {
         WebElement emailAddressField = driver.findElement(By.id("email"));
+        emailAddressField.clear();
         emailAddressField.sendKeys(emailAddress);
         findAndClickContinue();
     }
@@ -99,11 +111,28 @@ public class RegistrationStepDefinitions extends SignInStepDefinitions {
         waitForPageLoadThenValidate(CHECK_YOUR_EMAIL);
     }
 
+    @When("the new user enters the six digit security code incorrectly {int} times")
+    public void theNewUserEntersTheSixDigitSecurityCodeIncorrectlyNTimes(int timesCodeIncorrect) {
+        for (int i = 0; i < timesCodeIncorrect; i++) {
+            WebElement sixDigitSecurityCodeField = driver.findElement(By.id("code"));
+            sixDigitSecurityCodeField.clear();
+            sixDigitSecurityCodeField.sendKeys(getRandomInvalidCode());
+            findAndClickContinue();
+            theNewUserIsShownAnErrorMessageOnTheEnterEmailPage();
+        }
+    }
+
     @When("the new user enters the six digit security code from their email")
     public void theNewUserEntersTheSixDigitSecurityCodeFromTheirEmail() {
         WebElement sixDigitSecurityCodeField = driver.findElement(By.id("code"));
+        sixDigitSecurityCodeField.clear();
         sixDigitSecurityCodeField.sendKeys(sixDigitCodeEmail);
         findAndClickContinue();
+    }
+
+    @Then("the new user is taken to the security code invalid page")
+    public void theNewUserIsTakenToTheSecurityCodeInvalidPage() {
+        waitForPageLoadThenValidate(SECURITY_CODE_INVALID);
     }
 
     @Then("the new user is taken to the create your password page")
@@ -111,7 +140,7 @@ public class RegistrationStepDefinitions extends SignInStepDefinitions {
         waitForPageLoadThenValidate(CREATE_PASSWORD);
     }
 
-    @When("the new user creates a valid password")
+    @When("the new user creates a password")
     public void theNewUserCreatesAValidPassword() {
         WebElement enterPasswordField = driver.findElement(By.id("password"));
         enterPasswordField.sendKeys(password);
@@ -199,5 +228,13 @@ public class RegistrationStepDefinitions extends SignInStepDefinitions {
     public void theNewUsereIsTakenToTheSignedOutPage() {
         waitForPageLoad("Signed out");
         assertEquals("/signed-out", URI.create(driver.getCurrentUrl()).getPath());
+    }
+
+    private String getRandomInvalidCode() {
+        String randomCode = "";
+        do {
+            randomCode = String.format("%06d", new Random().nextInt(999999));
+        } while (randomCode.equals(sixDigitCodeEmail));
+        return randomCode;
     }
 }
