@@ -47,13 +47,47 @@ public class LegalAndPolicyPagesStepDefinitions extends SignInStepDefinitions {
         driver.findElement(By.partialLinkText(linkText)).click();
     }
 
-    @Then("the user is taken to the page with title containing {string}")
-    public void theUserIsTakenToThePageWithTitleContaining(String title) {
-        waitForPageLoad(title);
+    @Then("the user is taken to the accessibility statement page")
+    public void theUserIsTakenToTheAccessibilityStatementPage() {
+        checkPageLoadInTabAndClose(SupportingPages.ACCESSIBILITY_STATEMENT);
     }
 
-    @And("the user navigates back")
-    public void theUserNavigatesBack() {
-        driver.navigate().back();
+    @Then("the user is taken to the GOV.UK cookies page")
+    public void theUserIsTakenToTheGOVUKCookiesPage() {
+        checkPageLoadInTabAndClose(SupportingPages.GOV_UK_COOKIES);
+    }
+
+    @Then("the user is taken to the terms and conditions page")
+    public void theUserIsTakenToTheTermsAndConditionsPage() {
+        checkPageLoadInTabAndClose(SupportingPages.TERMS_AND_CONDITIONS);
+    }
+
+    @Then("the user is taken to the privacy notice page")
+    public void theUserIsTakenToThePrivacyNoticePage() {
+        checkPageLoadInTabAndClose(SupportingPages.PRIVACY_NOTICE);
+    }
+
+    @Then("the user is taken to the page with title containing {string}")
+    public void theUserIsTakenToTheCookiesPage(String titleContains) {
+        waitForPageLoad(titleContains);
+    }
+
+    private void checkPageLoadInTabAndClose(SupportingPages page) {
+        String currentWindowHandle = driver.getWindowHandle();
+        driver.getWindowHandles().stream()
+                .filter(h -> !h.equals(currentWindowHandle))
+                .findFirst()
+                .map(w -> driver.switchTo().window(w))
+                .ifPresent(
+                        d -> {
+                            waitForPageLoadThenValidate(page);
+                            d.close();
+                        });
+        driver.switchTo().window(currentWindowHandle);
+    }
+
+    private void waitForPageLoadThenValidate(SupportingPages page) {
+        waitForPageLoad(page.getShortTitle());
+        assertEquals(page.getRoute(), URI.create(driver.getCurrentUrl()).getPath());
     }
 }
