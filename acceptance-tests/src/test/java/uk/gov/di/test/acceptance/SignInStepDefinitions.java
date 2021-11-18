@@ -29,6 +29,10 @@ public class SignInStepDefinitions {
             URI.create(System.getenv().getOrDefault("AM_URL", "http://localhost:8081/"));
     protected static final Boolean SELENIUM_LOCAL =
             Boolean.parseBoolean(System.getenv().getOrDefault("SELENIUM_LOCAL", "false"));
+    protected static final Boolean SELENIUM_HEADLESS =
+            Boolean.parseBoolean(System.getenv().getOrDefault("SELENIUM_HEADLESS", "true"));
+    protected static final Boolean DEBUG_MODE =
+            Boolean.parseBoolean(System.getenv().getOrDefault("DEBUG_MODE", "false"));
     protected static final String SELENIUM_BROWSER =
             System.getenv().getOrDefault("SELENIUM_BROWSER", FIREFOX_BROWSER);
     protected static final int DEFAULT_PAGE_LOAD_WAIT_TIME = 20;
@@ -39,7 +43,7 @@ public class SignInStepDefinitions {
             switch (SELENIUM_BROWSER) {
                 case CHROME_BROWSER:
                     ChromeOptions chromeOptions = new ChromeOptions();
-                    chromeOptions.setHeadless(SELENIUM_LOCAL);
+                    chromeOptions.setHeadless(SELENIUM_HEADLESS);
                     if (SELENIUM_LOCAL) {
                         driver = new ChromeDriver(chromeOptions);
                     } else {
@@ -48,7 +52,7 @@ public class SignInStepDefinitions {
                     break;
                 default:
                     FirefoxOptions firefoxOptions = new FirefoxOptions();
-                    firefoxOptions.setHeadless(SELENIUM_LOCAL);
+                    firefoxOptions.setHeadless(SELENIUM_HEADLESS);
                     if (SELENIUM_LOCAL) {
                         driver = new FirefoxDriver(firefoxOptions);
                     } else {

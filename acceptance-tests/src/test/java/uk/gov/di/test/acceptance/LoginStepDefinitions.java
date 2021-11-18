@@ -7,6 +7,8 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedCondition;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.net.MalformedURLException;
 import java.net.URI;
@@ -100,7 +102,16 @@ public class LoginStepDefinitions extends SignInStepDefinitions {
     @When("the existing user enters the six digit security code from their phone")
     public void theExistingUserEntersTheSixDigitSecurityCodeFromTheirPhone() {
         WebElement sixDigitSecurityCodeField = driver.findElement(By.id("code"));
-        sixDigitSecurityCodeField.sendKeys(sixDigitCodePhone);
+        if (DEBUG_MODE) {
+            new WebDriverWait(driver, 60)
+                    .until(
+                            (ExpectedCondition<Boolean>)
+                                    driver ->
+                                            sixDigitSecurityCodeField.getAttribute("value").length()
+                                                    == 6);
+        } else {
+            sixDigitSecurityCodeField.sendKeys(sixDigitCodePhone);
+        }
         findAndClickContinue();
     }
 
