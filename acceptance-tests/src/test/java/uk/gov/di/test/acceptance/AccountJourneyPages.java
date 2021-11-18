@@ -5,7 +5,11 @@ public enum AccountJourneyPages {
     ENTER_PASSWORD_CHANGE_PASSWORD("/enter-password", "Enter your current password"),
     CHANGE_PASSWORD("/change-password", "Enter your new password"),
     PASSWORD_UPDATED_CONFIRMATION(
-            "password-updated-confirmation", "You have changed your password");
+            "/password-updated-confirmation", "You have changed your password"),
+    ENTER_PASSWORD_DELETE_ACCOUNT("/enter-password", "Enter your password"),
+    DELETE_ACCOUNT("/delete-account", "Are you sure you want to delete your account?"),
+    ACCOUNT_DELETED_CONFIRMATION(
+            "/account-deleted-confirmation", "You have deleted your GOV.UK account");
 
     private static final String PRODUCT_NAME = "GOV.UK account";
 
