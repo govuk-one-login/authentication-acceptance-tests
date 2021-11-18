@@ -7,6 +7,8 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedCondition;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.net.MalformedURLException;
 import java.net.URI;
@@ -145,7 +147,16 @@ public class RegistrationStepDefinitions extends SignInStepDefinitions {
     public void theNewUserEntersTheSixDigitSecurityCodeFromTheirEmail() {
         WebElement sixDigitSecurityCodeField = driver.findElement(By.id("code"));
         sixDigitSecurityCodeField.clear();
-        sixDigitSecurityCodeField.sendKeys(sixDigitCodeEmail);
+        if (DEBUG_MODE) {
+            new WebDriverWait(driver, 60)
+                    .until(
+                            (ExpectedCondition<Boolean>)
+                                    driver ->
+                                            sixDigitSecurityCodeField.getAttribute("value").length()
+                                                    == 6);
+        } else {
+            sixDigitSecurityCodeField.sendKeys(sixDigitCodeEmail);
+        }
         findAndClickContinue();
     }
 
@@ -188,7 +199,16 @@ public class RegistrationStepDefinitions extends SignInStepDefinitions {
     @When("the new user enters the six digit security code from their phone")
     public void theNewUserEntersTheSixDigitSecurityCodeFromTheirPhone() {
         WebElement sixDigitSecurityCodeField = driver.findElement(By.id("code"));
-        sixDigitSecurityCodeField.sendKeys(sixDigitCodePhone);
+        if (DEBUG_MODE) {
+            new WebDriverWait(driver, 60)
+                    .until(
+                            (ExpectedCondition<Boolean>)
+                                    driver ->
+                                            sixDigitSecurityCodeField.getAttribute("value").length()
+                                                    == 6);
+        } else {
+            sixDigitSecurityCodeField.sendKeys(sixDigitCodePhone);
+        }
         findAndClickContinue();
     }
 
