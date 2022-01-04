@@ -92,9 +92,8 @@ public class RegistrationStepDefinitions extends SignInStepDefinitions {
 
     @When("the new user selects create an account")
     public void theNewUserSelectsCreateAnAccount() {
-        WebElement radioCreateAccount = driver.findElement(By.id("create-account-true"));
-        radioCreateAccount.click();
-        findAndClickContinue();
+        WebElement link = driver.findElement(By.id("create-account-link"));
+        link.click();
     }
 
     @Then("the new user is taken to the enter your email page")
@@ -104,9 +103,8 @@ public class RegistrationStepDefinitions extends SignInStepDefinitions {
 
     @When("the new user selects sign in")
     public void theNewUserSelectsSignIn() {
-        WebElement radioSignIn = driver.findElement(By.id("create-account-false"));
-        radioSignIn.click();
-        findAndClickContinue();
+        WebElement link = driver.findElement(By.id("sign-in-link"));
+        link.click();
     }
 
     @Then("the new user is taken to the sign in to your account page")

@@ -65,9 +65,8 @@ public class LoginStepDefinitions extends SignInStepDefinitions {
 
     @When("the existing user selects sign in")
     public void theExistingUserSelectsSignIn() {
-        WebElement radioCreateAccount = driver.findElement(By.id("create-account-false"));
-        radioCreateAccount.click();
-        findAndClickContinue();
+        WebElement link = driver.findElement(By.id("sign-in-link"));
+        link.click();
     }
 
     @Then("the existing user is taken to the enter your email page")
