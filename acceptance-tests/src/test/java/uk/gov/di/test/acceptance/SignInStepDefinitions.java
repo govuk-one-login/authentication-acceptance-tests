@@ -14,7 +14,9 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
+import java.time.Duration;
 
+import static java.time.temporal.ChronoUnit.SECONDS;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class SignInStepDefinitions {
@@ -53,6 +55,8 @@ public class SignInStepDefinitions {
                 default:
                     FirefoxOptions firefoxOptions = new FirefoxOptions();
                     firefoxOptions.setHeadless(SELENIUM_HEADLESS);
+                    firefoxOptions.setPageLoadTimeout(Duration.of(30, SECONDS));
+                    firefoxOptions.setImplicitWaitTimeout(Duration.of(30, SECONDS));
                     if (SELENIUM_LOCAL) {
                         driver = new FirefoxDriver(firefoxOptions);
                     } else {
