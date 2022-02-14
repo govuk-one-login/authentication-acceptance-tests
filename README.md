@@ -2,7 +2,7 @@
 
 This repo contains automated browser based [Cucumber](https://cucumber.io/) tests for [GOV.UK Sign In](https://auth-tech-docs.london.cloudapps.digital/).
 
-They run against the build environment in the di-authentication-deployment pipeline in the [acceptance-tests](https://cd.gds-reliability.engineering/teams/verify/pipelines/di-authentication-deployment/jobs/acceptance-tests) task as a gate before further deployments.  They can also be run locally in order to build and make changes to the test suite.
+ The acceptance tests runs against the build environment in the di-authentication-deployment pipeline. The [acceptance-tests](https://cd.gds-reliability.engineering/teams/verify/pipelines/di-authentication-deployment/jobs/acceptance-tests) job must pass before any code is deployed to the production and integration environments. They can also be run locally in order to build and make changes to the test suite.
 
 ## How to run the tests
 
