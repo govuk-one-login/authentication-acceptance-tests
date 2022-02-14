@@ -6,7 +6,7 @@ This repo contains automated browser based [Cucumber](https://cucumber.io/) test
 
 ## How to run the tests
 
-The tests can be run either in debug mode, where the tests will pause to accept entry of OTP codes before continuing, or in fully automated mode, where a test client is used to handle OTP.  The tests run in fully automated mode in the build pipeline.
+The tests can be run either in debug mode, where the tests will pause to accept entry of one-time password (OTP) codes before continuing, or in fully automated mode, where a test client is used to handle OTP.  The tests run in fully automated mode in the build pipeline.
 
 ### Prerequisites
 
