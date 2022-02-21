@@ -23,12 +23,12 @@ public class SignInStepDefinitions {
     protected static final String CHROME_BROWSER = "chrome";
     protected static final String FIREFOX_BROWSER = "firefox";
     protected static final String SELENIUM_URL = System.getenv().get("SELENIUM_URL");
-    protected static final URI IDP_URL =
-            URI.create(System.getenv().getOrDefault("IDP_URL", "http://localhost:8080/"));
-    protected static final URI RP_URL =
-            URI.create(System.getenv().getOrDefault("RP_URL", "http://localhost:8081/"));
-    protected static final URI AM_URL =
-            URI.create(System.getenv().getOrDefault("AM_URL", "http://localhost:8081/"));
+    protected static final String IDP_URL =
+            System.getenv().getOrDefault("IDP_URL", "http://localhost:8080/");
+    protected static final String RP_URL =
+            System.getenv().getOrDefault("RP_URL", "http://localhost:8081/");
+    protected static final String AM_URL =
+            System.getenv().getOrDefault("AM_URL", "http://localhost:8081/");
     protected static final Boolean SELENIUM_LOCAL =
             Boolean.parseBoolean(System.getenv().getOrDefault("SELENIUM_LOCAL", "false"));
     protected static final Boolean SELENIUM_HEADLESS =
