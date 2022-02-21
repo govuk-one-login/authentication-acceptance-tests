@@ -38,7 +38,6 @@ public class LegalAndPolicyPagesStepDefinitions extends SignInStepDefinitions {
     public void theExistingUserIsTakenToTheIdentityProviderLoginPage() {
         waitForPageLoad("Create a GOV.UK account or sign in");
         assertEquals("/sign-in-or-create", URI.create(driver.getCurrentUrl()).getPath());
-        assertEquals(IDP_URL.getHost(), URI.create(driver.getCurrentUrl()).getHost());
         assertEquals("Create a GOV.UK account or sign in - GOV.UK account", driver.getTitle());
     }
 

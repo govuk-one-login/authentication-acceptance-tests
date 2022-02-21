@@ -120,8 +120,6 @@ public class LoginStepDefinitions extends SignInStepDefinitions {
     @Then("the existing user is taken to the Service User Info page")
     public void theExistingUserIsTakenToTheServiceUserInfoPage() {
         assertEquals("/oidc/callback", URI.create(driver.getCurrentUrl()).getPath());
-        assertEquals(RP_URL.getHost(), URI.create(driver.getCurrentUrl()).getHost());
-        assertEquals(RP_URL.getPort(), URI.create(driver.getCurrentUrl()).getPort());
         assertEquals("Example - GOV.UK - User Info", driver.getTitle());
         WebElement emailDescriptionDetails = driver.findElement(By.id("user-info-email"));
         assertEquals(emailAddress, emailDescriptionDetails.getText().trim());
