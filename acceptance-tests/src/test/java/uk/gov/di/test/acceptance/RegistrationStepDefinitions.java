@@ -16,17 +16,7 @@ import java.util.Random;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static uk.gov.di.test.acceptance.AuthenticationJourneyPages.ACCOUNT_CREATED;
-import static uk.gov.di.test.acceptance.AuthenticationJourneyPages.ACCOUNT_NOT_FOUND;
-import static uk.gov.di.test.acceptance.AuthenticationJourneyPages.CHECK_YOUR_EMAIL;
-import static uk.gov.di.test.acceptance.AuthenticationJourneyPages.CHECK_YOUR_PHONE;
-import static uk.gov.di.test.acceptance.AuthenticationJourneyPages.CREATE_PASSWORD;
-import static uk.gov.di.test.acceptance.AuthenticationJourneyPages.ENTER_EMAIL;
-import static uk.gov.di.test.acceptance.AuthenticationJourneyPages.ENTER_EMAIL_EXISTING_USER;
-import static uk.gov.di.test.acceptance.AuthenticationJourneyPages.ENTER_PHONE_NUMBER;
-import static uk.gov.di.test.acceptance.AuthenticationJourneyPages.SECURITY_CODE_INVALID;
-import static uk.gov.di.test.acceptance.AuthenticationJourneyPages.SHARE_INFO;
-import static uk.gov.di.test.acceptance.AuthenticationJourneyPages.SIGN_IN_OR_CREATE;
+import static uk.gov.di.test.acceptance.AuthenticationJourneyPages.*;
 
 public class RegistrationStepDefinitions extends SignInStepDefinitions {
 
@@ -98,7 +88,7 @@ public class RegistrationStepDefinitions extends SignInStepDefinitions {
 
     @Then("the new user is taken to the enter your email page")
     public void theNewUserIsTakenToTheEnterYourEmailPage() {
-        waitForPageLoadThenValidate(ENTER_EMAIL);
+        waitForPageLoadThenValidate(ENTER_EMAIL_CREATE);
     }
 
     @When("the new user selects sign in")
