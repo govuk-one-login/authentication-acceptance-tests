@@ -12,7 +12,7 @@ Feature: Registration Journey
     Then the new user is taken to the sign in to your account page
     When the new user enters their email address
     Then the new user is taken to the account not found page
-    When the new user clicks link by href "/enter-email?type=sign-in"
+    When the new user clicks link by href "/enter-email"
     Then the new user is taken to the sign in to your account page
 
   Scenario: User registration unsuccessful with invalid email, six digit code and password

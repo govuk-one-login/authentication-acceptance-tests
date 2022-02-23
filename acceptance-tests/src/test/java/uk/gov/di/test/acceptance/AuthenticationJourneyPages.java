@@ -3,6 +3,7 @@ package uk.gov.di.test.acceptance;
 public enum AuthenticationJourneyPages {
     SIGN_IN_OR_CREATE("/sign-in-or-create", "Create a GOV.UK account or sign in"),
     ENTER_EMAIL("/enter-email", "Enter your email address"),
+    ENTER_EMAIL_CREATE("/enter-email-create", "Enter your email address"),
     ACCOUNT_NOT_FOUND("/account-not-found", "No GOV.UK account found"),
     CHECK_YOUR_EMAIL("/check-your-email", "Check your email"),
     CREATE_PASSWORD("/create-password", "Create your password"),
