@@ -13,6 +13,7 @@ import java.net.URI;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static uk.gov.di.test.acceptance.AccountJourneyPages.ACCOUNT_DELETED_CONFIRMATION;
+import static uk.gov.di.test.acceptance.AccountJourneyPages.ACCOUNT_EXISTS;
 import static uk.gov.di.test.acceptance.AccountJourneyPages.CHANGE_PASSWORD;
 import static uk.gov.di.test.acceptance.AccountJourneyPages.DELETE_ACCOUNT;
 import static uk.gov.di.test.acceptance.AccountJourneyPages.ENTER_PASSWORD_CHANGE_PASSWORD;
@@ -122,5 +123,28 @@ public class AccountManagementStepDefinitions extends SignInStepDefinitions {
         waitForPageLoad(page.getShortTitle());
         assertEquals(page.getRoute(), URI.create(driver.getCurrentUrl()).getPath());
         assertEquals(page.getFullTitle(), driver.getTitle());
+    }
+
+    @And("the existing account management user selects create an account")
+    public void theExistingAccountManagementUserSelectsCreateAnAccount() {
+        WebElement link = driver.findElement(By.id("create-account-link"));
+        link.click();
+    }
+
+    @Then("the exiting account management user is asked to enter their current email address")
+    public void theExitingAccountManagementUserIsAskedToEnterTheirCurrentEmailAddress() {
+        waitForPageLoadThenValidate(AuthenticationJourneyPages.ENTER_EMAIL_CREATE);
+    }
+
+    @When("the existing account management user enters their current email address")
+    public void theExistingAccountManagementUserEntersTheirCurrentEmailAddress() {
+        WebElement passwordField = driver.findElement(By.id("email"));
+        passwordField.sendKeys(emailAddress);
+        findAndClickContinue();
+    }
+
+    @Then("the existing account management user is taken to the account exists page")
+    public void theExistingAccountManagementUserIsTakenToTheAccountExistsPage() {
+        waitForPageLoadThenValidate(ACCOUNT_EXISTS);
     }
 }

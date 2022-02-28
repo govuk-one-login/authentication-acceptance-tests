@@ -1,6 +1,15 @@
 Feature: Login Journey
   Existing user walks through a login journey
 
+  Scenario: Existing user tries to create an account with the same email address
+    Given the account management services are running
+    And the existing account management user has valid credentials
+    When the existing account management user navigates to account management
+    And the existing account management user selects create an account
+    Then the exiting account management user is asked to enter their current email address
+    When the existing account management user enters their current email address
+    Then the existing account management user is taken to the account exists page
+
   Scenario: Existing user is correctly prompted to login
     Given the login services are running
     And the existing user has valid credentials
@@ -31,6 +40,8 @@ Feature: Login Journey
       When the existing account management user clicks link by href "/manage-your-account"
       Then the existing account management user is taken to the manage your account page
 
+
+
   Scenario: User deletes their account
       Given the account management services are running
       And the existing account management user has valid credentials
@@ -45,3 +56,4 @@ Feature: Login Journey
       Then the existing account management user is taken to the account deleted confirmation page
       When the not logged in user navigates to account root
       Then the not logged in user is taken to the Identity Provider Login Page
+

@@ -9,7 +9,8 @@ public enum AccountJourneyPages {
     ENTER_PASSWORD_DELETE_ACCOUNT("/enter-password", "Enter your password"),
     DELETE_ACCOUNT("/delete-account", "Are you sure you want to delete your account?"),
     ACCOUNT_DELETED_CONFIRMATION(
-            "/account-deleted-confirmation", "You have deleted your GOV.UK account");
+            "/account-deleted-confirmation", "You have deleted your GOV.UK account"),
+    ACCOUNT_EXISTS("/enter-password-account-exists", "You have a GOV.UK account");
 
     private static final String PRODUCT_NAME = "GOV.UK account";
 
