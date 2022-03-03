@@ -205,12 +205,10 @@ public class RegistrationStepDefinitions extends SignInStepDefinitions {
         waitForPageLoadThenValidate(ACCOUNT_CREATED);
     }
 
-    @When("the new user clicks the go back to gov.uk link")
+    @When("the new user clicks the continue link")
     public void theNewUserClicksTheGoBackToGovUkLink() {
         WebElement goBackLink =
-                driver.findElement(
-                        By.xpath(
-                                "//a[text()[normalize-space() = 'Go back to GOV.UK to continue']]"));
+                driver.findElement(By.xpath("//a[text()[normalize-space() = 'Continue']]"));
         goBackLink.click();
     }
 
@@ -266,5 +264,12 @@ public class RegistrationStepDefinitions extends SignInStepDefinitions {
             randomCode = String.format("%06d", new Random().nextInt(999999));
         } while (randomCode.equals(sixDigitCodeEmail));
         return randomCode;
+    }
+
+    @And("the new user enters their password")
+    public void theNewUserEntersTheirPassword() {
+        WebElement enterPasswordField = driver.findElement(By.id("password"));
+        enterPasswordField.sendKeys(password);
+        findAndClickContinue();
     }
 }

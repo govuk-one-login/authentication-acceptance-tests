@@ -18,6 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static uk.gov.di.test.acceptance.AuthenticationJourneyPages.ENTER_CODE;
 import static uk.gov.di.test.acceptance.AuthenticationJourneyPages.ENTER_EMAIL_EXISTING_USER;
 import static uk.gov.di.test.acceptance.AuthenticationJourneyPages.ENTER_PASSWORD;
+import static uk.gov.di.test.acceptance.AuthenticationJourneyPages.ENTER_PHONE_NUMBER;
 import static uk.gov.di.test.acceptance.AuthenticationJourneyPages.SIGN_IN_OR_CREATE;
 
 public class LoginStepDefinitions extends SignInStepDefinitions {
@@ -129,5 +130,10 @@ public class LoginStepDefinitions extends SignInStepDefinitions {
     public void theExistingUserIsShownAnErrorMessageOnTheEnterEmailPage() {
         WebElement emailDescriptionDetails = driver.findElement(By.id("error-summary-title"));
         assertTrue(emailDescriptionDetails.isDisplayed());
+    }
+
+    @Then("the existing user is taken to the enter phone number page")
+    public void theExistingUserIsTakenToTheEnterPhoneNumberPage() {
+        waitForPageLoadThenValidate(ENTER_PHONE_NUMBER);
     }
 }
