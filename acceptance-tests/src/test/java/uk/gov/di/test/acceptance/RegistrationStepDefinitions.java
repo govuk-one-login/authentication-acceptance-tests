@@ -208,9 +208,7 @@ public class RegistrationStepDefinitions extends SignInStepDefinitions {
     @When("the new user clicks the continue link")
     public void theNewUserClicksTheGoBackToGovUkLink() {
         WebElement goBackLink =
-                driver.findElement(
-                        By.xpath(
-                                "//a[text()[normalize-space() = 'Continue']]"));
+                driver.findElement(By.xpath("//a[text()[normalize-space() = 'Continue']]"));
         goBackLink.click();
     }
 
