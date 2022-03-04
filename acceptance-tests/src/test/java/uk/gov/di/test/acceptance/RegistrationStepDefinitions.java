@@ -205,12 +205,12 @@ public class RegistrationStepDefinitions extends SignInStepDefinitions {
         waitForPageLoadThenValidate(ACCOUNT_CREATED);
     }
 
-    @When("the new user clicks the go back to gov.uk link")
+    @When("the new user clicks the continue link")
     public void theNewUserClicksTheGoBackToGovUkLink() {
         WebElement goBackLink =
                 driver.findElement(
                         By.xpath(
-                                "//a[text()[normalize-space() = 'Go back to GOV.UK to continue']]"));
+                                "//a[text()[normalize-space() = 'Continue']]"));
         goBackLink.click();
     }
 
