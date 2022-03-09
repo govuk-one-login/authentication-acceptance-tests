@@ -24,6 +24,31 @@ Feature: Login Journey
     Then the existing user is taken to the enter code page
     When the existing user enters the six digit security code from their phone
     Then the existing user is returned to the service
+    And the existing user clicks by name "logout"
+    Then the existing user is taken to the you have signed out page
+
+  Scenario: Existing user logs in without 2FA
+    Given the login services are running
+    And the existing user has valid credentials
+    When the existing user visits the stub relying party
+    And the existing user clicks "2fa-off"
+    And the existing user clicks "govuk-signin-button"
+    Then the existing user is taken to the Identity Provider Login Page
+    When the existing user selects sign in
+    Then the existing user is taken to the enter your email page
+    When the existing user enters their email address
+    Then the existing user is prompted for their password
+    When the existing user enters their password
+    Then the existing user is returned to the service
+
+  Scenario: Existing user logs in with 2FA
+    Given the login services are running
+    And the existing user has valid credentials
+    When the existing user visits the stub relying party
+    And the existing user clicks "govuk-signin-button"
+    Then the existing user is taken to the enter code page
+    When the existing user enters the six digit security code from their phone
+    Then the existing user is returned to the service
 
   Scenario: User changes their password
       Given the account management services are running

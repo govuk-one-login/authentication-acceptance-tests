@@ -136,4 +136,16 @@ public class LoginStepDefinitions extends SignInStepDefinitions {
     public void theExistingUserIsTakenToTheEnterPhoneNumberPage() {
         waitForPageLoadThenValidate(ENTER_PHONE_NUMBER);
     }
+
+    @Then("the existing user is taken to the you have signed out page")
+    public void theExistingUserIsTakenToTheYouHaveSignedOutPage() {
+        waitForPageLoad("Signed out");
+        assertEquals("/signed-out", URI.create(driver.getCurrentUrl()).getPath());
+    }
+
+    @And("the existing user clicks by name {string}")
+    public void theExistingUserClicksByName(String buttonName) {
+        WebElement button = driver.findElement(By.name(buttonName));
+        button.click();
+    }
 }
