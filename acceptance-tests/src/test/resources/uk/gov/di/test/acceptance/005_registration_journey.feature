@@ -29,7 +29,7 @@ Feature: Registration Journey
     When the new user has a valid email address
     And the new user enters their email address
     Then the new user is asked to check their email
-    When the new user enters the six digit security code incorrectly 5 times
+#    When the new user enters the six digit security code incorrectly 5 times
 #    -- Not testing the limit at the moment as this locks the account --
 #    Then the new user is taken to the security code invalid page
     When a new user has valid credentials

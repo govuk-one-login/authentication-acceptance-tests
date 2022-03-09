@@ -265,4 +265,11 @@ public class RegistrationStepDefinitions extends SignInStepDefinitions {
         } while (randomCode.equals(sixDigitCodeEmail));
         return randomCode;
     }
+
+    @And("the new user enters their password")
+    public void theNewUserEntersTheirPassword() {
+        WebElement enterPasswordField = driver.findElement(By.id("password"));
+        enterPasswordField.sendKeys(password);
+        findAndClickContinue();
+    }
 }

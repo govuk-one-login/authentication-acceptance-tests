@@ -40,8 +40,6 @@ Feature: Login Journey
       When the existing account management user clicks link by href "/manage-your-account"
       Then the existing account management user is taken to the manage your account page
 
-
-
   Scenario: User deletes their account
       Given the account management services are running
       And the existing account management user has valid credentials
