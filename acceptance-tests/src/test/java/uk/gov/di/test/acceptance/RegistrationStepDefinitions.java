@@ -205,11 +205,10 @@ public class RegistrationStepDefinitions extends SignInStepDefinitions {
         waitForPageLoadThenValidate(ACCOUNT_CREATED);
     }
 
-    @When("the new user clicks the continue link")
-    public void theNewUserClicksTheGoBackToGovUkLink() {
-        WebElement goBackLink =
-                driver.findElement(By.xpath("//a[text()[normalize-space() = 'Continue']]"));
-        goBackLink.click();
+    @When("the new user clicks the continue button")
+    public void theNewUserClicksTheGoBackToGovUkButton() {
+        WebElement goBackButton = driver.findElement(By.cssSelector("#form-tracking > button"));
+        goBackButton.click();
     }
 
     @Then("the new user is taken the the share info page")
@@ -270,6 +269,37 @@ public class RegistrationStepDefinitions extends SignInStepDefinitions {
     public void theNewUserEntersTheirPassword() {
         WebElement enterPasswordField = driver.findElement(By.id("password"));
         enterPasswordField.sendKeys(password);
+        findAndClickContinue();
+    }
+
+    @And("the new email code lock user has valid credentials")
+    public void theNewEmailCodeLockUserHasValidCredentials() {
+        emailAddress = System.getenv().get("EMAIL_CODE_LOCK_TEST_USER_EMAIL");
+        password = System.getenv().get("TEST_USER_PASSWORD");
+        phoneNumber = System.getenv().get("TEST_USER_PHONE_NUMBER");
+    }
+
+    @And("the new phone code lock user has valid credentials")
+    public void theNewPhoneCodeLockUserHasValidCredentials() {
+        emailAddress = System.getenv().get("PHONE_CODE_LOCK_TEST_USER_EMAIL");
+        password = System.getenv().get("TEST_USER_PASSWORD");
+        phoneNumber = System.getenv().get("TEST_USER_PHONE_NUMBER");
+        sixDigitCodeEmail = System.getenv().get("TEST_USER_EMAIL_CODE");
+    }
+
+    @When("the new user enters an incorrect email code one more time")
+    public void theNewUserEntersAnIncorrectEmailCodeOneMoreTime() {
+        WebElement enterCodeField = driver.findElement(By.id("code"));
+        enterCodeField.clear();
+        enterCodeField.sendKeys(getRandomInvalidCode());
+        findAndClickContinue();
+    }
+
+    @When("the new user enters an incorrect phone code one more time")
+    public void theNewUserEntersAnIncorrectPhoneCodeOneMoreTime() {
+        WebElement enterCodeField = driver.findElement(By.id("code"));
+        enterCodeField.clear();
+        enterCodeField.sendKeys(getRandomInvalidCode());
         findAndClickContinue();
     }
 }

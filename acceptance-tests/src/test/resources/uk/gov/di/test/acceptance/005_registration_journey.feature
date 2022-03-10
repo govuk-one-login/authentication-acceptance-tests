@@ -29,9 +29,6 @@ Feature: Registration Journey
     When the new user has a valid email address
     And the new user enters their email address
     Then the new user is asked to check their email
-#    When the new user enters the six digit security code incorrectly 5 times
-#    -- Not testing the limit at the moment as this locks the account --
-#    Then the new user is taken to the security code invalid page
     When a new user has valid credentials
     When the new user enters the six digit security code from their email
     Then the new user is taken to the create your password page
@@ -58,7 +55,7 @@ Feature: Registration Journey
     Then the new user is taken to the check your phone page
     When the new user enters the six digit security code from their phone
     Then the new user is taken to the account created page
-    When the new user clicks the continue link
+    When the new user clicks the continue button
     Then the new user is taken the the share info page
     When the new user agrees to share their info
     Then the new user is returned to the service
