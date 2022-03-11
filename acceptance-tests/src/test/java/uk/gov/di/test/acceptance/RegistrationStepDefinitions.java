@@ -205,11 +205,10 @@ public class RegistrationStepDefinitions extends SignInStepDefinitions {
         waitForPageLoadThenValidate(ACCOUNT_CREATED);
     }
 
-    @When("the new user clicks the continue link")
-    public void theNewUserClicksTheGoBackToGovUkLink() {
-        WebElement goBackLink =
-                driver.findElement(By.xpath("//a[text()[normalize-space() = 'Continue']]"));
-        goBackLink.click();
+    @When("the new user clicks the continue button")
+    public void theNewUserClicksTheGoBackToGovUkButton() {
+        WebElement goBackButton = driver.findElement(By.cssSelector("#form-tracking > button"));
+        goBackButton.click();
     }
 
     @Then("the new user is taken the the share info page")

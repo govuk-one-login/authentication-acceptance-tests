@@ -31,7 +31,7 @@ Feature: Incomplete registration
     Then the new user is taken to the check your phone page
     When the new user enters the six digit security code from their phone
     Then the new user is taken to the account created page
-    When the new user clicks the continue link
+    When the new user clicks the continue button
     Then the new user is taken the the share info page
     When the new user agrees to share their info
     Then the new user is returned to the service
