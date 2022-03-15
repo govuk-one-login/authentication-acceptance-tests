@@ -271,4 +271,35 @@ public class RegistrationStepDefinitions extends SignInStepDefinitions {
         enterPasswordField.sendKeys(password);
         findAndClickContinue();
     }
+
+    @And("the new email code lock user has valid credentials")
+    public void theNewEmailCodeLockUserHasValidCredentials() {
+        emailAddress = System.getenv().get("EMAIL_CODE_LOCK_TEST_USER_EMAIL");
+        password = System.getenv().get("TEST_USER_PASSWORD");
+        phoneNumber = System.getenv().get("TEST_USER_PHONE_NUMBER");
+    }
+
+    @And("the new phone code lock user has valid credentials")
+    public void theNewPhoneCodeLockUserHasValidCredentials() {
+        emailAddress = System.getenv().get("PHONE_CODE_LOCK_TEST_USER_EMAIL");
+        password = System.getenv().get("TEST_USER_PASSWORD");
+        phoneNumber = System.getenv().get("TEST_USER_PHONE_NUMBER");
+        sixDigitCodeEmail = System.getenv().get("TEST_USER_EMAIL_CODE");
+    }
+
+    @When("the new user enters an incorrect email code one more time")
+    public void theNewUserEntersAnIncorrectEmailCodeOneMoreTime() {
+        WebElement enterCodeField = driver.findElement(By.id("code"));
+        enterCodeField.clear();
+        enterCodeField.sendKeys(getRandomInvalidCode());
+        findAndClickContinue();
+    }
+
+    @When("the new user enters an incorrect phone code one more time")
+    public void theNewUserEntersAnIncorrectPhoneCodeOneMoreTime() {
+        WebElement enterCodeField = driver.findElement(By.id("code"));
+        enterCodeField.clear();
+        enterCodeField.sendKeys(getRandomInvalidCode());
+        findAndClickContinue();
+    }
 }
