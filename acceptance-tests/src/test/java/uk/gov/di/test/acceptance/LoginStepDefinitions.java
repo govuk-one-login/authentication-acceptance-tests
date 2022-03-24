@@ -148,4 +148,11 @@ public class LoginStepDefinitions extends SignInStepDefinitions {
         WebElement button = driver.findElement(By.name(buttonName));
         button.click();
     }
+
+    @And("a new user with outdated terms and conditions has valid credentials")
+    public void aNewUserWithOutdatedTermsAndConditionsHasValidCredentials() {
+        emailAddress = System.getenv().get("TC_TEST_USER_EMAIL");
+        password = System.getenv().get("TEST_USER_PASSWORD");
+        sixDigitCodePhone = System.getenv().get("TEST_USER_PHONE_CODE");
+    }
 }
