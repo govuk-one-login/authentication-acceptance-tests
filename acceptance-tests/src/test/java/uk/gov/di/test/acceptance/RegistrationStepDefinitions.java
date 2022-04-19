@@ -25,6 +25,8 @@ public class RegistrationStepDefinitions extends SignInStepDefinitions {
     private String phoneNumber;
     private String sixDigitCodeEmail;
     private String sixDigitCodePhone;
+    private String tcEmailAddress;
+    private String tcPassword;
 
     @Before
     public void setupWebdriver() throws MalformedURLException {
@@ -52,6 +54,8 @@ public class RegistrationStepDefinitions extends SignInStepDefinitions {
         phoneNumber = System.getenv().get("TEST_USER_PHONE_NUMBER");
         sixDigitCodeEmail = System.getenv().get("TEST_USER_EMAIL_CODE");
         sixDigitCodePhone = System.getenv().get("TEST_USER_PHONE_CODE");
+        tcEmailAddress = System.getenv().get("TERMS_AND_CONDITIONS_TEST_USER_EMAIL");
+        tcPassword = System.getenv().get("TERMS_AND_CONDITIONS_TEST_USER_PASSWORD");
     }
 
     @And("the new user clears cookies")
@@ -300,6 +304,21 @@ public class RegistrationStepDefinitions extends SignInStepDefinitions {
         WebElement enterCodeField = driver.findElement(By.id("code"));
         enterCodeField.clear();
         enterCodeField.sendKeys(getRandomInvalidCode());
+        findAndClickContinue();
+    }
+
+    @And("the new user enters their t&c email address")
+    public void theNewUserEntersTheirTCEmailAddress() {
+        WebElement emailAddressField = driver.findElement(By.id("email"));
+        emailAddressField.clear();
+        emailAddressField.sendKeys(tcEmailAddress);
+        findAndClickContinue();
+    }
+
+    @And("the new user enters their t&c password")
+    public void theNewUserEntersTheirTCPassword() {
+        WebElement enterPasswordField = driver.findElement(By.id("password"));
+        enterPasswordField.sendKeys(tcPassword);
         findAndClickContinue();
     }
 }
