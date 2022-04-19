@@ -14,22 +14,3 @@ Feature: Legal and policy pages
     Then the user is taken to the terms and conditions page
     When the user clicks link "Privacy notice"
     Then the user is taken to the privacy notice page
-
-  Scenario: User accepts terms and conditions
-    Given the services are running
-    And a new user has valid credentials
-    And the new user clears cookies
-    When the new user visits the stub relying party
-    And the new user clicks "govuk-signin-button"
-    Then the new user is taken to the Identity Provider Login Page
-    When the new user selects sign in
-    And the new user enters their t&c email address
-    And the new user enters their t&c password
-    When the new user enters the six digit security code from their phone
-    Then the new user is taken to the updated terms and conditions page
-    When the new user clicks link by href "/updated-terms-and-conditions-disagree"
-    Then the new user is taken to the Agree to the updated terms of use to continue page
-    When the new user clicks by name "termsAndConditionsResult"
-    Then the new user is returned to the service
-    When the new user clicks by name "logout"
-    Then the new user is taken to the signed out page
