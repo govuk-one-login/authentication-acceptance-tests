@@ -89,22 +89,4 @@ public class LegalAndPolicyPagesStepDefinitions extends SignInStepDefinitions {
         waitForPageLoad(page.getShortTitle());
         assertEquals(page.getRoute(), URI.create(driver.getCurrentUrl()).getPath());
     }
-
-    @Then("the new user is taken to the updated terms and conditions page")
-    public void theNewUserIsTakenToTheUpdatedTermsAndConditionsPage() {
-        waitForPageLoad("GOV.UK account terms of use update");
-        assertEquals("/updated-terms-and-conditions", URI.create(driver.getCurrentUrl()).getPath());
-        assertEquals("GOV.UK account terms of use update - GOV.UK account", driver.getTitle());
-    }
-
-    @Then("the new user is taken to the Agree to the updated terms of use to continue page")
-    public void theNewUserIsTakenToTheAgreeToTheUpdatedTermsOfUseToContinuePage() {
-        waitForPageLoad("Agree to the updated terms of use to continue");
-        assertEquals(
-                "/updated-terms-and-conditions-disagree",
-                URI.create(driver.getCurrentUrl()).getPath());
-        assertEquals(
-                "Agree to the updated terms of use to continue - GOV.UK account",
-                driver.getTitle());
-    }
 }
