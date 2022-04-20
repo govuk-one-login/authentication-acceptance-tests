@@ -12,7 +12,9 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.net.MalformedURLException;
 import java.net.URI;
+import java.time.Duration;
 
+import static java.time.temporal.ChronoUnit.MINUTES;
 import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static uk.gov.di.test.acceptance.AuthenticationJourneyPages.ENTER_CODE;
@@ -103,7 +105,7 @@ public class LoginStepDefinitions extends SignInStepDefinitions {
     public void theExistingUserEntersTheSixDigitSecurityCodeFromTheirPhone() {
         WebElement sixDigitSecurityCodeField = driver.findElement(By.id("code"));
         if (DEBUG_MODE) {
-            new WebDriverWait(driver, 60)
+            new WebDriverWait(driver, Duration.of(1, MINUTES))
                     .until(
                             (ExpectedCondition<Boolean>)
                                     driver ->

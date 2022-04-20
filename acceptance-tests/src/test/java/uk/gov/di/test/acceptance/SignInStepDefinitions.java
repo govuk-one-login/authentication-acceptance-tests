@@ -37,7 +37,7 @@ public class SignInStepDefinitions {
             Boolean.parseBoolean(System.getenv().getOrDefault("DEBUG_MODE", "false"));
     protected static final String SELENIUM_BROWSER =
             System.getenv().getOrDefault("SELENIUM_BROWSER", FIREFOX_BROWSER);
-    protected static final int DEFAULT_PAGE_LOAD_WAIT_TIME = 20;
+    protected static final Duration DEFAULT_PAGE_LOAD_WAIT_TIME = Duration.of(20, SECONDS);
     protected static WebDriver driver;
 
     protected void setupWebdriver() throws MalformedURLException {
