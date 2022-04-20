@@ -12,8 +12,10 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.net.MalformedURLException;
 import java.net.URI;
+import java.time.Duration;
 import java.util.Random;
 
+import static java.time.temporal.ChronoUnit.MINUTES;
 import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static uk.gov.di.test.acceptance.AuthenticationJourneyPages.*;
@@ -140,7 +142,7 @@ public class RegistrationStepDefinitions extends SignInStepDefinitions {
         WebElement sixDigitSecurityCodeField = driver.findElement(By.id("code"));
         sixDigitSecurityCodeField.clear();
         if (DEBUG_MODE) {
-            new WebDriverWait(driver, 60)
+            new WebDriverWait(driver, Duration.of(1, MINUTES))
                     .until(
                             (ExpectedCondition<Boolean>)
                                     driver ->
@@ -192,7 +194,7 @@ public class RegistrationStepDefinitions extends SignInStepDefinitions {
     public void theNewUserEntersTheSixDigitSecurityCodeFromTheirPhone() {
         WebElement sixDigitSecurityCodeField = driver.findElement(By.id("code"));
         if (DEBUG_MODE) {
-            new WebDriverWait(driver, 60)
+            new WebDriverWait(driver, Duration.of(1, MINUTES))
                     .until(
                             (ExpectedCondition<Boolean>)
                                     driver ->
