@@ -13,7 +13,7 @@ repositories {
 
 def dependencyVersions = [
         junit_version: '5.8.2',
-        cucumber_version: '7.2.3'
+        cucumber_version: '7.3.1'
 ]
 
 dependencies {
