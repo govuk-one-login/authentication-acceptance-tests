@@ -12,6 +12,7 @@ Feature: Registration Journey
     Then the new user is taken to the sign in to your account page
     When the new user enters their email address
     Then the new user is taken to the account not found page
+    And there are no accessibility violations
     When the new user clicks link by href "/enter-email"
     Then the new user is taken to the sign in to your account page
 
@@ -34,6 +35,7 @@ Feature: Registration Journey
     Then the new user is taken to the create your password page
     When the new user has an invalid password
     And the new user creates a password
+    And there are no accessibility violations
     Then the new user is shown an error message
 
   Scenario: User successfully registers
@@ -44,20 +46,26 @@ Feature: Registration Journey
     And the new user clicks "govuk-signin-button"
     Then the new user is taken to the Identity Provider Login Page
     When the new user selects create an account
+    And there are no accessibility violations
     Then the new user is taken to the enter your email page
     When the new user enters their email address
     Then the new user is asked to check their email
     When the new user enters the six digit security code from their email
+    And there are no accessibility violations
     Then the new user is taken to the create your password page
     When the new user creates a password
+    And there are no accessibility violations
     Then the new user is taken to the enter phone number page
     When the new user enters their mobile phone number
     Then the new user is taken to the check your phone page
     When the new user enters the six digit security code from their phone
+    And there are no accessibility violations
     Then the new user is taken to the account created page
     When the new user clicks the continue button
+    And there are no accessibility violations
     Then the new user is taken the the share info page
     When the new user agrees to share their info
     Then the new user is returned to the service
     When the new user clicks by name "logout"
+    And there are no accessibility violations
     Then the new user is taken to the signed out page
