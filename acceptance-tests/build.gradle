@@ -21,7 +21,7 @@ def dependencyVersions = [
 dependencies {
     testImplementation "io.cucumber:cucumber-java:${dependencyVersions.cucumber_version}",
                        "io.cucumber:cucumber-junit:${dependencyVersions.cucumber_version}",
-                       "org.seleniumhq.selenium:selenium-java:4.1.4",
+                       "org.seleniumhq.selenium:selenium-java:4.2.0",
                        "org.junit.jupiter:junit-jupiter-api:${dependencyVersions.junit_version}"
 
     testImplementation group: 'com.deque', name: 'axe-selenium', version:"${dependencyVersions.axe_version}"
