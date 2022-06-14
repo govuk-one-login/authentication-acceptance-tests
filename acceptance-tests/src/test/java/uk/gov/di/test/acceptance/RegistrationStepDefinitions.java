@@ -54,8 +54,11 @@ public class RegistrationStepDefinitions extends SignInStepDefinitions {
         password = "password1";
     }
 
-    @When("the new user has a digit only password")
-    public void theNewUserHasADigitOnlyPassword() { password = "44445555"; }
+    @When("the new user has a short digit only password")
+    public void theNewUserHasAShortDigitOnlyPassword() { password = "44445555"; }
+
+    @When("the new user has a sequence of numbers password")
+    public void theNewUserHasASequenceOfNumbersPassword() { password = "12345678";}
 
     @And("a new user has valid credentials")
     public void theNewUserHasValidCredential() {

@@ -40,7 +40,10 @@ Feature: Registration Journey
     When the new user has a weak password
     And the new user creates a password
     Then the new user is shown an error message
-    When the new user has a digit only password
+    When the new user has a short digit only password
+    And the new user creates a password
+    Then the new user is shown an error message
+    When the new user has a sequence of numbers password
     And the new user creates a password
     Then the new user is shown an error message
 
