@@ -37,6 +37,12 @@ Feature: Registration Journey
     And the new user creates a password
     And there are no accessibility violations
     Then the new user is shown an error message
+    When the new user has a weak password
+    And the new user creates a password
+    Then the new user is shown an error message
+    When the new user has a digit only password
+    And the new user creates a password
+    Then the new user is shown an error message
 
   Scenario: User successfully registers
     Given the registration services are running

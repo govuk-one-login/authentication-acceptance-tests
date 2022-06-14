@@ -49,6 +49,14 @@ public class RegistrationStepDefinitions extends SignInStepDefinitions {
         password = "password";
     }
 
+    @When("the new user has a weak password")
+    public void theUserHasAWeakPassword() {
+        password = "password1";
+    }
+
+    @When("the new user has a digit only password")
+    public void theNewUserHasADigitOnlyPassword() { password = "44445555"; }
+
     @And("a new user has valid credentials")
     public void theNewUserHasValidCredential() {
         emailAddress = System.getenv().get("TEST_USER_EMAIL");
