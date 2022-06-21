@@ -55,10 +55,14 @@ public class RegistrationStepDefinitions extends SignInStepDefinitions {
     }
 
     @When("the new user has a short digit only password")
-    public void theNewUserHasAShortDigitOnlyPassword() { password = "44445555"; }
+    public void theNewUserHasAShortDigitOnlyPassword() {
+        password = "44445555";
+    }
 
     @When("the new user has a sequence of numbers password")
-    public void theNewUserHasASequenceOfNumbersPassword() { password = "12345678";}
+    public void theNewUserHasASequenceOfNumbersPassword() {
+        password = "12345678";
+    }
 
     @And("a new user has valid credentials")
     public void theNewUserHasValidCredential() {
@@ -187,6 +191,11 @@ public class RegistrationStepDefinitions extends SignInStepDefinitions {
     @Then("the new user is taken to the enter phone number page")
     public void theNewUserIsTakenToTheEnterPhoneNumberPage() {
         waitForPageLoadThenValidate(ENTER_PHONE_NUMBER);
+    }
+
+    @Then("the new user is taken to the finish creating your account page")
+    public void theNewUserIsTakenToTheFinishCreatingYourAccountPage() {
+        waitForPageLoadThenValidate(FINISH_CREATING_YOUR_ACCOUNT);
     }
 
     @When("the new user enters their mobile phone number")
