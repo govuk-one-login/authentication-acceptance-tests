@@ -21,7 +21,6 @@ import static uk.gov.di.test.acceptance.AuthenticationJourneyPages.ENTER_CODE;
 import static uk.gov.di.test.acceptance.AuthenticationJourneyPages.ENTER_EMAIL_EXISTING_USER;
 import static uk.gov.di.test.acceptance.AuthenticationJourneyPages.ENTER_PASSWORD;
 import static uk.gov.di.test.acceptance.AuthenticationJourneyPages.ENTER_PHONE_NUMBER;
-import static uk.gov.di.test.acceptance.AuthenticationJourneyPages.FINISH_CREATING_YOUR_ACCOUNT;
 import static uk.gov.di.test.acceptance.AuthenticationJourneyPages.SIGN_IN_OR_CREATE;
 
 public class LoginStepDefinitions extends SignInStepDefinitions {

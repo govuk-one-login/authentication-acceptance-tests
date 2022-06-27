@@ -12,10 +12,12 @@ import java.net.MalformedURLException;
 import java.net.URI;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static uk.gov.di.test.acceptance.AccountJourneyPages.ACCOUNT_DELETED_CONFIRMATION;
 import static uk.gov.di.test.acceptance.AccountJourneyPages.ACCOUNT_EXISTS;
 import static uk.gov.di.test.acceptance.AccountJourneyPages.CHANGE_PASSWORD;
 import static uk.gov.di.test.acceptance.AccountJourneyPages.DELETE_ACCOUNT;
+import static uk.gov.di.test.acceptance.AccountJourneyPages.ENTER_NEW_MOBILE_PHONE_NUMBER;
 import static uk.gov.di.test.acceptance.AccountJourneyPages.ENTER_PASSWORD_CHANGE_PASSWORD;
 import static uk.gov.di.test.acceptance.AccountJourneyPages.ENTER_PASSWORD_DELETE_ACCOUNT;
 import static uk.gov.di.test.acceptance.AccountJourneyPages.MANAGE_YOUR_ACCOUNT;
@@ -26,6 +28,7 @@ public class AccountManagementStepDefinitions extends SignInStepDefinitions {
     private String emailAddress;
     private String password;
     private String newPassword;
+    private String phoneNumber;
 
     @Before
     public void setupWebdriver() throws MalformedURLException {
@@ -39,6 +42,7 @@ public class AccountManagementStepDefinitions extends SignInStepDefinitions {
     public void theExistingAccountManagementUserHasValidCredentials() {
         emailAddress = System.getenv().get("TEST_USER_EMAIL");
         password = System.getenv().get("TEST_USER_PASSWORD");
+        phoneNumber = System.getenv().get("TEST_USER_PHONE_NUMBER");
     }
 
     @When("the existing account management user navigates to account management")
@@ -146,5 +150,24 @@ public class AccountManagementStepDefinitions extends SignInStepDefinitions {
     @Then("the existing account management user is taken to the account exists page")
     public void theExistingAccountManagementUserIsTakenToTheAccountExistsPage() {
         waitForPageLoadThenValidate(ACCOUNT_EXISTS);
+    }
+
+    @Then(
+            "the existing account management user is taken to the enter your new mobile phone number page")
+    public void theExistingAccountManagementUserIsTakenToTheEnterYourNewMobilePhoneNumberPage() {
+        waitForPageLoadThenValidate(ENTER_NEW_MOBILE_PHONE_NUMBER);
+    }
+
+    @When("the existing account management user enters their existing mobile phone number")
+    public void theExistingAccountManagementUserEntersTheirExistingMobilePhoneNumber() {
+        WebElement passwordField = driver.findElement(By.id("phoneNumber"));
+        passwordField.sendKeys(phoneNumber);
+        findAndClickContinue();
+    }
+
+    @Then("the existing account management user is shown an error message")
+    public void theExistingAccountManagementUserIsShownAnErrorMessage() {
+        WebElement emailDescriptionDetails = driver.findElement(By.id("error-summary-title"));
+        assertTrue(emailDescriptionDetails.isDisplayed());
     }
 }
