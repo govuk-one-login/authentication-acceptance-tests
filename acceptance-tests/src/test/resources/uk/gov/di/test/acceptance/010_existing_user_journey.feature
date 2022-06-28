@@ -50,6 +50,20 @@ Feature: Login Journey
     When the existing user enters the six digit security code from their phone
     Then the existing user is returned to the service
 
+  Scenario: Existing user attempts to change their phone number using their existing one
+    Given the account management services are running
+    And the existing account management user has valid credentials
+    When the existing account management user navigates to account management
+    Then the existing account management user is taken to the manage your account page
+    When the existing account management user clicks link by href "/enter-password?type=changePhoneNumber"
+    Then the existing account management user is asked to enter their password
+    When the existing account management user enter their current password
+    Then the existing account management user is taken to the enter your new mobile phone number page
+    When the existing account management user enters their existing mobile phone number
+    Then the existing account management user is shown an error message
+    When the existing account management user clicks link by href "/manage-your-account"
+    Then the existing account management user is taken to the manage your account page
+
   Scenario: User changes their password
       Given the account management services are running
       And the existing account management user has valid credentials
