@@ -22,6 +22,7 @@ import static uk.gov.di.test.acceptance.AccountJourneyPages.ENTER_PASSWORD_CHANG
 import static uk.gov.di.test.acceptance.AccountJourneyPages.ENTER_PASSWORD_DELETE_ACCOUNT;
 import static uk.gov.di.test.acceptance.AccountJourneyPages.MANAGE_YOUR_ACCOUNT;
 import static uk.gov.di.test.acceptance.AccountJourneyPages.PASSWORD_UPDATED_CONFIRMATION;
+import static uk.gov.di.test.acceptance.AuthenticationJourneyPages.CHECK_YOUR_PHONE;
 
 public class AccountManagementStepDefinitions extends SignInStepDefinitions {
 
@@ -29,6 +30,7 @@ public class AccountManagementStepDefinitions extends SignInStepDefinitions {
     private String password;
     private String newPassword;
     private String phoneNumber;
+    private String internationalPhoneNumber;
 
     @Before
     public void setupWebdriver() throws MalformedURLException {
@@ -43,6 +45,7 @@ public class AccountManagementStepDefinitions extends SignInStepDefinitions {
         emailAddress = System.getenv().get("TEST_USER_EMAIL");
         password = System.getenv().get("TEST_USER_PASSWORD");
         phoneNumber = System.getenv().get("TEST_USER_PHONE_NUMBER");
+        internationalPhoneNumber = System.getenv().get("TEST_USER_INTERNATIONAL_PHONE_NUMBER");
     }
 
     @When("the existing account management user navigates to account management")
@@ -169,5 +172,17 @@ public class AccountManagementStepDefinitions extends SignInStepDefinitions {
     public void theExistingAccountManagementUserIsShownAnErrorMessage() {
         WebElement emailDescriptionDetails = driver.findElement(By.id("error-summary-title"));
         assertTrue(emailDescriptionDetails.isDisplayed());
+    }
+
+    @When("the existing account management user enters their new mobile phone number with international code")
+    public void theExistingAccountManagementUserEntersTheirNewMobilePhoneNumberWithInternationalCode() {
+        WebElement passwordField = driver.findElement(By.id("phoneNumber"));
+        passwordField.sendKeys(internationalPhoneNumber);
+        findAndClickContinue();
+    }
+
+    @Then("the existing account management user is taken to the check your phone page")
+    public void theExistingAccountManagementUserIsTakenToTheCheckYourPhonePage() {
+        waitForPageLoadThenValidate(CHECK_YOUR_PHONE);
     }
 }

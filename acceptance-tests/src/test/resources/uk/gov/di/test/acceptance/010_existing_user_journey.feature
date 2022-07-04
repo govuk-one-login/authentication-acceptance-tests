@@ -64,6 +64,18 @@ Feature: Login Journey
     When the existing account management user clicks link by href "/manage-your-account"
     Then the existing account management user is taken to the manage your account page
 
+  Scenario: Existing user attempts to change their phone number using the international dialling code
+    Given the account management services are running
+    And the existing account management user has valid credentials
+    When the existing account management user navigates to account management
+    Then the existing account management user is taken to the manage your account page
+    When the existing account management user clicks link by href "/enter-password?type=changePhoneNumber"
+    Then the existing account management user is asked to enter their password
+    When the existing account management user enter their current password
+    Then the existing account management user is taken to the enter your new mobile phone number page
+    When the existing account management user enters their new mobile phone number with international code
+    Then the existing account management user is taken to the check your phone page
+
   Scenario: User changes their password
       Given the account management services are running
       And the existing account management user has valid credentials
