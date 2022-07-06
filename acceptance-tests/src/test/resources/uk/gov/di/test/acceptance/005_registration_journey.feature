@@ -65,10 +65,6 @@ Feature: Registration Journey
     When the new user creates a password
     And there are no accessibility violations
     Then the new user is taken to the enter phone number page
-    When the new user enters their mobile phone number using an international dialling code
-    Then the new user is taken to the check your phone page
-    When the new user clicks link by href "/enter-phone-number"
-    Then the new user is taken to the enter phone number page
     When the new user enters their mobile phone number
     Then the new user is taken to the check your phone page
     When the new user enters the six digit security code from their phone
