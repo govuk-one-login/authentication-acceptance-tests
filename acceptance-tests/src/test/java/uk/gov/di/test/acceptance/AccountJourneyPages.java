@@ -1,7 +1,7 @@
 package uk.gov.di.test.acceptance;
 
 public enum AccountJourneyPages {
-    MANAGE_YOUR_ACCOUNT("/manage-your-account", "Manage your account"),
+    YOUR_GOV_UK_ACCOUNT("/manage-your-account", "Your GOV.UK account"),
     ENTER_PASSWORD_CHANGE_PASSWORD("/enter-password", "Enter your current password"),
     CHANGE_PASSWORD("/change-password", "Enter your new password"),
     PASSWORD_UPDATED_CONFIRMATION(

@@ -20,7 +20,7 @@ import static uk.gov.di.test.acceptance.AccountJourneyPages.DELETE_ACCOUNT;
 import static uk.gov.di.test.acceptance.AccountJourneyPages.ENTER_NEW_MOBILE_PHONE_NUMBER;
 import static uk.gov.di.test.acceptance.AccountJourneyPages.ENTER_PASSWORD_CHANGE_PASSWORD;
 import static uk.gov.di.test.acceptance.AccountJourneyPages.ENTER_PASSWORD_DELETE_ACCOUNT;
-import static uk.gov.di.test.acceptance.AccountJourneyPages.MANAGE_YOUR_ACCOUNT;
+import static uk.gov.di.test.acceptance.AccountJourneyPages.YOUR_GOV_UK_ACCOUNT;
 import static uk.gov.di.test.acceptance.AccountJourneyPages.PASSWORD_UPDATED_CONFIRMATION;
 
 public class AccountManagementStepDefinitions extends SignInStepDefinitions {
@@ -50,9 +50,9 @@ public class AccountManagementStepDefinitions extends SignInStepDefinitions {
         driver.get(AM_URL.toString());
     }
 
-    @Then("the existing account management user is taken to the manage your account page")
-    public void theExistingAccountManagementUserIsTakenToTheManageYourAccountPage() {
-        waitForPageLoadThenValidate(MANAGE_YOUR_ACCOUNT);
+    @Then("the existing account management user is taken to the your gov uk account page")
+    public void theExistingAccountManagementUserIsTakenToTheYourGovUkAccountPage() {
+        waitForPageLoadThenValidate(YOUR_GOV_UK_ACCOUNT);
     }
 
     @When("the existing account management user clicks link by href {string}")
