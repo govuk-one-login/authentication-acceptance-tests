@@ -54,7 +54,7 @@ Feature: Login Journey
     Given the account management services are running
     And the existing account management user has valid credentials
     When the existing account management user navigates to account management
-    Then the existing account management user is taken to the manage your account page
+    Then the existing account management user is taken to the your gov uk account page
     When the existing account management user clicks link by href "/enter-password?type=changePhoneNumber"
     Then the existing account management user is asked to enter their password
     When the existing account management user enter their current password
@@ -62,13 +62,13 @@ Feature: Login Journey
     When the existing account management user enters their existing mobile phone number
     Then the existing account management user is shown an error message
     When the existing account management user clicks link by href "/manage-your-account"
-    Then the existing account management user is taken to the manage your account page
+    Then the existing account management user is taken to the your gov uk account page
 
   Scenario: User changes their password
       Given the account management services are running
       And the existing account management user has valid credentials
       When the existing account management user navigates to account management
-      Then the existing account management user is taken to the manage your account page
+      Then the existing account management user is taken to the your gov uk account page
       When the existing account management user clicks link by href "/enter-password?type=changePassword"
       Then the existing account management user is asked to enter their current password
       When the existing account management user enter their current password
@@ -77,13 +77,13 @@ Feature: Login Journey
       And the existing account management user enters their updated password
       Then the existing account management user is taken to password updated confirmation page
       When the existing account management user clicks link by href "/manage-your-account"
-      Then the existing account management user is taken to the manage your account page
+      Then the existing account management user is taken to the your gov uk account page
 
   Scenario: User deletes their account
       Given the account management services are running
       And the existing account management user has valid credentials
       When the existing account management user navigates to account management
-      Then the existing account management user is taken to the manage your account page
+      Then the existing account management user is taken to the your gov uk account page
       When the existing account management user clicks link by href "/enter-password?type=deleteAccount"
       Then the existing account management user is asked to enter their password
       When the existing account management user uses their updated password
