@@ -174,10 +174,8 @@ public class AccountManagementStepDefinitions extends SignInStepDefinitions {
         assertTrue(emailDescriptionDetails.isDisplayed());
     }
 
-    @When(
-            "the existing account management user enters their new mobile phone number with international code")
-    public void
-            theExistingAccountManagementUserEntersTheirNewMobilePhoneNumberWithInternationalCode() {
+    @When("the existing account management user enters their new mobile phone number with international code")
+    public void theExistingAccountManagementUserEntersTheirNewMobilePhoneNumberWithInternationalCode() {
         WebElement passwordField = driver.findElement(By.id("phoneNumber"));
         passwordField.sendKeys(internationalPhoneNumber);
         findAndClickContinue();
