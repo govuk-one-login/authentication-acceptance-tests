@@ -29,6 +29,7 @@ public class RegistrationStepDefinitions extends SignInStepDefinitions {
     private String sixDigitCodePhone;
     private String tcEmailAddress;
     private String tcPassword;
+    private String internationalPhoneNumber;
 
     @Before
     public void setupWebdriver() throws MalformedURLException {
@@ -73,6 +74,7 @@ public class RegistrationStepDefinitions extends SignInStepDefinitions {
         sixDigitCodePhone = System.getenv().get("TEST_USER_PHONE_CODE");
         tcEmailAddress = System.getenv().get("TERMS_AND_CONDITIONS_TEST_USER_EMAIL");
         tcPassword = System.getenv().get("TERMS_AND_CONDITIONS_TEST_USER_PASSWORD");
+        internationalPhoneNumber = System.getenv().get("TEST_USER_INTERNATIONAL_PHONE_NUMBER");
     }
 
     @And("the new user clears cookies")
@@ -341,6 +343,13 @@ public class RegistrationStepDefinitions extends SignInStepDefinitions {
     public void theNewUserEntersTheirTCPassword() {
         WebElement enterPasswordField = driver.findElement(By.id("password"));
         enterPasswordField.sendKeys(tcPassword);
+        findAndClickContinue();
+    }
+
+    @When("the new user enters their mobile phone number using an international dialling code")
+    public void theNewUserEntersTheirMobilePhoneNumberUsingAnInternationalDiallingCode() {
+        WebElement phoneNumberField = driver.findElement(By.id("phoneNumber"));
+        phoneNumberField.sendKeys(internationalPhoneNumber);
         findAndClickContinue();
     }
 }
