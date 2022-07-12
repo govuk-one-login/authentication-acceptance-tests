@@ -53,7 +53,7 @@ public class LegalAndPolicyPagesStepDefinitions extends SignInStepDefinitions {
 
     @Then("the user is taken to the GOV.UK cookies page")
     public void theUserIsTakenToTheGOVUKCookiesPage() {
-        checkPageLoadInTabAndClose(SupportingPages.GOV_UK_COOKIES);
+        checkPageLoadInTabAndClose(SupportingPages.GOV_UK_ACCOUNTS_COOKIES);
     }
 
     @Then("the user is taken to the terms and conditions page")

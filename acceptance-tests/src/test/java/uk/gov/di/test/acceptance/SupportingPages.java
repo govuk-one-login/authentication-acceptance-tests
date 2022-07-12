@@ -3,7 +3,7 @@ package uk.gov.di.test.acceptance;
 public enum SupportingPages {
     ACCESSIBILITY_STATEMENT(
             "/accessibility-statement", "Accessibility statement for GOV.UK accounts"),
-    GOV_UK_COOKIES("/help/cookies", "Cookies on GOV.UK"),
+    GOV_UK_ACCOUNTS_COOKIES("/cookies", "GOV.UK accounts cookies policy"),
     TERMS_AND_CONDITIONS("/terms-and-conditions", "Terms and conditions"),
     PRIVACY_NOTICE("/privacy-notice", "Privacy notice");
 
