@@ -20,6 +20,7 @@ import static uk.gov.di.test.acceptance.AccountJourneyPages.DELETE_ACCOUNT;
 import static uk.gov.di.test.acceptance.AccountJourneyPages.ENTER_NEW_MOBILE_PHONE_NUMBER;
 import static uk.gov.di.test.acceptance.AccountJourneyPages.ENTER_PASSWORD_CHANGE_PASSWORD;
 import static uk.gov.di.test.acceptance.AccountJourneyPages.ENTER_PASSWORD_DELETE_ACCOUNT;
+import static uk.gov.di.test.acceptance.AccountJourneyPages.ENTER_PASSWORD_DELETE_ACCOUNT_FAILED;
 import static uk.gov.di.test.acceptance.AccountJourneyPages.PASSWORD_UPDATED_CONFIRMATION;
 import static uk.gov.di.test.acceptance.AccountJourneyPages.YOUR_GOV_UK_ACCOUNT;
 
@@ -176,5 +177,10 @@ public class AccountManagementStepDefinitions extends SignInStepDefinitions {
         WebElement enterPasswordField = driver.findElement(By.id("password"));
         enterPasswordField.sendKeys(password);
         findAndClickContinue();
+    }
+
+    @And("the existing account management user is asked to enter their password again")
+    public void theExistingAccountManagementUserIsAskedToEnterTheirPasswordAgain() {
+        waitForPageLoadThenValidate(ENTER_PASSWORD_DELETE_ACCOUNT_FAILED);
     }
 }

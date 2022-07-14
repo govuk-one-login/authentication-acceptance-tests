@@ -88,7 +88,7 @@ Feature: Login Journey
     Then the existing account management user is asked to enter their password
     When the existing account management user enters an invalid password to delete account
     Then the existing account management user is shown an error message
-    And the existing account management user is asked to enter their password
+    And the existing account management user is asked to enter their password again
 
   Scenario: User deletes their account
       Given the account management services are running
