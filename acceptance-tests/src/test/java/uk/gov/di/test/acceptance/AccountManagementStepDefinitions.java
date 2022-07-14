@@ -170,4 +170,11 @@ public class AccountManagementStepDefinitions extends SignInStepDefinitions {
         WebElement emailDescriptionDetails = driver.findElement(By.id("error-summary-title"));
         assertTrue(emailDescriptionDetails.isDisplayed());
     }
+
+    @When("the existing account management user enters an invalid password to delete account")
+    public void theExistingAccountManagementUserEntersAnInvalidPasswordToDeleteAccount() {
+        WebElement enterPasswordField = driver.findElement(By.id("password"));
+        enterPasswordField.sendKeys(password);
+        findAndClickContinue();
+    }
 }
