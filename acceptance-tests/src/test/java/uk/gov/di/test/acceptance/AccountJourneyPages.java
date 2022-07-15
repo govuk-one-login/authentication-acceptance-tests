@@ -7,6 +7,7 @@ public enum AccountJourneyPages {
     PASSWORD_UPDATED_CONFIRMATION(
             "/password-updated-confirmation", "You have changed your password"),
     ENTER_PASSWORD_DELETE_ACCOUNT("/enter-password", "Enter your password"),
+    ENTER_PASSWORD_DELETE_ACCOUNT_FAILED("/enter-password", "Error - Enter your password"),
     DELETE_ACCOUNT("/delete-account", "Are you sure you want to delete your account?"),
     ACCOUNT_DELETED_CONFIRMATION(
             "/account-deleted-confirmation", "You have deleted your GOV.UK account"),
