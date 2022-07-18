@@ -31,7 +31,7 @@ Feature: New security code requests
     When the new user clicks link by href "/enter-email-create"
     Then the new user is taken to the enter your email page
     When the new user enters their email address
-    Then the new user is taken to the you cannot get a new security code at the moment
+    Then the new user is taken to the you cannot get a new security code at the moment page
     When the new user clicks link by href "/enter-email-create"
     Then the new user is taken to the enter your email page
     When the new user enters their email address

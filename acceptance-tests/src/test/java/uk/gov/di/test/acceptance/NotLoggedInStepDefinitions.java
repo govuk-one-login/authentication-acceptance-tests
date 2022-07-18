@@ -29,7 +29,7 @@ public class NotLoggedInStepDefinitions extends SignInStepDefinitions {
         waitForPageLoadThenValidate(SIGN_IN_OR_CREATE);
     }
 
-    @Then("the new user is taken to the you cannot get a new security code at the moment")
+    @Then("the new user is taken to the you cannot get a new security code at the moment page")
     public void theNewUserIsTakenToTheYouCannotGetANewSecurityCodeAtTheMomentPage() {
         waitForPageLoad("You cannot get a new security code at the moment");
     }
