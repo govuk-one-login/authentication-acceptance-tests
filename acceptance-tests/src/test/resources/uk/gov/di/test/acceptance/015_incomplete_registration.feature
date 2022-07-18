@@ -1,44 +1,6 @@
 Feature: Incomplete registration
   New user leaves the registration journey before completing it
 
-  Scenario: New user requests new security code too many times
-    Given the registration services are running
-    And a new user has valid credentials
-    And the new user clears cookies
-    When the new user visits the stub relying party
-    And the new user clicks "govuk-signin-button"
-    Then the new user is taken to the Identity Provider Login Page
-    When the new user selects create an account
-    Then the new user is taken to the enter your email page
-    When the new user enters their email address
-    Then the new user is asked to check their email
-    When the new user clicks link by href "/enter-email-create"
-    Then the new user is taken to the enter your email page
-    When the new user enters their email address
-    Then the new user is asked to check their email
-    When the new user clicks link by href "/enter-email-create"
-    Then the new user is taken to the enter your email page
-    When the new user enters their email address
-    Then the new user is asked to check their email
-    When the new user clicks link by href "/enter-email-create"
-    Then the new user is taken to the enter your email page
-    When the new user enters their email address
-    Then the new user is asked to check their email
-    When the new user clicks link by href "/enter-email-create"
-    Then the new user is taken to the enter your email page
-    When the new user enters their email address
-    Then the new user is asked to check their email
-    When the new user clicks link by href "/enter-email-create"
-    Then the new user is taken to the enter your email page
-    When the new user enters their email address
-    Then the new user is asked to check their email
-    When the new user clicks link by href "/enter-email-create"
-    Then the new user is shown an error message
-    When the new user clicks link by href "/enter-email-create"
-    Then the new user is taken to the enter your email page
-    When the new user enters their email address
-    Then the new user is shown an error message
-
   Scenario: Abandon before 2FA setup
     Given the registration services are running
     And a new user has valid credentials
