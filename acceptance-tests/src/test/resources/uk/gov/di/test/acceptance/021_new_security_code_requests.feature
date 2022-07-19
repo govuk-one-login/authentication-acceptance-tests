@@ -12,27 +12,10 @@ Feature: New security code requests
     Then the new user is taken to the enter your email page
     When the new user enters their email address
     Then the new user is asked to check their email
-    When the new user clicks link by href "/enter-email-create"
-    Then the new user is taken to the enter your email page
-    When the new user enters their email address
-    Then the new user is asked to check their email
-    When the new user clicks link by href "/enter-email-create"
-    Then the new user is taken to the enter your email page
-    When the new user enters their email address
-    Then the new user is asked to check their email
-    When the new user clicks link by href "/enter-email-create"
-    Then the new user is taken to the enter your email page
-    When the new user enters their email address
-    Then the new user is asked to check their email
-    When the new user clicks link by href "/enter-email-create"
-    Then the new user is taken to the enter your email page
-    When the new user enters their email address
-    Then the new user is asked to check their email
-    When the new user clicks link by href "/enter-email-create"
-    Then the new user is taken to the enter your email page
-    When the new user enters their email address
+    When the new user requests a new security code 5 times
     Then the new user is taken to the you cannot get a new security code at the moment page
     When the new user clicks link by href "/enter-email-create"
     Then the new user is taken to the enter your email page
     When the new user enters their email address
     Then the new user is taken to the you requested too many security codes page
+
