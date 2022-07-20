@@ -1,0 +1,39 @@
+package uk.gov.di.test.acceptance;
+
+import io.cucumber.java.Before;
+import io.cucumber.java.en.And;
+import io.cucumber.java.en.Given;
+import io.cucumber.java.en.When;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
+
+import java.net.MalformedURLException;
+
+public class DocAppStepDefinitions extends SignInStepDefinitions {
+
+    private String jsonPayLoad;
+
+    protected static final String DOC_APP_URL =
+            System.getenv().getOrDefault("DOC_APP_URL", "https://di-auth-stub-relying-party-build-app.london.cloudapps.digital/");
+
+    @Before
+    public void setupWebdriver() throws MalformedURLException {
+        super.setupWebdriver();
+    }
+    
+    @Given("the doc app services are running")
+    public void theDocAppServicesAreRunning() {
+    }
+
+    @When("the user visits the doc app relying party")
+    public void theUserVisitsTheDocAppRelyingParty() {
+        driver.get(DOC_APP_URL.toString());
+    }
+
+    @And("the user sends a valid request")
+    public void theUserSendsAValidRequest() {
+        jsonPayLoad = System.getenv().get("DOC_APP_JSON_PAYLOAD");
+        WebElement payloadInputField = driver.findElement(By.id("jsonPayload"));
+        payloadInputField.sendKeys();
+    }
+}
