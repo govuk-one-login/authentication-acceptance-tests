@@ -7,5 +7,3 @@ Feature: Doc app journey
     And the user clicks the continue button
     And the user sends a valid json payload
     Then the user is taken to the user information page
-
-
