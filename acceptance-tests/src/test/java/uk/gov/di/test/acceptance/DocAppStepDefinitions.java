@@ -59,4 +59,16 @@ public class DocAppStepDefinitions extends SignInStepDefinitions {
         WebElement idToken = driver.findElement(By.id("user-info-phone-number"));
         assertTrue(idToken.isDisplayed());
     }
+
+    @When("the user clicks the My Account link")
+    public void theUserClicksTheMyAccountLink() {
+        WebElement myAccountLink = driver.findElement(By.cssSelector("#navigation > li > a"));
+        myAccountLink.click();
+    }
+
+    @Then("the user is taken to the sign in page")
+    public void theUserIsTakenToTheSignInPage() {
+        waitForPageLoad("Create a GOV.UK account or sign in");
+        assertTrue(driver.getCurrentUrl().contains("/sign-in-or-create"));
+    }
 }
