@@ -43,7 +43,7 @@ public class DocAppStepDefinitions extends SignInStepDefinitions {
 
     @And("the user sends a valid json payload")
     public void theUserSendsAValidJsonPayload() {
-        jsonPayLoad = System.getenv().get("DOC_APP_JSON_PAYLOAD");
+        jsonPayLoad = "{\"test\" : \"example\"}";
         WebElement payloadInputField = driver.findElement(By.id("jsonPayload"));
         payloadInputField.sendKeys(jsonPayLoad);
         WebElement submitButton = driver.findElement(By.name("submit"));
