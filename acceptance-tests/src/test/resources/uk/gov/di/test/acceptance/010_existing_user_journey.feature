@@ -100,8 +100,7 @@ Feature: Login Journey
       When the existing account management user uses their updated password
       And the existing account management user enters their updated password to delete account
       Then the existing account management user is taken to the delete account page
-      When the user clicks button by text Delete account
+      When the user clicks button by text Delete your GOV.UK account
       Then the existing account management user is taken to the account deleted confirmation page
       When the not logged in user navigates to account root
       Then the not logged in user is taken to the Identity Provider Login Page
-

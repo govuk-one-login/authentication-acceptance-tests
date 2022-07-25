@@ -38,4 +38,4 @@ Feature: Incomplete registration
     When the new user clicks link by href "https://build.account.gov.uk"
     When the new user clicks link by href "/enter-password?type=deleteAccount"
     When the new user enters their password
-    When the user clicks button by text Delete account
+    When the user clicks button by text Delete your GOV.UK account
