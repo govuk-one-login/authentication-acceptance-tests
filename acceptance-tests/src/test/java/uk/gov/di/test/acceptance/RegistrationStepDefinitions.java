@@ -343,4 +343,11 @@ public class RegistrationStepDefinitions extends SignInStepDefinitions {
         enterPasswordField.sendKeys(tcPassword);
         findAndClickContinue();
     }
+
+    @When("the new user does not agree to share their info")
+    public void theNewUserDoesNotAgreeToShareTheirInfo() {
+        WebElement radioShareInfoReject = driver.findElement(By.id("share-info-rejected"));
+        radioShareInfoReject.click();
+        findAndClickContinue();
+    }
 }
