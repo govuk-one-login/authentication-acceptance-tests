@@ -183,4 +183,26 @@ public class AccountManagementStepDefinitions extends SignInStepDefinitions {
     public void theExistingAccountManagementUserIsAskedToEnterTheirPasswordAgain() {
         waitForPageLoadThenValidate(ENTER_PASSWORD_DELETE_ACCOUNT_FAILED);
     }
+
+    @And("the existing account management user accepts the cookie policy")
+    public void theExistingAccountManagementUserAcceptsTheCookiePolicy() {
+        WebElement acceptCookiePolicyTickbox = driver.findElement(By.id("policy-cookies-accepted"));
+        acceptCookiePolicyTickbox.click();
+        WebElement saveCookieSettingsButton = driver.findElement(By.id("save-cookie-settings"));
+        saveCookieSettingsButton.click();
+    }
+
+    @And("the existing account management user clicks the go back link")
+    public void theExistingAccountManagementUserClicksTheGoBackLink() {
+        WebElement goBackLink = driver.findElement(By.id("go-back-link"));
+        goBackLink.click();
+    }
+
+    @And("the existing account management user rejects the cookie policy")
+    public void theExistingAccountManagementUserRejectsTheCookiePolicy() {
+        WebElement rejectCookiePolicyTickbox = driver.findElement(By.id("policy-cookies-rejected"));
+        rejectCookiePolicyTickbox.click();
+        WebElement saveCookieSettingsButton = driver.findElement(By.id("save-cookie-settings"));
+        saveCookieSettingsButton.click();
+    }
 }

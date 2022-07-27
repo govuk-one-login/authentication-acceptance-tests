@@ -64,6 +64,22 @@ Feature: Login Journey
     When the existing account management user clicks link by href "/manage-your-account"
     Then the existing account management user is taken to the your gov uk account page
 
+  Scenario: Existing user updates their cookie preferences
+    Given the account management services are running
+    And the existing account management user has valid credentials
+    When the existing account management user navigates to account management
+    Then the existing account management user is taken to the your gov uk account page
+    When the existing account management user clicks link by href "/enter-password?type=changePhoneNumber"
+    Then the existing account management user is asked to enter their password
+    When the existing account management user clicks link by href "https://signin.build.account.gov.uk/cookies"
+    And the existing account management user accepts the cookie policy
+    And the existing account management user clicks the go back link
+    Then the existing account management user is asked to enter their password
+    When the existing account management user clicks link by href "https://signin.build.account.gov.uk/cookies"
+    And the existing account management user rejects the cookie policy
+    And the existing account management user clicks the go back link
+    Then the existing account management user is asked to enter their password
+
   Scenario: User changes their password
       Given the account management services are running
       And the existing account management user has valid credentials
