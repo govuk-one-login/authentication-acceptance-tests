@@ -353,8 +353,7 @@ public class RegistrationStepDefinitions extends SignInStepDefinitions {
 
     @When("the user clicks the delete your GOV.UK account button")
     public void theUserClicksTheDeleteYourGOVUKAccountButton() {
-        WebElement deleteAccountButton =
-                driver.findElement(By.cssSelector("#main-content > div > div > form > button"));
+        WebElement deleteAccountButton = driver.findElement(By.className("govuk-button--warning"));
         deleteAccountButton.click();
     }
 }

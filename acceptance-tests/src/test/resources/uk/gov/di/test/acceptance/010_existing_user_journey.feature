@@ -75,8 +75,7 @@ Feature: Login Journey
     And the existing account management user accepts the cookie policy
     And the existing account management user clicks the go back link
     Then the existing account management user is taken to the GOV.UK accounts cookies policy page
-    When the existing account management user clicks link by href "https://signin.build.account.gov.uk/cookies"
-    And the existing account management user rejects the cookie policy
+    When the existing account management user rejects the cookie policy
     And the existing account management user clicks the go back link
     Then the existing account management user is taken to the GOV.UK accounts cookies policy page
 

@@ -21,9 +21,10 @@ import static uk.gov.di.test.acceptance.AccountJourneyPages.ENTER_NEW_MOBILE_PHO
 import static uk.gov.di.test.acceptance.AccountJourneyPages.ENTER_PASSWORD_CHANGE_PASSWORD;
 import static uk.gov.di.test.acceptance.AccountJourneyPages.ENTER_PASSWORD_DELETE_ACCOUNT;
 import static uk.gov.di.test.acceptance.AccountJourneyPages.ENTER_PASSWORD_DELETE_ACCOUNT_FAILED;
+import static uk.gov.di.test.acceptance.AccountJourneyPages.GOV_UK_ACCOUNTS_COOKIES;
 import static uk.gov.di.test.acceptance.AccountJourneyPages.PASSWORD_UPDATED_CONFIRMATION;
 import static uk.gov.di.test.acceptance.AccountJourneyPages.YOUR_GOV_UK_ACCOUNT;
-import static uk.gov.di.test.acceptance.SupportingPages.GOV_UK_ACCOUNTS_COOKIES;
+
 
 public class AccountManagementStepDefinitions extends SignInStepDefinitions {
 
@@ -207,9 +208,8 @@ public class AccountManagementStepDefinitions extends SignInStepDefinitions {
         saveCookieSettingsButton.click();
     }
 
-    @Then(
-            "the existing account management user is taken to the GOV.UK accounts cookies policy page")
+    @Then("the existing account management user is taken to the GOV.UK accounts cookies policy page")
     public void theExistingAccountManagementUserIsTakenToTheGOVUKAccountsCookiesPolicyPage() {
-        waitForPageLoad(String.valueOf(GOV_UK_ACCOUNTS_COOKIES));
+        waitForPageLoadThenValidate(GOV_UK_ACCOUNTS_COOKIES);
     }
 }
