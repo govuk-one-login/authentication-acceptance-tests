@@ -21,8 +21,10 @@ import static uk.gov.di.test.acceptance.AccountJourneyPages.ENTER_NEW_MOBILE_PHO
 import static uk.gov.di.test.acceptance.AccountJourneyPages.ENTER_PASSWORD_CHANGE_PASSWORD;
 import static uk.gov.di.test.acceptance.AccountJourneyPages.ENTER_PASSWORD_DELETE_ACCOUNT;
 import static uk.gov.di.test.acceptance.AccountJourneyPages.ENTER_PASSWORD_DELETE_ACCOUNT_FAILED;
+import static uk.gov.di.test.acceptance.AccountJourneyPages.GOV_UK_ACCOUNTS_COOKIES;
 import static uk.gov.di.test.acceptance.AccountJourneyPages.PASSWORD_UPDATED_CONFIRMATION;
 import static uk.gov.di.test.acceptance.AccountJourneyPages.YOUR_GOV_UK_ACCOUNT;
+
 
 public class AccountManagementStepDefinitions extends SignInStepDefinitions {
 
@@ -182,5 +184,32 @@ public class AccountManagementStepDefinitions extends SignInStepDefinitions {
     @And("the existing account management user is asked to enter their password again")
     public void theExistingAccountManagementUserIsAskedToEnterTheirPasswordAgain() {
         waitForPageLoadThenValidate(ENTER_PASSWORD_DELETE_ACCOUNT_FAILED);
+    }
+
+    @And("the existing account management user accepts the cookie policy")
+    public void theExistingAccountManagementUserAcceptsTheCookiePolicy() {
+        WebElement acceptCookiePolicyTickbox = driver.findElement(By.id("policy-cookies-accepted"));
+        acceptCookiePolicyTickbox.click();
+        WebElement saveCookieSettingsButton = driver.findElement(By.id("save-cookie-settings"));
+        saveCookieSettingsButton.click();
+    }
+
+    @And("the existing account management user clicks the go back link")
+    public void theExistingAccountManagementUserClicksTheGoBackLink() {
+        WebElement goBackLink = driver.findElement(By.id("go-back-link"));
+        goBackLink.click();
+    }
+
+    @And("the existing account management user rejects the cookie policy")
+    public void theExistingAccountManagementUserRejectsTheCookiePolicy() {
+        WebElement rejectCookiePolicyTickbox = driver.findElement(By.id("policy-cookies-rejected"));
+        rejectCookiePolicyTickbox.click();
+        WebElement saveCookieSettingsButton = driver.findElement(By.id("save-cookie-settings"));
+        saveCookieSettingsButton.click();
+    }
+
+    @Then("the existing account management user is taken to the GOV.UK accounts cookies policy page")
+    public void theExistingAccountManagementUserIsTakenToTheGOVUKAccountsCookiesPolicyPage() {
+        waitForPageLoadThenValidate(GOV_UK_ACCOUNTS_COOKIES);
     }
 }
