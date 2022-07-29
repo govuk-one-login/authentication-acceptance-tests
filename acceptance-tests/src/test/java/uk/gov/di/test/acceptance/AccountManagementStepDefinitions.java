@@ -23,6 +23,7 @@ import static uk.gov.di.test.acceptance.AccountJourneyPages.ENTER_PASSWORD_DELET
 import static uk.gov.di.test.acceptance.AccountJourneyPages.ENTER_PASSWORD_DELETE_ACCOUNT_FAILED;
 import static uk.gov.di.test.acceptance.AccountJourneyPages.PASSWORD_UPDATED_CONFIRMATION;
 import static uk.gov.di.test.acceptance.AccountJourneyPages.YOUR_GOV_UK_ACCOUNT;
+import static uk.gov.di.test.acceptance.SupportingPages.GOV_UK_ACCOUNTS_COOKIES;
 
 public class AccountManagementStepDefinitions extends SignInStepDefinitions {
 
@@ -204,5 +205,11 @@ public class AccountManagementStepDefinitions extends SignInStepDefinitions {
         rejectCookiePolicyTickbox.click();
         WebElement saveCookieSettingsButton = driver.findElement(By.id("save-cookie-settings"));
         saveCookieSettingsButton.click();
+    }
+
+    @Then(
+            "the existing account management user is taken to the GOV.UK accounts cookies policy page")
+    public void theExistingAccountManagementUserIsTakenToTheGOVUKAccountsCookiesPolicyPage() {
+        waitForPageLoad(String.valueOf(GOV_UK_ACCOUNTS_COOKIES));
     }
 }

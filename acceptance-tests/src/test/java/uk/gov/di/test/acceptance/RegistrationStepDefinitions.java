@@ -350,4 +350,11 @@ public class RegistrationStepDefinitions extends SignInStepDefinitions {
         radioShareInfoReject.click();
         findAndClickContinue();
     }
+
+    @When("the user clicks the delete your GOV.UK account button")
+    public void theUserClicksTheDeleteYourGOVUKAccountButton() {
+        WebElement deleteAccountButton =
+                driver.findElement(By.cssSelector("#main-content > div > div > form > button"));
+        deleteAccountButton.click();
+    }
 }
