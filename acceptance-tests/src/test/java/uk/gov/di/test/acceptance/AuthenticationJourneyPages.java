@@ -7,13 +7,15 @@ public enum AuthenticationJourneyPages {
     ACCOUNT_NOT_FOUND("/account-not-found", "No GOV.UK account found"),
     CHECK_YOUR_EMAIL("/check-your-email", "Check your email"),
     CREATE_PASSWORD("/create-password", "Create your password"),
+    GET_SECURITY_CODES("/get-security-codes", "Choose how to get security codes"),
+    FINISH_CREATING_YOUR_ACCOUNT_GET_SECURITY_CODES("/get-security-codes", "Finish creating your account"),
     ENTER_PHONE_NUMBER("/enter-phone-number", "Enter your mobile phone number"),
     FINISH_CREATING_YOUR_ACCOUNT("/enter-phone-number", "Finish creating your account"),
     CHECK_YOUR_PHONE("/check-your-phone", "Check your phone"),
     ACCOUNT_CREATED("/account-created", "You've created your GOV.UK account"),
     ENTER_PASSWORD("/enter-password", "Enter your password"),
     ENTER_CODE("/enter-code", "Check your phone"),
-    ENTER_EMAIL_EXISTING_USER("/enter-email", "Sign in to your GOV.UK account"),
+    ENTER_EMAIL_EXISTING_USER("/enter-email", "Enter your email address to sign in to your GOV.UK account"),
     SHARE_INFO("/share-info", "Share information from your GOV.UK account"),
     SECURITY_CODE_INVALID(
             "/security-code-invalid", "You entered the wrong security code too many times");

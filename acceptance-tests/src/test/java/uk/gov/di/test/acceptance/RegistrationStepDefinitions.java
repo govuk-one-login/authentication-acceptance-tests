@@ -188,6 +188,24 @@ public class RegistrationStepDefinitions extends SignInStepDefinitions {
         findAndClickContinue();
     }
 
+    @Then("the new user is taken to the get security codes page")
+    public void theNewUserIsTakenToTheGetSecurityCodesPage() {
+        waitForPageLoadThenValidate(GET_SECURITY_CODES);
+    }
+
+    @Then("the new user is taken to the finish creating your account get security codes page")
+    public void theNewUserIsTakenToTheFinishCreatingYourAccountGetSecurityCodesPage() {
+        waitForPageLoadThenValidate(FINISH_CREATING_YOUR_ACCOUNT_GET_SECURITY_CODES);
+    }
+
+    @When("the new user chooses text message security codes")
+    public void theNewUserChoosesTextMessageSecurityCodes() {
+        WebElement radioTextMessageSecurityCodes =
+                driver.findElement(By.id("mfa-options-text-message"));
+        radioTextMessageSecurityCodes.click();
+        findAndClickContinue();
+    }
+
     @Then("the new user is taken to the enter phone number page")
     public void theNewUserIsTakenToTheEnterPhoneNumberPage() {
         waitForPageLoadThenValidate(ENTER_PHONE_NUMBER);

@@ -64,6 +64,8 @@ Feature: Registration Journey
     Then the new user is taken to the create your password page
     When the new user creates a password
     And there are no accessibility violations
+    Then the new user is taken to the get security codes page
+    When the new user chooses text message security codes
     Then the new user is taken to the enter phone number page
     When the new user enters their mobile phone number
     Then the new user is taken to the check your phone page

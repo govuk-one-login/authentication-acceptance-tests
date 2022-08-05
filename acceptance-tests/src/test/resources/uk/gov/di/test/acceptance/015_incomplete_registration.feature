@@ -15,6 +15,8 @@ Feature: Incomplete registration
     When the new user enters the six digit security code from their email
     Then the new user is taken to the create your password page
     When the new user creates a password
+    Then the new user is taken to the get security codes page
+    When the new user chooses text message security codes
     Then the new user is taken to the enter phone number page
     When the new user enters their mobile phone number
     Then the new user is taken to the check your phone page
@@ -26,7 +28,9 @@ Feature: Incomplete registration
     When the new user selects sign in
     When the new user enters their email address
     When the new user enters their password
-    Then the new user is taken to the finish creating your account page
+    Then the new user is taken to the finish creating your account get security codes page
+    When the new user chooses text message security codes
+    Then the new user is taken to the enter phone number page
     When the new user enters their mobile phone number
     Then the new user is taken to the check your phone page
     When the new user enters the six digit security code from their phone
