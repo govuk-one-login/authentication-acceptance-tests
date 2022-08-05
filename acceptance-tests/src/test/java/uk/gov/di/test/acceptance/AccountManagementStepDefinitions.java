@@ -25,7 +25,6 @@ import static uk.gov.di.test.acceptance.AccountJourneyPages.GOV_UK_ACCOUNTS_COOK
 import static uk.gov.di.test.acceptance.AccountJourneyPages.PASSWORD_UPDATED_CONFIRMATION;
 import static uk.gov.di.test.acceptance.AccountJourneyPages.YOUR_GOV_UK_ACCOUNT;
 
-
 public class AccountManagementStepDefinitions extends SignInStepDefinitions {
 
     private String emailAddress;
