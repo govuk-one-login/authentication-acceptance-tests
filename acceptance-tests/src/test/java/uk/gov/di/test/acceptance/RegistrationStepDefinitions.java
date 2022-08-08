@@ -9,6 +9,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import uk.gov.di.test.utils.AuthAppStub;
 
 import java.net.MalformedURLException;
 import java.net.URI;
@@ -29,6 +30,7 @@ public class RegistrationStepDefinitions extends SignInStepDefinitions {
     private String sixDigitCodePhone;
     private String tcEmailAddress;
     private String tcPassword;
+    private String authAppSecretKey;
 
     @Before
     public void setupWebdriver() throws MalformedURLException {
@@ -73,6 +75,13 @@ public class RegistrationStepDefinitions extends SignInStepDefinitions {
         sixDigitCodePhone = System.getenv().get("TEST_USER_PHONE_CODE");
         tcEmailAddress = System.getenv().get("TERMS_AND_CONDITIONS_TEST_USER_EMAIL");
         tcPassword = System.getenv().get("TERMS_AND_CONDITIONS_TEST_USER_PASSWORD");
+    }
+
+    @And("the auth app user has valid credentials")
+    public void theAuthAppUserHasValidCredentials() {
+        emailAddress = System.getenv().get("TEST_USER_AUTH_APP_EMAIL");
+        password = System.getenv().get("TEST_USER_PASSWORD");
+        sixDigitCodeEmail = System.getenv().get("TEST_USER_EMAIL_CODE");
     }
 
     @And("the new user clears cookies")
@@ -206,6 +215,67 @@ public class RegistrationStepDefinitions extends SignInStepDefinitions {
         findAndClickContinue();
     }
 
+    @When("the new user chooses {string} to get security codes")
+    public void theNewUserChoosesHowToGetSecurityCodes(String mfaMethod) {
+        WebElement radioTextMessageSecurityCodes = driver.findElement(By.id(mfaMethod));
+        radioTextMessageSecurityCodes.click();
+        findAndClickContinue();
+    }
+
+    @Then("the new user is taken to the setup authenticator app page")
+    public void theNewUserIsTakenToTheSetupAuthenticatorAppPage() {
+        waitForPageLoadThenValidate(SETUP_AUTHENTICATOR_APP);
+    }
+
+    @When("the new user adds the secret key on the screen to their auth app")
+    public void theNewUserAddTheSecretKeyOnTheScreenToTheirAuthApp() {
+        WebElement secretKeyField = driver.findElement(By.id("secret-key"));
+        authAppSecretKey = secretKeyField.getText().trim();
+    }
+
+    @And("the user enters the security code from the auth app")
+    public void theNewUserEntersTheSecurityCodeFromTheAuthApp() {
+        WebElement securityCodeField = driver.findElement(By.id("code"));
+        AuthAppStub authAppStub = new AuthAppStub();
+        securityCodeField.sendKeys(authAppStub.getAuthAppOneTimeCode(authAppSecretKey));
+        findAndClickContinue();
+    }
+
+    @When("the existing auth app user selects sign in")
+    public void theExistingAuthAppUserSelectsSignIn() {
+        WebElement link = driver.findElement(By.id("sign-in-link"));
+        link.click();
+    }
+
+    @Then("the existing auth app user is taken to the enter your email page")
+    public void theExistingAuthAppUserIsTakenToTheEnterYourEmailPage() {
+        waitForPageLoadThenValidate(ENTER_EMAIL_EXISTING_USER);
+    }
+
+    @When("the existing auth app user enters their email address")
+    public void theExistingAuthAppUserEntersEmailAddress() {
+        WebElement emailAddressField = driver.findElement(By.id("email"));
+        emailAddressField.sendKeys(emailAddress);
+        findAndClickContinue();
+    }
+
+    @Then("the existing auth app user is prompted for their password")
+    public void theExistingUserIsPromptedForPassword() {
+        waitForPageLoadThenValidate(ENTER_PASSWORD);
+    }
+
+    @When("the existing auth app user enters their password")
+    public void theExistingUserEntersTheirPassword() {
+        WebElement passwordField = driver.findElement(By.id("password"));
+        passwordField.sendKeys(password);
+        findAndClickContinue();
+    }
+
+    @Then("the existing user is taken to the enter authenticator app code page")
+    public void theNewUserIsTakenToTheEnterAuthenticatorAppCodePage() {
+        waitForPageLoadThenValidate(ENTER_AUTHENTICATOR_APP_CODE);
+    }
+
     @Then("the new user is taken to the enter phone number page")
     public void theNewUserIsTakenToTheEnterPhoneNumberPage() {
         waitForPageLoadThenValidate(ENTER_PHONE_NUMBER);
@@ -267,8 +337,8 @@ public class RegistrationStepDefinitions extends SignInStepDefinitions {
         findAndClickContinue();
     }
 
-    @Then("the new user is returned to the service")
-    public void theNewUserIsReturnedToTheService() {}
+    @Then("the user is returned to the service")
+    public void theUserIsReturnedToTheService() {}
 
     @Then("the new user is taken to the Service User Info page")
     public void theNewUserIsTakenToTheServiceUserInfoPage() {

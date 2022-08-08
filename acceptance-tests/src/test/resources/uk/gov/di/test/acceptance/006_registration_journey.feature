@@ -5,7 +5,7 @@ Feature: Registration Journey
     Given the registration services are running
     And a new user has valid credentials
     And the new user clears cookies
-    When the new user visits the stub relying party
+    When the user visits the stub relying party
     And the new user clicks "govuk-signin-button"
     Then the new user is taken to the Identity Provider Login Page
     When the new user selects sign in
@@ -20,7 +20,7 @@ Feature: Registration Journey
     Given the registration services are running
     And the new user has an invalid email format
     And the new user clears cookies
-    When the new user visits the stub relying party
+    When the user visits the stub relying party
     And the new user clicks "govuk-signin-button"
     Then the new user is taken to the Identity Provider Login Page
     When the new user selects create an account
@@ -51,7 +51,7 @@ Feature: Registration Journey
     Given the registration services are running
     And a new user has valid credentials
     And the new user clears cookies
-    When the new user visits the stub relying party
+    When the user visits the stub relying party
     And the new user clicks "govuk-signin-button"
     Then the new user is taken to the Identity Provider Login Page
     When the new user selects create an account
@@ -76,7 +76,7 @@ Feature: Registration Journey
     And there are no accessibility violations
     Then the new user is taken the the share info page
     When the new user agrees to share their info
-    Then the new user is returned to the service
+    Then the user is returned to the service
     When the new user clicks by name "logout"
     And there are no accessibility violations
     Then the new user is taken to the signed out page
