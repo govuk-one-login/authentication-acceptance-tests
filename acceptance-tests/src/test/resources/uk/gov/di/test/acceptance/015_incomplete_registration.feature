@@ -38,7 +38,7 @@ Feature: Incomplete registration
     When the new user clicks the continue button
     Then the new user is taken the the share info page
     When the new user does not agree to share their info
-    Then the new user is returned to the service
+    Then the user is returned to the service
     When the new user clicks link by href "https://build.account.gov.uk"
     When the new user clicks link by href "/enter-password?type=deleteAccount"
     When the new user enters their password

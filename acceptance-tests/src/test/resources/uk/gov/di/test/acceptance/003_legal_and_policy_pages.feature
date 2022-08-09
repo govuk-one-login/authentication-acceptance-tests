@@ -35,7 +35,7 @@ Feature: Legal and policy pages
     When the new user clicks link by href "/updated-terms-and-conditions-disagree"
     Then the new user is taken to the Agree to the updated terms of use to continue page
     When the new user clicks by name "termsAndConditionsResult"
-    Then the new user is returned to the service
+    Then the user is returned to the service
     When the new user clicks by name "logout"
     And there are no accessibility violations
     Then the new user is taken to the signed out page

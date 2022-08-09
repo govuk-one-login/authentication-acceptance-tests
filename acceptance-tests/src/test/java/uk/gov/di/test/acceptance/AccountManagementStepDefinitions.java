@@ -207,7 +207,8 @@ public class AccountManagementStepDefinitions extends SignInStepDefinitions {
         saveCookieSettingsButton.click();
     }
 
-    @Then("the existing account management user is taken to the GOV.UK accounts cookies policy page")
+    @Then(
+            "the existing account management user is taken to the GOV.UK accounts cookies policy page")
     public void theExistingAccountManagementUserIsTakenToTheGOVUKAccountsCookiesPolicyPage() {
         waitForPageLoadThenValidate(GOV_UK_ACCOUNTS_COOKIES);
     }
