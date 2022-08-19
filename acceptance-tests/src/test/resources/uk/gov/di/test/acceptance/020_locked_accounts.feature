@@ -1,23 +1,6 @@
 Feature: Locked accounts
   Existing users get locked out of their accounts
 
-  Scenario: Existing user requests phone OTP code 5 times
-    Given the login services are running
-    And the existing resend code user has valid credentials
-    When the existing user visits the stub relying party
-    And the existing user clicks "govuk-signin-button"
-    Then the existing user is taken to the Identity Provider Login Page
-    When the existing user selects sign in
-    Then the existing user is taken to the enter your email page
-    When the existing user enters their email address
-    Then the existing user is prompted for their password
-    When the existing user enters their password
-    Then the existing user is taken to the enter code page
-    When the existing user requests the phone otp code 5 times
-    Then the existing user is taken to the you asked to resend the security code too many times page
-    When the existing user clicks the get a new code link
-    Then the existing user is taken to the you cannot get a new security code page
-
   Scenario: New user enters incorrect email code 6 times
     Given the login services are running
     And the new email code lock user has valid credentials
