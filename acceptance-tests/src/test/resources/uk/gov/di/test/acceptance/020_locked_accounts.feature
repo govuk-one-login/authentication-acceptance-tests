@@ -4,7 +4,6 @@ Feature: Locked accounts
   Scenario: Existing user requests phone OTP code 5 times
     Given the login services are running
     And the existing resend code user has valid credentials
-    And the new email code lock user has valid credentials
     When the existing user visits the stub relying party
     And the existing user clicks "govuk-signin-button"
     Then the existing user is taken to the Identity Provider Login Page
