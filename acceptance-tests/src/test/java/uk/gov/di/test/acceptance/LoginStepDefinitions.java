@@ -38,8 +38,7 @@ public class LoginStepDefinitions extends SignInStepDefinitions {
     }
 
     @Given("the login services are running")
-    public void theServicesAreRunning() {
-    }
+    public void theServicesAreRunning() {}
 
     @And("the existing user has valid credentials")
     public void theExistingUserHasValidCredentials() {
@@ -122,8 +121,7 @@ public class LoginStepDefinitions extends SignInStepDefinitions {
     }
 
     @Then("the existing user is returned to the service")
-    public void theExistingUserIsReturnedToTheService() {
-    }
+    public void theExistingUserIsReturnedToTheService() {}
 
     @Then("the existing user is taken to the Service User Info page")
     public void theExistingUserIsTakenToTheServiceUserInfoPage() {
@@ -159,24 +157,27 @@ public class LoginStepDefinitions extends SignInStepDefinitions {
     @When("the existing user requests the phone otp code {int} times")
     public void theExistingUserRequestsThePhoneOtpCodeTimes(int timesCodeIncorrect) {
         for (int i = 0; i < timesCodeIncorrect; i++) {
-            WebElement problemWithTheCode = driver.findElement(By.className("govuk-details__summary"));
+            WebElement problemWithTheCode =
+                    driver.findElement(By.className("govuk-details__summary"));
             problemWithTheCode.click();
-            WebElement sendTheCodeAgainLink = driver.findElement(By.className("govuk-link"));
+            WebElement sendTheCodeAgainLink =
+                    driver.findElement(By.cssSelector("#form-tracking > details > div > p > a"));
             sendTheCodeAgainLink.click();
             waitForPageLoadThenValidate(RESEND_SECURITY_CODE);
-            WebElement getSecurityCodeButton = driver.findElement(By.className("govuk-button"));
+            WebElement getSecurityCodeButton = driver.findElement(By.cssSelector("#main-content > div > div > form > button"));
             getSecurityCodeButton.click();
         }
     }
 
-    @Then("the existing user is taken to the you asked to resend the security code too many times page")
+    @Then(
+            "the existing user is taken to the you asked to resend the security code too many times page")
     public void theExistingUserIsTakenToTheYouAskedToResendTheSecurityCodeTooManyTimesPage() {
         waitForPageLoadThenValidate(RESEND_SECURITY_CODE_TOO_MANY_TIMES);
     }
 
     @When("the existing user clicks the get a new code link")
     public void theExistingUserClicksTheGetANewCodeLink() {
-        WebElement getANewCodeLink = driver.findElement(By.className("govuk-link"));
+        WebElement getANewCodeLink = driver.findElement(By.cssSelector("#main-content > div > div > p:nth-child(3) > a"));
         getANewCodeLink.click();
     }
 

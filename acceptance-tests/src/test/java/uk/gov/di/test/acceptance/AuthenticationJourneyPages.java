@@ -5,7 +5,8 @@ public enum AuthenticationJourneyPages {
     ENTER_EMAIL("/enter-email", "Enter your email address"),
     ENTER_EMAIL_CREATE("/enter-email-create", "Enter your email address"),
     ACCOUNT_NOT_FOUND("/account-not-found", "No GOV.UK account found"),
-    CANNOT_GET_NEW_SECURITY_CODE("/resend-code", "You cannot get a new security code at the moment"),
+    CANNOT_GET_NEW_SECURITY_CODE(
+            "/resend-code", "You cannot get a new security code at the moment"),
     CHECK_YOUR_EMAIL("/check-your-email", "Check your email"),
     CREATE_PASSWORD("/create-password", "Create your password"),
     GET_SECURITY_CODES("/get-security-codes", "Choose how to get security codes"),
@@ -27,7 +28,9 @@ public enum AuthenticationJourneyPages {
     SECURITY_CODE_INVALID(
             "/security-code-invalid", "You entered the wrong security code too many times"),
     RESEND_SECURITY_CODE("/resend-code", "Get security code"),
-    RESEND_SECURITY_CODE_TOO_MANY_TIMES("/security-code-requested-too-many-times", "You asked to resend the security code too many times");
+    RESEND_SECURITY_CODE_TOO_MANY_TIMES(
+            "/security-code-requested-too-many-times",
+            "You asked to resend the security code too many times");
 
     private static final String PRODUCT_NAME = "GOV.UK account";
 
