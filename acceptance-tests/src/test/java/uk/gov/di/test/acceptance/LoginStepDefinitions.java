@@ -164,7 +164,8 @@ public class LoginStepDefinitions extends SignInStepDefinitions {
                     driver.findElement(By.cssSelector("#form-tracking > details > div > p > a"));
             sendTheCodeAgainLink.click();
             waitForPageLoadThenValidate(RESEND_SECURITY_CODE);
-            WebElement getSecurityCodeButton = driver.findElement(By.cssSelector("#main-content > div > div > form > button"));
+            WebElement getSecurityCodeButton =
+                    driver.findElement(By.cssSelector("#main-content > div > div > form > button"));
             getSecurityCodeButton.click();
         }
     }
@@ -177,12 +178,20 @@ public class LoginStepDefinitions extends SignInStepDefinitions {
 
     @When("the existing user clicks the get a new code link")
     public void theExistingUserClicksTheGetANewCodeLink() {
-        WebElement getANewCodeLink = driver.findElement(By.cssSelector("#main-content > div > div > p:nth-child(3) > a"));
+        WebElement getANewCodeLink =
+                driver.findElement(
+                        By.cssSelector("#main-content > div > div > p:nth-child(3) > a"));
         getANewCodeLink.click();
     }
 
     @Then("the existing user is taken to the you cannot get a new security code page")
     public void theExistingUserIsTakenToTheYouCannotGetANewSecurityCodePage() {
         waitForPageLoadThenValidate(CANNOT_GET_NEW_SECURITY_CODE);
+    }
+
+    @And("the existing resend code user has valid credentials")
+    public void theExistingResendCodeUserHasValidCredentials() {
+        emailAddress = System.getenv().get("RESEND_CODE_TEST_USER_EMAIL");
+        password = System.getenv().get("TERMS_AND_CONDITIONS_TEST_USER_PASSWORD");
     }
 }

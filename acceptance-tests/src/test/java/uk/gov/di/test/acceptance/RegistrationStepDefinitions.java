@@ -444,10 +444,4 @@ public class RegistrationStepDefinitions extends SignInStepDefinitions {
         WebElement deleteAccountButton = driver.findElement(By.className("govuk-button--warning"));
         deleteAccountButton.click();
     }
-
-    @And("the existing resend code user has valid credentials")
-    public void theExistingResendCodeUserHasValidCredentials() {
-        emailAddress = System.getenv().get("RESEND_CODE_TEST_USER_EMAIL");
-        password = System.getenv().get("TEST_USER_PASSWORD");
-    }
 }
