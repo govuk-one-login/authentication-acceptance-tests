@@ -17,10 +17,13 @@ import java.time.Duration;
 import static java.time.temporal.ChronoUnit.MINUTES;
 import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static uk.gov.di.test.acceptance.AuthenticationJourneyPages.CANNOT_GET_NEW_SECURITY_CODE;
 import static uk.gov.di.test.acceptance.AuthenticationJourneyPages.ENTER_CODE;
 import static uk.gov.di.test.acceptance.AuthenticationJourneyPages.ENTER_EMAIL_EXISTING_USER;
 import static uk.gov.di.test.acceptance.AuthenticationJourneyPages.ENTER_PASSWORD;
 import static uk.gov.di.test.acceptance.AuthenticationJourneyPages.ENTER_PHONE_NUMBER;
+import static uk.gov.di.test.acceptance.AuthenticationJourneyPages.RESEND_SECURITY_CODE;
+import static uk.gov.di.test.acceptance.AuthenticationJourneyPages.RESEND_SECURITY_CODE_TOO_MANY_TIMES;
 import static uk.gov.di.test.acceptance.AuthenticationJourneyPages.SIGN_IN_OR_CREATE;
 
 public class LoginStepDefinitions extends SignInStepDefinitions {
@@ -149,5 +152,46 @@ public class LoginStepDefinitions extends SignInStepDefinitions {
     public void theExistingUserClicksByName(String buttonName) {
         WebElement button = driver.findElement(By.name(buttonName));
         button.click();
+    }
+
+    @When("the existing user requests the phone otp code {int} times")
+    public void theExistingUserRequestsThePhoneOtpCodeTimes(int timesCodeIncorrect) {
+        for (int i = 0; i < timesCodeIncorrect; i++) {
+            WebElement problemWithTheCode =
+                    driver.findElement(By.className("govuk-details__summary"));
+            problemWithTheCode.click();
+            WebElement sendTheCodeAgainLink =
+                    driver.findElement(By.cssSelector("#form-tracking > details > div > p > a"));
+            sendTheCodeAgainLink.click();
+            waitForPageLoadThenValidate(RESEND_SECURITY_CODE);
+            WebElement getSecurityCodeButton =
+                    driver.findElement(By.cssSelector("#main-content > div > div > form > button"));
+            getSecurityCodeButton.click();
+        }
+    }
+
+    @Then(
+            "the existing user is taken to the you asked to resend the security code too many times page")
+    public void theExistingUserIsTakenToTheYouAskedToResendTheSecurityCodeTooManyTimesPage() {
+        waitForPageLoadThenValidate(RESEND_SECURITY_CODE_TOO_MANY_TIMES);
+    }
+
+    @When("the existing user clicks the get a new code link")
+    public void theExistingUserClicksTheGetANewCodeLink() {
+        WebElement getANewCodeLink =
+                driver.findElement(
+                        By.cssSelector("#main-content > div > div > p:nth-child(3) > a"));
+        getANewCodeLink.click();
+    }
+
+    @Then("the existing user is taken to the you cannot get a new security code page")
+    public void theExistingUserIsTakenToTheYouCannotGetANewSecurityCodePage() {
+        waitForPageLoadThenValidate(CANNOT_GET_NEW_SECURITY_CODE);
+    }
+
+    @And("the existing resend code user has valid credentials")
+    public void theExistingResendCodeUserHasValidCredentials() {
+        emailAddress = System.getenv().get("RESEND_CODE_TEST_USER_EMAIL");
+        password = System.getenv().get("TERMS_AND_CONDITIONS_TEST_USER_PASSWORD");
     }
 }
