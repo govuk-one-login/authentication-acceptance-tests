@@ -17,7 +17,7 @@ public class AuthAppStub {
 
     public String getAuthAppOneTimeCode(String secret, long time) {
         int codeAsInt = getCodeAsInt(decodeBase32Secret(secret), getTimeWindowFromTime(time));
-        return Integer.toString(codeAsInt);
+        return String.format("%06d", codeAsInt);
     }
 
     int getCodeAsInt(byte[] secret, long time) {
