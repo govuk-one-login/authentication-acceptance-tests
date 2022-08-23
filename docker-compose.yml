@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   selenium-firefox:
-    image: selenium/standalone-firefox@sha256:4cee1e9d02dc0ff00683582a678a904991016a4534fa61bda2db11982d5094f4
+    image: selenium/standalone-firefox@sha256:02bd079b1e53a2abc4923fe84262df5a9e9de020d29f7c6552e4e7f663599e4d
     ports:
       - 4444:4444
     networks:
