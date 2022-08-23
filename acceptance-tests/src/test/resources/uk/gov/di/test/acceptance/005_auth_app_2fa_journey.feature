@@ -24,6 +24,7 @@ Feature: Authentication App Journeys
     Then the new user is taken to the setup authenticator app page
     When the new user adds the secret key on the screen to their auth app
     And the user enters the security code from the auth app
+    Then the new user is not shown an error message in field "code-error"
     And there are no accessibility violations
     Then the new user is taken to the account created page
     When the new user clicks the continue button

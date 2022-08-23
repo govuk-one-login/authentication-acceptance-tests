@@ -8,12 +8,14 @@ import io.cucumber.java.en.When;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedCondition;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import uk.gov.di.test.utils.AuthAppStub;
 
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.time.Duration;
+import java.util.List;
 import java.util.Random;
 
 import static java.time.temporal.ChronoUnit.MINUTES;
@@ -230,14 +232,22 @@ public class RegistrationStepDefinitions extends SignInStepDefinitions {
     @When("the new user adds the secret key on the screen to their auth app")
     public void theNewUserAddTheSecretKeyOnTheScreenToTheirAuthApp() {
         WebElement secretKeyField = driver.findElement(By.id("secret-key"));
+        new WebDriverWait(driver, DEFAULT_PAGE_LOAD_WAIT_TIME)
+                .until(ExpectedConditions.visibilityOf(secretKeyField));
         authAppSecretKey = secretKeyField.getText().trim();
+        assertTrue(authAppSecretKey.length() == 52);
     }
 
     @And("the user enters the security code from the auth app")
     public void theNewUserEntersTheSecurityCodeFromTheAuthApp() {
         WebElement securityCodeField = driver.findElement(By.id("code"));
         AuthAppStub authAppStub = new AuthAppStub();
-        securityCodeField.sendKeys(authAppStub.getAuthAppOneTimeCode(authAppSecretKey));
+        String securityCode = authAppStub.getAuthAppOneTimeCode(authAppSecretKey);
+        if (securityCode.length() != 6) {
+            System.out.println("Auth App Security Code: " + securityCode);
+        }
+        assertTrue(securityCode.length() == 6);
+        securityCodeField.sendKeys(securityCode);
         findAndClickContinue();
     }
 
@@ -352,6 +362,15 @@ public class RegistrationStepDefinitions extends SignInStepDefinitions {
     public void theNewUserIsShownAnErrorMessageOnTheEnterEmailPage() {
         WebElement emailDescriptionDetails = driver.findElement(By.id("error-summary-title"));
         assertTrue(emailDescriptionDetails.isDisplayed());
+    }
+
+    @Then("the new user is not shown an error message in field {string}")
+    public void theNewUserIsNotShownAnErrorMessage(String errorFieldId) {
+        List<WebElement> errorFields = driver.findElements(By.id(errorFieldId));
+        if (!errorFields.isEmpty()) {
+            System.out.println("setup-authenticator-app error: " + errorFields.get(0));
+        }
+        assertTrue(errorFields.isEmpty());
     }
 
     @When("the new user clicks by name {string}")
