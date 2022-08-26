@@ -33,6 +33,7 @@ public class RegistrationStepDefinitions extends SignInStepDefinitions {
     private String tcEmailAddress;
     private String tcPassword;
     private String authAppSecretKey;
+    private String internationalPhoneNumber;
 
     @Before
     public void setupWebdriver() throws MalformedURLException {
@@ -77,6 +78,7 @@ public class RegistrationStepDefinitions extends SignInStepDefinitions {
         sixDigitCodePhone = System.getenv().get("TEST_USER_PHONE_CODE");
         tcEmailAddress = System.getenv().get("TERMS_AND_CONDITIONS_TEST_USER_EMAIL");
         tcPassword = System.getenv().get("TERMS_AND_CONDITIONS_TEST_USER_PASSWORD");
+        internationalPhoneNumber = System.getenv().get("TEST_USER_INTERNATIONAL_PHONE_NUMBER");
     }
 
     @And("the auth app user has valid credentials")
@@ -462,5 +464,12 @@ public class RegistrationStepDefinitions extends SignInStepDefinitions {
     public void theUserClicksTheDeleteYourGOVUKAccountButton() {
         WebElement deleteAccountButton = driver.findElement(By.className("govuk-button--warning"));
         deleteAccountButton.click();
+    }
+
+    @When("the new user enters their mobile phone number using an international dialling code")
+    public void theNewUserEntersTheirMobilePhoneNumberUsingAnInternationalDiallingCode() {
+        WebElement phoneNumberField = driver.findElement(By.id("phoneNumber"));
+        phoneNumberField.sendKeys(internationalPhoneNumber);
+        findAndClickContinue();
     }
 }
