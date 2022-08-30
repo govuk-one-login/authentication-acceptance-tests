@@ -20,11 +20,13 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static uk.gov.di.test.acceptance.AuthenticationJourneyPages.CANNOT_GET_NEW_SECURITY_CODE;
 import static uk.gov.di.test.acceptance.AuthenticationJourneyPages.ENTER_CODE;
 import static uk.gov.di.test.acceptance.AuthenticationJourneyPages.ENTER_EMAIL_EXISTING_USER;
+import static uk.gov.di.test.acceptance.AuthenticationJourneyPages.ENTER_EMAIL_EXISTING_USER_WELSH;
 import static uk.gov.di.test.acceptance.AuthenticationJourneyPages.ENTER_PASSWORD;
 import static uk.gov.di.test.acceptance.AuthenticationJourneyPages.ENTER_PHONE_NUMBER;
 import static uk.gov.di.test.acceptance.AuthenticationJourneyPages.RESEND_SECURITY_CODE;
 import static uk.gov.di.test.acceptance.AuthenticationJourneyPages.RESEND_SECURITY_CODE_TOO_MANY_TIMES;
 import static uk.gov.di.test.acceptance.AuthenticationJourneyPages.SIGN_IN_OR_CREATE;
+import static uk.gov.di.test.acceptance.AuthenticationJourneyPages.SIGN_IN_OR_CREATE_WELSH;
 
 public class LoginStepDefinitions extends SignInStepDefinitions {
 
@@ -193,5 +195,15 @@ public class LoginStepDefinitions extends SignInStepDefinitions {
     public void theExistingResendCodeUserHasValidCredentials() {
         emailAddress = System.getenv().get("RESEND_CODE_TEST_USER_EMAIL");
         password = System.getenv().get("TERMS_AND_CONDITIONS_TEST_USER_PASSWORD");
+    }
+
+    @Then("the existing user is taken to the Identity Provider Welsh Login Page")
+    public void theExistingUserIsTakenToTheIdentityProviderWelshLoginPage() {
+        waitForPageLoadThenValidate(SIGN_IN_OR_CREATE_WELSH);
+    }
+
+    @Then("the existing user is taken to the Welsh enter your email page")
+    public void theExistingUserIsTakenToTheWelshEnterYourEmailPage() {
+        waitForPageLoadThenValidate(ENTER_EMAIL_EXISTING_USER_WELSH);
     }
 }

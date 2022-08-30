@@ -67,6 +67,19 @@ Feature: Login Journey
     When the existing user enters the six digit security code from their phone
     Then the existing user is returned to the service
 
+  Scenario: Existing user switches content to Welsh
+    Given the login services are running
+    And the existing user has valid credentials
+    When the existing user visits the stub relying party
+    And the existing user clicks "lng-cy"
+    And the existing user clicks "govuk-signin-button"
+    Then the existing user is taken to the Identity Provider Welsh Login Page
+    When the existing user selects sign in
+    Then the existing user is taken to the Welsh enter your email page
+    When the existing user enters their email address
+    Then the existing user is prompted for their password
+    When the existing user enters their password
+
   Scenario: Existing user attempts to change their phone number using their existing one
     Given the account management services are running
     And the existing account management user has valid credentials
