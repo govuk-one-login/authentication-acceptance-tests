@@ -5,6 +5,7 @@ import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import org.junit.jupiter.api.Assertions;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedCondition;
@@ -19,9 +20,11 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static uk.gov.di.test.acceptance.AuthenticationJourneyPages.CANNOT_GET_NEW_SECURITY_CODE;
 import static uk.gov.di.test.acceptance.AuthenticationJourneyPages.ENTER_CODE;
+import static uk.gov.di.test.acceptance.AuthenticationJourneyPages.ENTER_CODE_WELSH;
 import static uk.gov.di.test.acceptance.AuthenticationJourneyPages.ENTER_EMAIL_EXISTING_USER;
 import static uk.gov.di.test.acceptance.AuthenticationJourneyPages.ENTER_EMAIL_EXISTING_USER_WELSH;
 import static uk.gov.di.test.acceptance.AuthenticationJourneyPages.ENTER_PASSWORD;
+import static uk.gov.di.test.acceptance.AuthenticationJourneyPages.ENTER_PASSWORD_WELSH;
 import static uk.gov.di.test.acceptance.AuthenticationJourneyPages.ENTER_PHONE_NUMBER;
 import static uk.gov.di.test.acceptance.AuthenticationJourneyPages.RESEND_SECURITY_CODE;
 import static uk.gov.di.test.acceptance.AuthenticationJourneyPages.RESEND_SECURITY_CODE_TOO_MANY_TIMES;
@@ -205,5 +208,18 @@ public class LoginStepDefinitions extends SignInStepDefinitions {
     @Then("the existing user is taken to the Welsh enter your email page")
     public void theExistingUserIsTakenToTheWelshEnterYourEmailPage() {
         waitForPageLoadThenValidate(ENTER_EMAIL_EXISTING_USER_WELSH);
+        WebElement continueButton = driver.findElement(
+                        By.cssSelector("#main-content > div > div > form > button"));
+        Assertions.assertEquals("Parhau", continueButton.getText());
+    }
+
+    @Then("the existing user is prompted for their password in Welsh")
+    public void theExistingUserIsPromptedForTheirPasswordInWelsh() {
+        waitForPageLoadThenValidate(ENTER_PASSWORD_WELSH);
+    }
+
+    @Then("the existing user is taken to the Welsh enter code page")
+    public void theExistingUserIsTakenToTheWelshEnterCodePage() {
+        waitForPageLoadThenValidate(ENTER_CODE_WELSH);
     }
 }

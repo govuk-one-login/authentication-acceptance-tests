@@ -77,8 +77,9 @@ Feature: Login Journey
     When the existing user selects sign in
     Then the existing user is taken to the Welsh enter your email page
     When the existing user enters their email address
-    Then the existing user is prompted for their password
+    Then the existing user is prompted for their password in Welsh
     When the existing user enters their password
+    Then the existing user is taken to the Welsh enter code page
 
   Scenario: Existing user attempts to change their phone number using their existing one
     Given the account management services are running
