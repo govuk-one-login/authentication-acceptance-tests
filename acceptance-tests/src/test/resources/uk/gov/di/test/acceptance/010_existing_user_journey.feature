@@ -80,6 +80,12 @@ Feature: Login Journey
     Then the existing user is prompted for their password in Welsh
     When the existing user enters their password
     Then the existing user is taken to the Welsh enter code page
+    When the existing user visits the stub relying party
+    And the existing user clicks "lng-cy"
+    And the existing user clicks "govuk-signin-button"
+    Then the existing user is taken to the Identity Provider Welsh Login Page
+    When the existing account management user selects create an account
+    Then the existing user is taken to the Welsh enter your email page
 
   Scenario: Existing user attempts to change their phone number using their existing one
     Given the account management services are running
