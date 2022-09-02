@@ -210,7 +210,9 @@ public class LoginStepDefinitions extends SignInStepDefinitions {
         waitForPageLoadThenValidate(ENTER_EMAIL_EXISTING_USER_WELSH);
         WebElement continueButton = driver.findElement(
                         By.cssSelector("#main-content > div > div > form > button"));
-        Assertions.assertEquals("Parhau", continueButton.getText());
+        //Assertions.assertNotEquals("Continue", continueButton.getText());
+        WebElement backButton = driver.findElement(By.className(("govuk-back-link")));
+        //Assertions.assertNotEquals("Back", backButton.getText());
     }
 
     @Then("the existing user is prompted for their password in Welsh")
