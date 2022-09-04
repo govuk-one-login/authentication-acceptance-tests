@@ -27,7 +27,8 @@ public enum AuthenticationJourneyPages {
     ENTER_CODE_WELSH("/enter-code", "Gwiriwch eich ffôn"),
     ENTER_EMAIL_EXISTING_USER(
             "/enter-email", "Enter your email address to sign in to your GOV.UK account"),
-    ENTER_EMAIL_EXISTING_USER_WELSH("/enter-email", "Rhowch eich cyfeiriad e-bost i fewngofnodi i'ch cyfrif GOV.UK"),
+    ENTER_EMAIL_EXISTING_USER_WELSH(
+            "/enter-email", "Rhowch eich cyfeiriad e-bost i fewngofnodi i'ch cyfrif GOV.UK"),
     SHARE_INFO("/share-info", "Share information from your GOV.UK account"),
     SECURITY_CODE_INVALID(
             "/security-code-invalid", "You entered the wrong security code too many times"),
