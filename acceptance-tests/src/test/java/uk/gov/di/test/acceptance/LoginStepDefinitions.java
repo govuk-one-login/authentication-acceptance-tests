@@ -194,4 +194,43 @@ public class LoginStepDefinitions extends SignInStepDefinitions {
         emailAddress = System.getenv().get("RESEND_CODE_TEST_USER_EMAIL");
         password = System.getenv().get("TERMS_AND_CONDITIONS_TEST_USER_PASSWORD");
     }
+
+    @Then("the existing user is taken to the Identity Provider Welsh Login Page")
+    public void theExistingUserIsTakenToTheIdentityProviderWelshLoginPage() {
+        assertEquals("Creu cyfrif GOV.UK neu fewngofnodi - Cyfrif GOV.UK", driver.getTitle());
+    }
+
+    @Then("the existing user is taken to the Welsh enter your email page")
+    public void theExistingUserIsTakenToTheWelshEnterYourEmailPage() {
+        assertEquals("Rhowch eich cyfeiriad e-bost i fewngofnodi i'ch cyfrif GOV.UK - Cyfrif GOV.UK", driver.getTitle());
+        WebElement continueButton =
+                driver.findElement(By.cssSelector("#main-content > div > div > form > button"));
+        // Assertions.assertNotEquals("Continue", continueButton.getText());
+        WebElement backButton = driver.findElement(By.className(("govuk-back-link")));
+        // Assertions.assertNotEquals("Back", backButton.getText());
+    }
+
+    @Then("the existing user is prompted for their password in Welsh")
+    public void theExistingUserIsPromptedForTheirPasswordInWelsh() {
+        assertEquals("Rhowch eich cyfrinair - Cyfrif GOV.UK", driver.getTitle());
+    }
+
+    @Then("the existing user is taken to the Welsh enter code page")
+    public void theExistingUserIsTakenToTheWelshEnterCodePage() {
+        assertEquals("Gwiriwch eich ffôn - Cyfrif GOV.UK", driver.getTitle());
+    }
+
+    @When("the existing user enters their password in Welsh")
+    public void theExistingUserEntersTheirPasswordInWelsh() {
+        WebElement passwordField = driver.findElement(By.id("password"));
+        passwordField.sendKeys(password);
+        findAndClickContinueWelsh();
+    }
+
+    @When("the existing user enters their email address in Welsh")
+    public void theExistingUserEntersTheirEmailAddressInWelsh() {
+        WebElement emailAddressField = driver.findElement(By.id("email"));
+        emailAddressField.sendKeys(emailAddress);
+        findAndClickContinueWelsh();
+    }
 }

@@ -44,6 +44,19 @@ Feature: Login Journey
     And the existing user clicks by name "logout"
     Then the existing user is taken to the you have signed out page
 
+  Scenario: Existing user switches content to Welsh
+    Given the login services are running
+    And the existing user has valid credentials
+    When the existing account management user navigates to account management
+    And the existing account management user clicks link by href "?lng=cy"
+    Then the existing user is taken to the Identity Provider Welsh Login Page
+    When the existing user selects sign in
+    Then the existing user is taken to the Welsh enter your email page
+    When the existing user enters their email address in Welsh
+    Then the existing user is prompted for their password in Welsh
+    When the existing user enters their password in Welsh
+    Then the existing user is taken to the Welsh enter code page
+
   Scenario: Existing user logs in without 2FA
     Given the login services are running
     And the existing user has valid credentials
