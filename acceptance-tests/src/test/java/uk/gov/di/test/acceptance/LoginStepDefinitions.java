@@ -5,6 +5,7 @@ import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import org.junit.jupiter.api.Assertions;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedCondition;
@@ -202,12 +203,13 @@ public class LoginStepDefinitions extends SignInStepDefinitions {
 
     @Then("the existing user is taken to the Welsh enter your email page")
     public void theExistingUserIsTakenToTheWelshEnterYourEmailPage() {
-        assertEquals("Rhowch eich cyfeiriad e-bost i fewngofnodi i'ch cyfrif GOV.UK - Cyfrif GOV.UK", driver.getTitle());
+        assertEquals("Rhowch eich cyfeiriad e-bost i fewngofnodi i'ch cyfrif GOV.UK - Cyfrif GOV.UK",
+                driver.getTitle());
         WebElement continueButton =
                 driver.findElement(By.cssSelector("#main-content > div > div > form > button"));
-        // Assertions.assertNotEquals("Continue", continueButton.getText());
+        Assertions.assertNotEquals("Continue", continueButton.getText());
         WebElement backButton = driver.findElement(By.className(("govuk-back-link")));
-        // Assertions.assertNotEquals("Back", backButton.getText());
+        Assertions.assertNotEquals("Back", backButton.getText());
     }
 
     @Then("the existing user is prompted for their password in Welsh")
