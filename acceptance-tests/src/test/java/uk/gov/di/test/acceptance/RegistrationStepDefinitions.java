@@ -344,7 +344,7 @@ public class RegistrationStepDefinitions extends SignInStepDefinitions {
 
     @When("the new user agrees to share their info")
     public void theNewUserAgreesToShareTheirInfo() {
-        WebElement radioShareInfoAccept = driver.findElement(By.name("consentValue"));
+        WebElement radioShareInfoAccept = driver.findElement(By.id("consentValue"));
         radioShareInfoAccept.click();
         findAndClickContinue();
     }
@@ -455,7 +455,7 @@ public class RegistrationStepDefinitions extends SignInStepDefinitions {
 
     @When("the new user does not agree to share their info")
     public void theNewUserDoesNotAgreeToShareTheirInfo() {
-        WebElement radioShareInfoReject = driver.findElement(By.name("consentValue-2"));
+        WebElement radioShareInfoReject = driver.findElement(By.id("consentValue-2"));
         radioShareInfoReject.click();
         findAndClickContinue();
     }
