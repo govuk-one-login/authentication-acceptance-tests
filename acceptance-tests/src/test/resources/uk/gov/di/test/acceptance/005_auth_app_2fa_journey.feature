@@ -20,7 +20,7 @@ Feature: Authentication App Journeys
     When the new user creates a password
     And there are no accessibility violations
     Then the new user is taken to the get security codes page
-    When the new user chooses "mfa-options-auth-app" to get security codes
+    When the new user chooses "mfaOptions-2" to get security codes
     Then the new user is taken to the setup authenticator app page
     When the new user adds the secret key on the screen to their auth app
     And the user enters the security code from the auth app
