@@ -29,8 +29,6 @@ Feature: Authentication App Journeys
     Then the new user is taken to the account created page
     When the new user clicks the continue button
     And there are no accessibility violations
-    Then the new user is taken the the share info page
-    When the new user agrees to share their info
     Then the user is returned to the service
     When the new user clicks by name "logout"
     And there are no accessibility violations
