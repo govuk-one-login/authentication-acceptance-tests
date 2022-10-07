@@ -203,7 +203,8 @@ public class LoginStepDefinitions extends SignInStepDefinitions {
 
     @Then("the existing user is taken to the Welsh enter your email page")
     public void theExistingUserIsTakenToTheWelshEnterYourEmailPage() {
-        assertEquals("Rhowch eich cyfeiriad e-bost i fewngofnodi i'ch cyfrif GOV.UK - Cyfrif GOV.UK",
+        assertEquals(
+                "Rhowch eich cyfeiriad e-bost i fewngofnodi i'ch cyfrif GOV.UK - Cyfrif GOV.UK",
                 driver.getTitle());
         WebElement continueButton =
                 driver.findElement(By.cssSelector("#main-content > div > div > form > button"));

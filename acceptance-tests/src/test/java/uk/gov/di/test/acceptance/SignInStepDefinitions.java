@@ -91,7 +91,8 @@ public class SignInStepDefinitions {
     }
 
     protected void findAndClickContinueWelsh() {
-        WebElement continueButton = driver.findElement(By.cssSelector("#main-content > div > div > form > button"));
+        WebElement continueButton =
+                driver.findElement(By.cssSelector("#main-content > div > div > form > button"));
         continueButton.click();
     }
 

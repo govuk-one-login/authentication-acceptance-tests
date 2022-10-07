@@ -187,6 +187,11 @@ public class RegistrationStepDefinitions extends SignInStepDefinitions {
         waitForPageLoadThenValidate(SECURITY_CODE_INVALID);
     }
 
+    @Then("the new user is taken to the resend email code page")
+    public void theNewUserIsTakenToTheResendEmailCodePage() {
+        waitForPageLoadThenValidate(RESEND_EMAIL_CODE);
+    }
+
     @Then("the new user is taken to the create your password page")
     public void theNewUserIsAskedToCreateAPassword() {
         waitForPageLoadThenValidate(CREATE_PASSWORD);
@@ -213,8 +218,7 @@ public class RegistrationStepDefinitions extends SignInStepDefinitions {
 
     @When("the new user chooses text message security codes")
     public void theNewUserChoosesTextMessageSecurityCodes() {
-        WebElement radioTextMessageSecurityCodes =
-                driver.findElement(By.id("mfaOptions"));
+        WebElement radioTextMessageSecurityCodes = driver.findElement(By.id("mfaOptions"));
         radioTextMessageSecurityCodes.click();
         findAndClickContinue();
     }
