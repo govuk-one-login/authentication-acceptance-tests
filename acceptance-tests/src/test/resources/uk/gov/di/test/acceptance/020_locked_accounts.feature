@@ -31,8 +31,6 @@ Feature: Locked accounts
     Then the new user is taken to the Identity Provider Login Page
     When the new user selects create an account
     Then the new user is taken to the enter your email page
-    When the new user enters their email address
-    Then the new user is taken to the security code invalid page
 
   Scenario: New user enters incorrect phone code 6 times
     Given the login services are running
