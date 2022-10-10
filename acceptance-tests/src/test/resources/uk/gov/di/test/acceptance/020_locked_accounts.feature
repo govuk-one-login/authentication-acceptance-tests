@@ -15,6 +15,10 @@ Feature: Locked accounts
     When the new user enters the six digit security code incorrectly 5 times
     When the new user enters an incorrect email code one more time
     Then the new user is taken to the security code invalid page
+    When the new user clicks link by href "/resend-email-code?requestNewCode=true"
+    Then the new user is taken to the resend email code page
+    When the new user clicks "resend-email-code"
+    Then the new user is asked to check their email
     When the new user visits the stub relying party
     And the new user clicks "govuk-signin-button"
     Then the new user is taken to the Identity Provider Login Page
