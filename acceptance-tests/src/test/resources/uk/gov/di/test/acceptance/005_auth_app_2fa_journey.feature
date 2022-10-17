@@ -57,3 +57,5 @@ Feature: Authentication App Journeys
     Then the existing auth app user is prompted for their password
     When the existing auth app user enters their password
     Then the user is returned to the service
+    When the new user clicks by name "logout"
+    Then the new user is taken to the signed out page
