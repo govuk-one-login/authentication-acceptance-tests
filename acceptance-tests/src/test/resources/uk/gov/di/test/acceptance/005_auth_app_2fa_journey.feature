@@ -47,3 +47,13 @@ Feature: Authentication App Journeys
     When the new user clicks by name "logout"
     And there are no accessibility violations
     Then the new user is taken to the signed out page
+    When the user visits the stub relying party
+    And the existing user clicks "2fa-off"
+    And the existing user clicks "govuk-signin-button"
+    Then the existing user is taken to the Identity Provider Login Page
+    When the existing auth app user selects sign in
+    Then the existing auth app user is taken to the enter your email page
+    When the existing auth app user enters their email address
+    Then the existing auth app user is prompted for their password
+    When the existing auth app user enters their password
+    Then the user is returned to the service
