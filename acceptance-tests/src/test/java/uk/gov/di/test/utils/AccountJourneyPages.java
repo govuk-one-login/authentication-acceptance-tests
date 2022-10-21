@@ -1,4 +1,4 @@
-package uk.gov.di.test.acceptance;
+package uk.gov.di.test.utils;
 
 public enum AccountJourneyPages {
     YOUR_GOV_UK_ACCOUNT("/manage-your-account", "Your GOV.UK account"),

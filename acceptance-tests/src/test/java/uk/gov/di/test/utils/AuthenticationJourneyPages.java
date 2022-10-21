@@ -1,4 +1,4 @@
-package uk.gov.di.test.acceptance;
+package uk.gov.di.test.utils;
 
 public enum AuthenticationJourneyPages {
     SIGN_IN_OR_CREATE("/sign-in-or-create", "Create a GOV.UK account or sign in"),
@@ -27,7 +27,6 @@ public enum AuthenticationJourneyPages {
     SHARE_INFO("/share-info", "Share information from your GOV.UK account"),
     SECURITY_CODE_INVALID(
             "/security-code-invalid", "You entered the wrong security code too many times"),
-    RESEND_EMAIL_CODE("/resend-email-code", "Get security code"),
     RESEND_SECURITY_CODE("/resend-code", "Get security code"),
     RESEND_SECURITY_CODE_TOO_MANY_TIMES(
             "/security-code-requested-too-many-times",

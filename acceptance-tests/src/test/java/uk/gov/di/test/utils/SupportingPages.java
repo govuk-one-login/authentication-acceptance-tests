@@ -1,4 +1,4 @@
-package uk.gov.di.test.acceptance;
+package uk.gov.di.test.utils;
 
 public enum SupportingPages {
     ACCESSIBILITY_STATEMENT(

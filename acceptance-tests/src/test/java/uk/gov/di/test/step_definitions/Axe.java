@@ -1,18 +1,18 @@
-package uk.gov.di.test.acceptance;
+package uk.gov.di.test.step_definitions;
 
 import com.deque.axe.AXE;
 import io.cucumber.java.en.And;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import uk.gov.di.test.utils.SignIn;
 
 import java.net.URL;
 
 import static org.junit.Assert.assertEquals;
-import static uk.gov.di.test.acceptance.SignInStepDefinitions.driver;
 
-public class AxeStepDefinitions {
+public class Axe extends SignIn {
 
-    private static final URL scriptUrl = AxeStepDefinitions.class.getResource("/axe.min.js");
+    private static final URL scriptUrl = Axe.class.getResource("/axe.min.js");
     protected static final Boolean ACCESSIBILITY_CHECKS =
             Boolean.parseBoolean(System.getenv().getOrDefault("ACCESSIBILITY_CHECKS", "false"));
 

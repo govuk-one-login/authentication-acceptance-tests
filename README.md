@@ -73,4 +73,4 @@ NOTES for now until further implementation (Ability to interact with the DB from
 
 Cucumber feature files live in the acceptance-tests [resources](acceptance-tests/src/test/resources/uk/gov/di/test/acceptance/) directory.
 
-Java classes backing the tests live in the acceptance-tests java [acceptance](acceptance-tests/src/test/java/uk/gov/di/test/acceptance/) directory.
+Java classes backing the tests live in the acceptance-tests java [acceptance](acceptance-tests/src/test/java/uk/gov/di/test/step_definitions/) directory.
