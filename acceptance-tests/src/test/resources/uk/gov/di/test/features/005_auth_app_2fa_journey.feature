@@ -1,7 +1,8 @@
+@AuthApp2FA
 Feature: Authentication App Journeys
   New user creates an account and logs in using an auth app
 
-  @AuthApp2FA
+
   Scenario: User successfully registers with auth app 2FA, logs out then signs in again
     Given the registration services are running
     And the auth app user has valid credentials
@@ -33,7 +34,7 @@ Feature: Authentication App Journeys
     Then the user is returned to the service
     When the user visits the stub relying party
     And the new user clicks "govuk-signin-button"
-    When the new user clicks by name "logout"
+    When the user clicks logout
     And there are no accessibility violations
     Then the new user is taken to the signed out page
     When the user visits the stub relying party
@@ -47,7 +48,7 @@ Feature: Authentication App Journeys
     Then the existing user is taken to the enter authenticator app code page
     When the user enters the security code from the auth app
     Then the user is returned to the service
-    When the new user clicks by name "logout"
+    When the user clicks logout
     And there are no accessibility violations
     Then the new user is taken to the signed out page
     When the user visits the stub relying party
@@ -60,7 +61,7 @@ Feature: Authentication App Journeys
     Then the existing auth app user is prompted for their password
     When the existing auth app user enters their password
     Then the user is returned to the service
-    When the new user clicks by name "logout"
+    When the user clicks logout
     Then the new user is taken to the signed out page
 
   Scenario: User signs in auth app without 2FA, then uplifts

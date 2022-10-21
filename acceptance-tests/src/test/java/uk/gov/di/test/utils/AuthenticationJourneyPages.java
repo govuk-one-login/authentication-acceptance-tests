@@ -1,4 +1,4 @@
-package uk.gov.di.test.acceptance;
+package uk.gov.di.test.utils;
 
 public enum AuthenticationJourneyPages {
     SIGN_IN_OR_CREATE("/sign-in-or-create", "Create a GOV.UK account or sign in"),

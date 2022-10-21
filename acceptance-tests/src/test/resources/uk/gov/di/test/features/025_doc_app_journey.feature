@@ -1,3 +1,4 @@
+@Doc
 Feature: Doc app journey
   User can perform a Doc app journey
 
