@@ -54,8 +54,12 @@ Feature: Login Journey
     Then the existing user is taken to the Welsh enter your email page
     When the existing user enters their email address in Welsh
     Then the existing user is prompted for their password in Welsh
-    When the existing user enters their password in Welsh
-    Then the existing user is taken to the Welsh enter code page
+    When the user clicks link "Yn ôl"
+    Then the existing user is taken to the Welsh enter your email page
+    When the user clicks link "Yn ôl"
+    Then the existing user is taken to the Identity Provider Welsh Login Page
+    When the existing account management user clicks link by href "?lng=en"
+    Then the existing user is taken to the Identity Provider Login Page
 
   Scenario: Existing user logs in without 2FA
     Given the login services are running
@@ -103,10 +107,8 @@ Feature: Login Journey
     Then the existing account management user is asked to enter their password
     When the existing account management user clicks link by href "https://signin.build.account.gov.uk/cookies"
     And the existing account management user accepts the cookie policy
-    And the existing account management user clicks the go back link
     Then the existing account management user is taken to the GOV.UK accounts cookies policy page
     When the existing account management user rejects the cookie policy
-    And the existing account management user clicks the go back link
     Then the existing account management user is taken to the GOV.UK accounts cookies policy page
 
   Scenario: User changes their password
