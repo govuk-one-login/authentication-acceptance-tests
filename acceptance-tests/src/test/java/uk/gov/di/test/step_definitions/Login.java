@@ -27,6 +27,7 @@ public class Login extends SignIn {
     private String sixDigitCodePhone;
 
     public LoginPage loginPage = new LoginPage();
+
     @Before
     public void setupWebdriver() throws MalformedURLException {
         super.setupWebdriver();
@@ -102,9 +103,7 @@ public class Login extends SignIn {
             new WebDriverWait(driver, Duration.of(1, MINUTES))
                     .until(
                             (ExpectedCondition<Boolean>)
-                                    driver ->
-                                            loginPage.getSixDigitSecurityCodeLength()
-                                                    == 6);
+                                    driver -> loginPage.getSixDigitSecurityCodeLength() == 6);
         } else {
             loginPage.enterSixDigitSecurityCode(sixDigitCodePhone);
         }

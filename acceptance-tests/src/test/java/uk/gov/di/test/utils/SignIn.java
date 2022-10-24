@@ -22,22 +22,30 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class SignIn {
     protected static final String CHROME_BROWSER = "chrome";
     protected static final String FIREFOX_BROWSER = "firefox";
-    protected static final String SELENIUM_URL = System.getenv().getOrDefault("SELENIUM_URL","http://localhost:4445/wd/hub");
+    protected static final String SELENIUM_URL =
+            System.getenv().getOrDefault("SELENIUM_URL", "http://localhost:4445/wd/hub");
 
     protected static final String IDP_URL =
-            System.getenv().getOrDefault("IDP_URL", "https://front.build.auth.ida.digital.cabinet-office.gov.uk/");
+            System.getenv()
+                    .getOrDefault(
+                            "IDP_URL",
+                            "https://front.build.auth.ida.digital.cabinet-office.gov.uk/");
     protected static final String RP_URL =
-            System.getenv().getOrDefault("RP_URL", "https://di-auth-stub-relying-party-build-s2.london.cloudapps.digital/");
+            System.getenv()
+                    .getOrDefault(
+                            "RP_URL",
+                            "https://di-auth-stub-relying-party-build-s2.london.cloudapps.digital/");
     protected static final String AM_URL =
             System.getenv().getOrDefault("AM_URL", "https://build.account.gov.uk/");
 
-    protected static final String TEST_USER_EMAIL=
-            System.getenv().getOrDefault("TEST_USER_EMAIL", "rahul.gupta+2@digital.cabinet-office.gov.uk");
+    protected static final String TEST_USER_EMAIL =
+            System.getenv()
+                    .getOrDefault("TEST_USER_EMAIL", "rahul.gupta+2@digital.cabinet-office.gov.uk");
 
-    protected static final String TEST_USER_PASSWORD=
+    protected static final String TEST_USER_PASSWORD =
             System.getenv().getOrDefault("TEST_USER_PASSWORD", "J3m3conn3ct312345");
 
-    protected static final String TEST_USER_PHONE_CODE=
+    protected static final String TEST_USER_PHONE_CODE =
             System.getenv().getOrDefault("TEST_USER_PHONE_CODE", "409722");
     protected static final Boolean SELENIUM_LOCAL =
             Boolean.parseBoolean(System.getenv().getOrDefault("SELENIUM_LOCAL", "true"));
@@ -101,7 +109,8 @@ public class SignIn {
     }
 
     protected void findAndClickContinueWelsh() {
-        WebElement continueButton = driver.findElement(By.cssSelector("#main-content > div > div > form > button"));
+        WebElement continueButton =
+                driver.findElement(By.cssSelector("#main-content > div > div > form > button"));
         continueButton.click();
     }
 

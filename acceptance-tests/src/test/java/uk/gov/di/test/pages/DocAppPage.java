@@ -18,23 +18,24 @@ public class DocAppPage extends SignIn {
     public void continueButtonClick() {
         driver.findElement(continueButton).click();
     }
+
     public void accountLinkClick() {
         driver.findElement(myAccountLink).click();
     }
+
     public void enterPayLoad(String jsonPayLoad) {
         driver.findElement(payloadInputField).sendKeys(jsonPayLoad);
     }
+
     public void clickSubmitButton() {
         driver.findElement(submitButton).click();
     }
 
-    public Boolean docAppCredentialsDisplayed()
-    {
+    public Boolean docAppCredentialsDisplayed() {
         return driver.findElement(docAppCredentials).isDisplayed();
     }
-    public Boolean idTokenDisplayed()
-    {
+
+    public Boolean idTokenDisplayed() {
         return driver.findElement(idToken).isDisplayed();
     }
-
 }

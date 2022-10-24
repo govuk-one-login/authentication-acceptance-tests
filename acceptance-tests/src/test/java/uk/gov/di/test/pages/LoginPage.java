@@ -3,7 +3,6 @@ package uk.gov.di.test.pages;
 import org.openqa.selenium.By;
 import uk.gov.di.test.utils.SignIn;
 
-
 public class LoginPage extends SignIn {
     By signInLink = By.id("sign-in-link");
     By emailAddressField = By.id("email");
@@ -25,30 +24,37 @@ public class LoginPage extends SignIn {
     public void buttonClick(String name) {
         driver.findElement(By.id(name)).click();
     }
+
     public void signInLinkClick() {
         driver.findElement(signInLink).click();
     }
+
     public void getNewTheCodeAgainLinkClick() {
         driver.findElement(getNewTheCodeAgainLink).click();
     }
+
     public void problemWithTheCodeClick() {
         driver.findElement(problemWithTheCode).click();
     }
+
     public void securityCodeClick() {
         driver.findElement(securityCode).click();
     }
+
     public void sendTheCodeAgainLinkClick() {
         driver.findElement(sendTheCodeAgainLink).click();
     }
-   public void enterEmailAddress(String email) {
+
+    public void enterEmailAddress(String email) {
         driver.findElement(emailAddressField).clear();
         driver.findElement(emailAddressField).sendKeys(email);
     }
 
-   public void enterSixDigitSecurityCode(String code) {
+    public void enterSixDigitSecurityCode(String code) {
         driver.findElement(sixDigitSecurityCodeField).clear();
         driver.findElement(sixDigitSecurityCodeField).sendKeys(code);
     }
+
     public int getSixDigitSecurityCodeLength() {
         driver.findElement(sixDigitSecurityCodeField).clear();
         return driver.findElement(sixDigitSecurityCodeField).getAttribute("value").length();
@@ -57,6 +63,7 @@ public class LoginPage extends SignIn {
     public void enterPassword(String password) {
         driver.findElement(passwordField).sendKeys(password);
     }
+
     public void enterConfirmPassword(String password) {
         driver.findElement(confirmPasswordField).sendKeys(password);
     }
@@ -64,15 +71,16 @@ public class LoginPage extends SignIn {
     public String emailDescription() {
         return driver.findElement(emailDescriptionDetails).getText().trim();
     }
+
     public String continueButtonText() {
         return driver.findElement(continueButton).getText();
     }
+
     public String backButtonText() {
         return driver.findElement(backButton).getText();
     }
 
-    public Boolean emailErrorDescriptionDetailsIsDisplayed()
-    {
+    public Boolean emailErrorDescriptionDetailsIsDisplayed() {
         return driver.findElement(emailErrorDescriptionDetails).isDisplayed();
     }
 }

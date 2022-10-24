@@ -7,8 +7,8 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.openqa.selenium.By;
 import uk.gov.di.test.pages.LoginPage;
-import uk.gov.di.test.utils.SupportingPages;
 import uk.gov.di.test.utils.SignIn;
+import uk.gov.di.test.utils.SupportingPages;
 
 import java.net.MalformedURLException;
 import java.net.URI;
@@ -23,6 +23,7 @@ public class LegalAndPolicyPages extends SignIn {
     }
 
     LoginPage loginPage = new LoginPage();
+
     @Given("the services are running")
     public void theServicesAreRunning() {}
 
@@ -33,7 +34,7 @@ public class LegalAndPolicyPages extends SignIn {
 
     @And("the user clicks {string}")
     public void theExistingUserClicks(String buttonName) {
-      loginPage.buttonClick(buttonName);
+        loginPage.buttonClick(buttonName);
     }
 
     @Then("the user is taken to the Identity Provider Login Page")

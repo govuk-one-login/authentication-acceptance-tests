@@ -26,7 +26,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static uk.gov.di.test.utils.AuthenticationJourneyPages.*;
 
-public class Registration extends SignIn  {
+public class Registration extends SignIn {
 
     private String emailAddress;
     private String password;
@@ -41,6 +41,7 @@ public class Registration extends SignIn  {
     LoginPage loginPage = new LoginPage();
     AccountManagementPage accountManagementPage = new AccountManagementPage();
     RegistrationPage registrationPage = new RegistrationPage();
+
     @Before
     public void setupWebdriver() throws MalformedURLException {
         super.setupWebdriver();
@@ -121,7 +122,7 @@ public class Registration extends SignIn  {
 
     @When("the new user selects create an account")
     public void theNewUserSelectsCreateAnAccount() {
-       accountManagementPage.clickAccountCreationLink();
+        accountManagementPage.clickAccountCreationLink();
     }
 
     @Then("the new user is taken to the enter your email page")
@@ -170,9 +171,7 @@ public class Registration extends SignIn  {
             new WebDriverWait(driver, Duration.of(1, MINUTES))
                     .until(
                             (ExpectedCondition<Boolean>)
-                                    driver ->
-                                            loginPage.getSixDigitSecurityCodeLength()
-                                                    == 6);
+                                    driver -> loginPage.getSixDigitSecurityCodeLength() == 6);
         } else {
             loginPage.enterSixDigitSecurityCode(sixDigitCodeEmail);
         }
@@ -299,12 +298,9 @@ public class Registration extends SignIn  {
             new WebDriverWait(driver, Duration.of(1, MINUTES))
                     .until(
                             (ExpectedCondition<Boolean>)
-                                    driver ->
-                                            loginPage.getSixDigitSecurityCodeLength()
-                                                    == 6);
+                                    driver -> loginPage.getSixDigitSecurityCodeLength() == 6);
         } else {
             loginPage.enterSixDigitSecurityCode(sixDigitCodePhone);
-
         }
         findAndClickContinue();
     }
@@ -316,7 +312,7 @@ public class Registration extends SignIn  {
 
     @When("the new user clicks the continue button")
     public void theNewUserClicksTheGoBackToGovUkButton() {
-       registrationPage.goBackClick();
+        registrationPage.goBackClick();
     }
 
     @Then("the new user is taken the the share info page")
@@ -431,12 +427,12 @@ public class Registration extends SignIn  {
 
     @When("the user clicks the delete your GOV.UK account button")
     public void theUserClicksTheDeleteYourGOVUKAccountButton() {
-       registrationPage.deleteAccountButtonClick();
+        registrationPage.deleteAccountButtonClick();
     }
 
     @When("the new user enters their mobile phone number using an international dialling code")
     public void theNewUserEntersTheirMobilePhoneNumberUsingAnInternationalDiallingCode() {
-       accountManagementPage.enterPhoneNumber(internationalPhoneNumber);
+        accountManagementPage.enterPhoneNumber(internationalPhoneNumber);
         findAndClickContinue();
     }
 }

@@ -5,8 +5,8 @@ import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import uk.gov.di.test.utils.AccountJourneyPages;
 import uk.gov.di.test.pages.AccountManagementPage;
+import uk.gov.di.test.utils.AccountJourneyPages;
 import uk.gov.di.test.utils.AuthenticationJourneyPages;
 import uk.gov.di.test.utils.SignIn;
 

@@ -57,7 +57,7 @@ public class DocApp extends SignIn {
 
     @When("the user clicks the My Account link")
     public void theUserClicksTheMyAccountLink() {
-       docAppPage.accountLinkClick();
+        docAppPage.accountLinkClick();
     }
 
     @Then("the user is taken to the sign in page")
