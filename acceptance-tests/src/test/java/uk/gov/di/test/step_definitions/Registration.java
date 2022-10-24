@@ -1,4 +1,4 @@
-package uk.gov.di.test.acceptance;
+package uk.gov.di.test.step_definitions;
 
 import io.cucumber.java.Before;
 import io.cucumber.java.en.And;
@@ -8,9 +8,12 @@ import io.cucumber.java.en.When;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedCondition;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import uk.gov.di.test.pages.AccountManagementPage;
+import uk.gov.di.test.pages.LoginPage;
+import uk.gov.di.test.pages.RegistrationPage;
 import uk.gov.di.test.utils.AuthAppStub;
+import uk.gov.di.test.utils.SignIn;
 
 import java.net.MalformedURLException;
 import java.net.URI;
@@ -21,9 +24,9 @@ import java.util.Random;
 import static java.time.temporal.ChronoUnit.MINUTES;
 import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static uk.gov.di.test.acceptance.AuthenticationJourneyPages.*;
+import static uk.gov.di.test.utils.AuthenticationJourneyPages.*;
 
-public class RegistrationStepDefinitions extends SignInStepDefinitions {
+public class Registration extends SignIn  {
 
     private String emailAddress;
     private String password;
@@ -35,6 +38,9 @@ public class RegistrationStepDefinitions extends SignInStepDefinitions {
     private String authAppSecretKey;
     private String internationalPhoneNumber;
 
+    LoginPage loginPage = new LoginPage();
+    AccountManagementPage accountManagementPage = new AccountManagementPage();
+    RegistrationPage registrationPage = new RegistrationPage();
     @Before
     public void setupWebdriver() throws MalformedURLException {
         super.setupWebdriver();
@@ -71,7 +77,7 @@ public class RegistrationStepDefinitions extends SignInStepDefinitions {
 
     @And("a new user has valid credentials")
     public void theNewUserHasValidCredential() {
-        emailAddress = System.getenv().get("TEST_USER_EMAIL");
+        emailAddress = ("TEST_USER_EMAIL");
         password = System.getenv().get("TEST_USER_PASSWORD");
         phoneNumber = System.getenv().get("TEST_USER_PHONE_NUMBER");
         sixDigitCodeEmail = System.getenv().get("TEST_USER_EMAIL_CODE");
@@ -105,8 +111,7 @@ public class RegistrationStepDefinitions extends SignInStepDefinitions {
 
     @And("the new user clicks {string}")
     public void theNewUserClicks(String buttonName) {
-        WebElement button = driver.findElement(By.id(buttonName));
-        button.click();
+        loginPage.buttonClick(buttonName);
     }
 
     @Then("the new user is taken to the Identity Provider Login Page")
@@ -116,8 +121,7 @@ public class RegistrationStepDefinitions extends SignInStepDefinitions {
 
     @When("the new user selects create an account")
     public void theNewUserSelectsCreateAnAccount() {
-        WebElement link = driver.findElement(By.id("create-account-link"));
-        link.click();
+       accountManagementPage.clickAccountCreationLink();
     }
 
     @Then("the new user is taken to the enter your email page")
@@ -127,8 +131,7 @@ public class RegistrationStepDefinitions extends SignInStepDefinitions {
 
     @When("the new user selects sign in")
     public void theNewUserSelectsSignIn() {
-        WebElement link = driver.findElement(By.id("sign-in-link"));
-        link.click();
+        loginPage.signInLinkClick();
     }
 
     @Then("the new user is taken to the sign in to your account page")
@@ -138,9 +141,7 @@ public class RegistrationStepDefinitions extends SignInStepDefinitions {
 
     @When("the new user enters their email address")
     public void theNewUserEntersEmailAddress() {
-        WebElement emailAddressField = driver.findElement(By.id("email"));
-        emailAddressField.clear();
-        emailAddressField.sendKeys(emailAddress);
+        loginPage.enterEmailAddress(emailAddress);
         findAndClickContinue();
     }
 
@@ -157,9 +158,7 @@ public class RegistrationStepDefinitions extends SignInStepDefinitions {
     @When("the new user enters the six digit security code incorrectly {int} times")
     public void theNewUserEntersTheSixDigitSecurityCodeIncorrectlyNTimes(int timesCodeIncorrect) {
         for (int i = 0; i < timesCodeIncorrect; i++) {
-            WebElement sixDigitSecurityCodeField = driver.findElement(By.id("code"));
-            sixDigitSecurityCodeField.clear();
-            sixDigitSecurityCodeField.sendKeys(getRandomInvalidCode());
+            loginPage.enterSixDigitSecurityCode(getRandomInvalidCode());
             findAndClickContinue();
             theNewUserIsShownAnErrorMessageOnTheEnterEmailPage();
         }
@@ -167,17 +166,15 @@ public class RegistrationStepDefinitions extends SignInStepDefinitions {
 
     @When("the new user enters the six digit security code from their email")
     public void theNewUserEntersTheSixDigitSecurityCodeFromTheirEmail() {
-        WebElement sixDigitSecurityCodeField = driver.findElement(By.id("code"));
-        sixDigitSecurityCodeField.clear();
         if (DEBUG_MODE) {
             new WebDriverWait(driver, Duration.of(1, MINUTES))
                     .until(
                             (ExpectedCondition<Boolean>)
                                     driver ->
-                                            sixDigitSecurityCodeField.getAttribute("value").length()
+                                            loginPage.getSixDigitSecurityCodeLength()
                                                     == 6);
         } else {
-            sixDigitSecurityCodeField.sendKeys(sixDigitCodeEmail);
+            loginPage.enterSixDigitSecurityCode(sixDigitCodeEmail);
         }
         findAndClickContinue();
     }
@@ -187,11 +184,6 @@ public class RegistrationStepDefinitions extends SignInStepDefinitions {
         waitForPageLoadThenValidate(SECURITY_CODE_INVALID);
     }
 
-    @Then("the new user is taken to the resend email code page")
-    public void theNewUserIsTakenToTheResendEmailCodePage() {
-        waitForPageLoadThenValidate(RESEND_EMAIL_CODE);
-    }
-
     @Then("the new user is taken to the create your password page")
     public void theNewUserIsAskedToCreateAPassword() {
         waitForPageLoadThenValidate(CREATE_PASSWORD);
@@ -199,10 +191,8 @@ public class RegistrationStepDefinitions extends SignInStepDefinitions {
 
     @When("the new user creates a password")
     public void theNewUserCreatesAValidPassword() {
-        WebElement enterPasswordField = driver.findElement(By.id("password"));
-        enterPasswordField.sendKeys(password);
-        WebElement confirmPasswordField = driver.findElement(By.id("confirm-password"));
-        confirmPasswordField.sendKeys(password);
+        loginPage.enterPassword(password);
+        loginPage.enterConfirmPassword(password);
         findAndClickContinue();
     }
 
@@ -218,15 +208,13 @@ public class RegistrationStepDefinitions extends SignInStepDefinitions {
 
     @When("the new user chooses text message security codes")
     public void theNewUserChoosesTextMessageSecurityCodes() {
-        WebElement radioTextMessageSecurityCodes = driver.findElement(By.id("mfaOptions"));
-        radioTextMessageSecurityCodes.click();
+        registrationPage.radioTextMessageSecurityCodesClick();
         findAndClickContinue();
     }
 
     @When("the new user chooses {string} to get security codes")
     public void theNewUserChoosesHowToGetSecurityCodes(String mfaMethod) {
-        WebElement radioTextMessageSecurityCodes = driver.findElement(By.id(mfaMethod));
-        radioTextMessageSecurityCodes.click();
+        loginPage.buttonClick(mfaMethod);
         findAndClickContinue();
     }
 
@@ -237,30 +225,24 @@ public class RegistrationStepDefinitions extends SignInStepDefinitions {
 
     @When("the new user adds the secret key on the screen to their auth app")
     public void theNewUserAddTheSecretKeyOnTheScreenToTheirAuthApp() {
-        WebElement secretKeyField = driver.findElement(By.id("secret-key"));
-        new WebDriverWait(driver, DEFAULT_PAGE_LOAD_WAIT_TIME)
-                .until(ExpectedConditions.visibilityOf(secretKeyField));
-        authAppSecretKey = secretKeyField.getText().trim();
-        assertTrue(authAppSecretKey.length() == 52);
+        assertTrue(registrationPage.getSecretFieldText().length() == 52);
     }
 
     @And("the user enters the security code from the auth app")
     public void theNewUserEntersTheSecurityCodeFromTheAuthApp() {
-        WebElement securityCodeField = driver.findElement(By.id("code"));
         AuthAppStub authAppStub = new AuthAppStub();
         String securityCode = authAppStub.getAuthAppOneTimeCode(authAppSecretKey);
         if (securityCode.length() != 6) {
             System.out.println("Auth App Security Code: " + securityCode);
         }
-        assertTrue(securityCode.length() == 6);
-        securityCodeField.sendKeys(securityCode);
+        assertTrue(loginPage.getSixDigitSecurityCodeLength() == 6);
+        loginPage.enterSixDigitSecurityCode(securityCode);
         findAndClickContinue();
     }
 
     @When("the existing auth app user selects sign in")
     public void theExistingAuthAppUserSelectsSignIn() {
-        WebElement link = driver.findElement(By.id("sign-in-link"));
-        link.click();
+        loginPage.signInLinkClick();
     }
 
     @Then("the existing auth app user is taken to the enter your email page")
@@ -270,8 +252,7 @@ public class RegistrationStepDefinitions extends SignInStepDefinitions {
 
     @When("the existing auth app user enters their email address")
     public void theExistingAuthAppUserEntersEmailAddress() {
-        WebElement emailAddressField = driver.findElement(By.id("email"));
-        emailAddressField.sendKeys(emailAddress);
+        loginPage.enterEmailAddress(emailAddress);
         findAndClickContinue();
     }
 
@@ -282,8 +263,7 @@ public class RegistrationStepDefinitions extends SignInStepDefinitions {
 
     @When("the existing auth app user enters their password")
     public void theExistingUserEntersTheirPassword() {
-        WebElement passwordField = driver.findElement(By.id("password"));
-        passwordField.sendKeys(password);
+        loginPage.enterPassword(password);
         findAndClickContinue();
     }
 
@@ -304,8 +284,7 @@ public class RegistrationStepDefinitions extends SignInStepDefinitions {
 
     @When("the new user enters their mobile phone number")
     public void theNewUserEntersTheirMobilePhoneNumber() {
-        WebElement phoneNumberField = driver.findElement(By.id("phoneNumber"));
-        phoneNumberField.sendKeys(phoneNumber);
+        accountManagementPage.enterPhoneNumber(phoneNumber);
         findAndClickContinue();
     }
 
@@ -316,16 +295,16 @@ public class RegistrationStepDefinitions extends SignInStepDefinitions {
 
     @When("the new user enters the six digit security code from their phone")
     public void theNewUserEntersTheSixDigitSecurityCodeFromTheirPhone() {
-        WebElement sixDigitSecurityCodeField = driver.findElement(By.id("code"));
         if (DEBUG_MODE) {
             new WebDriverWait(driver, Duration.of(1, MINUTES))
                     .until(
                             (ExpectedCondition<Boolean>)
                                     driver ->
-                                            sixDigitSecurityCodeField.getAttribute("value").length()
+                                            loginPage.getSixDigitSecurityCodeLength()
                                                     == 6);
         } else {
-            sixDigitSecurityCodeField.sendKeys(sixDigitCodePhone);
+            loginPage.enterSixDigitSecurityCode(sixDigitCodePhone);
+
         }
         findAndClickContinue();
     }
@@ -337,8 +316,7 @@ public class RegistrationStepDefinitions extends SignInStepDefinitions {
 
     @When("the new user clicks the continue button")
     public void theNewUserClicksTheGoBackToGovUkButton() {
-        WebElement goBackButton = driver.findElement(By.cssSelector("#form-tracking > button"));
-        goBackButton.click();
+       registrationPage.goBackClick();
     }
 
     @Then("the new user is taken the the share info page")
@@ -348,8 +326,7 @@ public class RegistrationStepDefinitions extends SignInStepDefinitions {
 
     @When("the new user agrees to share their info")
     public void theNewUserAgreesToShareTheirInfo() {
-        WebElement radioShareInfoAccept = driver.findElement(By.id("consentValue"));
-        radioShareInfoAccept.click();
+        registrationPage.shareInfoAcceptClick();
         findAndClickContinue();
     }
 
@@ -360,14 +337,12 @@ public class RegistrationStepDefinitions extends SignInStepDefinitions {
     public void theNewUserIsTakenToTheServiceUserInfoPage() {
         assertEquals("/oidc/callback", URI.create(driver.getCurrentUrl()).getPath());
         assertEquals("Example - GOV.UK - User Info", driver.getTitle());
-        WebElement emailDescriptionDetails = driver.findElement(By.id("user-info-email"));
-        assertEquals(emailAddress, emailDescriptionDetails.getText().trim());
+        assertEquals(emailAddress, loginPage.emailDescription());
     }
 
     @Then("the new user is shown an error message")
     public void theNewUserIsShownAnErrorMessageOnTheEnterEmailPage() {
-        WebElement emailDescriptionDetails = driver.findElement(By.id("error-summary-title"));
-        assertTrue(emailDescriptionDetails.isDisplayed());
+        assertTrue(loginPage.emailErrorDescriptionDetailsIsDisplayed());
     }
 
     @Then("the new user is not shown an error message in field {string}")
@@ -381,13 +356,12 @@ public class RegistrationStepDefinitions extends SignInStepDefinitions {
 
     @When("the new user clicks by name {string}")
     public void theNewUserClicksByName(String buttonName) {
-        WebElement button = driver.findElement(By.name(buttonName));
-        button.click();
+        loginPage.buttonClick(buttonName);
     }
 
     @When("the new user clicks link by href {string}")
     public void theNewUserClicksLinkByHref(String href) {
-        driver.findElement(By.xpath("//a[@href=\"" + href + "\"]")).click();
+        accountManagementPage.linkClick(href);
     }
 
     @Then("the new user is taken to the signed out page")
@@ -406,8 +380,7 @@ public class RegistrationStepDefinitions extends SignInStepDefinitions {
 
     @And("the new user enters their password")
     public void theNewUserEntersTheirPassword() {
-        WebElement enterPasswordField = driver.findElement(By.id("password"));
-        enterPasswordField.sendKeys(password);
+        loginPage.enterPassword(password);
         findAndClickContinue();
     }
 
@@ -428,52 +401,42 @@ public class RegistrationStepDefinitions extends SignInStepDefinitions {
 
     @When("the new user enters an incorrect email code one more time")
     public void theNewUserEntersAnIncorrectEmailCodeOneMoreTime() {
-        WebElement enterCodeField = driver.findElement(By.id("code"));
-        enterCodeField.clear();
-        enterCodeField.sendKeys(getRandomInvalidCode());
+        loginPage.enterSixDigitSecurityCode(getRandomInvalidCode());
         findAndClickContinue();
     }
 
     @When("the new user enters an incorrect phone code one more time")
     public void theNewUserEntersAnIncorrectPhoneCodeOneMoreTime() {
-        WebElement enterCodeField = driver.findElement(By.id("code"));
-        enterCodeField.clear();
-        enterCodeField.sendKeys(getRandomInvalidCode());
+        loginPage.enterSixDigitSecurityCode(getRandomInvalidCode());
         findAndClickContinue();
     }
 
     @And("the new user enters their t&c email address")
     public void theNewUserEntersTheirTCEmailAddress() {
-        WebElement emailAddressField = driver.findElement(By.id("email"));
-        emailAddressField.clear();
-        emailAddressField.sendKeys(tcEmailAddress);
+        loginPage.enterEmailAddress(tcEmailAddress);
         findAndClickContinue();
     }
 
     @And("the new user enters their t&c password")
     public void theNewUserEntersTheirTCPassword() {
-        WebElement enterPasswordField = driver.findElement(By.id("password"));
-        enterPasswordField.sendKeys(tcPassword);
+        loginPage.enterConfirmPassword(tcPassword);
         findAndClickContinue();
     }
 
     @When("the new user does not agree to share their info")
     public void theNewUserDoesNotAgreeToShareTheirInfo() {
-        WebElement radioShareInfoReject = driver.findElement(By.id("consentValue-2"));
-        radioShareInfoReject.click();
+        registrationPage.shareInfoRejectClick();
         findAndClickContinue();
     }
 
     @When("the user clicks the delete your GOV.UK account button")
     public void theUserClicksTheDeleteYourGOVUKAccountButton() {
-        WebElement deleteAccountButton = driver.findElement(By.className("govuk-button--warning"));
-        deleteAccountButton.click();
+       registrationPage.deleteAccountButtonClick();
     }
 
     @When("the new user enters their mobile phone number using an international dialling code")
     public void theNewUserEntersTheirMobilePhoneNumberUsingAnInternationalDiallingCode() {
-        WebElement phoneNumberField = driver.findElement(By.id("phoneNumber"));
-        phoneNumberField.sendKeys(internationalPhoneNumber);
+       accountManagementPage.enterPhoneNumber(internationalPhoneNumber);
         findAndClickContinue();
     }
 }

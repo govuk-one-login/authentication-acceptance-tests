@@ -1,4 +1,4 @@
-package uk.gov.di.test.acceptance;
+package uk.gov.di.test.utils;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -19,24 +19,34 @@ import java.time.Duration;
 import static java.time.temporal.ChronoUnit.SECONDS;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class SignInStepDefinitions {
+public class SignIn {
     protected static final String CHROME_BROWSER = "chrome";
     protected static final String FIREFOX_BROWSER = "firefox";
-    protected static final String SELENIUM_URL = System.getenv().get("SELENIUM_URL");
+    protected static final String SELENIUM_URL = System.getenv().getOrDefault("SELENIUM_URL","http://localhost:4445/wd/hub");
+
     protected static final String IDP_URL =
-            System.getenv().getOrDefault("IDP_URL", "http://localhost:8080/");
+            System.getenv().getOrDefault("IDP_URL", "https://front.build.auth.ida.digital.cabinet-office.gov.uk/");
     protected static final String RP_URL =
-            System.getenv().getOrDefault("RP_URL", "http://localhost:8081/");
+            System.getenv().getOrDefault("RP_URL", "https://di-auth-stub-relying-party-build-s2.london.cloudapps.digital/");
     protected static final String AM_URL =
-            System.getenv().getOrDefault("AM_URL", "http://localhost:8081/");
+            System.getenv().getOrDefault("AM_URL", "https://build.account.gov.uk/");
+
+    protected static final String TEST_USER_EMAIL=
+            System.getenv().getOrDefault("TEST_USER_EMAIL", "rahul.gupta+2@digital.cabinet-office.gov.uk");
+
+    protected static final String TEST_USER_PASSWORD=
+            System.getenv().getOrDefault("TEST_USER_PASSWORD", "J3m3conn3ct312345");
+
+    protected static final String TEST_USER_PHONE_CODE=
+            System.getenv().getOrDefault("TEST_USER_PHONE_CODE", "409722");
     protected static final Boolean SELENIUM_LOCAL =
-            Boolean.parseBoolean(System.getenv().getOrDefault("SELENIUM_LOCAL", "false"));
+            Boolean.parseBoolean(System.getenv().getOrDefault("SELENIUM_LOCAL", "true"));
     protected static final Boolean SELENIUM_HEADLESS =
-            Boolean.parseBoolean(System.getenv().getOrDefault("SELENIUM_HEADLESS", "true"));
+            Boolean.parseBoolean(System.getenv().getOrDefault("SELENIUM_HEADLESS", "false"));
     protected static final Boolean DEBUG_MODE =
-            Boolean.parseBoolean(System.getenv().getOrDefault("DEBUG_MODE", "false"));
+            Boolean.parseBoolean(System.getenv().getOrDefault("DEBUG_MODE", "true"));
     protected static final String SELENIUM_BROWSER =
-            System.getenv().getOrDefault("SELENIUM_BROWSER", FIREFOX_BROWSER);
+            System.getenv().getOrDefault("SELENIUM_BROWSER", CHROME_BROWSER);
     protected static final Duration DEFAULT_PAGE_LOAD_WAIT_TIME = Duration.of(20, SECONDS);
     protected static WebDriver driver;
 
@@ -91,8 +101,7 @@ public class SignInStepDefinitions {
     }
 
     protected void findAndClickContinueWelsh() {
-        WebElement continueButton =
-                driver.findElement(By.cssSelector("#main-content > div > div > form > button"));
+        WebElement continueButton = driver.findElement(By.cssSelector("#main-content > div > div > form > button"));
         continueButton.click();
     }
 

@@ -1,4 +1,4 @@
-package uk.gov.di.test.acceptance;
+package uk.gov.di.test.step_definitions;
 
 import io.cucumber.java.Before;
 import io.cucumber.java.en.And;
@@ -6,20 +6,23 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
+import uk.gov.di.test.pages.LoginPage;
+import uk.gov.di.test.utils.SupportingPages;
+import uk.gov.di.test.utils.SignIn;
 
 import java.net.MalformedURLException;
 import java.net.URI;
 
 import static org.junit.Assert.assertEquals;
 
-public class LegalAndPolicyPagesStepDefinitions extends SignInStepDefinitions {
+public class LegalAndPolicyPages extends SignIn {
 
     @Before
     public void setupWebdriver() throws MalformedURLException {
         super.setupWebdriver();
     }
 
+    LoginPage loginPage = new LoginPage();
     @Given("the services are running")
     public void theServicesAreRunning() {}
 
@@ -30,8 +33,7 @@ public class LegalAndPolicyPagesStepDefinitions extends SignInStepDefinitions {
 
     @And("the user clicks {string}")
     public void theExistingUserClicks(String buttonName) {
-        WebElement button = driver.findElement(By.id(buttonName));
-        button.click();
+      loginPage.buttonClick(buttonName);
     }
 
     @Then("the user is taken to the Identity Provider Login Page")
