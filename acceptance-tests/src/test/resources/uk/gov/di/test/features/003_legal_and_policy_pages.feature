@@ -1,3 +1,4 @@
+@LegalAndPolicy
 Feature: Legal and policy pages
   User clicks on the legal and policy pages
 
@@ -14,6 +15,7 @@ Feature: Legal and policy pages
     Then the user is taken to the terms and conditions page
     When the user clicks link "Privacy notice"
     Then the user is taken to the privacy notice page
+
 
   Scenario: User accepts terms and conditions
     Given the services are running
@@ -34,8 +36,8 @@ Feature: Legal and policy pages
     And there are no accessibility violations
     When the new user clicks link by href "/updated-terms-and-conditions-disagree"
     Then the new user is taken to the Agree to the updated terms of use to continue page
-    When the new user clicks by name "termsAndConditionsResult"
+    When the new user clicks AgreeTermsANDConditions
     Then the user is returned to the service
-    When the new user clicks by name "logout"
+    When the user clicks logout
     And there are no accessibility violations
     Then the new user is taken to the signed out page

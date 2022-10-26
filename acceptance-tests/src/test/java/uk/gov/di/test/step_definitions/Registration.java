@@ -78,7 +78,7 @@ public class Registration extends SignIn {
 
     @And("a new user has valid credentials")
     public void theNewUserHasValidCredential() {
-        emailAddress = ("TEST_USER_EMAIL");
+        emailAddress = System.getenv().get("TEST_USER_EMAIL");
         password = System.getenv().get("TEST_USER_PASSWORD");
         phoneNumber = System.getenv().get("TEST_USER_PHONE_NUMBER");
         sixDigitCodeEmail = System.getenv().get("TEST_USER_EMAIL_CODE");
@@ -229,6 +229,7 @@ public class Registration extends SignIn {
 
     @When("the new user adds the secret key on the screen to their auth app")
     public void theNewUserAddTheSecretKeyOnTheScreenToTheirAuthApp() {
+        authAppSecretKey = registrationPage.getSecretFieldText();
         assertTrue(registrationPage.getSecretFieldText().length() == 52);
     }
 
@@ -239,7 +240,7 @@ public class Registration extends SignIn {
         if (securityCode.length() != 6) {
             System.out.println("Auth App Security Code: " + securityCode);
         }
-        assertTrue(loginPage.getSixDigitSecurityCodeLength() == 6);
+        assertTrue(securityCode.length() == 6);
         loginPage.enterSixDigitSecurityCode(securityCode);
         findAndClickContinue();
     }
@@ -355,9 +356,19 @@ public class Registration extends SignIn {
         assertTrue(errorFields.isEmpty());
     }
 
-    @When("the new user clicks by name {string}")
+    @When("the new user clicks ")
     public void theNewUserClicksByName(String buttonName) {
         loginPage.buttonClick(buttonName);
+    }
+
+    @When("the user clicks logout")
+    public void theUserClicksLogout() {
+        loginPage.logoutButtonClick();
+    }
+
+    @When("the new user clicks AgreeTermsANDConditions")
+    public void theUserClicksAgreeTermsAndConditions() {
+        loginPage.termsAndConditionsButtonClick();
     }
 
     @When("the new user clicks link by href {string}")
@@ -420,7 +431,7 @@ public class Registration extends SignIn {
 
     @And("the new user enters their t&c password")
     public void theNewUserEntersTheirTCPassword() {
-        loginPage.enterConfirmPassword(tcPassword);
+        loginPage.enterPassword(tcPassword);
         findAndClickContinue();
     }
 

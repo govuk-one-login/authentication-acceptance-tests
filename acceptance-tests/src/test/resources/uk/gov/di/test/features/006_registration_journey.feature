@@ -1,3 +1,4 @@
+@RegistrationJourney
 Feature: Registration Journey
   New user walks through a registration journey
 
@@ -79,6 +80,6 @@ Feature: Registration Journey
     When the new user clicks the continue button
     And there are no accessibility violations
     Then the user is returned to the service
-    When the new user clicks by name "logout"
+    When the user clicks logout
     And there are no accessibility violations
     Then the new user is taken to the signed out page

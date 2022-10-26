@@ -1,5 +1,7 @@
+
 Feature: Login Journey
   Existing user walks through a login journey
+
 
   Scenario: Existing user requests phone OTP code 5 times
     Given the login services are running
@@ -18,6 +20,7 @@ Feature: Login Journey
     When the existing user clicks the get a new code link
     Then the existing user is taken to the you cannot get a new security code page
 
+  @Fail
   Scenario: Existing user tries to create an account with the same email address
     Given the account management services are running
     And the existing account management user has valid credentials
@@ -27,6 +30,7 @@ Feature: Login Journey
     When the existing account management user enters their current email address
     Then the existing account management user is taken to the account exists page
 
+  @Existing
   Scenario: Existing user is correctly prompted to login
     Given the login services are running
     And the existing user has valid credentials
@@ -41,7 +45,7 @@ Feature: Login Journey
     Then the existing user is taken to the enter code page
     When the existing user enters the six digit security code from their phone
     Then the existing user is returned to the service
-    And the existing user clicks by name "logout"
+    And the user clicks logout
     Then the existing user is taken to the you have signed out page
 
   Scenario: Existing user switches content to Welsh

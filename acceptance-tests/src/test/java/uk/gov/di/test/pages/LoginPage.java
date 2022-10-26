@@ -8,6 +8,8 @@ public class LoginPage extends SignIn {
     By emailAddressField = By.id("email");
     By confirmPasswordField = By.id("confirm-password");
 
+    By logout = By.name("logout");
+    By termsAndConditions = By.name("termsAndConditionsResult");
     By passwordField = By.id("password");
     By problemWithTheCode = By.className("govuk-details__summary");
     By sendTheCodeAgainLink = By.cssSelector("#form-tracking > details > div > p > a");
@@ -23,6 +25,14 @@ public class LoginPage extends SignIn {
 
     public void buttonClick(String name) {
         driver.findElement(By.id(name)).click();
+    }
+
+    public void logoutButtonClick() {
+        driver.findElement(logout).click();
+    }
+
+    public void termsAndConditionsButtonClick() {
+        driver.findElement(termsAndConditions).click();
     }
 
     public void signInLinkClick() {

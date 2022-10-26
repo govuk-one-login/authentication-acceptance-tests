@@ -7,7 +7,7 @@ import uk.gov.di.test.utils.SignIn;
 
 public class RegistrationPage extends SignIn {
 
-    By radioTextMessageSecurityCodes = By.id("mfa-options-text-message");
+    By radioTextMessageSecurityCodes = By.id("mfaOptions");
     By secretKeyField = By.id("secret-key");
     By goBackButton = By.cssSelector("#form-tracking > button");
     By radioShareInfoAccept = By.id("share-info-accepted");

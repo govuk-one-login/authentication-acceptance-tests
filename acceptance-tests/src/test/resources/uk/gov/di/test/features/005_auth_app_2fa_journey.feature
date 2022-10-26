@@ -30,7 +30,7 @@ Feature: Authentication App Journeys
     When the new user clicks the continue button
     And there are no accessibility violations
     Then the user is returned to the service
-    When the new user clicks by name "logout"
+    When the user clicks logout
     And there are no accessibility violations
     Then the new user is taken to the signed out page
     When the user visits the stub relying party
@@ -44,7 +44,7 @@ Feature: Authentication App Journeys
     Then the existing user is taken to the enter authenticator app code page
     When the user enters the security code from the auth app
     Then the user is returned to the service
-    When the new user clicks by name "logout"
+    When the user clicks logout
     And there are no accessibility violations
     Then the new user is taken to the signed out page
     When the user visits the stub relying party
@@ -57,5 +57,5 @@ Feature: Authentication App Journeys
     Then the existing auth app user is prompted for their password
     When the existing auth app user enters their password
     Then the user is returned to the service
-    When the new user clicks by name "logout"
+    When the user clicks logout
     Then the new user is taken to the signed out page
