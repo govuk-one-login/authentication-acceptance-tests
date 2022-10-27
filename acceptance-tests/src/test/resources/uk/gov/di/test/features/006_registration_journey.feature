@@ -48,7 +48,7 @@ Feature: Registration Journey
     And the new user creates a password
     Then the new user is shown an error message
 
-  Scenario: User successfully registers
+  Scenario: User successfully registers using sms
     Given the registration services are running
     And a new user has valid credentials
     And the new user clears cookies

@@ -98,7 +98,6 @@ public class Login extends SignIn {
 
     @When("the existing user enters the six digit security code from their phone")
     public void theExistingUserEntersTheSixDigitSecurityCodeFromTheirPhone() {
-
         if (DEBUG_MODE) {
             new WebDriverWait(driver, Duration.of(1, MINUTES))
                     .until(
