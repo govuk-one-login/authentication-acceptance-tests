@@ -2,6 +2,12 @@
 plugins {
     id 'java'
     id 'maven-publish'
+    id("io.qameta.allure") version "2.8.1"
+}
+
+allure {
+    version = '2.19.0'
+    autoconfigure = false
 }
 
 repositories {
@@ -27,6 +33,7 @@ dependencies {
 
     testImplementation group: 'com.deque', name: 'axe-selenium', version:"${dependencyVersions.axe_version}"
     testImplementation group: 'org.json', name: 'json', version:"${dependencyVersions.json_version}"
+    testImplementation("io.kotest:kotest-extensions-allure:LATEST_VERSION")
 
     testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:${dependencyVersions.junit_version}"
 }
