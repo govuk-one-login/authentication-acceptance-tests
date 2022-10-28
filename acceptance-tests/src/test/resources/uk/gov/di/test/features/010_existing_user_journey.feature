@@ -83,7 +83,6 @@ Feature: Login Journey
     When the existing user enters the six digit security code from their phone
     Then the existing user is returned to the service
 
-  @Fail
   Scenario: Existing user attempts to change their phone number using their existing one
     Given the account management services are running
     And the existing account management user has valid credentials
