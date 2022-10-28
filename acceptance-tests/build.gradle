@@ -18,16 +18,17 @@ repositories {
 }
 
 def dependencyVersions = [
-        junit_version: '5.8.2',
-        cucumber_version: '7.4.1',
+        junit_version: '5.9.0',
+        cucumber_version: '7.8.1',
         axe_version: '3.0',
-        json_version: '20220320'
+        json_version: '20220320',
+        selenium_java_version: '4.5.0'
 ]
 
 dependencies {
     testImplementation "io.cucumber:cucumber-java:${dependencyVersions.cucumber_version}",
                        "io.cucumber:cucumber-junit:${dependencyVersions.cucumber_version}",
-                       "org.seleniumhq.selenium:selenium-java:4.3.0",
+                       "org.seleniumhq.selenium:selenium-java:${dependencyVersions.selenium_java_version}",
                        "org.junit.jupiter:junit-jupiter-api:${dependencyVersions.junit_version}",
                        "commons-codec:commons-codec:1.15"
 
