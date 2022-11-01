@@ -7,6 +7,7 @@ Feature: Authentication App Journeys
     And the auth app user has valid credentials
     And the new user clears cookies
     When the new user visits the stub relying party
+    And the existing user clicks "2fa-off"
     And the new user clicks "govuk-signin-button"
     Then the new user is taken to the Identity Provider Login Page
     When the new user selects create an account
@@ -30,6 +31,8 @@ Feature: Authentication App Journeys
     When the new user clicks the continue button
     And there are no accessibility violations
     Then the user is returned to the service
+    When the user visits the stub relying party
+    And the new user clicks "govuk-signin-button"
     When the new user clicks by name "logout"
     And there are no accessibility violations
     Then the new user is taken to the signed out page
