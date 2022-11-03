@@ -89,6 +89,6 @@ npm i allure-commandline
 
 Local report:
 
-1. Run the tests a usual, which will generate data in target/allure-results directory as set up in allure.properties
+1. Run the tests as usual, which will generate data in target/allure-results directory as set up in allure.properties
 2. run the allure serve command on the back of it followed by the allure-results path from the repository root so the results are uploaded to allure:
 allure serve acceptance-tests/target/allure-results
