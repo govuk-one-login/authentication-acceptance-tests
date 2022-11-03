@@ -77,6 +77,16 @@ Java classes backing the tests live in the acceptance-tests java [acceptance](ac
 
 ## Allure reporting
 
+Allure Framework is a flexible lightweight multi-language test report tool that shows a clear representation of what has been tested in a web report form. It allows extraction of useful information such as coverage, execution timeline etc... from the execution of tests.
+
+Mac:
+brew install allure
+
+Windows:
+scoop install allure
+or
+npm i allure-commandline
+
 Local report:
 
 1. Run the tests a usual, which will generate data in target/allure-results directory as set up in allure.properties
