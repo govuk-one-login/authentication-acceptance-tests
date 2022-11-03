@@ -74,3 +74,21 @@ NOTES for now until further implementation (Ability to interact with the DB from
 Cucumber feature files live in the acceptance-tests [resources](acceptance-tests/src/test/resources/uk/gov/di/test/acceptance/) directory.
 
 Java classes backing the tests live in the acceptance-tests java [acceptance](acceptance-tests/src/test/java/uk/gov/di/test/acceptance/) directory.
+
+## Allure reporting
+
+Allure Framework is a flexible lightweight multi-language test report tool that shows a clear representation of what has been tested in a web report form. It allows extraction of useful information such as coverage, execution timeline etc... from the execution of tests.
+
+Mac:
+brew install allure
+
+Windows:
+scoop install allure
+or
+npm i allure-commandline
+
+Local report:
+
+1. Run the tests as usual, which will generate data in target/allure-results directory as set up in allure.properties
+2. run the allure serve command on the back of it followed by the allure-results path from the repository root so the results are uploaded to allure:
+allure serve acceptance-tests/target/allure-results
