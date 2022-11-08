@@ -48,13 +48,13 @@ public class SignIn {
     protected static final String TEST_USER_PHONE_CODE =
             System.getenv().getOrDefault("TEST_USER_PHONE_CODE", "409722");
     protected static final Boolean SELENIUM_LOCAL =
-            Boolean.parseBoolean(System.getenv().getOrDefault("SELENIUM_LOCAL", "true"));
+            Boolean.parseBoolean(System.getenv().getOrDefault("SELENIUM_LOCAL", "false"));
     protected static final Boolean SELENIUM_HEADLESS =
             Boolean.parseBoolean(System.getenv().getOrDefault("SELENIUM_HEADLESS", "false"));
     protected static final Boolean DEBUG_MODE =
             Boolean.parseBoolean(System.getenv().getOrDefault("DEBUG_MODE", "true"));
     protected static final String SELENIUM_BROWSER =
-            System.getenv().getOrDefault("SELENIUM_BROWSER", CHROME_BROWSER);
+            System.getenv().getOrDefault("SELENIUM_BROWSER", FIREFOX_BROWSER);
     protected static final Duration DEFAULT_PAGE_LOAD_WAIT_TIME = Duration.of(20, SECONDS);
     protected static WebDriver driver;
 
