@@ -2,7 +2,7 @@
 plugins {
     id 'java'
     id 'maven-publish'
-    id 'io.qameta.allure' version '2.10.0'
+    id 'io.qameta.allure' version '2.11.2'
 }
 
 repositories {
