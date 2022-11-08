@@ -1,21 +1,21 @@
-package uk.gov.di.test.acceptance;
+package uk.gov.di.test.step_definitions;
 
 import io.cucumber.java.Before;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
+import uk.gov.di.test.pages.DocAppPage;
+import uk.gov.di.test.utils.SignIn;
 
 import java.net.MalformedURLException;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class DocAppStepDefinitions extends SignInStepDefinitions {
+public class DocApp extends SignIn {
 
     private String jsonPayLoad;
-
+    public DocAppPage docAppPage = new DocAppPage();
     protected static final String DOC_APP_URL =
             System.getenv()
                     .getOrDefault(
@@ -37,33 +37,27 @@ public class DocAppStepDefinitions extends SignInStepDefinitions {
 
     @And("the user clicks the continue button")
     public void theUserClicksTheContinueButton() {
-        WebElement continueButton = driver.findElement(By.id("govuk-signin-button"));
-        continueButton.click();
+        docAppPage.continueButtonClick();
     }
 
     @And("the user sends a valid json payload")
     public void theUserSendsAValidJsonPayload() {
         jsonPayLoad = "{\"test\" : \"example\"}";
-        WebElement payloadInputField = driver.findElement(By.id("jsonPayload"));
-        payloadInputField.sendKeys(jsonPayLoad);
-        WebElement submitButton = driver.findElement(By.name("submit"));
-        submitButton.click();
+        docAppPage.enterPayLoad(jsonPayLoad);
+        docAppPage.clickSubmitButton();
     }
 
     @Then("the user is taken to the user information page")
     public void theUserIsTakenToTheUserInformationPage() {
         waitForPageLoad("Example - GOV.UK - User Info");
         assertTrue(driver.getCurrentUrl().contains("/oidc/authorization-code/callback?code="));
-        WebElement docAppCredentials = driver.findElement(By.id("user-info-doc-app-credential"));
-        assertTrue(docAppCredentials.isDisplayed());
-        WebElement idToken = driver.findElement(By.id("user-info-phone-number"));
-        assertTrue(idToken.isDisplayed());
+        assertTrue(docAppPage.docAppCredentialsDisplayed());
+        assertTrue(docAppPage.idTokenDisplayed());
     }
 
     @When("the user clicks the My Account link")
     public void theUserClicksTheMyAccountLink() {
-        WebElement myAccountLink = driver.findElement(By.cssSelector("#navigation > li > a"));
-        myAccountLink.click();
+        docAppPage.accountLinkClick();
     }
 
     @Then("the user is taken to the sign in page")

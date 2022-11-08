@@ -1,36 +1,30 @@
-package uk.gov.di.test.acceptance;
+package uk.gov.di.test.step_definitions;
 
 import io.cucumber.java.Before;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
+import uk.gov.di.test.pages.AccountManagementPage;
+import uk.gov.di.test.utils.AccountJourneyPages;
+import uk.gov.di.test.utils.AuthenticationJourneyPages;
+import uk.gov.di.test.utils.SignIn;
 
 import java.net.MalformedURLException;
 import java.net.URI;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static uk.gov.di.test.acceptance.AccountJourneyPages.ACCOUNT_DELETED_CONFIRMATION;
-import static uk.gov.di.test.acceptance.AccountJourneyPages.ACCOUNT_EXISTS;
-import static uk.gov.di.test.acceptance.AccountJourneyPages.CHANGE_PASSWORD;
-import static uk.gov.di.test.acceptance.AccountJourneyPages.DELETE_ACCOUNT;
-import static uk.gov.di.test.acceptance.AccountJourneyPages.ENTER_NEW_MOBILE_PHONE_NUMBER;
-import static uk.gov.di.test.acceptance.AccountJourneyPages.ENTER_PASSWORD_CHANGE_PASSWORD;
-import static uk.gov.di.test.acceptance.AccountJourneyPages.ENTER_PASSWORD_DELETE_ACCOUNT;
-import static uk.gov.di.test.acceptance.AccountJourneyPages.ENTER_PASSWORD_DELETE_ACCOUNT_FAILED;
-import static uk.gov.di.test.acceptance.AccountJourneyPages.GOV_UK_ACCOUNTS_COOKIES;
-import static uk.gov.di.test.acceptance.AccountJourneyPages.PASSWORD_UPDATED_CONFIRMATION;
-import static uk.gov.di.test.acceptance.AccountJourneyPages.YOUR_GOV_UK_ACCOUNT;
+import static uk.gov.di.test.utils.AccountJourneyPages.*;
 
-public class AccountManagementStepDefinitions extends SignInStepDefinitions {
+public class AccountManagement extends SignIn {
 
     private String emailAddress;
     private String password;
     private String newPassword;
     private String phoneNumber;
+
+    public AccountManagementPage accountManagementPage = new AccountManagementPage();
 
     @Before
     public void setupWebdriver() throws MalformedURLException {
@@ -59,7 +53,7 @@ public class AccountManagementStepDefinitions extends SignInStepDefinitions {
 
     @When("the existing account management user clicks link by href {string}")
     public void theUserClicksLinkByHref(String href) {
-        driver.findElement(By.xpath("//a[@href=\"" + href + "\"]")).click();
+        accountManagementPage.linkClick(href);
     }
 
     @Then("the existing account management user is asked to enter their current password")
@@ -69,8 +63,7 @@ public class AccountManagementStepDefinitions extends SignInStepDefinitions {
 
     @When("the existing account management user enter their current password")
     public void theExistingAccountManagementUserEntersTheirCurrentPassword() {
-        WebElement passwordField = driver.findElement(By.id("password"));
-        passwordField.sendKeys(password);
+        accountManagementPage.enterCurrentPassword(password);
         findAndClickContinue();
     }
 
@@ -86,17 +79,13 @@ public class AccountManagementStepDefinitions extends SignInStepDefinitions {
 
     @And("the existing account management user enters their updated password")
     public void theExistingAccountManagementUserEntersTheirNewPassword() {
-        WebElement enterPasswordField = driver.findElement(By.id("password"));
-        enterPasswordField.sendKeys(newPassword);
-        WebElement confirmPasswordField = driver.findElement(By.id("confirm-password"));
-        confirmPasswordField.sendKeys(newPassword);
+        accountManagementPage.enterNewPassword(newPassword);
         findAndClickContinue();
     }
 
     @And("the existing account management user enters their updated password to delete account")
     public void theExistingAccountManagementUserEntersTheirUpdatedPasswordToDeleteAccount() {
-        WebElement enterPasswordField = driver.findElement(By.id("password"));
-        enterPasswordField.sendKeys(newPassword);
+        accountManagementPage.enterCurrentPassword(newPassword);
         findAndClickContinue();
     }
 
@@ -133,8 +122,7 @@ public class AccountManagementStepDefinitions extends SignInStepDefinitions {
 
     @And("the existing account management user selects create an account")
     public void theExistingAccountManagementUserSelectsCreateAnAccount() {
-        WebElement link = driver.findElement(By.id("create-account-link"));
-        link.click();
+        accountManagementPage.clickAccountCreationLink();
     }
 
     @Then("the exiting account management user is asked to enter their current email address")
@@ -144,8 +132,7 @@ public class AccountManagementStepDefinitions extends SignInStepDefinitions {
 
     @When("the existing account management user enters their current email address")
     public void theExistingAccountManagementUserEntersTheirCurrentEmailAddress() {
-        WebElement passwordField = driver.findElement(By.id("email"));
-        passwordField.sendKeys(emailAddress);
+        accountManagementPage.enterEmailAddress(emailAddress);
         findAndClickContinue();
     }
 
@@ -162,21 +149,18 @@ public class AccountManagementStepDefinitions extends SignInStepDefinitions {
 
     @When("the existing account management user enters their existing mobile phone number")
     public void theExistingAccountManagementUserEntersTheirExistingMobilePhoneNumber() {
-        WebElement passwordField = driver.findElement(By.id("phoneNumber"));
-        passwordField.sendKeys(phoneNumber);
+        accountManagementPage.enterPhoneNumber(phoneNumber);
         findAndClickContinue();
     }
 
     @Then("the existing account management user is shown an error message")
     public void theExistingAccountManagementUserIsShownAnErrorMessage() {
-        WebElement emailDescriptionDetails = driver.findElement(By.id("error-summary-title"));
-        assertTrue(emailDescriptionDetails.isDisplayed());
+        assertTrue(accountManagementPage.summaryTitleError().isDisplayed());
     }
 
     @When("the existing account management user enters an invalid password to delete account")
     public void theExistingAccountManagementUserEntersAnInvalidPasswordToDeleteAccount() {
-        WebElement enterPasswordField = driver.findElement(By.id("password"));
-        enterPasswordField.sendKeys(password);
+        accountManagementPage.enterCurrentPassword(password);
         findAndClickContinue();
     }
 
@@ -187,24 +171,19 @@ public class AccountManagementStepDefinitions extends SignInStepDefinitions {
 
     @And("the existing account management user accepts the cookie policy")
     public void theExistingAccountManagementUserAcceptsTheCookiePolicy() {
-        WebElement acceptCookiePolicyTickbox = driver.findElement(By.id("policy-cookies-accepted"));
-        acceptCookiePolicyTickbox.click();
-        WebElement saveCookieSettingsButton = driver.findElement(By.id("save-cookie-settings"));
-        saveCookieSettingsButton.click();
+        accountManagementPage.acceptPolicyCookie();
+        accountManagementPage.savePolicyCookie();
     }
 
     @And("the existing account management user clicks the go back link")
     public void theExistingAccountManagementUserClicksTheGoBackLink() {
-        WebElement goBackLink = driver.findElement(By.id("go-back-link"));
-        goBackLink.click();
+        accountManagementPage.clickBack();
     }
 
     @And("the existing account management user rejects the cookie policy")
     public void theExistingAccountManagementUserRejectsTheCookiePolicy() {
-        WebElement rejectCookiePolicyTickbox = driver.findElement(By.id("policy-cookies-rejected"));
-        rejectCookiePolicyTickbox.click();
-        WebElement saveCookieSettingsButton = driver.findElement(By.id("save-cookie-settings"));
-        saveCookieSettingsButton.click();
+        accountManagementPage.rejectPolicyCookie();
+        accountManagementPage.savePolicyCookie();
     }
 
     @Then(

@@ -27,6 +27,7 @@ dependencies {
                        "io.cucumber:cucumber-junit:${dependencyVersions.cucumber_version}",
                        "org.seleniumhq.selenium:selenium-java:${dependencyVersions.selenium_java_version}",
                        "org.junit.jupiter:junit-jupiter-api:${dependencyVersions.junit_version}",
+                       "commons-codec:commons-codec:1.15","io.github.cdimascio:java-dotenv:5.2.2",
                        "io.qameta.allure:allure-maven:${dependencyVersions.qameta_allure}",
                        "com.github.automatedowl:allure-environment-writer:1.0.0",
                        "commons-codec:commons-codec:1.15"
@@ -69,8 +70,7 @@ task cucumber() {
         javaexec {
             main = "io.cucumber.core.cli.Main"
             classpath = configurations.cucumberRuntime + sourceSets.main.output + sourceSets.test.output
-            args = ['--plugin', 'pretty', '--glue', 'uk.gov.di.test.acceptance', 'src/test/resources',
-            '--plugin', 'io.qameta.allure.cucumber7jvm.AllureCucumber7Jvm']
+            args = ['--plugin', 'pretty', '--glue', 'uk.gov.di.test.step_definitions', 'src/test/resources', '--plugin', 'io.qameta.allure.cucumber7jvm.AllureCucumber7Jvm']
         }
     }
 }

@@ -1,3 +1,4 @@
+@Lock
 Feature: Locked accounts
   Existing users get locked out of their accounts
 

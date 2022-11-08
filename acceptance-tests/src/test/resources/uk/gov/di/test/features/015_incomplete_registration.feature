@@ -1,3 +1,4 @@
+@Incomplete
 Feature: Incomplete registration
   New user leaves the registration journey before completing it
 
