@@ -1,8 +1,8 @@
 package uk.gov.di.test.step_definitions;
 
+import io.cucumber.java.AfterStep;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.And;
-import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.junit.jupiter.api.Assertions;
@@ -31,10 +31,13 @@ public class Login extends SignIn {
     @Before
     public void setupWebdriver() throws MalformedURLException {
         super.setupWebdriver();
+        driver.manage().deleteAllCookies();
     }
 
-    @Given("the login services are running")
-    public void theServicesAreRunning() {}
+    @AfterStep
+    public void checkAccessibility() {
+        Axe.thereAreNoAccessibilityViolations();
+    }
 
     @And("the existing user has valid credentials")
     public void theExistingUserHasValidCredentials() {

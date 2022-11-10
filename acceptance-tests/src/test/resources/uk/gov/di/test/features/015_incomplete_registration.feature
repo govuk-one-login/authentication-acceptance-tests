@@ -3,8 +3,7 @@ Feature: Incomplete registration
   New user leaves the registration journey before completing it
 
   Scenario: Abandon before 2FA setup
-    Given the registration services are running
-    And a new user has valid credentials
+    Given a new user has valid credentials
     And the new user clears cookies
     When the new user visits the stub relying party
     And the new user clicks "govuk-signin-button"

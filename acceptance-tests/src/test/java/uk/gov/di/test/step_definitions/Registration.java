@@ -1,8 +1,8 @@
 package uk.gov.di.test.step_definitions;
 
+import io.cucumber.java.AfterStep;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.And;
-import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.openqa.selenium.By;
@@ -45,10 +45,13 @@ public class Registration extends SignIn {
     @Before
     public void setupWebdriver() throws MalformedURLException {
         super.setupWebdriver();
+        driver.manage().deleteAllCookies();
     }
 
-    @Given("the registration services are running")
-    public void theServicesAreRunning() {}
+    @AfterStep
+    public void checkAccessibility() {
+        Axe.thereAreNoAccessibilityViolations();
+    }
 
     @And("the new user has an invalid email format")
     public void theNewUserHasInvalidEmail() {
@@ -64,6 +67,11 @@ public class Registration extends SignIn {
     @When("the new user has a weak password")
     public void theUserHasAWeakPassword() {
         password = "password1";
+    }
+
+    @When("the user has invalid Email Code")
+    public void invalidEmailCode() {
+        sixDigitCodeEmail = "123456";
     }
 
     @When("the new user has a short digit only password")

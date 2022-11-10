@@ -3,8 +3,7 @@ Feature: Login Journey
   Existing user walks through a login journey
 
   Scenario: Existing user requests phone OTP code 5 times
-    Given the login services are running
-    And the existing resend code user has valid credentials
+    Given the existing resend code user has valid credentials
     When the existing user visits the stub relying party
     And the existing user clicks "govuk-signin-button"
     Then the existing user is taken to the Identity Provider Login Page
@@ -19,19 +18,17 @@ Feature: Login Journey
     When the existing user clicks the get a new code link
     Then the existing user is taken to the you cannot get a new security code page
 
-
   Scenario: Existing user tries to create an account with the same email address
     Given the account management services are running
     And the existing account management user has valid credentials
-    When the existing account management user navigates to account management
+    When the user navigates to account management
     And the existing account management user selects create an account
     Then the exiting account management user is asked to enter their current email address
     When the existing account management user enters their current email address
     Then the existing account management user is taken to the account exists page
 
   Scenario: Existing user is correctly prompted to login using sms
-    Given the login services are running
-    And the existing user has valid credentials
+    Given the existing user has valid credentials
     When the existing user visits the stub relying party
     And the existing user clicks "govuk-signin-button"
     Then the existing user is taken to the Identity Provider Login Page
@@ -47,9 +44,8 @@ Feature: Login Journey
     Then the existing user is taken to the you have signed out page
 
   Scenario: Existing user switches content to Welsh
-    Given the login services are running
-    And the existing user has valid credentials
-    When the existing account management user navigates to account management
+    Given the existing user has valid credentials
+    When the user navigates to account management
     And the existing account management user clicks link by href "?lng=cy"
     Then the existing user is taken to the Identity Provider Welsh Login Page
     When the existing user selects sign in
@@ -65,8 +61,7 @@ Feature: Login Journey
 
 
   Scenario: Existing user logs in without 2FA then uplift with 2FA
-    Given the login services are running
-    And the existing user has valid credentials
+    Given the existing user has valid credentials
     When the existing user visits the stub relying party
     And the existing user clicks "2fa-off"
     And the existing user clicks "govuk-signin-button"
@@ -86,7 +81,7 @@ Feature: Login Journey
   Scenario: Existing user attempts to change their phone number using their existing one
     Given the account management services are running
     And the existing account management user has valid credentials
-    When the existing account management user navigates to account management
+    When the user navigates to account management
     Then the existing account management user is taken to the your gov uk account page
     When the existing account management user clicks link by href "/enter-password?type=changePhoneNumber"
     Then the existing account management user is asked to enter their password
@@ -100,7 +95,7 @@ Feature: Login Journey
   Scenario: Existing user updates their cookie preferences
     Given the account management services are running
     And the existing account management user has valid credentials
-    When the existing account management user navigates to account management
+    When the user navigates to account management
     Then the existing account management user is taken to the your gov uk account page
     When the existing account management user clicks link by href "/enter-password?type=changePhoneNumber"
     Then the existing account management user is asked to enter their password
@@ -113,7 +108,7 @@ Feature: Login Journey
   Scenario: User changes their password
     Given the account management services are running
     And the existing account management user has valid credentials
-    When the existing account management user navigates to account management
+    When the user navigates to account management
     Then the existing account management user is taken to the your gov uk account page
     When the existing account management user clicks link by href "/enter-password?type=changePassword"
     Then the existing account management user is asked to enter their current password
@@ -128,7 +123,7 @@ Feature: Login Journey
   Scenario: User fails deleting their account due to invalid password
     Given the account management services are running
     And the existing account management user has valid credentials
-    When the existing account management user navigates to account management
+    When the user navigates to account management
     Then the existing account management user is taken to the your gov uk account page
     When the existing account management user clicks link by href "/enter-password?type=deleteAccount"
     Then the existing account management user is asked to enter their password
@@ -139,7 +134,7 @@ Feature: Login Journey
   Scenario: User deletes their account
     Given the account management services are running
     And the existing account management user has valid credentials
-    When the existing account management user navigates to account management
+    When the user navigates to account management
     Then the existing account management user is taken to the your gov uk account page
     When the existing account management user clicks link by href "/enter-password?type=deleteAccount"
     Then the existing account management user is asked to enter their password
