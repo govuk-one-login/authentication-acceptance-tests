@@ -24,6 +24,8 @@ Feature: Authentication App Journeys
     Then the new user is taken to the account created page
     When the new user clicks the continue button
     Then the user is returned to the service
+    When the user visits the stub relying party
+    And the new user clicks "govuk-signin-button"
     When the user clicks logout
     Then the new user is taken to the signed out page
     And the user visits the stub relying party
