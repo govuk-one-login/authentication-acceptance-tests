@@ -1,6 +1,5 @@
 package uk.gov.di.test.step_definitions;
 
-import io.cucumber.java.AfterStep;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -16,11 +15,6 @@ public class NotLoggedIn extends SignIn {
     @Before
     public void setupWebdriver() throws MalformedURLException {
         super.setupWebdriver();
-        driver.manage().deleteAllCookies();
-    }
-    @AfterStep
-    public void checkAccessibility() {
-        Axe.thereAreNoAccessibilityViolations();
     }
 
     @Given("the not logged in services are running")
