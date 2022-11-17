@@ -2,42 +2,33 @@
 Feature: Authentication App Journeys
   New user creates an account and logs in using an auth app
 
-
-  Scenario: User successfully registers with auth app 2FA, logs out then signs in again
-    Given the registration services are running
-    And the auth app user has valid credentials
-    And the new user clears cookies
-    When the new user visits the stub relying party
+  Scenario: User successfully registers with auth app 2FA and login with 2fa-on
+    Given the auth app user has valid credentials
+    And the user visits the stub relying party
     And the existing user clicks "2fa-off"
     And the new user clicks "govuk-signin-button"
     Then the new user is taken to the Identity Provider Login Page
     When the new user selects create an account
-    And there are no accessibility violations
     Then the new user is taken to the enter your email page
     When the new user enters their email address
     Then the new user is asked to check their email
     When the new user enters the six digit security code from their email
-    And there are no accessibility violations
     Then the new user is taken to the create your password page
     When the new user creates a password
-    And there are no accessibility violations
     Then the new user is taken to the get security codes page
     When the new user chooses "mfaOptions-2" to get security codes
     Then the new user is taken to the setup authenticator app page
     When the new user adds the secret key on the screen to their auth app
     And the user enters the security code from the auth app
     Then the new user is not shown an error message in field "code-error"
-    And there are no accessibility violations
     Then the new user is taken to the account created page
     When the new user clicks the continue button
-    And there are no accessibility violations
     Then the user is returned to the service
     When the user visits the stub relying party
     And the new user clicks "govuk-signin-button"
     When the user clicks logout
-    And there are no accessibility violations
     Then the new user is taken to the signed out page
-    When the user visits the stub relying party
+    And the user visits the stub relying party
     And the new user clicks "govuk-signin-button"
     Then the new user is taken to the Identity Provider Login Page
     When the existing auth app user selects sign in
@@ -49,8 +40,10 @@ Feature: Authentication App Journeys
     When the user enters the security code from the auth app
     Then the user is returned to the service
     When the user clicks logout
-    And there are no accessibility violations
     Then the new user is taken to the signed out page
+
+  Scenario: User successfully login without 2FA
+    Given the auth app user has valid credentials
     When the user visits the stub relying party
     And the existing user clicks "2fa-off"
     And the existing user clicks "govuk-signin-button"
@@ -65,8 +58,7 @@ Feature: Authentication App Journeys
     Then the new user is taken to the signed out page
 
   Scenario: User signs in auth app without 2FA, then uplifts
-    Given the registration services are running
-    And the auth app user has valid credentials
+    Given the auth app user has valid credentials
     When the user visits the stub relying party
     And the existing user clicks "2fa-off"
     And the existing user clicks "govuk-signin-button"
