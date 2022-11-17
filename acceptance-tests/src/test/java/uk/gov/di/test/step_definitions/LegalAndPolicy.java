@@ -21,12 +21,13 @@ public class LegalAndPolicy extends SignIn {
     @Before
     public void setupWebdriver() throws MalformedURLException {
         super.setupWebdriver();
-        driver.manage().deleteAllCookies();
     }
+
     @AfterStep
     public void checkAccessibility() {
         Axe.thereAreNoAccessibilityViolations();
     }
+
     LoginPage loginPage = new LoginPage();
 
     @Given("the services are running")

@@ -4,6 +4,7 @@ Feature: Authentication App Journeys
 
   Scenario: User successfully registers with auth app 2FA and login with 2fa-on
     Given the auth app user has valid credentials
+    And the new user clears cookies
     And the user visits the stub relying party
     And the existing user clicks "2fa-off"
     And the new user clicks "govuk-signin-button"
