@@ -18,7 +18,7 @@ public class Axe extends SignIn {
 
     @And("there are no accessibility violations")
     public static void thereAreNoAccessibilityViolations() {
-        System.out.println(ACCESSIBILITY_CHECKS);
+        //        System.out.println(ACCESSIBILITY_CHECKS);
         if (ACCESSIBILITY_CHECKS) {
             System.out.println("Page in test = " + driver.getTitle());
 
