@@ -17,6 +17,19 @@ Feature: Registration Journey
     When the new user clicks link by href "/enter-email"
     Then the new user is taken to the sign in to your account page
 
+  Scenario: User redirects to Sign-in to a service from No GOV.UK Account found page
+    Given the registration services are running
+    And a new user has valid credentials
+    When the user visits the stub relying party
+    And the new user clicks "govuk-signin-button"
+    Then the new user is taken to the Identity Provider Login Page
+    When the new user selects sign in
+    Then the new user is taken to the sign in to your account page
+    When the new user enters their email address
+    Then the new user is taken to the account not found page
+    When the new user clicks the sign in to a service button
+    Then the new user is taken to the sign in to a service page
+
   Scenario: User registration unsuccessful with invalid email, six digit code and password
     Given the registration services are running
     And the new user has an invalid email format

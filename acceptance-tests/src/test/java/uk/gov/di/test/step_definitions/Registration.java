@@ -457,4 +457,14 @@ public class Registration extends SignIn {
         accountManagementPage.enterPhoneNumber(internationalPhoneNumber);
         findAndClickContinue();
     }
+
+    @When("the new user clicks the sign in to a service button")
+    public void theNewUserClicksTheSignInToAServiceButton() {
+        registrationPage.signinToServiceButtonClick();
+    }
+
+    @Then("the new user is taken to the sign in to a service page")
+    public void theNewUserIsTakenToTheSignInToAServicePage() {
+        waitForPageLoadThenValidate(SIGN_IN_TO_A_SERVICE);
+    }
 }
