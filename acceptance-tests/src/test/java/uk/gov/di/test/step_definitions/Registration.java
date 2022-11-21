@@ -465,6 +465,12 @@ public class Registration extends SignIn {
 
     @Then("the new user is taken to the sign in to a service page")
     public void theNewUserIsTakenToTheSignInToAServicePage() {
-        waitForPageLoadThenValidate(SIGN_IN_TO_A_SERVICE);
+        waitForPageLoad("Sign in to a service - GOV.UK");
+        assertEquals("/sign-in", URI.create(driver.getCurrentUrl()).getPath());
+    }
+
+    @And("a new user has different valid credentials")
+    public void aNewUserHasDifferentValidCredentials() {
+        emailAddress = System.getenv().get("TEST_USER_NEW_EMAIL");
     }
 }

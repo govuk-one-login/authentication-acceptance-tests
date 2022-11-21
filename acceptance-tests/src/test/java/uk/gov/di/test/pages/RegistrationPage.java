@@ -13,7 +13,7 @@ public class RegistrationPage extends SignIn {
     By radioShareInfoAccept = By.id("share-info-accepted");
     By deleteAccountButton = By.className("govuk-button--warning");
     By shareInfoReject = By.id("share-info-rejected");
-    By signinToServiceButton = By.className("govuk-button");
+    By signinToServiceButton = By.cssSelector("form > button");
 
     public void radioTextMessageSecurityCodesClick() {
         driver.findElement(radioTextMessageSecurityCodes).click();

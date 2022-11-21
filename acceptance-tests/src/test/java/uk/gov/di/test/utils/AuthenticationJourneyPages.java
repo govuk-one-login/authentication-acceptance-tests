@@ -31,8 +31,7 @@ public enum AuthenticationJourneyPages {
     RESEND_SECURITY_CODE("/resend-code", "Get security code"),
     RESEND_SECURITY_CODE_TOO_MANY_TIMES(
             "/security-code-requested-too-many-times",
-            "You asked to resend the security code too many times"),
-    SIGN_IN_TO_A_SERVICE("/sign-in", "Sign in to a service");
+            "You asked to resend the security code too many times");
 
     private static final String PRODUCT_NAME = "GOV.UK account";
 
