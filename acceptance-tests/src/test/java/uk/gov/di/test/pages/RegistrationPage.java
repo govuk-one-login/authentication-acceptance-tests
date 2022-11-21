@@ -13,6 +13,7 @@ public class RegistrationPage extends SignIn {
     By radioShareInfoAccept = By.id("share-info-accepted");
     By deleteAccountButton = By.className("govuk-button--warning");
     By shareInfoReject = By.id("share-info-rejected");
+    By signinToServiceButton = By.cssSelector("form > button");
 
     public void radioTextMessageSecurityCodesClick() {
         driver.findElement(radioTextMessageSecurityCodes).click();
@@ -33,6 +34,8 @@ public class RegistrationPage extends SignIn {
     public void shareInfoAcceptClick() {
         driver.findElement(radioShareInfoAccept).click();
     }
+
+    public void signinToServiceButtonClick() { driver.findElement(signinToServiceButton).click();}
 
     public String getSecretFieldText() {
         new WebDriverWait(driver, DEFAULT_PAGE_LOAD_WAIT_TIME)

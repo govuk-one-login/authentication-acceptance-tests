@@ -457,4 +457,20 @@ public class Registration extends SignIn {
         accountManagementPage.enterPhoneNumber(internationalPhoneNumber);
         findAndClickContinue();
     }
+
+    @When("the new user clicks the sign in to a service button")
+    public void theNewUserClicksTheSignInToAServiceButton() {
+        registrationPage.signinToServiceButtonClick();
+    }
+
+    @Then("the new user is taken to the sign in to a service page")
+    public void theNewUserIsTakenToTheSignInToAServicePage() {
+        waitForPageLoad("Sign in to a service - GOV.UK");
+        assertEquals("/sign-in", URI.create(driver.getCurrentUrl()).getPath());
+    }
+
+    @And("a new user has different valid credentials")
+    public void aNewUserHasDifferentValidCredentials() {
+        emailAddress = System.getenv().get("TEST_USER_NEW_EMAIL");
+    }
 }
