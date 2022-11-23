@@ -35,7 +35,9 @@ public class RegistrationPage extends SignIn {
         driver.findElement(radioShareInfoAccept).click();
     }
 
-    public void signinToServiceButtonClick() { driver.findElement(signinToServiceButton).click();}
+    public void signinToServiceButtonClick() {
+        driver.findElement(signinToServiceButton).click();
+    }
 
     public String getSecretFieldText() {
         new WebDriverWait(driver, DEFAULT_PAGE_LOAD_WAIT_TIME)
