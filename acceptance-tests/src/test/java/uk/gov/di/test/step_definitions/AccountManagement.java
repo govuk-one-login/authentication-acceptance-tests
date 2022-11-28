@@ -24,6 +24,7 @@ public class AccountManagement extends SignIn {
     private String password;
     private String newPassword;
     private String phoneNumber;
+    private String resetPassword;
 
     public AccountManagementPage accountManagementPage = new AccountManagementPage();
 
@@ -196,5 +197,16 @@ public class AccountManagement extends SignIn {
             "the existing account management user is taken to the GOV.UK accounts cookies policy page")
     public void theExistingAccountManagementUserIsTakenToTheGOVUKAccountsCookiesPolicyPage() {
         waitForPageLoadThenValidate(GOV_UK_ACCOUNTS_COOKIES);
+    }
+
+    @When("the existing account management user uses their reset password")
+    public void theExistingAccountManagementUserUsesTheirResetPassword() {
+        resetPassword = System.getenv().get("TEST_USER_RESET_PASSWORD");
+    }
+
+    @And("the existing account management user enters their reset password to delete account")
+    public void theExistingAccountManagementUserEntersTheirResetPasswordToDeleteAccount() {
+        accountManagementPage.enterCurrentPassword(resetPassword);
+        findAndClickContinue();
     }
 }

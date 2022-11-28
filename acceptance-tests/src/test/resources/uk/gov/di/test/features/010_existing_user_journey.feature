@@ -158,8 +158,8 @@ Feature: Login Journey
     Then the existing account management user is taken to the your gov uk account page
     When the existing account management user clicks link by href "/enter-password?type=deleteAccount"
     Then the existing account management user is asked to enter their password
-    When the existing account management user uses their updated password
-    And the existing account management user enters their updated password to delete account
+    When the existing account management user uses their reset password
+    And the existing account management user enters their reset password to delete account
     Then the existing account management user is taken to the delete account page
     When the user clicks the delete your GOV.UK account button
     Then the existing account management user is taken to the account deleted confirmation page
