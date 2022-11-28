@@ -14,6 +14,7 @@ public class LoginPage extends SignIn {
     By problemWithTheCode = By.className("govuk-details__summary");
     By sendTheCodeAgainLink = By.cssSelector("#form-tracking > details > div > p > a");
     By getNewTheCodeAgainLink = By.cssSelector("#main-content > div > div > p:nth-child(3) > a");
+    By forgottenPasswordLink = By.cssSelector("#form-tracking > p > a");
 
     By securityCode = By.cssSelector("#main-content > div > div > form > button");
     By sixDigitSecurityCodeField = By.id("code");
@@ -54,6 +55,8 @@ public class LoginPage extends SignIn {
     public void sendTheCodeAgainLinkClick() {
         driver.findElement(sendTheCodeAgainLink).click();
     }
+
+    public void forgottenPasswordLinkClick() { driver.findElement(forgottenPasswordLink).click(); }
 
     public void enterEmailAddress(String email) {
         driver.findElement(emailAddressField).clear();

@@ -62,7 +62,6 @@ Feature: Login Journey
     When the existing account management user clicks link by href "?lng=en"
     Then the existing user is taken to the Identity Provider Login Page
 
-
   Scenario: Existing user logs in without 2FA then uplift with 2FA
     Given the login services are running
     And the existing user has valid credentials
@@ -134,6 +133,23 @@ Feature: Login Journey
     When the existing account management user enters an invalid password to delete account
     Then the existing account management user is shown an error message
     And the existing account management user is asked to enter their password again
+
+  Scenario: Existing user resets their password
+    Given the login services are running
+    And the existing user has valid credentials
+    When the existing user visits the stub relying party
+    And the existing user clicks "govuk-signin-button"
+    Then the new user is taken to the Identity Provider Login Page
+    When the existing user enters their email address
+    Then the existing user is prompted for their password
+    When the existing user clicks the forgotten password link
+    Then the existing user is taken to the reset password check email page
+    When the existing user enters the six digit security code from their email
+    Then the existing user is taken to the reset password page
+    When the existing user resets their password
+    Then the existing user is taken to the enter code page
+    When the existing user enters the six digit security code from their phone
+    Then the existing user is taken to the your gov uk account page
 
   Scenario: User deletes their account
     Given the account management services are running

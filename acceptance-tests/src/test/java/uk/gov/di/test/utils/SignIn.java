@@ -44,6 +44,12 @@ public class SignIn {
     protected static final String TEST_USER_PASSWORD =
             System.getenv().getOrDefault("TEST_USER_PASSWORD", "");
 
+    protected static final String TEST_USER_RESET_PASSWORD =
+            System.getenv().getOrDefault("TEST_USER_RESET_PASSWORD", "");
+
+    protected static final String TEST_USER_EMAIL_CODE =
+            System.getenv().getOrDefault("TEST_USER_EMAIL_CODE","");
+
     protected static final String TEST_USER_PHONE_CODE =
             System.getenv().getOrDefault("TEST_USER_PHONE_CODE", "");
     protected static final Boolean SELENIUM_LOCAL =

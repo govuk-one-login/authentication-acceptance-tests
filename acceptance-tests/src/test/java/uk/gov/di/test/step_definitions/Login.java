@@ -19,13 +19,16 @@ import java.time.Duration;
 import static java.time.temporal.ChronoUnit.MINUTES;
 import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static uk.gov.di.test.utils.AccountJourneyPages.YOUR_GOV_UK_ACCOUNT;
 import static uk.gov.di.test.utils.AuthenticationJourneyPages.*;
 
 public class Login extends SignIn {
 
     private String emailAddress;
     private String password;
+    private String resetPassword;
     private String sixDigitCodePhone;
+    private String sixDigitCodeEmail;
 
     public LoginPage loginPage = new LoginPage();
 
@@ -47,6 +50,8 @@ public class Login extends SignIn {
         emailAddress = SignIn.TEST_USER_EMAIL;
         password = SignIn.TEST_USER_PASSWORD;
         sixDigitCodePhone = SignIn.TEST_USER_PHONE_CODE;
+        sixDigitCodeEmail = SignIn.TEST_USER_EMAIL_CODE;
+        resetPassword = SignIn.TEST_USER_RESET_PASSWORD;
     }
 
     @And("the existing user has invalid credentials")
@@ -212,5 +217,48 @@ public class Login extends SignIn {
     public void theExistingUserEntersTheirEmailAddressInWelsh() {
         loginPage.enterEmailAddress(emailAddress);
         findAndClickContinueWelsh();
+    }
+
+    @When("the existing user clicks the forgotten password link")
+    public void theExistingUserClicksTheForgottenPasswordLink() {
+        loginPage.forgottenPasswordLinkClick();
+    }
+
+    @Then("the existing user is taken to the reset password check email page")
+    public void theExistingUserIsTakenToTheResetPasswordCheckEmailPage() {
+        waitForPageLoad("Check your email - GOV.UK account");
+        assertEquals("/reset-password-check-email", URI.create(driver.getCurrentUrl()).getPath());
+    }
+
+    @Then("the existing user is taken to the reset password page")
+    public void theExistingUserIsTakenToTheResetPasswordPage() {
+        waitForPageLoad("Reset your password - GOV.UK account");
+        assertEquals("/reset-password", URI.create(driver.getCurrentUrl()).getPath());
+    }
+
+    @When("the existing user enters the six digit security code from their email")
+    public void theExistingUserEntersTheSixDigitSecurityCodeFromTheirEmail() {
+        if (DEBUG_MODE) {
+            new WebDriverWait(driver, Duration.of(1, MINUTES))
+                    .until(
+                            (ExpectedCondition<Boolean>)
+                                    driver -> loginPage.getSixDigitSecurityCodeLength() == 6);
+        } else {
+            loginPage.enterSixDigitSecurityCode(sixDigitCodeEmail);
+        }
+        findAndClickContinue();
+    }
+
+    @When("the existing user resets their password")
+    public void theExistingUserResetsTheirPassword() {
+        loginPage.enterPassword(resetPassword);
+        loginPage.enterConfirmPassword(resetPassword);
+        findAndClickContinue();
+    }
+
+    @Then("the existing user is taken to the your gov uk account page")
+    public void theExistingUserIsTakenToTheYourGovUkAccountPage() {
+        waitForPageLoad("Your GOV.UK account - GOV.UK account");
+        assertEquals("/manage-your-account", URI.create(driver.getCurrentUrl()).getPath());
     }
 }
