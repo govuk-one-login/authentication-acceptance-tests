@@ -19,7 +19,6 @@ import java.time.Duration;
 import static java.time.temporal.ChronoUnit.MINUTES;
 import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static uk.gov.di.test.utils.AccountJourneyPages.YOUR_GOV_UK_ACCOUNT;
 import static uk.gov.di.test.utils.AuthenticationJourneyPages.*;
 
 public class Login extends SignIn {
@@ -260,5 +259,10 @@ public class Login extends SignIn {
     public void theExistingUserIsTakenToTheYourGovUkAccountPage() {
         waitForPageLoad("Your GOV.UK account - GOV.UK account");
         assertEquals("/manage-your-account", URI.create(driver.getCurrentUrl()).getPath());
+    }
+
+    @When("the existing user clicks the sign out link")
+    public void theExistingUserClicksTheSignOutLink() {
+        loginPage.signOutLinkClick();
     }
 }

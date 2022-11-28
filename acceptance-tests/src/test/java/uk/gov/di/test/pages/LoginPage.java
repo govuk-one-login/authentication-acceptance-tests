@@ -9,6 +9,7 @@ public class LoginPage extends SignIn {
     By confirmPasswordField = By.id("confirm-password");
 
     By logout = By.name("logout");
+    By signoutLink = By.cssSelector("#navigation > li:nth-child(2)");
     By termsAndConditions = By.name("termsAndConditionsResult");
     By passwordField = By.id("password");
     By problemWithTheCode = By.className("govuk-details__summary");
@@ -56,7 +57,11 @@ public class LoginPage extends SignIn {
         driver.findElement(sendTheCodeAgainLink).click();
     }
 
-    public void forgottenPasswordLinkClick() { driver.findElement(forgottenPasswordLink).click(); }
+    public void signOutLinkClick() { driver.findElement(signoutLink).click(); }
+
+    public void forgottenPasswordLinkClick() {
+        driver.findElement(forgottenPasswordLink).click();
+    }
 
     public void enterEmailAddress(String email) {
         driver.findElement(emailAddressField).clear();

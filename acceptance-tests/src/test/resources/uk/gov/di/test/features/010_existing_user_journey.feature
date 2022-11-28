@@ -122,6 +122,7 @@ Feature: Login Journey
     Then the existing account management user is taken to password updated confirmation page
     When the existing account management user clicks link by href "/manage-your-account"
     Then the existing account management user is taken to the your gov uk account page
+    When the existing user clicks the sign out link
 
   Scenario: User fails deleting their account due to invalid password
     Given the account management services are running
@@ -138,6 +139,8 @@ Feature: Login Journey
     Given the login services are running
     And the existing user has valid credentials
     When the existing user visits the stub relying party
+    #And the user clicks logout
+    #When the existing user visits the stub relying party
     And the existing user clicks "govuk-signin-button"
     Then the new user is taken to the Identity Provider Login Page
     When the existing user enters their email address
