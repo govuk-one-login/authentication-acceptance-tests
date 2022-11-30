@@ -186,7 +186,7 @@ public class Login extends SignIn {
     @Then("the existing user is taken to the Welsh enter your email page")
     public void theExistingUserIsTakenToTheWelshEnterYourEmailPage() {
         assertEquals(
-                "Rhowch eich cyfeiriad e-bost i fewngofnodi i'ch cyfrif GOV.UK - Cyfrif GOV.UK",
+                "Rhowch eich cyfeiriad e-bost i fewngofnodi i’ch cyfrif GOV.UK - Cyfrif GOV.UK",
                 driver.getTitle());
         Assertions.assertNotEquals("Continue", loginPage.continueButtonText());
         Assertions.assertNotEquals("Back", loginPage.backButtonText());
