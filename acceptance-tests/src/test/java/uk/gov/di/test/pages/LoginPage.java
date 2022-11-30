@@ -11,7 +11,7 @@ public class LoginPage extends SignIn {
     By logout = By.name("logout");
     By termsAndConditions = By.name("termsAndConditionsResult");
     By passwordField = By.id("password");
-    By problemWithTheCode = By.cssSelector("#form-tracking > details > summary");
+    By problemWithTheCode = By.className("govuk-details__summary");
     By sendTheCodeAgainLink = By.cssSelector("#form-tracking > details > div > p > a");
     By getNewTheCodeAgainLink = By.cssSelector("#main-content > div > div > p:nth-child(3) > a");
 
