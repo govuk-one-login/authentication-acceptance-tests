@@ -3,7 +3,6 @@ package uk.gov.di.test.step_definitions;
 import io.cucumber.java.AfterStep;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.And;
-import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.junit.jupiter.api.Assertions;
@@ -38,9 +37,6 @@ public class Login extends SignIn {
     public void checkAccessibility() {
         Axe.thereAreNoAccessibilityViolations();
     }
-
-    @Given("the login services are running")
-    public void theServicesAreRunning() {}
 
     @And("the existing user has valid credentials")
     public void theExistingUserHasValidCredentials() {
