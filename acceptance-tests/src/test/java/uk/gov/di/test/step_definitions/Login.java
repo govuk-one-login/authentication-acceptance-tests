@@ -213,4 +213,8 @@ public class Login extends SignIn {
         loginPage.enterEmailAddress(emailAddress);
         findAndClickContinueWelsh();
     }
+
+    @Then("the existing user is taken to the get security code page")
+    public void theExistingUserIsTakenToTheGetSecurityCodePage() {
+    }
 }

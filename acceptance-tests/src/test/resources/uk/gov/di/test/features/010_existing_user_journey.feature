@@ -18,6 +18,9 @@ Feature: Login Journey
     Then the existing user is taken to the you asked to resend the security code too many times page
     When the existing user clicks the get a new code link
     Then the existing user is taken to the you cannot get a new security code page
+    When the existing user clicks the get a new code link
+    Then the existing user is taken to the get security code page
+
 
   Scenario: Existing user tries to create an account with the same email address
     Given the account management services are running
