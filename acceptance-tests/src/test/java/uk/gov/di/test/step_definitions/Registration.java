@@ -231,6 +231,7 @@ public class Registration extends SignIn {
 
     @When("the new user adds the secret key on the screen to their auth app")
     public void theNewUserAddTheSecretKeyOnTheScreenToTheirAuthApp() {
+        registrationPage.iCannotScanQrCodeClick();
         authAppSecretKey = registrationPage.getSecretFieldText();
         assertTrue(registrationPage.getSecretFieldText().length() == 52);
     }

@@ -9,6 +9,7 @@ public class RegistrationPage extends SignIn {
 
     By radioTextMessageSecurityCodes = By.id("mfaOptions");
     By secretKeyField = By.id("secret-key");
+    By iCannotScanQrCode = By.cssSelector("#main-content > div > div > details:nth-child(6) > summary");
     By goBackButton = By.cssSelector("#form-tracking > button");
     By radioShareInfoAccept = By.id("share-info-accepted");
     By deleteAccountButton = By.className("govuk-button--warning");
@@ -38,6 +39,8 @@ public class RegistrationPage extends SignIn {
     public void signinToServiceButtonClick() {
         driver.findElement(signinToServiceButton).click();
     }
+
+    public void iCannotScanQrCodeClick() { driver.findElement(iCannotScanQrCode).click(); }
 
     public String getSecretFieldText() {
         new WebDriverWait(driver, DEFAULT_PAGE_LOAD_WAIT_TIME)
