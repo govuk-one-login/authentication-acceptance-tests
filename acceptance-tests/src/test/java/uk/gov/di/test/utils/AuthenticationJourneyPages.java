@@ -19,7 +19,7 @@ public enum AuthenticationJourneyPages {
     ENTER_PHONE_NUMBER("/enter-phone-number", "Enter your mobile phone number"),
     FINISH_CREATING_YOUR_ACCOUNT("/enter-phone-number", "Finish creating your account"),
     CHECK_YOUR_PHONE("/check-your-phone", "Check your phone"),
-    ACCOUNT_CREATED("/account-created", "You’ve created your GOV.UK account"),
+    ACCOUNT_CREATED("/account-created", "You've created your GOV.UK account"),
     ENTER_PASSWORD("/enter-password", "Enter your password"),
     ENTER_CODE("/enter-code", "Check your phone"),
     ENTER_EMAIL_EXISTING_USER(
