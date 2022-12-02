@@ -3,8 +3,7 @@ Feature: Locked accounts
   Existing users get locked out of their accounts
 
   Scenario: New user enters incorrect email code 6 times
-    Given the login services are running
-    And the new email code lock user has valid credentials
+    Given the new email code lock user has valid credentials
     And the new user clears cookies
     When the new user visits the stub relying party
     And the new user clicks "govuk-signin-button"
@@ -34,8 +33,7 @@ Feature: Locked accounts
     Then the new user is taken to the enter your email page
 
   Scenario: New user enters incorrect phone code 6 times
-    Given the login services are running
-    And the new phone code lock user has valid credentials
+    Given the new phone code lock user has valid credentials
     And the new user clears cookies
     When the new user visits the stub relying party
     And the new user clicks "govuk-signin-button"
