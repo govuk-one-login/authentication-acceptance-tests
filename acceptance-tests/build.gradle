@@ -17,7 +17,7 @@ def dependencyVersions = [
         cucumber_version: '7.8.1',
         axe_version: '3.0',
         json_version: '20220320',
-        selenium_java_version: '4.5.0',
+        selenium_java_version: '4.7.0',
         qameta_allure: '2.11.2',
         qameta_allure_cucumber: '2.18.1'
 ]
