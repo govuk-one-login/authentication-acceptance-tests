@@ -3,7 +3,6 @@ package uk.gov.di.test.step_definitions;
 import io.cucumber.java.AfterStep;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.And;
-import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.junit.jupiter.api.Assertions;
@@ -40,9 +39,6 @@ public class Login extends SignIn {
     public void checkAccessibility() {
         Axe.thereAreNoAccessibilityViolations();
     }
-
-    @Given("the login services are running")
-    public void theServicesAreRunning() {}
 
     @And("the existing user has valid credentials")
     public void theExistingUserHasValidCredentials() {
@@ -190,7 +186,7 @@ public class Login extends SignIn {
     @Then("the existing user is taken to the Welsh enter your email page")
     public void theExistingUserIsTakenToTheWelshEnterYourEmailPage() {
         assertEquals(
-                "Rhowch eich cyfeiriad e-bost i fewngofnodi i'ch cyfrif GOV.UK - Cyfrif GOV.UK",
+                "Rhowch eich cyfeiriad e-bost i fewngofnodi i’ch cyfrif GOV.UK - Cyfrif GOV.UK",
                 driver.getTitle());
         Assertions.assertNotEquals("Continue", loginPage.continueButtonText());
         Assertions.assertNotEquals("Back", loginPage.backButtonText());
