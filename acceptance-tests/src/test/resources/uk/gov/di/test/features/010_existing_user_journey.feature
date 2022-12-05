@@ -126,8 +126,7 @@ Feature: Login Journey
     And the existing account management user is asked to enter their password again
 
   Scenario: Existing user resets their password
-    Given the login services are running
-    And the existing user has valid credentials
+    Given the existing user has valid credentials
     When the existing user visits the stub relying party
     And the existing user clicks "govuk-signin-button"
     And the user clicks logout
