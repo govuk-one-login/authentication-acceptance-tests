@@ -9,3 +9,4 @@ bin/
 .env
 *.bat
 node_modules/
+target/
