@@ -18,7 +18,7 @@ public class LoginPage extends SignIn {
     By securityCode = By.cssSelector("#main-content > div > div > form > button");
     By sixDigitSecurityCodeField = By.id("code");
     By emailDescriptionDetails = By.id("user-info-email");
-    By emailErrorDescriptionDetails = By.id("error-summary-title");
+    By emailErrorDescriptionDetails = By.className("govuk-error-summary");
 
     By continueButton = By.cssSelector("#main-content > div > div > form > button");
     By backButton = By.className("govuk-back-link");
