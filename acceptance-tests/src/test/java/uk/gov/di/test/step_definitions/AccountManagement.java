@@ -43,11 +43,6 @@ public class AccountManagement extends SignIn {
         phoneNumber = System.getenv().get("TEST_USER_PHONE_NUMBER");
     }
 
-    @When("the existing account management user navigates to account management")
-    public void theExistingAccountManagementUserVisitsTheStubRelyingParty() {
-        driver.get(AM_URL.toString());
-    }
-
     @Then("the existing account management user is taken to the your gov uk account page")
     public void theExistingAccountManagementUserIsTakenToTheYourGovUkAccountPage() {
         waitForPageLoadThenValidate(YOUR_GOV_UK_ACCOUNT);

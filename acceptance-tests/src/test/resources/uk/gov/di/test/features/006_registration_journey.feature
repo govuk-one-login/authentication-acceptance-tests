@@ -17,7 +17,8 @@ Feature: Registration Journey
 
   Scenario: User redirects to Sign-in to a service from No GOV.UK Account found page
     Given a new user has valid credentials
-    When the not logged in user navigates to account root
+    When the not logged in user visits the stub relying party
+    And the not logged in user clicks "govuk-signin-button"
     Then the new user is taken to the Identity Provider Login Page
     When the new user selects sign in
     Then the new user is taken to the sign in to your account page
