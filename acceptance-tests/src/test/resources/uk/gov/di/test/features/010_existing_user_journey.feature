@@ -20,7 +20,9 @@ Feature: Login Journey
 
   Scenario: Existing user tries to create an account with the same email address
     Given the existing account management user has valid credentials
-    When the existing account management user navigates to account management
+    When the existing user visits the stub relying party
+    And the existing user clicks "govuk-signin-button"
+    Then the existing user is taken to the Identity Provider Login Page
     And the existing account management user selects create an account
     Then the exiting account management user is asked to enter their current email address
     When the existing account management user enters their current email address
@@ -44,7 +46,9 @@ Feature: Login Journey
 
   Scenario: Existing user switches content to Welsh
     Given the existing user has valid credentials
-    When the existing account management user navigates to account management
+    When the existing user visits the stub relying party
+    And the existing user clicks "govuk-signin-button"
+    Then the existing user is taken to the Identity Provider Login Page
     And the existing account management user clicks link by href "?lng=cy"
     Then the existing user is taken to the Identity Provider Welsh Login Page
     When the existing user selects sign in

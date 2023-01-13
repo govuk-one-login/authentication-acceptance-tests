@@ -1,7 +1,8 @@
 Feature: Not logged in
-  User launches account management
+  User launches the stub
 
-  Scenario: User launches account management
+  Scenario: User launches the stub
     Given the not logged in services are running
-    When the not logged in user navigates to account root
+    When the not logged in user visits the stub relying party
+    And the not logged in user clicks "govuk-signin-button"
     Then the not logged in user is taken to the Identity Provider Login Page

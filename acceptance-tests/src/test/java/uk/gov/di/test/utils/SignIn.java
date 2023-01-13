@@ -35,8 +35,6 @@ public class SignIn {
                     .getOrDefault(
                             "RP_URL",
                             "https://di-auth-stub-relying-party-build-s2.london.cloudapps.digital/");
-    protected static final String AM_URL =
-            System.getenv().getOrDefault("AM_URL", "https://build.account.gov.uk/");
 
     protected static final String TEST_USER_EMAIL =
             System.getenv().getOrDefault("TEST_USER_EMAIL", "");
