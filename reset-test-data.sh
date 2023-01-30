@@ -57,6 +57,42 @@ gds-cli aws ${GDS_AWS_ACCOUNT} aws dynamodb delete-item \
     --key "{\"Email\": {\"S\": \"${TEST_USER_AUTH_APP_EMAIL}\"}}" \
     --region "${AWS_REGION}"
 
+echo "Truncating test user data in user-profile..."
+gds-cli aws ${GDS_AWS_ACCOUNT} aws dynamodb delete-item \
+    --table-name "${ENVIRONMENT_NAME}-user-profile" \
+    --key "{\"Email\": {\"S\": \"${IPN1_NEW_USER_EMAIL}\"}}" \
+    --region "${AWS_REGION}"
+
+echo "Truncating test user data in user-credentials..."
+gds-cli aws ${GDS_AWS_ACCOUNT} aws dynamodb delete-item \
+    --table-name "${ENVIRONMENT_NAME}-user-credentials" \
+    --key "{\"Email\": {\"S\": \"${IPN1_NEW_USER_EMAIL}\"}}" \
+    --region "${AWS_REGION}"
+
+echo "Truncating test user data in user-profile..."
+gds-cli aws ${GDS_AWS_ACCOUNT} aws dynamodb delete-item \
+    --table-name "${ENVIRONMENT_NAME}-user-profile" \
+    --key "{\"Email\": {\"S\": \"${IPN2_NEW_USER_EMAIL}\"}}" \
+    --region "${AWS_REGION}"
+
+echo "Truncating test user data in user-credentials..."
+gds-cli aws ${GDS_AWS_ACCOUNT} aws dynamodb delete-item \
+    --table-name "${ENVIRONMENT_NAME}-user-credentials" \
+    --key "{\"Email\": {\"S\": \"${IPN2_NEW_USER_EMAIL}\"}}" \
+    --region "${AWS_REGION}"
+
+echo "Truncating test user data in user-profile..."
+gds-cli aws ${GDS_AWS_ACCOUNT} aws dynamodb delete-item \
+    --table-name "${ENVIRONMENT_NAME}-user-profile" \
+    --key "{\"Email\": {\"S\": \"${IPN3_NEW_USER_EMAIL}\"}}" \
+    --region "${AWS_REGION}"
+
+echo "Truncating test user data in user-credentials..."
+gds-cli aws ${GDS_AWS_ACCOUNT} aws dynamodb delete-item \
+    --table-name "${ENVIRONMENT_NAME}-user-credentials" \
+    --key "{\"Email\": {\"S\": \"${IPN3_NEW_USER_EMAIL}\"}}" \
+    --region "${AWS_REGION}"
+
 echo "resetting terms and conditions version for test user in user-profile..."
 gds-cli aws ${GDS_AWS_ACCOUNT} aws dynamodb update-item \
     --table-name "${ENVIRONMENT_NAME}-user-profile" \

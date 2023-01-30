@@ -3,6 +3,7 @@ package uk.gov.di.test.step_definitions;
 import io.cucumber.java.AfterStep;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.And;
+import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.junit.jupiter.api.Assertions;
@@ -43,6 +44,12 @@ public class Login extends SignIn {
         emailAddress = SignIn.TEST_USER_EMAIL;
         password = SignIn.TEST_USER_PASSWORD;
         sixDigitCodePhone = SignIn.TEST_USER_PHONE_CODE;
+    }
+
+    @Given("the existing user has a phone code that does not work")
+    public void theExistingUserHasAPhoneCodeThatDoesNotWork() {
+        emailAddress = System.getenv().get("IPN4_EXISTING_USER_EMAIL");
+        password = System.getenv().get("IPN4_EXISTING_USER_PASSWORD");
     }
 
     @And("the existing user has invalid credentials")

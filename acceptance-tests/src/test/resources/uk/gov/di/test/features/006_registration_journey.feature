@@ -36,7 +36,7 @@ Feature: Registration Journey
     When the new user selects create an account
     Then the new user is taken to the enter your email page
     When the new user enters their email address
-    Then the new user is shown an error message
+    Then the user is shown an error message
     When the new user has a valid email address
     And the new user enters their email address
     Then the new user is asked to check their email
@@ -46,16 +46,16 @@ Feature: Registration Journey
     When the new user has an invalid password
     And the new user creates a password
     And there are no accessibility violations
-    Then the new user is shown an error message
+    Then the user is shown an error message
     When the new user has a weak password
     And the new user creates a password
-    Then the new user is shown an error message
+    Then the user is shown an error message
     When the new user has a short digit only password
     And the new user creates a password
-    Then the new user is shown an error message
+    Then the user is shown an error message
     When the new user has a sequence of numbers password
     And the new user creates a password
-    Then the new user is shown an error message
+    Then the user is shown an error message
 
   Scenario: User successfully registers using sms
     Given a new user has valid credentials
