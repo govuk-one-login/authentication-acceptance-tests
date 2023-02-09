@@ -47,7 +47,7 @@ public class LegalAndPolicy extends SignIn {
     public void theExistingUserIsTakenToTheIdentityProviderLoginPage() {
         waitForPageLoad("Create a GOV.UK One Login or sign in");
         assertEquals("/sign-in-or-create", URI.create(driver.getCurrentUrl()).getPath());
-        assertEquals("Create a GOV.UK One Loging or sign in - GOV.UK One Login", driver.getTitle());
+        assertEquals("Create a GOV.UK One Login or sign in - GOV.UK One Login", driver.getTitle());
     }
 
     @And("the user clicks link {string}")
