@@ -45,9 +45,9 @@ public class LegalAndPolicy extends SignIn {
 
     @Then("the user is taken to the Identity Provider Login Page")
     public void theExistingUserIsTakenToTheIdentityProviderLoginPage() {
-        waitForPageLoad("Create a GOV.UK account or sign in");
+        waitForPageLoad("Create a GOV.UK One Login or sign in");
         assertEquals("/sign-in-or-create", URI.create(driver.getCurrentUrl()).getPath());
-        assertEquals("Create a GOV.UK account or sign in - GOV.UK account", driver.getTitle());
+        assertEquals("Create a GOV.UK One Loging or sign in - GOV.UK One Login", driver.getTitle());
     }
 
     @And("the user clicks link {string}")
@@ -101,9 +101,9 @@ public class LegalAndPolicy extends SignIn {
 
     @Then("the new user is taken to the updated terms and conditions page")
     public void theNewUserIsTakenToTheUpdatedTermsAndConditionsPage() {
-        waitForPageLoad("GOV.UK account terms of use update");
+        waitForPageLoad("GOV.UK One Login terms of use update");
         assertEquals("/updated-terms-and-conditions", URI.create(driver.getCurrentUrl()).getPath());
-        assertEquals("GOV.UK account terms of use update - GOV.UK account", driver.getTitle());
+        assertEquals("GOV.UK One Login terms of use update - GOV.UK One Login", driver.getTitle());
     }
 
     @Then("the new user is taken to the Agree to the updated terms of use to continue page")
@@ -113,7 +113,7 @@ public class LegalAndPolicy extends SignIn {
                 "/updated-terms-and-conditions-disagree",
                 URI.create(driver.getCurrentUrl()).getPath());
         assertEquals(
-                "Agree to the updated terms of use to continue - GOV.UK account",
+                "Agree to the updated terms of use to continue - GOV.UK One Login",
                 driver.getTitle());
     }
 }
