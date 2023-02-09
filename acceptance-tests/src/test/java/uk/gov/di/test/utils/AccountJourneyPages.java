@@ -11,11 +11,11 @@ public enum AccountJourneyPages {
     DELETE_ACCOUNT("/delete-account", "Are you sure you want to delete your GOV.UK account?"),
     ACCOUNT_DELETED_CONFIRMATION(
             "/account-deleted-confirmation", "You have deleted your GOV.UK account"),
-    ACCOUNT_EXISTS("/enter-password-account-exists", "You have a GOV.UK account"),
+    ACCOUNT_EXISTS("/enter-password-account-exists", "You have a GOV.UK One Login"),
     ENTER_NEW_MOBILE_PHONE_NUMBER("/change-phone-number", "Enter your new mobile phone number"),
     GOV_UK_ACCOUNTS_COOKIES("/cookies", "GOV.UK accounts cookies policy");
 
-    private static final String PRODUCT_NAME = "GOV.UK account";
+    private static final String PRODUCT_NAME = "GOV.UK One Login";
 
     private String route;
     private String shortTitle;

@@ -176,13 +176,13 @@ public class Login extends SignIn {
 
     @Then("the existing user is taken to the Identity Provider Welsh Login Page")
     public void theExistingUserIsTakenToTheIdentityProviderWelshLoginPage() {
-        assertEquals("Creu cyfrif GOV.UK neu fewngofnodi - Cyfrif GOV.UK", driver.getTitle());
+        assertEquals("Creu GOV.UK One Login neu fewngofnodi - GOV.UK One Login", driver.getTitle());
     }
 
     @Then("the existing user is taken to the Welsh enter your email page")
     public void theExistingUserIsTakenToTheWelshEnterYourEmailPage() {
         assertEquals(
-                "Rhowch eich cyfeiriad e-bost i fewngofnodi i’ch cyfrif GOV.UK - Cyfrif GOV.UK",
+                "Rhowch eich cyfeiriad e-bost i fewngofnodi i’ch GOV.UK One Login - GOV.UK One Login",
                 driver.getTitle());
         Assertions.assertNotEquals("Continue", loginPage.continueButtonText());
         Assertions.assertNotEquals("Back", loginPage.backButtonText());
@@ -190,12 +190,12 @@ public class Login extends SignIn {
 
     @Then("the existing user is prompted for their password in Welsh")
     public void theExistingUserIsPromptedForTheirPasswordInWelsh() {
-        assertEquals("Rhowch eich cyfrinair - Cyfrif GOV.UK", driver.getTitle());
+        assertEquals("Rhowch eich cyfrinair - GOV.UK One Login", driver.getTitle());
     }
 
     @Then("the existing user is taken to the Welsh enter code page")
     public void theExistingUserIsTakenToTheWelshEnterCodePage() {
-        assertEquals("Gwiriwch eich ffôn - Cyfrif GOV.UK", driver.getTitle());
+        assertEquals("Gwiriwch eich ffôn - GOV.UK One Login", driver.getTitle());
     }
 
     @When("the existing user enters their password in Welsh")
