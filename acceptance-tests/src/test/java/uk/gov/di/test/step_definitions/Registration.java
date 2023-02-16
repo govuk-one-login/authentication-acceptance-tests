@@ -3,6 +3,7 @@ package uk.gov.di.test.step_definitions;
 import io.cucumber.java.AfterStep;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.And;
+import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.openqa.selenium.By;
@@ -56,6 +57,29 @@ public class Registration extends SignIn {
     public void theNewUserHasInvalidEmail() {
         emailAddress = "joe.bloggs";
         password = "password";
+    }
+
+    @Given("a new user has an invalid UK mobile phone number")
+    public void aNewUserHasAnInvalidUkMobilePhoneNumber() {
+        emailAddress = System.getenv().get("IPN1_NEW_USER_EMAIL");
+        password = System.getenv().get("TEST_USER_PASSWORD");
+        sixDigitCodeEmail = System.getenv().get("TEST_USER_EMAIL_CODE");
+        sixDigitCodePhone = System.getenv().get("TEST_USER_PHONE_CODE");
+    }
+
+    @Given("a new user has an invalid international mobile phone number")
+    public void aNewUserHasAnInvalidInternationalMobilePhoneNumber() {
+        emailAddress = System.getenv().get("IPN2_NEW_USER_EMAIL");
+        password = System.getenv().get("TEST_USER_PASSWORD");
+        sixDigitCodeEmail = System.getenv().get("TEST_USER_EMAIL_CODE");
+        sixDigitCodePhone = System.getenv().get("TEST_USER_PHONE_CODE");
+    }
+
+    @Given("a new user has a valid international mobile phone number")
+    public void aNewUserHasAValidInternationalMobilePhoneNumber() {
+        emailAddress = System.getenv().get("IPN3_NEW_USER_EMAIL");
+        password = System.getenv().get("TEST_USER_PASSWORD");
+        sixDigitCodeEmail = System.getenv().get("TEST_USER_EMAIL_CODE");
     }
 
     @When("the new user has an invalid password")
@@ -163,7 +187,7 @@ public class Registration extends SignIn {
         for (int i = 0; i < timesCodeIncorrect; i++) {
             loginPage.enterSixDigitSecurityCode(getRandomInvalidCode());
             findAndClickContinue();
-            theNewUserIsShownAnErrorMessageOnTheEnterEmailPage();
+            theUserIsShownAnErrorMessageOnTheEnterEmailPage();
         }
     }
 
@@ -345,8 +369,8 @@ public class Registration extends SignIn {
         assertEquals(emailAddress, loginPage.emailDescription());
     }
 
-    @Then("the new user is shown an error message")
-    public void theNewUserIsShownAnErrorMessageOnTheEnterEmailPage() {
+    @Then("the user is shown an error message")
+    public void theUserIsShownAnErrorMessageOnTheEnterEmailPage() {
         assertTrue(loginPage.emailErrorDescriptionDetailsIsDisplayed());
     }
 
@@ -414,13 +438,15 @@ public class Registration extends SignIn {
         sixDigitCodeEmail = System.getenv().get("TEST_USER_EMAIL_CODE");
     }
 
+    @When("the new user enters an incorrect email code")
     @When("the new user enters an incorrect email code one more time")
     public void theNewUserEntersAnIncorrectEmailCodeOneMoreTime() {
         loginPage.enterSixDigitSecurityCode(getRandomInvalidCode());
         findAndClickContinue();
     }
 
-    @When("the new user enters an incorrect phone code one more time")
+    @When("the user enters an incorrect phone code one more time")
+    @When("the user enters an incorrect phone code")
     public void theNewUserEntersAnIncorrectPhoneCodeOneMoreTime() {
         loginPage.enterSixDigitSecurityCode(getRandomInvalidCode());
         findAndClickContinue();
@@ -469,5 +495,74 @@ public class Registration extends SignIn {
     @And("a new user has different valid credentials")
     public void aNewUserHasDifferentValidCredentials() {
         emailAddress = System.getenv().get("TEST_USER_NEW_EMAIL");
+    }
+
+    @When("the new user submits a blank UK phone number")
+    public void theNewUserSubmitsABlankUKPhoneNumber() {
+        accountManagementPage.enterPhoneNumber("");
+        findAndClickContinue();
+    }
+
+    @When("the new user submits an international phone number in the UK phone number field")
+    public void theNewUserSubmitsAnInternationalPhoneNumberInTheUKPhoneNumberField() {
+        accountManagementPage.enterPhoneNumber("+61412123123");
+        findAndClickContinue();
+    }
+
+    @When("the new user submits an incorrectly formatted UK phone number")
+    public void theNewUserSubmitsAnIncorrectlyFormattedUKPhoneNumber() {
+        accountManagementPage.enterPhoneNumber("070000000000000");
+        findAndClickContinue();
+    }
+
+    @When("the new user submits a UK phone number containing non-digit characters")
+    public void theNewUserSubmitsAUKPhoneNumberContainingNonDigitCharacters() {
+        accountManagementPage.enterPhoneNumber("0780312*a45");
+        findAndClickContinue();
+    }
+
+    @Then("the {string} error message is displayed")
+    public void theErrorMessageIsDisplayed(String expectedErrorMessage) {
+        assertEquals(expectedErrorMessage, accountManagementPage.getUpperErrorMessageText());
+    }
+
+    @When("the new user ticks I do not have a UK mobile number")
+    public void theNewUserTicksIDoNotHaveAUKMobileNumber() {
+        accountManagementPage.tickIDoNotHaveUkMobileNumber();
+    }
+
+    @Then("the International mobile number field is displayed")
+    public void theInternationalMobileNumberFieldIsDisplayed() {
+        assertTrue(accountManagementPage.isInternationalMobileNumberFieldDisplayed());
+    }
+
+    @And("the UK mobile phone number field is disabled")
+    public void theUkMobilePhoneNumberFieldIsDisabled() {
+        assertEquals(false, accountManagementPage.getStatusOfUKMobileNumberField());
+    }
+
+    @When("the new user submits a blank international mobile phone number")
+    public void theNewUserSubmitsABlankInternationalMobilePhoneNumber() {
+        accountManagementPage.enterInternationalMobilePhoneNumber("");
+        findAndClickContinue();
+    }
+
+    @When("the new user submits an incorrectly formatted international mobile phone number")
+    public void theNewUserSubmitsAnIncorrectlyFormattedInternationalMobilePhoneNumber() {
+        accountManagementPage.enterInternationalMobilePhoneNumber("+123456789123456789123456");
+        findAndClickContinue();
+    }
+
+    @When(
+            "the new user submits an international mobile phone number containing non-digit characters")
+    public void theNewUserSubmitsAnInternationalMobilePhoneNumberContainingNonDigitCharacters() {
+        accountManagementPage.enterInternationalMobilePhoneNumber("/3383838383");
+        findAndClickContinue();
+    }
+
+    @When("the new user enters a valid international mobile phone number")
+    public void theNewUserEntersAValidInternationalMobilePhoneNumber() {
+        accountManagementPage.enterInternationalMobilePhoneNumber("+61412123123");
+        findAndClickContinue();
     }
 }
