@@ -38,9 +38,7 @@ public class SupportPage extends SignIn {
 
     public void selectRadioButtonAndProceed(String radioButtonLabel) {
         selectSupportRadioButtonByLabelText(radioButtonLabel);
-        if (radioButtonLabel.equals("Text message to a phone number from another country")
-                || radioButtonLabel.equals(
-                        "Text message to a phone number from a different country")) {
+        if (radioButtonLabel.equals("Text message to a phone number from another country")) {
             enterMoreDetails("More details text");
             canWeReplyViaEmail("No");
             pressSendMessage();
