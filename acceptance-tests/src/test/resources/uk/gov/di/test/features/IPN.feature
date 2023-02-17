@@ -87,7 +87,7 @@ Feature: International Phone Numbers
     Then the user is taken to the "A problem creating a GOV.UK One Login" page
     When the user selects "You did not get a security code" and proceeds
     Then the user is taken to the "You did not get a security code" page
-    When the user selects "Text message to a phone number from a different country" and proceeds
+    When the user selects "Text message to a phone number from another country" and proceeds
     Then the user receives confirmation that their message has been submitted
 
 
@@ -111,5 +111,5 @@ Feature: International Phone Numbers
     Then the user is taken to the "A problem signing in to your GOV.UK One Login" page
     When the user selects "The security code did not work" and proceeds
     Then the user is taken to the "The security code does not work" page
-    When the user selects "Text message to a phone number from a different country" and proceeds
+    When the user selects "Text message to a phone number from another country" and proceeds
     Then the user receives confirmation that their message has been submitted
