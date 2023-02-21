@@ -6,10 +6,11 @@ plugins {
 }
 
 repositories {
-    mavenLocal()
+
     maven {
         url = uri('https://repo.maven.apache.org/maven2/')
     }
+    mavenLocal()
 }
 
 def dependencyVersions = [
@@ -32,7 +33,10 @@ dependencies {
                        "com.github.automatedowl:allure-environment-writer:1.0.0",
                        "commons-codec:commons-codec:1.15",
                        "com.sparkjava:spark-core:2.9.4",
-                       "org.slf4j:slf4j-simple:1.7.21"
+                       "org.slf4j:slf4j-simple:1.7.21",
+                       "com.auth0:java-jwt:4.3.0",
+            'com.google.code.gson:gson:2.10.1',
+            'com.sparkjava:spark-template-mustache:2.7.1'
 
     testImplementation group: 'com.deque', name: 'axe-selenium', version:"${dependencyVersions.axe_version}"
     testImplementation group: 'org.json', name: 'json', version:"${dependencyVersions.json_version}"
