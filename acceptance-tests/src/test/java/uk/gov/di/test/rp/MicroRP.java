@@ -42,7 +42,7 @@ public class MicroRP {
                         .addParameter("response_type", "code")
                         .addParameter("vtr", "[\"Cl\"]")
                         .build();
-        System.out.println(authRequest.toString());
+
         res.redirect(authRequest.toString());
         return "";
     }
