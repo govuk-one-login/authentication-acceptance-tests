@@ -8,6 +8,7 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.openqa.selenium.By;
 import uk.gov.di.test.pages.LoginPage;
+import uk.gov.di.test.rp.MicroRP;
 import uk.gov.di.test.utils.SignIn;
 import uk.gov.di.test.utils.SupportingPages;
 
@@ -29,9 +30,12 @@ public class LegalAndPolicy extends SignIn {
     }
 
     LoginPage loginPage = new LoginPage();
+    MicroRP microRP = new MicroRP();
 
     @Given("the services are running")
-    public void theServicesAreRunning() {}
+    public void theServicesAreRunning() {
+        microRP.start();
+    }
 
     @When("the user visits the stub relying party")
     public void theExistingUserVisitsTheStubRelyingParty() {
@@ -115,5 +119,10 @@ public class LegalAndPolicy extends SignIn {
         assertEquals(
                 "Agree to the updated terms of use to continue - GOV.UK One Login",
                 driver.getTitle());
+    }
+
+    @Given("the user tries to log in")
+    public void theUserTriesToLogIn() {
+        driver.get("http://localhost:3031/");
     }
 }

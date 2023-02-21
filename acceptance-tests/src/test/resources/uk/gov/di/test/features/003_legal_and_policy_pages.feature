@@ -4,8 +4,7 @@ Feature: Legal and policy pages
 
   Scenario: User views legal and policy pages
     Given the services are running
-    When the user visits the stub relying party
-    And the user clicks "govuk-signin-button"
+    When the user tries to log in
     Then the user is taken to the Identity Provider Login Page
     When the user clicks link "Accessibility statement"
     Then the user is taken to the accessibility statement page
