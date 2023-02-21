@@ -30,7 +30,9 @@ dependencies {
                        "commons-codec:commons-codec:1.15","io.github.cdimascio:java-dotenv:5.2.2",
                        "io.qameta.allure:allure-maven:${dependencyVersions.qameta_allure}",
                        "com.github.automatedowl:allure-environment-writer:1.0.0",
-                       "commons-codec:commons-codec:1.15"
+                       "commons-codec:commons-codec:1.15",
+                       "com.sparkjava:spark-core:2.9.4",
+                       "org.slf4j:slf4j-simple:1.7.21"
 
     testImplementation group: 'com.deque', name: 'axe-selenium', version:"${dependencyVersions.axe_version}"
     testImplementation group: 'org.json', name: 'json', version:"${dependencyVersions.json_version}"
