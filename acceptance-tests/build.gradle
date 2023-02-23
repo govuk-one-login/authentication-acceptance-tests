@@ -19,7 +19,8 @@ def dependencyVersions = [
         json_version: '20220320',
         selenium_java_version: '4.5.0',
         qameta_allure: '2.11.2',
-        qameta_allure_cucumber: '2.18.1'
+        qameta_allure_cucumber: '2.18.1',
+        pico_container: '7.11.1'
 ]
 
 dependencies {
@@ -35,6 +36,7 @@ dependencies {
     testImplementation group: 'com.deque', name: 'axe-selenium', version:"${dependencyVersions.axe_version}"
     testImplementation group: 'org.json', name: 'json', version:"${dependencyVersions.json_version}"
     testImplementation group: 'io.qameta.allure', name: 'allure-cucumber7-jvm', version:"${dependencyVersions.qameta_allure_cucumber}"
+    testImplementation group: 'io.cucumber', name: 'cucumber-picocontainer', version:"${dependencyVersions.pico_container}"
 
     testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:${dependencyVersions.junit_version}"
 }
