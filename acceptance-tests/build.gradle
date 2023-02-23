@@ -36,7 +36,7 @@ dependencies {
                        "org.slf4j:slf4j-simple:1.7.21",
                        "com.auth0:java-jwt:4.3.0",
             'com.google.code.gson:gson:2.10.1',
-            'com.sparkjava:spark-template-mustache:2.7.1'
+            'com.auth0:jwks-rsa:0.22.0'
 
     testImplementation group: 'com.deque', name: 'axe-selenium', version:"${dependencyVersions.axe_version}"
     testImplementation group: 'org.json', name: 'json', version:"${dependencyVersions.json_version}"

@@ -10,6 +10,7 @@ import java.net.URISyntaxException;
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
 import static uk.gov.di.test.rp.RequestGenerator.makeTokenRequest;
 import static uk.gov.di.test.rp.RequestGenerator.makeUserInfoRequest;
+import static uk.gov.di.test.rp.ValidateToken.isValidIdToken;
 
 public class MicroRP {
 
@@ -44,9 +45,13 @@ public class MicroRP {
 
     private Object callback(Request request, Response response) throws Exception {
         var tokenResponse = makeTokenRequest(request.queryParams("code"));
-        var userInfoResponse = makeUserInfoRequest(tokenResponse.get("access_token"));
 
-        return responsePage(userInfoResponse.get("sub"));
+        if (isValidIdToken(tokenResponse.get("id_token"))) {
+            var userInfoResponse = makeUserInfoRequest(tokenResponse.get("access_token"));
+            return responsePage(userInfoResponse.get("sub"));
+        } else {
+            throw new RuntimeException("Invalid ID token signature");
+        }
     }
 
     private static String responsePage(String sub) {
