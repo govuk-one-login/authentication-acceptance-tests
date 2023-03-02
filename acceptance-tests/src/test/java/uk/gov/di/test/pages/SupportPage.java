@@ -41,15 +41,21 @@ public class SupportPage extends SignIn {
         if (radioButtonLabel.equals("Text message to a phone number from another country")) {
             enterMoreDetails("More details text");
             canWeReplyViaEmail("No");
-            pressSendMessage();
+            // pressSendMessage(); //removed so as not to submit case to support desk!
+            driver.close(); // close support tab (current tab)
+            switchToTabByIndex(0); // switch back to main tab
         } else {
             findAndClickContinue();
         }
     }
 
     public void checkForNewTabAndGoToIt(String newTabTitle) {
-        ArrayList<String> tabs = new ArrayList<String>(driver.getWindowHandles());
-        driver.switchTo().window(tabs.get(1));
+        switchToTabByIndex(1);
         waitForPageLoad(newTabTitle);
+    }
+
+    public void switchToTabByIndex(Integer idx) {
+        ArrayList<String> tabs = new ArrayList<String>(driver.getWindowHandles());
+        driver.switchTo().window(tabs.get(idx));
     }
 }
