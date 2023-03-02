@@ -9,25 +9,33 @@ import io.cucumber.java.en.When;
 import org.junit.jupiter.api.Assertions;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import uk.gov.di.test.pages.CheckYourEmailPage;
 import uk.gov.di.test.pages.LoginPage;
+import uk.gov.di.test.pages.ResetYourPasswordPage;
 import uk.gov.di.test.utils.SignIn;
 
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.time.Duration;
+import java.util.UUID;
 
 import static java.time.temporal.ChronoUnit.MINUTES;
 import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static uk.gov.di.test.utils.AuthenticationJourneyPages.*;
+import static uk.gov.di.test.utils.Constants.*;
 
 public class Login extends SignIn {
 
     private String emailAddress;
     private String password;
     private String sixDigitCodePhone;
+    private String phoneNumber;
+    private String sixDigitCodeEmail;
 
     public LoginPage loginPage = new LoginPage();
+    public ResetYourPasswordPage resetYourLoginPasswordPage = new ResetYourPasswordPage();
+    public CheckYourEmailPage checkYourEmailPage = new CheckYourEmailPage();
 
     @Before
     public void setupWebdriver() throws MalformedURLException {
@@ -44,6 +52,25 @@ public class Login extends SignIn {
         emailAddress = SignIn.TEST_USER_EMAIL;
         password = SignIn.TEST_USER_PASSWORD;
         sixDigitCodePhone = SignIn.TEST_USER_PHONE_CODE;
+    }
+
+    @Given("the existing user has valid credentials and wants to reset their password")
+    public void theExistingUserHasValidCredentialsAndWantsToResetTheirPassword() {
+        emailAddress = System.getenv().get("RESET_PW_USER_EMAIL");
+        password = System.getenv().get("RESET_PW_CURRENT_PW");
+        phoneNumber = System.getenv().get("TEST_USER_PHONE_NUMBER");
+        sixDigitCodeEmail = System.getenv().get("TEST_USER_EMAIL_CODE");
+        sixDigitCodePhone = System.getenv().get("TEST_USER_PHONE_CODE");
+    }
+
+    @When("the user clicks the forgotten password link")
+    public void theUserClicksTheForgottenPasswordLink() {
+        loginPage.clickForgottenMyPassword();
+    }
+
+    @Then("the existing user is asked to check their email")
+    public void theExistingUserIsAskedToCheckTheirEmail() {
+        waitForPageLoadThenValidate(CHECK_YOUR_EMAIL);
     }
 
     @Given("the existing user has a phone code that does not work")
@@ -215,5 +242,51 @@ public class Login extends SignIn {
     public void theExistingUserEntersTheirEmailAddressInWelsh() {
         loginPage.enterEmailAddress(emailAddress);
         findAndClickContinueWelsh();
+    }
+
+    @When("the user enters valid new password and correctly retypes it")
+    public void theUserEntersValidNewPasswordAndCorrectlyRetypesIt() {
+        String newPassword = UUID.randomUUID() + "a1";
+        resetYourLoginPasswordPage.enterPasswordResetDetails(newPassword, newPassword);
+    }
+
+    @When("the user resets their password to be the same as their current password")
+    public void theUserResetsTheirPasswordToBeTheSameAsTheirCurrentPassword() {
+        String newPassword = System.getenv().get("RESET_PW_CURRENT_PW");
+        resetYourLoginPasswordPage.enterPasswordResetDetails(newPassword, newPassword);
+    }
+
+    @When("the user resets their password to an invalid one")
+    public void theUserResetsTheirPasswordToAnInvalidOne() {
+        resetYourLoginPasswordPage.enterPasswordResetDetails(INVALID_PASSWORD, INVALID_PASSWORD);
+    }
+
+    @When("the user resets their password to one that is on the list of top 100k passwords")
+    public void theUserResetsTheirPasswordToOneThatIsOnTheListOfTop100kPasswords() {
+        resetYourLoginPasswordPage.enterPasswordResetDetails(TOP_100K_PASSWORD, TOP_100K_PASSWORD);
+    }
+
+    @When("the user resets their password but enters mismatching new passwords")
+    public void theUserResetsTheirPasswordButEntersMismatchingNewPasswords() {
+        resetYourLoginPasswordPage.enterPasswordResetDetails(
+                MISMATCHING_PASSWORD_1, MISMATCHING_PASSWORD_2);
+    }
+
+    @When("the user enters their email security code")
+    public void theUserEntersTheirEmailSecurityCode() {
+        checkYourEmailPage.enterEmailSecurityCode(sixDigitCodeEmail);
+    }
+
+    @When("the user enters the six digit security code from their email")
+    public void theUserEntersTheSixDigitSecurityCodeFromTheirEmail() {
+        if (DEBUG_MODE) {
+            new WebDriverWait(driver, Duration.of(1, MINUTES))
+                    .until(
+                            (ExpectedCondition<Boolean>)
+                                    driver -> loginPage.getSixDigitSecurityCodeLength() == 6);
+        } else {
+            loginPage.enterSixDigitSecurityCode(sixDigitCodeEmail);
+        }
+        findAndClickContinue();
     }
 }
