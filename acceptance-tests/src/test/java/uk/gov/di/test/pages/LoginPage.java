@@ -22,6 +22,7 @@ public class LoginPage extends SignIn {
 
     By continueButton = By.cssSelector("#main-content > div > div > form > button");
     By backButton = By.className("govuk-back-link");
+    By forgottenMyPasswordLink = By.xpath("//a[contains(text(), \"I’ve forgotten my password\")]");
 
     public void buttonClick(String name) {
         driver.findElement(By.id(name)).click();
@@ -92,5 +93,9 @@ public class LoginPage extends SignIn {
 
     public Boolean emailErrorDescriptionDetailsIsDisplayed() {
         return driver.findElement(emailErrorDescriptionDetails).isDisplayed();
+    }
+
+    public void clickForgottenMyPassword() {
+        driver.findElement(forgottenMyPasswordLink).click();
     }
 }
