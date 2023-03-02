@@ -83,12 +83,12 @@ Feature: International Phone Numbers
     Then the new user is taken to the check your phone page
     When the user clicks the support link having not received their security code
     Then the user is taken to the Contact us page in a new tab
-    When the user selects "A problem creating a GOV.UK One Login" and proceeds
+    When the user selects "A problem creating a GOV.UK One Login"
     Then the user is taken to the "A problem creating a GOV.UK One Login" page
-    When the user selects "You did not get a security code" and proceeds
+    When the user selects "You did not get a security code"
     Then the user is taken to the "You did not get a security code" page
-    When the user selects "Text message to a phone number from another country" and proceeds
-    Then the user receives confirmation that their message has been submitted
+    And the user selects "Text message to a phone number from another country"
+    #Test stopped here so as not to submit case to the actual support desk
 
 
   Scenario: Existing user with an international phone number reports that their security code did not work
@@ -107,9 +107,9 @@ Feature: International Phone Numbers
     Then the user is shown an error message
     When the user clicks the support link due to their security code not working
     Then the user is taken to the Contact us page in a new tab
-    When the user selects "A problem signing in to your GOV.UK One Login" and proceeds
+    When the user selects "A problem signing in to your GOV.UK One Login"
     Then the user is taken to the "A problem signing in to your GOV.UK One Login" page
-    When the user selects "The security code did not work" and proceeds
+    When the user selects "The security code did not work"
     Then the user is taken to the "The security code does not work" page
-    When the user selects "Text message to a phone number from another country" and proceeds
-    Then the user receives confirmation that their message has been submitted
+    And the user selects "Text message to a phone number from another country"
+    #Test stopped here so as not to submit case to the actual support desk
