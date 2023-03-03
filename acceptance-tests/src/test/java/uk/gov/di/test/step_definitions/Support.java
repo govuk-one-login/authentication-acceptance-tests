@@ -25,7 +25,7 @@ public class Support extends SignIn {
         supportPage.checkForNewTabAndGoToIt("Contact us - GOV.UK One Login");
     }
 
-    @When("the user selects {string} and proceeds")
+    @When("the user selects {string}")
     public void theUserSelectsRadioButtonAndProceeds(String option) {
         supportPage.selectRadioButtonAndProceed(option);
     }
