@@ -8,6 +8,7 @@ import spark.Spark;
 import java.net.URISyntaxException;
 
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
+import static uk.gov.di.test.rp.Config.getPort;
 import static uk.gov.di.test.rp.RequestGenerator.makeTokenRequest;
 import static uk.gov.di.test.rp.RequestGenerator.makeUserInfoRequest;
 import static uk.gov.di.test.rp.ValidateToken.isValidIdToken;
@@ -15,13 +16,16 @@ import static uk.gov.di.test.rp.ValidateToken.isValidIdToken;
 public class MicroRP {
 
     public void start() {
-        Spark.stop();
-        Spark.awaitStop();
-
-        Spark.port(3031);
-
+        stop();
+        Spark.port(getPort());
         Spark.get("/callback", this::callback);
         Spark.get("/", this::dispatchOneLoginRequest);
+        Spark.init();
+    }
+
+    public void stop() {
+        Spark.stop();
+        Spark.awaitStop();
     }
 
     private String dispatchOneLoginRequest(Request request, Response res)
@@ -33,12 +37,12 @@ public class MicroRP {
                         .addParameter("state", randomAlphanumeric(20))
                         .addParameter("nonce", randomAlphanumeric(20))
                         .addParameter("scope", "openid")
-                        .addParameter("redirect_uri", "http://localhost:3031/callback")
+                        .addParameter("redirect_uri", "http://localhost:" + getPort() + "/callback")
                         .addParameter("client_id", System.getenv("RP_CLIENT_ID"))
                         .addParameter("response_type", "code")
                         .addParameter("vtr", "[\"Cl\"]")
                         .build();
-
+        System.out.println(authRequest.toString());
         res.redirect(authRequest.toString());
         return "";
     }

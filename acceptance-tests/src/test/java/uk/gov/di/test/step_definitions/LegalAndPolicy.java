@@ -1,5 +1,6 @@
 package uk.gov.di.test.step_definitions;
 
+import io.cucumber.java.After;
 import io.cucumber.java.AfterStep;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.And;
@@ -22,6 +23,11 @@ public class LegalAndPolicy extends SignIn {
     @Before
     public void setupWebdriver() throws MalformedURLException {
         super.setupWebdriver();
+    }
+
+    @After
+    public void setdown() {
+        microRP.stop();
     }
 
     @AfterStep
@@ -123,6 +129,6 @@ public class LegalAndPolicy extends SignIn {
 
     @Given("the user tries to log in")
     public void theUserTriesToLogIn() {
-        driver.get("http://localhost:3031/");
+        driver.get(RP_URL);
     }
 }

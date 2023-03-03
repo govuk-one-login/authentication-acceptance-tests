@@ -17,6 +17,7 @@ import java.util.stream.Collectors;
 import static java.util.Map.entry;
 import static java.util.Map.ofEntries;
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
+import static uk.gov.di.test.rp.Config.getPort;
 import static uk.gov.di.test.rp.SigningKey.signingKey;
 
 public class RequestGenerator {
@@ -40,7 +41,9 @@ public class RequestGenerator {
         var body =
                 ofEntries(
                                 entry("code", authCode),
-                                entry("redirect_uri", "http://localhost:3031/callback"),
+                                entry(
+                                        "redirect_uri",
+                                        "http://localhost:" + getPort() + "/callback"),
                                 entry(
                                         "client_assertion_type",
                                         "urn:ietf:params:oauth:client-assertion-type:jwt-bearer"),
