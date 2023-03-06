@@ -34,7 +34,7 @@ public class Login extends SignIn {
     private String sixDigitCodeEmail;
 
     public LoginPage loginPage = new LoginPage();
-    public ResetYourPasswordPage resetYourLoginPasswordPage = new ResetYourPasswordPage();
+    public ResetYourPasswordPage resetYourPasswordPage = new ResetYourPasswordPage();
     public CheckYourEmailPage checkYourEmailPage = new CheckYourEmailPage();
 
     @Before
@@ -61,6 +61,21 @@ public class Login extends SignIn {
         phoneNumber = System.getenv().get("TEST_USER_PHONE_NUMBER");
         sixDigitCodeEmail = System.getenv().get("TEST_USER_EMAIL_CODE");
         sixDigitCodePhone = System.getenv().get("TEST_USER_PHONE_CODE");
+    }
+
+    @Given("the existing user has a password which is on the top 100k passwords list")
+    public void theExistingUserHasAPasswordWhichIsOnTheTop100lPasswordsList() {
+        emailAddress = System.getenv().get("REQ_RESET_PW_USER_EMAIL");
+        password = System.getenv().get("REQ_RESET_PW_CURRENT_PW");
+        phoneNumber = System.getenv().get("TEST_USER_PHONE_NUMBER");
+        sixDigitCodeEmail = System.getenv().get("TEST_USER_EMAIL_CODE");
+        sixDigitCodePhone = System.getenv().get("TEST_USER_PHONE_CODE");
+    }
+
+    @When("the user enters their password which is on the top 100k password list")
+    public void theUserEntersTheirPasswordWhichIsOnTheTop100kPasswordList() {
+        loginPage.enterPassword(password);
+        findAndClickContinue();
     }
 
     @When("the user clicks the forgotten password link")
@@ -247,28 +262,28 @@ public class Login extends SignIn {
     @When("the user enters valid new password and correctly retypes it")
     public void theUserEntersValidNewPasswordAndCorrectlyRetypesIt() {
         String newPassword = UUID.randomUUID() + "a1";
-        resetYourLoginPasswordPage.enterPasswordResetDetails(newPassword, newPassword);
+        resetYourPasswordPage.enterPasswordResetDetails(newPassword, newPassword);
     }
 
     @When("the user resets their password to be the same as their current password")
     public void theUserResetsTheirPasswordToBeTheSameAsTheirCurrentPassword() {
         String newPassword = System.getenv().get("RESET_PW_CURRENT_PW");
-        resetYourLoginPasswordPage.enterPasswordResetDetails(newPassword, newPassword);
+        resetYourPasswordPage.enterPasswordResetDetails(newPassword, newPassword);
     }
 
     @When("the user resets their password to an invalid one")
     public void theUserResetsTheirPasswordToAnInvalidOne() {
-        resetYourLoginPasswordPage.enterPasswordResetDetails(INVALID_PASSWORD, INVALID_PASSWORD);
+        resetYourPasswordPage.enterPasswordResetDetails(INVALID_PASSWORD, INVALID_PASSWORD);
     }
 
     @When("the user resets their password to one that is on the list of top 100k passwords")
     public void theUserResetsTheirPasswordToOneThatIsOnTheListOfTop100kPasswords() {
-        resetYourLoginPasswordPage.enterPasswordResetDetails(TOP_100K_PASSWORD, TOP_100K_PASSWORD);
+        resetYourPasswordPage.enterPasswordResetDetails(TOP_100K_PASSWORD, TOP_100K_PASSWORD);
     }
 
     @When("the user resets their password but enters mismatching new passwords")
     public void theUserResetsTheirPasswordButEntersMismatchingNewPasswords() {
-        resetYourLoginPasswordPage.enterPasswordResetDetails(
+        resetYourPasswordPage.enterPasswordResetDetails(
                 MISMATCHING_PASSWORD_1, MISMATCHING_PASSWORD_2);
     }
 
