@@ -6,7 +6,9 @@ import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import org.junit.Assert;
 import org.junit.jupiter.api.Assertions;
+import org.openqa.selenium.By;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import uk.gov.di.test.pages.CheckYourEmailPage;
@@ -20,7 +22,6 @@ import java.time.Duration;
 import java.util.UUID;
 
 import static java.time.temporal.ChronoUnit.MINUTES;
-import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static uk.gov.di.test.utils.AuthenticationJourneyPages.*;
 import static uk.gov.di.test.utils.Constants.*;
@@ -150,9 +151,9 @@ public class Login extends SignIn {
 
     @Then("the existing user is taken to the Service User Info page")
     public void theExistingUserIsTakenToTheServiceUserInfoPage() {
-        assertEquals("/oidc/callback", URI.create(driver.getCurrentUrl()).getPath());
-        assertEquals("Example - GOV.UK - User Info", driver.getTitle());
-        assertEquals(emailAddress, loginPage.emailDescription());
+        Assert.assertEquals("/oidc/callback", URI.create(driver.getCurrentUrl()).getPath());
+        Assert.assertEquals("Example - GOV.UK - User Info", driver.getTitle());
+        Assert.assertEquals(emailAddress, loginPage.emailDescription());
     }
 
     @Then("the existing user is shown an error message")
@@ -168,7 +169,7 @@ public class Login extends SignIn {
     @Then("the existing user is taken to the you have signed out page")
     public void theExistingUserIsTakenToTheYouHaveSignedOutPage() {
         waitForPageLoad("Signed out");
-        assertEquals("/signed-out", URI.create(driver.getCurrentUrl()).getPath());
+        Assert.assertEquals("/signed-out", URI.create(driver.getCurrentUrl()).getPath());
     }
 
     @And("the existing user clicks by name {string}")
@@ -186,10 +187,40 @@ public class Login extends SignIn {
         }
     }
 
+    @When("the existing user enters the phone otp code {string} 6 times")
+    public void theExistingUserEntersThePhoneOtpCodeTimes(String incorrectCode) {
+
+        for (int i = 0; i < 5; i++) {
+            loginPage.enterSixDigitSecurityCode(incorrectCode);
+            findAndClickContinue();
+            waitForPageLoad("Error");
+            Assert.assertTrue(
+                    driver.findElement(By.className("govuk-error-summary")).isDisplayed());
+
+            // Assert.assertEquals(
+            //         "The security code you entered is not correct, or may have expired, try
+            // entering it again or request a new code",
+            //         driver.findElement(By.id("code-error")).getText());
+
+        }
+        loginPage.enterSixDigitSecurityCode(incorrectCode);
+        findAndClickContinue();
+    }
+
+    @When("the existing user is taken to the entered security code to many times page")
+    public void theExistingUserIsTakenToTheEnteredSecurityCodeToManyTimesPage() {
+        waitForPageLoadThenValidate(SECURITY_CODE_INVALID);
+    }
+
     @Then(
             "the existing user is taken to the you asked to resend the security code too many times page")
     public void theExistingUserIsTakenToTheYouAskedToResendTheSecurityCodeTooManyTimesPage() {
         waitForPageLoadThenValidate(RESEND_SECURITY_CODE_TOO_MANY_TIMES);
+    }
+
+    @Then("the existing user is taken to the cannot get a new code just now page")
+    public void theExistingUserIsTakenToTheCannotGetANewCodeJustNowPage() {
+        waitForPageLoadThenValidate(RESEND_SECURITY_CODE_EXCEEDED);
     }
 
     @When("the existing user clicks the get a new code link")
@@ -210,12 +241,13 @@ public class Login extends SignIn {
 
     @Then("the existing user is taken to the Identity Provider Welsh Login Page")
     public void theExistingUserIsTakenToTheIdentityProviderWelshLoginPage() {
-        assertEquals("Creu GOV.UK One Login neu fewngofnodi - GOV.UK One Login", driver.getTitle());
+        Assert.assertEquals(
+                "Creu GOV.UK One Login neu fewngofnodi - GOV.UK One Login", driver.getTitle());
     }
 
     @Then("the existing user is taken to the Welsh enter your email page")
     public void theExistingUserIsTakenToTheWelshEnterYourEmailPage() {
-        assertEquals(
+        Assert.assertEquals(
                 "Rhowch eich cyfeiriad e-bost i fewngofnodi i’ch GOV.UK One Login - GOV.UK One Login",
                 driver.getTitle());
         Assertions.assertNotEquals("Continue", loginPage.continueButtonText());
@@ -224,12 +256,12 @@ public class Login extends SignIn {
 
     @Then("the existing user is prompted for their password in Welsh")
     public void theExistingUserIsPromptedForTheirPasswordInWelsh() {
-        assertEquals("Rhowch eich cyfrinair - GOV.UK One Login", driver.getTitle());
+        Assert.assertEquals("Rhowch eich cyfrinair - GOV.UK One Login", driver.getTitle());
     }
 
     @Then("the existing user is taken to the Welsh enter code page")
     public void theExistingUserIsTakenToTheWelshEnterCodePage() {
-        assertEquals("Gwiriwch eich ffôn - GOV.UK One Login", driver.getTitle());
+        Assert.assertEquals("Gwiriwch eich ffôn - GOV.UK One Login", driver.getTitle());
     }
 
     @When("the existing user enters their password in Welsh")
