@@ -4,7 +4,7 @@ import org.openqa.selenium.By;
 import uk.gov.di.test.utils.SignIn;
 
 public class LoginPage extends SignIn {
-    By signInLink = By.id("sign-in-link");
+    By signInButton = By.id("sign-in-button");
     By emailAddressField = By.id("email");
     By confirmPasswordField = By.id("confirm-password");
 
@@ -36,8 +36,8 @@ public class LoginPage extends SignIn {
         driver.findElement(termsAndConditions).click();
     }
 
-    public void signInLinkClick() {
-        driver.findElement(signInLink).click();
+    public void signInButtonClick() {
+        driver.findElement(signInButton).click();
     }
 
     public void getNewTheCodeAgainLinkClick() {
