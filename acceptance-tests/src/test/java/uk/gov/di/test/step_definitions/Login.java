@@ -6,7 +6,6 @@ import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import org.junit.Assert;
 import org.junit.jupiter.api.Assertions;
 import org.openqa.selenium.By;
 import org.openqa.selenium.support.ui.ExpectedCondition;
@@ -22,6 +21,7 @@ import java.time.Duration;
 import java.util.UUID;
 
 import static java.time.temporal.ChronoUnit.MINUTES;
+import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static uk.gov.di.test.utils.AuthenticationJourneyPages.*;
 import static uk.gov.di.test.utils.Constants.*;
@@ -33,7 +33,6 @@ public class Login extends SignIn {
     private String sixDigitCodePhone;
     private String phoneNumber;
     private String sixDigitCodeEmail;
-
     public LoginPage loginPage = new LoginPage();
     public ResetYourPasswordPage resetYourLoginPasswordPage = new ResetYourPasswordPage();
     public CheckYourEmailPage checkYourEmailPage = new CheckYourEmailPage();
@@ -62,6 +61,12 @@ public class Login extends SignIn {
         phoneNumber = System.getenv().get("TEST_USER_PHONE_NUMBER");
         sixDigitCodeEmail = System.getenv().get("TEST_USER_EMAIL_CODE");
         sixDigitCodePhone = System.getenv().get("TEST_USER_PHONE_CODE");
+    }
+
+    @Given("the existing user logs in and enters wrong 2FA code six times")
+    public void theExistingUserLogsInAndEntersWrong2FACodeSixTimes() {
+        emailAddress = System.getenv().get("INCORRECT_2FA_USER_EMAIL");
+        password = System.getenv().get("INCORRECT_2FA_CURRENT_PW");
     }
 
     @When("the user clicks the forgotten password link")
@@ -151,9 +156,9 @@ public class Login extends SignIn {
 
     @Then("the existing user is taken to the Service User Info page")
     public void theExistingUserIsTakenToTheServiceUserInfoPage() {
-        Assert.assertEquals("/oidc/callback", URI.create(driver.getCurrentUrl()).getPath());
-        Assert.assertEquals("Example - GOV.UK - User Info", driver.getTitle());
-        Assert.assertEquals(emailAddress, loginPage.emailDescription());
+        assertEquals("/oidc/callback", URI.create(driver.getCurrentUrl()).getPath());
+        assertEquals("Example - GOV.UK - User Info", driver.getTitle());
+        assertEquals(emailAddress, loginPage.emailDescription());
     }
 
     @Then("the existing user is shown an error message")
@@ -169,7 +174,7 @@ public class Login extends SignIn {
     @Then("the existing user is taken to the you have signed out page")
     public void theExistingUserIsTakenToTheYouHaveSignedOutPage() {
         waitForPageLoad("Signed out");
-        Assert.assertEquals("/signed-out", URI.create(driver.getCurrentUrl()).getPath());
+        assertEquals("/signed-out", URI.create(driver.getCurrentUrl()).getPath());
     }
 
     @And("the existing user clicks by name {string}")
@@ -187,23 +192,18 @@ public class Login extends SignIn {
         }
     }
 
-    @When("the existing user enters the phone otp code {string} 6 times")
-    public void theExistingUserEntersThePhoneOtpCodeTimes(String incorrectCode) {
+    @When("the existing user enters the wrong phone otp code 6 times")
+    public void theExistingUserEntersTheWrongPhoneOtpCodeSixTimes() {
+
+        final String OTP_CODE = "123456";
 
         for (int i = 0; i < 5; i++) {
-            loginPage.enterSixDigitSecurityCode(incorrectCode);
+            loginPage.enterSixDigitSecurityCode(OTP_CODE);
             findAndClickContinue();
             waitForPageLoad("Error");
-            Assert.assertTrue(
-                    driver.findElement(By.className("govuk-error-summary")).isDisplayed());
-
-            // Assert.assertEquals(
-            //         "The security code you entered is not correct, or may have expired, try
-            // entering it again or request a new code",
-            //         driver.findElement(By.id("code-error")).getText());
-
+            assertTrue(loginPage.errorSummaryDisplayed());
         }
-        loginPage.enterSixDigitSecurityCode(incorrectCode);
+        loginPage.enterSixDigitSecurityCode(OTP_CODE);
         findAndClickContinue();
     }
 
@@ -241,13 +241,12 @@ public class Login extends SignIn {
 
     @Then("the existing user is taken to the Identity Provider Welsh Login Page")
     public void theExistingUserIsTakenToTheIdentityProviderWelshLoginPage() {
-        Assert.assertEquals(
-                "Creu GOV.UK One Login neu fewngofnodi - GOV.UK One Login", driver.getTitle());
+        assertEquals("Creu GOV.UK One Login neu fewngofnodi - GOV.UK One Login", driver.getTitle());
     }
 
     @Then("the existing user is taken to the Welsh enter your email page")
     public void theExistingUserIsTakenToTheWelshEnterYourEmailPage() {
-        Assert.assertEquals(
+        assertEquals(
                 "Rhowch eich cyfeiriad e-bost i fewngofnodi i’ch GOV.UK One Login - GOV.UK One Login",
                 driver.getTitle());
         Assertions.assertNotEquals("Continue", loginPage.continueButtonText());
@@ -256,12 +255,12 @@ public class Login extends SignIn {
 
     @Then("the existing user is prompted for their password in Welsh")
     public void theExistingUserIsPromptedForTheirPasswordInWelsh() {
-        Assert.assertEquals("Rhowch eich cyfrinair - GOV.UK One Login", driver.getTitle());
+        assertEquals("Rhowch eich cyfrinair - GOV.UK One Login", driver.getTitle());
     }
 
     @Then("the existing user is taken to the Welsh enter code page")
     public void theExistingUserIsTakenToTheWelshEnterCodePage() {
-        Assert.assertEquals("Gwiriwch eich ffôn - GOV.UK One Login", driver.getTitle());
+        assertEquals("Gwiriwch eich ffôn - GOV.UK One Login", driver.getTitle());
     }
 
     @When("the existing user enters their password in Welsh")
