@@ -158,7 +158,7 @@ public class Registration extends SignIn {
 
     @When("the new user selects sign in")
     public void theNewUserSelectsSignIn() {
-        loginPage.signInLinkClick();
+        loginPage.signInButtonClick();
     }
 
     @Then("the new user is taken to the sign in to your account page")
@@ -274,7 +274,7 @@ public class Registration extends SignIn {
 
     @When("the existing auth app user selects sign in")
     public void theExistingAuthAppUserSelectsSignIn() {
-        loginPage.signInLinkClick();
+        loginPage.signInButtonClick();
     }
 
     @Then("the existing auth app user is taken to the enter your email page")
