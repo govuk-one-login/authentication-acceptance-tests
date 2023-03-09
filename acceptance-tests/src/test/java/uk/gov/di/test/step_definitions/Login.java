@@ -102,7 +102,7 @@ public class Login extends SignIn {
 
     @When("the existing user selects sign in")
     public void theExistingUserSelectsSignIn() {
-        loginPage.signInLinkClick();
+        loginPage.signInButtonClick();
     }
 
     @Then("the existing user is taken to the enter your email page")
