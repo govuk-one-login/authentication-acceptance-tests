@@ -202,6 +202,7 @@ public class Login extends SignIn {
             findAndClickContinue();
             waitForPageLoad("Error");
             assertTrue(loginPage.errorSummaryDisplayed());
+            // Want to also check the content of error message text
         }
         loginPage.enterSixDigitSecurityCode(OTP_CODE);
         findAndClickContinue();
