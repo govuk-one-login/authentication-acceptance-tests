@@ -79,3 +79,5 @@ Feature: Login Journey
     Then the existing user is taken to the enter code page
     When the existing user enters the six digit security code from their phone
     Then the existing user is returned to the service
+    When the user clicks logout
+    Then the existing user is taken to the you have signed out page
