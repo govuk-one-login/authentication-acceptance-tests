@@ -61,6 +61,7 @@ public class SignIn {
                 case CHROME_BROWSER:
                     ChromeOptions chromeOptions = new ChromeOptions();
                     chromeOptions.setHeadless(SELENIUM_HEADLESS);
+                    chromeOptions.addArguments("--remote-allow-origins=*");
                     if (SELENIUM_LOCAL) {
                         driver = new ChromeDriver(chromeOptions);
                     } else {
