@@ -15,17 +15,31 @@ Feature: Registration Journey
     When the new user clicks link by href "/enter-email"
     Then the new user is taken to the sign in to your account page
 
-  Scenario: User redirects to Sign-in to a service from No GOV.UK Account found page
+# commented this test out for now as the stub config has been changed. may be able to use at a later date when the whole stub strategy has been reviewed
+
+#  Scenario: User redirects to Sign-in to a service from No GOV.UK Account found page
+#    Given a new user has valid credentials
+#    When the not logged in user visits the stub relying party
+#    And the not logged in user clicks "govuk-signin-button"
+#    Then the new user is taken to the Identity Provider Login Page
+#    When the new user selects sign in
+#    Then the new user is taken to the sign in to your account page
+#    When the new user enters their email address
+#    Then the new user is taken to the account not found page
+#    When the new user clicks the sign in to a service button
+#    Then the new user is taken to the sign in to a service page
+
+  Scenario: User is taken to Check your email page from No GOV.UK One Login found page when Create selected
     Given a new user has valid credentials
-    When the not logged in user visits the stub relying party
-    And the not logged in user clicks "govuk-signin-button"
+    When the user visits the stub relying party
+    And the new user clicks "govuk-signin-button"
     Then the new user is taken to the Identity Provider Login Page
     When the new user selects sign in
     Then the new user is taken to the sign in to your account page
     When the new user enters their email address
     Then the new user is taken to the account not found page
-    When the new user clicks the sign in to a service button
-    Then the new user is taken to the sign in to a service page
+    When the user selects create an account
+    Then the user is taken to the "Check your email" page
 
   Scenario: User registration unsuccessful with invalid email, six digit code and password
     Given the new user has an invalid email format

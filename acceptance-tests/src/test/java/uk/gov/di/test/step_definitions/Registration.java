@@ -12,6 +12,7 @@ import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import uk.gov.di.test.pages.AccountManagementPage;
 import uk.gov.di.test.pages.LoginPage;
+import uk.gov.di.test.pages.NoGovUkOneLoginFoundPage;
 import uk.gov.di.test.pages.RegistrationPage;
 import uk.gov.di.test.utils.AuthAppStub;
 import uk.gov.di.test.utils.SignIn;
@@ -42,6 +43,8 @@ public class Registration extends SignIn {
     LoginPage loginPage = new LoginPage();
     AccountManagementPage accountManagementPage = new AccountManagementPage();
     RegistrationPage registrationPage = new RegistrationPage();
+
+    NoGovUkOneLoginFoundPage noGovUkOneLoginFoundPage = new NoGovUkOneLoginFoundPage();
 
     @Before
     public void setupWebdriver() throws MalformedURLException {
@@ -149,6 +152,11 @@ public class Registration extends SignIn {
     @When("the new user selects create an account")
     public void theNewUserSelectsCreateAnAccount() {
         accountManagementPage.clickAccountCreationLink();
+    }
+
+    @When("the user selects create an account")
+    public void theUserSelectsCreateAnAccount() {
+        noGovUkOneLoginFoundPage.clickCreateGovUkOneLoginButton();
     }
 
     @Then("the new user is taken to the enter your email page")
