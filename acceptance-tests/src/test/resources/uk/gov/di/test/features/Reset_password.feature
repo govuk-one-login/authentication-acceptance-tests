@@ -23,7 +23,7 @@ Feature: Reset password
     When the user resets their password but enters mismatching new passwords
     Then the "Enter the same password in both fields" error message is displayed
     When the user enters valid new password and correctly retypes it
-    Then the user is taken to the "Check your phone" page
+    Then the user is taken to the "You need to enter a security code" page
     When the existing user enters the six digit security code from their phone
     Then the user is taken to the "Example - GOV.UK - User Info" page
     When the user clicks logout
