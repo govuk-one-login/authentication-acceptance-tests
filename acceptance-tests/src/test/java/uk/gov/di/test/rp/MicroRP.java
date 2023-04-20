@@ -21,11 +21,16 @@ public class MicroRP {
         Spark.get("/callback", this::callback);
         Spark.get("/", this::dispatchOneLoginRequest);
         Spark.init();
+        Spark.awaitInitialization();
     }
 
     public void stop() {
         Spark.stop();
         Spark.awaitStop();
+    }
+
+    public String getUrl() {
+        return "http://localhost:" + getPort() + "/";
     }
 
     private String dispatchOneLoginRequest(Request request, Response res)
@@ -42,7 +47,6 @@ public class MicroRP {
                         .addParameter("response_type", "code")
                         .addParameter("vtr", "[\"Cl\"]")
                         .build();
-
         res.redirect(authRequest.toString());
         return "";
     }
