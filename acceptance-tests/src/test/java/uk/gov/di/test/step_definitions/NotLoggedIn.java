@@ -42,7 +42,7 @@ public class NotLoggedIn extends SignIn {
 
     @When("the not logged in user visits the stub relying party")
     public void theNotLoggedInUserVisitsTheStubRelyingParty() {
-        driver.get(RP_URL.toString());
+        driver.get(microRP.getUrl());
     }
 
     @And("the not logged in user clicks {string}")
@@ -57,6 +57,6 @@ public class NotLoggedIn extends SignIn {
 
     @When("a not logged in user tries to sign in")
     public void aNotLoggedInUserTriesToSignIn() {
-        driver.get(RP_URL);
+        driver.get(microRP.getUrl());
     }
 }

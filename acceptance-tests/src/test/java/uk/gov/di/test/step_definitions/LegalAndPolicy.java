@@ -45,7 +45,7 @@ public class LegalAndPolicy extends SignIn {
 
     @When("the user visits the stub relying party")
     public void theExistingUserVisitsTheStubRelyingParty() {
-        driver.get(RP_URL.toString());
+        driver.get(microRP.getUrl());
     }
 
     @And("the user clicks {string}")
@@ -129,6 +129,6 @@ public class LegalAndPolicy extends SignIn {
 
     @Given("the user tries to log in")
     public void theUserTriesToLogIn() {
-        driver.get(RP_URL);
+        driver.get(microRP.getUrl());
     }
 }
