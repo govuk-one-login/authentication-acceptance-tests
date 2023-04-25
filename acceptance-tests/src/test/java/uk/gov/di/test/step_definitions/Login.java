@@ -148,7 +148,7 @@ public class Login extends SignIn {
     }
 
     @Then("the existing user is taken to the enter code uplifted page")
-    public void theExistingUserIsTakenToTheEnterCodePage() {
+    public void theExistingUserIsTakenToTheEnterCodeUpliftedPage() {
         waitForPageLoadThenValidate(ENTER_CODE_UPLIFT);
     }
 

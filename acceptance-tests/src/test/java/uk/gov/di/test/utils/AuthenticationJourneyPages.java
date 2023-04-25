@@ -17,8 +17,7 @@ public enum AuthenticationJourneyPages {
             "/enter-authenticator-app-code",
             "Enter the 6 digit security code shown in your authenticator app"),
     ENTER_AUTHENTICATOR_APP_CODE_UPLIFT(
-            "/enter-authenticator-app-code",
-            "You need to enter a security code"),
+            "/enter-authenticator-app-code", "You need to enter a security code"),
     ENTER_PHONE_NUMBER("/enter-phone-number", "Enter your mobile phone number"),
     FINISH_CREATING_YOUR_ACCOUNT("/enter-phone-number", "Finish creating your account"),
     CHECK_YOUR_PHONE("/check-your-phone", "Check your phone"),
