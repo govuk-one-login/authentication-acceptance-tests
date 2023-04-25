@@ -312,6 +312,11 @@ public class Registration extends SignIn {
         waitForPageLoadThenValidate(ENTER_AUTHENTICATOR_APP_CODE);
     }
 
+    @Then("the existing user is taken to the enter authenticator app code uplifted page")
+    public void theNewUserIsTakenToTheEnterAuthenticatorAppCodeUpliftedPage() {
+        waitForPageLoadThenValidate(ENTER_AUTHENTICATOR_APP_CODE_UPLIFT);
+    }
+
     @Then("the new user is taken to the enter phone number page")
     public void theNewUserIsTakenToTheEnterPhoneNumberPage() {
         waitForPageLoadThenValidate(ENTER_PHONE_NUMBER);

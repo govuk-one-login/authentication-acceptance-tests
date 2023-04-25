@@ -147,6 +147,11 @@ public class Login extends SignIn {
         waitForPageLoadThenValidate(ENTER_CODE);
     }
 
+    @Then("the existing user is taken to the enter code uplifted page")
+    public void theExistingUserIsTakenToTheEnterCodePage() {
+        waitForPageLoadThenValidate(ENTER_CODE_UPLIFT);
+    }
+
     @When("the existing user enters the six digit security code from their phone")
     public void theExistingUserEntersTheSixDigitSecurityCodeFromTheirPhone() {
         if (DEBUG_MODE) {
