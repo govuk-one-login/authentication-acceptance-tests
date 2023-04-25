@@ -72,4 +72,4 @@ Feature: Authentication App Journeys
     Then the user is returned to the service
     When the user visits the stub relying party
     And the existing user clicks "govuk-signin-button"
-    Then the existing user is taken to the enter authenticator app code page
+    Then the existing user is taken to the enter authenticator app code uplifted page

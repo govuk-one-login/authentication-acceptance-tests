@@ -76,7 +76,7 @@ Feature: Login Journey
     Then the existing user is returned to the service
     When the existing user visits the stub relying party
     And the existing user clicks "govuk-signin-button"
-    Then the existing user is taken to the enter code page
+    Then the existing user is taken to the enter code uplifted page
     When the existing user enters the six digit security code from their phone
     Then the existing user is returned to the service
     When the user clicks logout
