@@ -16,12 +16,16 @@ public enum AuthenticationJourneyPages {
     ENTER_AUTHENTICATOR_APP_CODE(
             "/enter-authenticator-app-code",
             "Enter the 6 digit security code shown in your authenticator app"),
+    ENTER_AUTHENTICATOR_APP_CODE_UPLIFT(
+            "/enter-authenticator-app-code",
+            "You need to enter a security code"),
     ENTER_PHONE_NUMBER("/enter-phone-number", "Enter your mobile phone number"),
     FINISH_CREATING_YOUR_ACCOUNT("/enter-phone-number", "Finish creating your account"),
     CHECK_YOUR_PHONE("/check-your-phone", "Check your phone"),
     ACCOUNT_CREATED("/account-created", "You’ve created your GOV.UK One Login"),
     ENTER_PASSWORD("/enter-password", "Enter your password"),
     ENTER_CODE("/enter-code", "Check your phone"),
+    ENTER_CODE_UPLIFT("/enter-code", "You need to enter a security code"),
     ENTER_EMAIL_EXISTING_USER(
             "/enter-email", "Enter your email address to sign in to your GOV.UK One Login"),
     SHARE_INFO("/share-info", "Share information from your GOV.UK One Login"),
