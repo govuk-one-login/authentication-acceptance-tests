@@ -1,9 +1,12 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
 set -eu
 
+ENVIRONMENT=${1:-local}
+
 DOCKER_BASE=docker-compose
-SSM_VARS_PATH="/acceptance-tests/local"
+SSM_VARS_PATH="/acceptance-tests/$ENVIRONMENT"
+TESTDIR="/test"
 
 EXPORT_ENV=0
 LOCAL=0
@@ -22,6 +25,8 @@ while getopts "le" opt; do
   esac
 done
 
+echo "Running in $ENVIRONMENT environment..."
+
 function start_docker_services() {
   ${DOCKER_BASE} up --build -d --wait --no-deps --quiet-pull "$@"
 }
@@ -32,7 +37,9 @@ function stop_docker_services() {
 
 function get_env_vars_from_SSM() {
   echo -n "Getting AWS credentials ... "
-  eval "$(gds aws digital-identity-dev -e)"
+  if [ $EXPORT_ENV == "1" ]; then 
+    eval "$(gds aws digital-identity-dev -e)"
+  fi
   echo "done!"
 
   echo "Getting environment variables from SSM ... "
@@ -58,7 +65,8 @@ function get_env_vars_from_SSM() {
     fi
     export "$VAR_NAME"="$(echo ${VAR} | base64 -d | jq -r '.Value')"
   done
-  echo "done!"
+  echo "Exported SSM parameters completed."
+
   if [ $EXPORT_ENV == "1" ]; then
     exit 0
   fi
@@ -68,11 +76,16 @@ function export_selenium_config() {
   export SELENIUM_URL="http://localhost:4444/wd/hub"
   export SELENIUM_BROWSER=firefox
   export SELENIUM_LOCAL=true
-  export SELENIUM_HEADLESS=false
+  export SELENIUM_HEADLESS=true
   export DEBUG_MODE=false
 }
 
 echo -e "Building di-authentication-acceptance-tests..."
+
+if  [ -d "$TESTDIR" ]; then
+  echo "Changing to $TESTDIR"
+  cd $TESTDIR
+fi
 
 ./gradlew clean spotlessApply build -x :acceptance-tests:test
 
@@ -109,4 +122,4 @@ else
     echo -e "acceptance-tests SUCCEEDED."
 fi
 
-./reset-test-data.sh
+./reset-test-data.sh $ENVIRONMENT
