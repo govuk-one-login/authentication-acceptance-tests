@@ -66,6 +66,34 @@ function resetPassword() {
     --region "${AWS_REGION}"
 }
 
+function updateAccountRecoveryBlock() {
+  up="$(
+    aws dynamodb get-item \
+      --table-name "${ENVIRONMENT_NAME}-user-profile" \
+      --key "{\"Email\": {\"S\": \"$1\"}}" \
+      --projection-expression "#E, #ST, #S, #PS, #LS" \
+      --expression-attribute-names "{\"#E\": \"Email\", \"#ST\": \"salt\", \"#S\": \"SubjectID\", \"#PS\": \"PublicSubjectID\", \"#LS\": \"LegacySubjectId\"}" \
+      --region "${AWS_REGION}" \
+      --no-paginate
+  )"
+
+  sectorHost="identity.build.account.gov.uk"
+  ics="$(echo -n $up | jq -r '.Item.SubjectID.S')"
+  salt="$(echo -n $up | jq -r '.Item.salt.B' | base64 -d)"
+  digest="$(echo -n "$sectorHost$ics$salt" | openssl dgst -sha256 -binary | base64 | tr '/+' '_-' | tr -d '=')"
+  pwid="urn:fdc:gov.uk:2022:$digest"
+
+  echo "resetting account block for: $1 internalCommonSubjectId: $pwid"
+
+  aws dynamodb update-item \
+    --table-name "${ENVIRONMENT_NAME}-account-modifiers" \
+    --key "{\"InternalCommonSubjectIdentifier\": {\"S\": \"$pwid\"}}" \
+    --update-expression "SET #AR = :var" \
+    --expression-attribute-names "{ \"#AR\": \"AccountRecovery\" }" \
+    --expression-attribute-values "{ \":var\": { \"M\": { \"Blocked\": { \"BOOL\": false}, \"Created\": {\"S\": \"1970-01-01T00:00:00.000000\"}, \"Updated\": {\"S\": \"1970-01-01T00:00:00.000000\"} } } }" \
+    --region "${AWS_REGION}"
+}
+
 deleteUser $TEST_USER_EMAIL
 deleteUser $PHONE_CODE_LOCK_TEST_USER_EMAIL
 deleteUser $TEST_USER_NEW_EMAIL
@@ -78,3 +106,6 @@ resetTermsAndConditions $TERMS_AND_CONDITIONS_TEST_USER_EMAIL
 
 resetPassword $RESET_PW_USER_EMAIL $RESET_PW_CURRENT_PW
 resetPassword $REQ_RESET_PW_USER_EMAIL $REQ_RESET_PW_CURRENT_PW
+
+updateAccountRecoveryBlock $TEST_USER_ACCOUNT_RECOVERY_EMAIL_3
+updateAccountRecoveryBlock $TEST_USER_ACCOUNT_RECOVERY_EMAIL_4
