@@ -17,13 +17,13 @@ done
 
 echo -e "Resetting di-authentication-acceptance-tests test data..."
 
-if [ $LOCAL == "1" ]; then
-  export $(grep -v '^#' .env | xargs)
-fi
-
 export AWS_REGION=eu-west-2
 export ENVIRONMENT_NAME=build
 export GDS_AWS_ACCOUNT=digital-identity-dev
+
+if [ $LOCAL == "1" ]; then
+  export $(grep -v '^#' .env | xargs)
+fi
 
 echo -e "Getting AWS credentials ..."
 eval "$(gds aws ${GDS_AWS_ACCOUNT} -e)"
@@ -94,6 +94,37 @@ function updateAccountRecoveryBlock() {
     --region "${AWS_REGION}"
 }
 
+function removeMfaMethods() {
+  echo "Removing mfa methods for user $1 in user-credentials..."
+  aws dynamodb update-item \
+    --table-name "${ENVIRONMENT_NAME}-user-credentials" \
+    --key "{\"Email\": {\"S\": \"$1\"}}" \
+    --update-expression "REMOVE MfaMethods" \
+    --region "${AWS_REGION}"
+}
+
+function updateMfaSMS() {
+  echo "updating mfa SMS in user-profile: $1"
+  aws dynamodb update-item \
+    --table-name "${ENVIRONMENT_NAME}-user-profile" \
+    --key "{\"Email\": {\"S\": \"$1\"}}" \
+    --update-expression "SET #AV = :vav, #PH = :vph, #PHV = :vphv" \
+    --expression-attribute-names "{ \"#AV\": \"accountVerified\", \"#PH\": \"PhoneNumber\", \"#PHV\": \"PhoneNumberVerified\" }" \
+    --expression-attribute-values "{ \":vav\":{\"N\": \"1\"}, \":vph\":{\"S\": \"$2\"}, \":vphv\":{\"N\": \"$3\"} }" \
+    --region "${AWS_REGION}"
+}
+
+function updateMfaAuthApp() {
+  echo "Updating mfa methods for user $1 in user-credentials..."
+  aws dynamodb update-item \
+    --table-name "${ENVIRONMENT_NAME}-user-credentials" \
+    --key "{\"Email\": {\"S\": \"$1\"}}" \
+    --update-expression "SET #MFA = :vmfa" \
+    --expression-attribute-names "{ \"#MFA\": \"MfaMethods\" }" \
+    --expression-attribute-values "{ \":vmfa\": { \"L\": [ { \"M\": { \"CredentialValue\": { \"S\": \"$2\" }, \"Enabled\": { \"N\": \"1\" }, \"MethodVerified\": { \"N\": \"1\" }, \"MfaMethodType\": { \"S\": \"AUTH_APP\"}, \"Updated\": {\"S\": \"1970-01-01T00:00:00.000000\"} } } ] } }" \
+    --region "${AWS_REGION}"
+}
+
 deleteUser $TEST_USER_EMAIL
 deleteUser $PHONE_CODE_LOCK_TEST_USER_EMAIL
 deleteUser $TEST_USER_NEW_EMAIL
@@ -107,5 +138,8 @@ resetTermsAndConditions $TERMS_AND_CONDITIONS_TEST_USER_EMAIL
 resetPassword $RESET_PW_USER_EMAIL $RESET_PW_CURRENT_PW
 resetPassword $REQ_RESET_PW_USER_EMAIL $REQ_RESET_PW_CURRENT_PW
 
+removeMfaMethods $TEST_USER_ACCOUNT_RECOVERY_EMAIL_1
+updateMfaSMS $TEST_USER_ACCOUNT_RECOVERY_EMAIL_1 $PW_RESET_TEST_USER_PHONE "1"
+updateMfaAuthApp $TEST_USER_ACCOUNT_RECOVERY_EMAIL_2 $ACCOUNT_RECOVERY_USER_AUTH_APP_SECRET
 updateAccountRecoveryBlock $TEST_USER_ACCOUNT_RECOVERY_EMAIL_3
 updateAccountRecoveryBlock $TEST_USER_ACCOUNT_RECOVERY_EMAIL_4
