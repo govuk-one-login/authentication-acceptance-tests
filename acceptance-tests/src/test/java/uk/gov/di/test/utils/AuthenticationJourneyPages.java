@@ -5,6 +5,7 @@ public enum AuthenticationJourneyPages {
     ENTER_EMAIL("/enter-email", "Enter your email address"),
     ENTER_EMAIL_CREATE("/enter-email-create", "Enter your email address"),
     ACCOUNT_NOT_FOUND("/account-not-found", "No GOV.UK One Login found"),
+    ACCOUNT_EXISTS("/enter-password-account-exists", "You have a GOV.UK One Login"),
     CANNOT_GET_NEW_SECURITY_CODE(
             "/resend-code", "You cannot get a new security code at the moment"),
     CHECK_YOUR_EMAIL("/check-your-email", "Check your email"),

@@ -7,7 +7,7 @@ Feature: International Phone Numbers
     When the user visits the stub relying party
     And the new user clicks "govuk-signin-button"
     Then the new user is taken to the Identity Provider Login Page
-    When the new user selects create an account
+    When the user selects create an account
     Then the new user is taken to the enter your email page
     When the new user enters their email address
     Then the new user is asked to check their email
@@ -33,7 +33,7 @@ Feature: International Phone Numbers
     When the user visits the stub relying party
     And the new user clicks "govuk-signin-button"
     Then the new user is taken to the Identity Provider Login Page
-    When the new user selects create an account
+    When the user selects create an account
     Then the new user is taken to the enter your email page
     When the new user enters their email address
     Then the new user is asked to check their email
@@ -67,7 +67,7 @@ Feature: International Phone Numbers
     When the user visits the stub relying party
     And the new user clicks "govuk-signin-button"
     Then the new user is taken to the Identity Provider Login Page
-    When the new user selects create an account
+    When the user selects create an account
     Then the new user is taken to the enter your email page
     When the new user enters their email address
     Then the new user is asked to check their email

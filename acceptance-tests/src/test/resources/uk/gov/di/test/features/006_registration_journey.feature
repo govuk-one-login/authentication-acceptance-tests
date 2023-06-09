@@ -12,7 +12,7 @@ Feature: Registration Journey
     Then the new user is taken to the sign in to your account page
     When the new user enters their email address
     Then the new user is taken to the account not found page
-    When the new user clicks link by href "/enter-email"
+    When the user clicks link "Try another email address"
     Then the new user is taken to the sign in to your account page
 
 # commented this test out for now as the stub config has been changed. may be able to use at a later date when the whole stub strategy has been reviewed
@@ -47,7 +47,7 @@ Feature: Registration Journey
     When the user visits the stub relying party
     And the new user clicks "govuk-signin-button"
     Then the new user is taken to the Identity Provider Login Page
-    When the new user selects create an account
+    When the user selects create an account
     Then the new user is taken to the enter your email page
     When the new user enters their email address
     Then the user is shown an error message
@@ -77,7 +77,7 @@ Feature: Registration Journey
     When the user visits the stub relying party
     And the new user clicks "govuk-signin-button"
     Then the new user is taken to the Identity Provider Login Page
-    When the new user selects create an account
+    When the user selects create an account
     Then the new user is taken to the enter your email page
     When the new user enters their email address
     Then the new user is asked to check their email
@@ -89,7 +89,7 @@ Feature: Registration Journey
     Then the new user is taken to the enter phone number page
     When the new user enters their mobile phone number using an international dialling code
     Then the new user is taken to the check your phone page
-    When the new user clicks link by href "/enter-phone-number"
+    When the new user clicks the application Back button
     Then the new user is taken to the enter phone number page
     When the new user enters their mobile phone number
     Then the new user is taken to the check your phone page

@@ -118,4 +118,14 @@ public class SignIn {
                         By.xpath("//button[text()[normalize-space() = '" + buttonText + "']]"));
         continueButton.click();
     }
+
+    protected String getUpperErrorMessageText() {
+        return driver.findElement(By.cssSelector(".govuk-error-summary__body li a"))
+                .getText()
+                .trim();
+    }
+
+    protected void pressBack() {
+        driver.findElement(By.xpath("//a[text()[normalize-space() = 'Back']]")).click();
+    }
 }
