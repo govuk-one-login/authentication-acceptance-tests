@@ -40,7 +40,6 @@ public class Registration extends SignIn {
     EnterYourMobilePhoneNumberPage enterYourMobilePhoneNumberPage =
             new EnterYourMobilePhoneNumberPage();
 
-
     @And("the new user has an invalid email format")
     public void theNewUserHasInvalidEmail() {
         emailAddress = "joe.bloggs";

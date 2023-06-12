@@ -2,7 +2,6 @@ package uk.gov.di.test.step_definitions;
 
 import io.cucumber.java.AfterStep;
 import io.cucumber.java.Before;
-
 import uk.gov.di.test.utils.SignIn;
 
 import java.net.MalformedURLException;
