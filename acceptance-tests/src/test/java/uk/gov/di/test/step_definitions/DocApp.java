@@ -1,14 +1,11 @@
 package uk.gov.di.test.step_definitions;
 
-import io.cucumber.java.Before;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import uk.gov.di.test.pages.DocAppPage;
 import uk.gov.di.test.utils.SignIn;
-
-import java.net.MalformedURLException;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -21,11 +18,6 @@ public class DocApp extends SignIn {
                     .getOrDefault(
                             "DOC_APP_URL",
                             "https://di-auth-stub-relying-party-build-app.london.cloudapps.digital/");
-
-    @Before
-    public void setupWebdriver() throws MalformedURLException {
-        super.setupWebdriver();
-    }
 
     @Given("the doc app services are running")
     public void theDocAppServicesAreRunning() {}
