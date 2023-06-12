@@ -1,7 +1,5 @@
 package uk.gov.di.test.step_definitions;
 
-import io.cucumber.java.AfterStep;
-import io.cucumber.java.Before;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -17,7 +15,6 @@ import uk.gov.di.test.pages.RegistrationPage;
 import uk.gov.di.test.utils.AuthAppStub;
 import uk.gov.di.test.utils.SignIn;
 
-import java.net.MalformedURLException;
 import java.net.URI;
 import java.time.Duration;
 import java.util.List;
@@ -43,18 +40,8 @@ public class Registration extends SignIn {
     LoginPage loginPage = new LoginPage();
     AccountManagementPage accountManagementPage = new AccountManagementPage();
     RegistrationPage registrationPage = new RegistrationPage();
-
     NoGovUkOneLoginFoundPage noGovUkOneLoginFoundPage = new NoGovUkOneLoginFoundPage();
 
-    @Before
-    public void setupWebdriver() throws MalformedURLException {
-        super.setupWebdriver();
-    }
-
-    @AfterStep
-    public void checkAccessibility() {
-        Axe.thereAreNoAccessibilityViolations();
-    }
 
     @And("the new user has an invalid email format")
     public void theNewUserHasInvalidEmail() {

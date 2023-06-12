@@ -1,7 +1,5 @@
 package uk.gov.di.test.step_definitions;
 
-import io.cucumber.java.AfterStep;
-import io.cucumber.java.Before;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -10,7 +8,6 @@ import uk.gov.di.test.utils.AccountJourneyPages;
 import uk.gov.di.test.utils.AuthenticationJourneyPages;
 import uk.gov.di.test.utils.SignIn;
 
-import java.net.MalformedURLException;
 import java.net.URI;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -25,16 +22,6 @@ public class AccountManagement extends SignIn {
     private String phoneNumber;
 
     public AccountManagementPage accountManagementPage = new AccountManagementPage();
-
-    @Before
-    public void setupWebdriver() throws MalformedURLException {
-        super.setupWebdriver();
-    }
-
-    @AfterStep
-    public void checkAccessibility() {
-        Axe.thereAreNoAccessibilityViolations();
-    }
 
     @And("the existing account management user has valid credentials")
     public void theExistingAccountManagementUserHasValidCredentials() {
