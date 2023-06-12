@@ -19,14 +19,14 @@ Feature: Login Journey
     Then the existing user is taken to the you cannot get a new security code page
 
   Scenario: Existing user tries to create an account with the same email address
-    Given the existing account management user has valid credentials
+    Given the existing user has valid credentials
     When the existing user visits the stub relying party
     And the existing user clicks "govuk-signin-button"
     Then the existing user is taken to the Identity Provider Login Page
-    And the existing account management user selects create an account
-    Then the exiting account management user is asked to enter their current email address
-    When the existing account management user enters their current email address
-    Then the existing account management user is taken to the account exists page
+    When the existing user selects create an account
+    Then the user is taken to the "Enter your email address" page
+    When the existing user enters their email address
+    Then the user is taken to the "You have a GOV.UK One Login" page
 
   Scenario: Existing user is correctly prompted to login using sms
     Given the existing user has valid credentials
@@ -49,7 +49,7 @@ Feature: Login Journey
     When the existing user visits the stub relying party
     And the existing user clicks "govuk-signin-button"
     Then the existing user is taken to the Identity Provider Login Page
-    And the existing account management user clicks link by href "?lng=cy"
+    And the existing user switches to "Welsh" language
     Then the existing user is taken to the Identity Provider Welsh Login Page
     When the existing user selects sign in
     Then the existing user is taken to the Welsh enter your email page
@@ -59,7 +59,7 @@ Feature: Login Journey
     Then the existing user is taken to the Welsh enter your email page
     When the user clicks link "Yn ôl"
     Then the existing user is taken to the Identity Provider Welsh Login Page
-    When the existing account management user clicks link by href "?lng=en"
+    When the existing user switches to "English" language
     Then the existing user is taken to the Identity Provider Login Page
 
   Scenario: Existing user logs in without 2FA then uplift with 2FA

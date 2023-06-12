@@ -31,7 +31,7 @@ public class Support extends SignIn {
     }
 
     @Then("the user is taken to the {string} page")
-    public void theUserIsTakenToTheAProblemCreatingAGovUKAccountPage(String pageTitle) {
+    public void theUserIsTakenToThePage(String pageTitle) {
         waitForPageLoad(pageTitle);
     }
 

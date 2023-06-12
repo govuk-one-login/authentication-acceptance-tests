@@ -7,22 +7,22 @@ public class LoginPage extends SignIn {
     By signInButton = By.id("sign-in-button");
     By emailAddressField = By.id("email");
     By confirmPasswordField = By.id("confirm-password");
-
     By logout = By.name("logout");
     By termsAndConditions = By.name("termsAndConditionsResult");
     By passwordField = By.id("password");
     By problemWithTheCode = By.className("govuk-details__summary");
     By sendTheCodeAgainLink = By.cssSelector("#form-tracking > details > div > p > a");
     By getNewTheCodeAgainLink = By.cssSelector("#main-content > div > div > p:nth-child(3) > a");
-
     By securityCode = By.cssSelector("#main-content > div > div > form > button");
     By sixDigitSecurityCodeField = By.id("code");
     By emailDescriptionDetails = By.id("user-info-email");
     By emailErrorDescriptionDetails = By.className("govuk-error-summary");
-
     By continueButton = By.cssSelector("#main-content > div > div > form > button");
     By backButton = By.className("govuk-back-link");
     By forgottenMyPasswordLink = By.xpath("//a[contains(text(), \"I’ve forgotten my password\")]");
+    By createAGovUkOneLogin = By.id("create-account-link");
+    By linkToSwitchToWelsh = By.xpath("//a[@href='?lng=cy']");
+    By linkToSwitchToEnglish = By.xpath("//a[@href=\"?lng=en\"]");
 
     public void buttonClick(String name) {
         driver.findElement(By.id(name)).click();
@@ -97,5 +97,20 @@ public class LoginPage extends SignIn {
 
     public void clickForgottenMyPassword() {
         driver.findElement(forgottenMyPasswordLink).click();
+    }
+
+    public void clickCreateAGovUkOneLoginButton() {
+        driver.findElement(createAGovUkOneLogin).click();
+    }
+
+    public void switchLanguageTo(String lang) {
+        switch (lang.toLowerCase()) {
+            case "welsh":
+                driver.findElement(linkToSwitchToWelsh).click();
+                break;
+            case "english":
+                driver.findElement(linkToSwitchToEnglish).click();
+                break;
+        }
     }
 }

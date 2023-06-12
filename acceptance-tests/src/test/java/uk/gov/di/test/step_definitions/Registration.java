@@ -8,10 +8,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import uk.gov.di.test.pages.AccountManagementPage;
-import uk.gov.di.test.pages.LoginPage;
-import uk.gov.di.test.pages.NoGovUkOneLoginFoundPage;
-import uk.gov.di.test.pages.RegistrationPage;
+import uk.gov.di.test.pages.*;
 import uk.gov.di.test.utils.AuthAppStub;
 import uk.gov.di.test.utils.SignIn;
 
@@ -38,10 +35,10 @@ public class Registration extends SignIn {
     private String internationalPhoneNumber;
 
     LoginPage loginPage = new LoginPage();
-    AccountManagementPage accountManagementPage = new AccountManagementPage();
     RegistrationPage registrationPage = new RegistrationPage();
     NoGovUkOneLoginFoundPage noGovUkOneLoginFoundPage = new NoGovUkOneLoginFoundPage();
-
+    EnterYourMobilePhoneNumberPage enterYourMobilePhoneNumberPage =
+            new EnterYourMobilePhoneNumberPage();
 
     @And("the new user has an invalid email format")
     public void theNewUserHasInvalidEmail() {
@@ -136,13 +133,9 @@ public class Registration extends SignIn {
         waitForPageLoadThenValidate(SIGN_IN_OR_CREATE);
     }
 
-    @When("the new user selects create an account")
-    public void theNewUserSelectsCreateAnAccount() {
-        accountManagementPage.clickAccountCreationLink();
-    }
-
     @When("the user selects create an account")
-    public void theUserSelectsCreateAnAccount() {
+    public void theNewUserSelectsCreateAnAccount() {
+        // accountManagementPage.clickAccountCreationLink();
         noGovUkOneLoginFoundPage.clickCreateGovUkOneLoginButton();
     }
 
@@ -316,7 +309,7 @@ public class Registration extends SignIn {
 
     @When("the new user enters their mobile phone number")
     public void theNewUserEntersTheirMobilePhoneNumber() {
-        accountManagementPage.enterPhoneNumber(phoneNumber);
+        enterYourMobilePhoneNumberPage.enterUkPhoneNumber(phoneNumber);
         findAndClickContinue();
     }
 
@@ -398,9 +391,9 @@ public class Registration extends SignIn {
         loginPage.termsAndConditionsButtonClick();
     }
 
-    @When("the new user clicks link by href {string}")
-    public void theNewUserClicksLinkByHref(String href) {
-        accountManagementPage.linkClick(href);
+    @When("the new user clicks the application Back button")
+    public void theNewUserClicksTheApplicationBackButton() {
+        pressBack();
     }
 
     @Then("the new user is taken to the signed out page")
@@ -477,7 +470,7 @@ public class Registration extends SignIn {
 
     @When("the new user enters their mobile phone number using an international dialling code")
     public void theNewUserEntersTheirMobilePhoneNumberUsingAnInternationalDiallingCode() {
-        accountManagementPage.enterPhoneNumber(internationalPhoneNumber);
+        enterYourMobilePhoneNumberPage.enterUkPhoneNumber(internationalPhoneNumber);
         findAndClickContinue();
     }
 
@@ -499,70 +492,71 @@ public class Registration extends SignIn {
 
     @When("the new user submits a blank UK phone number")
     public void theNewUserSubmitsABlankUKPhoneNumber() {
-        accountManagementPage.enterPhoneNumber("");
+        enterYourMobilePhoneNumberPage.enterUkPhoneNumber("");
         findAndClickContinue();
     }
 
     @When("the new user submits an international phone number in the UK phone number field")
     public void theNewUserSubmitsAnInternationalPhoneNumberInTheUKPhoneNumberField() {
-        accountManagementPage.enterPhoneNumber("+61412123123");
+        enterYourMobilePhoneNumberPage.enterUkPhoneNumber("+61412123123");
         findAndClickContinue();
     }
 
     @When("the new user submits an incorrectly formatted UK phone number")
     public void theNewUserSubmitsAnIncorrectlyFormattedUKPhoneNumber() {
-        accountManagementPage.enterPhoneNumber("070000000000000");
+        enterYourMobilePhoneNumberPage.enterUkPhoneNumber("070000000000000");
         findAndClickContinue();
     }
 
     @When("the new user submits a UK phone number containing non-digit characters")
     public void theNewUserSubmitsAUKPhoneNumberContainingNonDigitCharacters() {
-        accountManagementPage.enterPhoneNumber("0780312*a45");
+        enterYourMobilePhoneNumberPage.enterUkPhoneNumber("0780312*a45");
         findAndClickContinue();
     }
 
     @Then("the {string} error message is displayed")
     public void theErrorMessageIsDisplayed(String expectedErrorMessage) {
-        assertEquals(expectedErrorMessage, accountManagementPage.getUpperErrorMessageText());
+        assertEquals(expectedErrorMessage, getUpperErrorMessageText());
     }
 
     @When("the new user ticks I do not have a UK mobile number")
     public void theNewUserTicksIDoNotHaveAUKMobileNumber() {
-        accountManagementPage.tickIDoNotHaveUkMobileNumber();
+        enterYourMobilePhoneNumberPage.tickIDoNotHaveUkMobileNumber();
     }
 
     @Then("the International mobile number field is displayed")
     public void theInternationalMobileNumberFieldIsDisplayed() {
-        assertTrue(accountManagementPage.isInternationalMobileNumberFieldDisplayed());
+        assertTrue(enterYourMobilePhoneNumberPage.isInternationalMobileNumberFieldDisplayed());
     }
 
     @And("the UK mobile phone number field is disabled")
     public void theUkMobilePhoneNumberFieldIsDisabled() {
-        assertEquals(false, accountManagementPage.getStatusOfUKMobileNumberField());
+        assertEquals(false, enterYourMobilePhoneNumberPage.getStatusOfUKMobileNumberField());
     }
 
     @When("the new user submits a blank international mobile phone number")
     public void theNewUserSubmitsABlankInternationalMobilePhoneNumber() {
-        accountManagementPage.enterInternationalMobilePhoneNumber("");
+        enterYourMobilePhoneNumberPage.enterInternationalMobilePhoneNumber("");
         findAndClickContinue();
     }
 
     @When("the new user submits an incorrectly formatted international mobile phone number")
     public void theNewUserSubmitsAnIncorrectlyFormattedInternationalMobilePhoneNumber() {
-        accountManagementPage.enterInternationalMobilePhoneNumber("+123456789123456789123456");
+        enterYourMobilePhoneNumberPage.enterInternationalMobilePhoneNumber(
+                "+123456789123456789123456");
         findAndClickContinue();
     }
 
     @When(
             "the new user submits an international mobile phone number containing non-digit characters")
     public void theNewUserSubmitsAnInternationalMobilePhoneNumberContainingNonDigitCharacters() {
-        accountManagementPage.enterInternationalMobilePhoneNumber("/3383838383");
+        enterYourMobilePhoneNumberPage.enterInternationalMobilePhoneNumber("/3383838383");
         findAndClickContinue();
     }
 
     @When("the new user enters a valid international mobile phone number")
     public void theNewUserEntersAValidInternationalMobilePhoneNumber() {
-        accountManagementPage.enterInternationalMobilePhoneNumber("+61412123123");
+        enterYourMobilePhoneNumberPage.enterInternationalMobilePhoneNumber("+61412123123");
         findAndClickContinue();
     }
 }

@@ -296,4 +296,14 @@ public class Login extends SignIn {
         }
         findAndClickContinue();
     }
+
+    @And("the existing user selects create an account")
+    public void theExistingUserSelectsCreateAnAccount() {
+        loginPage.clickCreateAGovUkOneLoginButton();
+    }
+
+    @When("the existing user switches to {string} language")
+    public void theExistingUserSwitchesLanguage(String language) {
+        loginPage.switchLanguageTo(language);
+    }
 }
