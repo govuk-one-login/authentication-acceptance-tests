@@ -4,7 +4,6 @@ Feature: Registration Journey
 
   Scenario: User selects sign in without having an account
     Given a new user has valid credentials
-    And the new user clears cookies
     When the user visits the stub relying party
     And the new user clicks "govuk-signin-button"
     Then the new user is taken to the Identity Provider Login Page
@@ -43,7 +42,6 @@ Feature: Registration Journey
 
   Scenario: User registration unsuccessful with invalid email, six digit code and password
     Given the new user has an invalid email format
-    And the new user clears cookies
     When the user visits the stub relying party
     And the new user clicks "govuk-signin-button"
     Then the new user is taken to the Identity Provider Login Page
@@ -73,7 +71,6 @@ Feature: Registration Journey
 
   Scenario: User successfully registers using sms
     Given a new user has valid credentials
-    And the new user clears cookies
     When the user visits the stub relying party
     And the new user clicks "govuk-signin-button"
     Then the new user is taken to the Identity Provider Login Page

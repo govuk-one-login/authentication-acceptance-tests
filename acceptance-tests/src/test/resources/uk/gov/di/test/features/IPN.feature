@@ -3,7 +3,6 @@ Feature: International Phone Numbers
 
   Scenario: User cannot register using an invalid UK mobile phone number
     Given a new user has an invalid UK mobile phone number
-    And the new user clears cookies
     When the user visits the stub relying party
     And the new user clicks "govuk-signin-button"
     Then the new user is taken to the Identity Provider Login Page
@@ -29,7 +28,6 @@ Feature: International Phone Numbers
 
   Scenario: User can successfully complete registration using an international phone number
     Given a new user has an invalid international mobile phone number
-    And the new user clears cookies
     When the user visits the stub relying party
     And the new user clicks "govuk-signin-button"
     Then the new user is taken to the Identity Provider Login Page
@@ -63,7 +61,6 @@ Feature: International Phone Numbers
 
   Scenario: New user with an international phone number reports that they did not receive their security code
     Given a new user has a valid international mobile phone number
-    And the new user clears cookies
     When the user visits the stub relying party
     And the new user clicks "govuk-signin-button"
     Then the new user is taken to the Identity Provider Login Page
@@ -93,7 +90,6 @@ Feature: International Phone Numbers
 
   Scenario: Existing user with an international phone number reports that their security code did not work
     Given the existing user has a phone code that does not work
-    And the new user clears cookies
     When the existing user visits the stub relying party
     And the existing user clicks "govuk-signin-button"
     Then the existing user is taken to the Identity Provider Login Page

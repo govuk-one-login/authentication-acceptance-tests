@@ -10,6 +10,7 @@ public class Hooks extends SignIn {
     @Before
     public void setupWebdriver() throws MalformedURLException {
         super.setupWebdriver();
+        driver.manage().deleteAllCookies();
     }
 
     @AfterStep

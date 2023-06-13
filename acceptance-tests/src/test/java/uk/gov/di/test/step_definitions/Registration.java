@@ -108,11 +108,6 @@ public class Registration extends SignIn {
         sixDigitCodeEmail = System.getenv().get("TEST_USER_EMAIL_CODE");
     }
 
-    @And("the new user clears cookies")
-    public void theNewUserClearsCookies() {
-        driver.manage().deleteAllCookies();
-    }
-
     @When("the new user has a valid email address")
     public void theNewUserHasValidEmailAddress() {
         emailAddress = System.getenv().get("TEST_USER_EMAIL");
