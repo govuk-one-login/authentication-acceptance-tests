@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Assertions;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import uk.gov.di.test.pages.CheckYourEmailPage;
+import uk.gov.di.test.pages.EnterYourPasswordPage;
 import uk.gov.di.test.pages.LoginPage;
 import uk.gov.di.test.pages.ResetYourPasswordPage;
 import uk.gov.di.test.utils.SignIn;
@@ -33,6 +34,8 @@ public class Login extends SignIn {
     public LoginPage loginPage = new LoginPage();
     public ResetYourPasswordPage resetYourPasswordPage = new ResetYourPasswordPage();
     public CheckYourEmailPage checkYourEmailPage = new CheckYourEmailPage();
+
+    public EnterYourPasswordPage enterYourPasswordPage = new EnterYourPasswordPage();
 
     @And("the existing user has valid credentials")
     public void theExistingUserHasValidCredentials() {
@@ -61,13 +64,12 @@ public class Login extends SignIn {
 
     @When("the user enters their password which is on the top 100k password list")
     public void theUserEntersTheirPasswordWhichIsOnTheTop100kPasswordList() {
-        loginPage.enterPassword(password);
-        findAndClickContinue();
+        enterYourPasswordPage.enterPasswordAndContinue(password);
     }
 
     @When("the user clicks the forgotten password link")
     public void theUserClicksTheForgottenPasswordLink() {
-        loginPage.clickForgottenMyPassword();
+        enterYourPasswordPage.clickForgottenPasswordLink();
     }
 
     @Then("the existing user is asked to check their email")
@@ -125,8 +127,7 @@ public class Login extends SignIn {
 
     @When("the existing user enters their password")
     public void theExistingUserEntersTheirPassword() {
-        loginPage.enterPassword(password);
-        findAndClickContinue();
+        enterYourPasswordPage.enterPasswordAndContinue(password);
     }
 
     @Then("the existing user is taken to the enter code page")
@@ -241,8 +242,7 @@ public class Login extends SignIn {
 
     @When("the existing user enters their password in Welsh")
     public void theExistingUserEntersTheirPasswordInWelsh() {
-        loginPage.enterPassword(password);
-        findAndClickContinueWelsh();
+        enterYourPasswordPage.enterPasswordAndContinue(password);
     }
 
     @When("the existing user enters their email address in Welsh")

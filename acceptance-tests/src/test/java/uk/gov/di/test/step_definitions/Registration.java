@@ -40,6 +40,8 @@ public class Registration extends SignIn {
     EnterYourMobilePhoneNumberPage enterYourMobilePhoneNumberPage =
             new EnterYourMobilePhoneNumberPage();
 
+    EnterYourPasswordPage enterYourPasswordPage = new EnterYourPasswordPage();
+
     @And("the new user has an invalid email format")
     public void theNewUserHasInvalidEmail() {
         emailAddress = "joe.bloggs";
@@ -113,11 +115,6 @@ public class Registration extends SignIn {
         emailAddress = System.getenv().get("TEST_USER_EMAIL");
     }
 
-    @When("the new user visits the stub relying party")
-    public void theNewUserVisitsTheStubRelyingParty() {
-        driver.get(RP_URL.toString());
-    }
-
     @And("the new user clicks {string}")
     public void theNewUserClicks(String buttonName) {
         loginPage.buttonClick(buttonName);
@@ -130,7 +127,6 @@ public class Registration extends SignIn {
 
     @When("the user selects create an account")
     public void theNewUserSelectsCreateAnAccount() {
-        // accountManagementPage.clickAccountCreationLink();
         noGovUkOneLoginFoundPage.clickCreateGovUkOneLoginButton();
     }
 
@@ -165,15 +161,6 @@ public class Registration extends SignIn {
         waitForPageLoadThenValidate(CHECK_YOUR_EMAIL);
     }
 
-    @When("the new user enters the six digit security code incorrectly {int} times")
-    public void theNewUserEntersTheSixDigitSecurityCodeIncorrectlyNTimes(int timesCodeIncorrect) {
-        for (int i = 0; i < timesCodeIncorrect; i++) {
-            loginPage.enterSixDigitSecurityCode(getRandomInvalidCode());
-            findAndClickContinue();
-            theUserIsShownAnErrorMessageOnTheEnterEmailPage();
-        }
-    }
-
     @When("the new user enters the six digit security code from their email")
     public void theNewUserEntersTheSixDigitSecurityCodeFromTheirEmail() {
         if (DEBUG_MODE) {
@@ -185,16 +172,6 @@ public class Registration extends SignIn {
             loginPage.enterSixDigitSecurityCode(sixDigitCodeEmail);
         }
         findAndClickContinue();
-    }
-
-    @Then("the new user is taken to the security code invalid page")
-    public void theNewUserIsTakenToTheSecurityCodeInvalidPage() {
-        waitForPageLoadThenValidate(SECURITY_CODE_INVALID);
-    }
-
-    @Then("the new user is taken to the resend email code page")
-    public void theNewUserIsTakenToTheResendEmailCodePage() {
-        waitForPageLoadThenValidate(RESEND_EMAIL_CODE);
     }
 
     @Then("the new user is taken to the create your password page")
@@ -212,11 +189,6 @@ public class Registration extends SignIn {
     @Then("the new user is taken to the get security codes page")
     public void theNewUserIsTakenToTheGetSecurityCodesPage() {
         waitForPageLoadThenValidate(GET_SECURITY_CODES);
-    }
-
-    @Then("the new user is taken to the finish creating your account get security codes page")
-    public void theNewUserIsTakenToTheFinishCreatingYourAccountGetSecurityCodesPage() {
-        waitForPageLoadThenValidate(FINISH_CREATING_YOUR_ACCOUNT_GET_SECURITY_CODES);
     }
 
     @When("the new user chooses text message security codes")
@@ -278,8 +250,7 @@ public class Registration extends SignIn {
 
     @When("the existing auth app user enters their password")
     public void theExistingUserEntersTheirPassword() {
-        loginPage.enterPassword(password);
-        findAndClickContinue();
+        enterYourPasswordPage.enterPasswordAndContinue(password);
     }
 
     @Then("the existing user is taken to the enter authenticator app code page")
@@ -295,11 +266,6 @@ public class Registration extends SignIn {
     @Then("the new user is taken to the enter phone number page")
     public void theNewUserIsTakenToTheEnterPhoneNumberPage() {
         waitForPageLoadThenValidate(ENTER_PHONE_NUMBER);
-    }
-
-    @Then("the new user is taken to the finish creating your account page")
-    public void theNewUserIsTakenToTheFinishCreatingYourAccountPage() {
-        waitForPageLoadThenValidate(FINISH_CREATING_YOUR_ACCOUNT);
     }
 
     @When("the new user enters their mobile phone number")
@@ -336,26 +302,8 @@ public class Registration extends SignIn {
         registrationPage.goBackClick();
     }
 
-    @Then("the new user is taken the the share info page")
-    public void theNewUsereIsTakenTheTheShareInfoPage() {
-        waitForPageLoadThenValidate(SHARE_INFO);
-    }
-
-    @When("the new user agrees to share their info")
-    public void theNewUserAgreesToShareTheirInfo() {
-        registrationPage.shareInfoAcceptClick();
-        findAndClickContinue();
-    }
-
     @Then("the user is returned to the service")
     public void theUserIsReturnedToTheService() {}
-
-    @Then("the new user is taken to the Service User Info page")
-    public void theNewUserIsTakenToTheServiceUserInfoPage() {
-        assertEquals("/oidc/callback", URI.create(driver.getCurrentUrl()).getPath());
-        assertEquals("Example - GOV.UK - User Info", driver.getTitle());
-        assertEquals(emailAddress, loginPage.emailDescription());
-    }
 
     @Then("the user is shown an error message")
     public void theUserIsShownAnErrorMessageOnTheEnterEmailPage() {
@@ -371,19 +319,9 @@ public class Registration extends SignIn {
         assertTrue(errorFields.isEmpty());
     }
 
-    @When("the new user clicks ")
-    public void theNewUserClicksByName(String buttonName) {
-        loginPage.buttonClick(buttonName);
-    }
-
     @When("the user clicks logout")
     public void theUserClicksLogout() {
         loginPage.logoutButtonClick();
-    }
-
-    @When("the new user clicks AgreeTermsANDConditions")
-    public void theUserClicksAgreeTermsAndConditions() {
-        loginPage.termsAndConditionsButtonClick();
     }
 
     @When("the new user clicks the application Back button")
@@ -405,34 +343,6 @@ public class Registration extends SignIn {
         return randomCode;
     }
 
-    @And("the new user enters their password")
-    public void theNewUserEntersTheirPassword() {
-        loginPage.enterPassword(password);
-        findAndClickContinue();
-    }
-
-    @And("the new email code lock user has valid credentials")
-    public void theNewEmailCodeLockUserHasValidCredentials() {
-        emailAddress = System.getenv().get("EMAIL_CODE_LOCK_TEST_USER_EMAIL");
-        password = System.getenv().get("TEST_USER_PASSWORD");
-        phoneNumber = System.getenv().get("TEST_USER_PHONE_NUMBER");
-    }
-
-    @And("the new phone code lock user has valid credentials")
-    public void theNewPhoneCodeLockUserHasValidCredentials() {
-        emailAddress = System.getenv().get("PHONE_CODE_LOCK_TEST_USER_EMAIL");
-        password = System.getenv().get("TEST_USER_PASSWORD");
-        phoneNumber = System.getenv().get("TEST_USER_PHONE_NUMBER");
-        sixDigitCodeEmail = System.getenv().get("TEST_USER_EMAIL_CODE");
-    }
-
-    @When("the new user enters an incorrect email code")
-    @When("the new user enters an incorrect email code one more time")
-    public void theNewUserEntersAnIncorrectEmailCodeOneMoreTime() {
-        loginPage.enterSixDigitSecurityCode(getRandomInvalidCode());
-        findAndClickContinue();
-    }
-
     @When("the user enters an incorrect phone code one more time")
     @When("the user enters an incorrect phone code")
     public void theNewUserEntersAnIncorrectPhoneCodeOneMoreTime() {
@@ -440,49 +350,10 @@ public class Registration extends SignIn {
         findAndClickContinue();
     }
 
-    @And("the new user enters their t&c email address")
-    public void theNewUserEntersTheirTCEmailAddress() {
-        loginPage.enterEmailAddress(tcEmailAddress);
-        findAndClickContinue();
-    }
-
-    @And("the new user enters their t&c password")
-    public void theNewUserEntersTheirTCPassword() {
-        loginPage.enterPassword(tcPassword);
-        findAndClickContinue();
-    }
-
-    @When("the new user does not agree to share their info")
-    public void theNewUserDoesNotAgreeToShareTheirInfo() {
-        registrationPage.shareInfoRejectClick();
-        findAndClickContinue();
-    }
-
-    @When("the user clicks the delete your GOV.UK account button")
-    public void theUserClicksTheDeleteYourGOVUKAccountButton() {
-        registrationPage.deleteAccountButtonClick();
-    }
-
     @When("the new user enters their mobile phone number using an international dialling code")
     public void theNewUserEntersTheirMobilePhoneNumberUsingAnInternationalDiallingCode() {
         enterYourMobilePhoneNumberPage.enterUkPhoneNumber(internationalPhoneNumber);
         findAndClickContinue();
-    }
-
-    @When("the new user clicks the sign in to a service button")
-    public void theNewUserClicksTheSignInToAServiceButton() {
-        registrationPage.signinToServiceButtonClick();
-    }
-
-    @Then("the new user is taken to the sign in to a service page")
-    public void theNewUserIsTakenToTheSignInToAServicePage() {
-        waitForPageLoad("Sign in to a service - GOV.UK");
-        assertEquals("/sign-in", URI.create(driver.getCurrentUrl()).getPath());
-    }
-
-    @And("a new user has different valid credentials")
-    public void aNewUserHasDifferentValidCredentials() {
-        emailAddress = System.getenv().get("TEST_USER_NEW_EMAIL");
     }
 
     @When("the new user submits a blank UK phone number")
@@ -522,11 +393,6 @@ public class Registration extends SignIn {
     @Then("the International mobile number field is displayed")
     public void theInternationalMobileNumberFieldIsDisplayed() {
         assertTrue(enterYourMobilePhoneNumberPage.isInternationalMobileNumberFieldDisplayed());
-    }
-
-    @And("the UK mobile phone number field is disabled")
-    public void theUkMobilePhoneNumberFieldIsDisabled() {
-        assertEquals(false, enterYourMobilePhoneNumberPage.getStatusOfUKMobileNumberField());
     }
 
     @When("the new user submits a blank international mobile phone number")

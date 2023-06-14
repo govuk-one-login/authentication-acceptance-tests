@@ -128,4 +128,9 @@ public class SignIn {
     protected void pressBack() {
         driver.findElement(By.xpath("//a[text()[normalize-space() = 'Back']]")).click();
     }
+
+    protected void clearFieldAndEnter(By ele, String text) {
+        driver.findElement(ele).clear();
+        driver.findElement(ele).sendKeys(text);
+    }
 }
