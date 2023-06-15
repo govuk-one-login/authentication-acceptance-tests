@@ -3,22 +3,27 @@
 set -eu
 
 DOCKER_BASE=docker-compose
-SSM_VARS_PATH="/acceptance-tests/local"
+SSM_VARS_PATH="/acceptance-tests/dev"
+SSM_VARS_TARGET_PATH="/acceptance-tests/build"
 
 EXPORT_ENV=0
 LOCAL=0
-while getopts "le" opt; do
+DUPLICATE=0
+while getopts "led" opt; do
   case ${opt} in
-    l)
-        LOCAL=1
-      ;;
-    e)
-        EXPORT_ENV=1
-      ;;
-    *)
-        usage
-        exit 1
-      ;;
+  l)
+    LOCAL=1
+    ;;
+  e)
+    EXPORT_ENV=1
+    ;;
+  d)
+    DUPLICATE=1
+    ;;
+  *)
+    usage
+    exit 1
+    ;;
   esac
 done
 
@@ -46,15 +51,27 @@ function get_env_vars_from_SSM() {
       echo "#"
       echo "# Rename to .env to use for testing"
       echo "#"
-    } >> $envfile
+    } >>$envfile
   fi
 
   VARS="$(aws ssm get-parameters-by-path --region eu-west-2 --with-decryption --path $SSM_VARS_PATH | jq -r '.Parameters[] | @base64')"
   for VAR in $VARS; do
     VAR_NAME="$(echo ${VAR} | base64 -d | jq -r '.Name / "/" | .[3]')"
+    VAR_VALUE="$(echo ${VAR} | base64 -d | jq -r '.Value')"
     VAR_NAME_VALUE=$VAR_NAME="$(echo ${VAR} | base64 -d | jq -r '.Value')"
+    VAR_TYPE="$(echo ${VAR} | base64 -d | jq -r '.Type')"
     if [ $EXPORT_ENV == "1" ]; then
-      echo "$VAR_NAME_VALUE" >> $envfile
+      echo "$VAR_NAME_VALUE" >>$envfile
+    fi
+    if [ $DUPLICATE == "1" ]; then
+      echo "$VAR_NAME_VALUE"
+      echo "$VAR_TYPE"
+      echo "$SSM_VARS_TARGET_PATH/$VAR_NAME"
+      aws ssm put-parameter --region eu-west-2 \
+        --name "$SSM_VARS_TARGET_PATH/$VAR_NAME" \
+        --type "$VAR_TYPE" \
+        --value "$VAR_VALUE" \
+        --overwrite
     fi
     export "$VAR_NAME"="$(echo ${VAR} | base64 -d | jq -r '.Value')"
   done
@@ -77,10 +94,9 @@ echo -e "Building di-authentication-acceptance-tests..."
 ./gradlew clean spotlessApply build -x :acceptance-tests:test
 
 build_and_test_exit_code=$?
-if [ ${build_and_test_exit_code} -ne 0 ]
-then
-    echo -e "acceptance-tests failed."
-    exit 1
+if [ ${build_and_test_exit_code} -ne 0 ]; then
+  echo -e "acceptance-tests failed."
+  exit 1
 fi
 
 echo -e "Running di-authentication-acceptance-tests..."
@@ -95,18 +111,18 @@ else
   get_env_vars_from_SSM
 fi
 
+./reset-test-data.sh
+
 ./gradlew cucumber
 
 build_and_test_exit_code=$?
 
 stop_docker_services selenium-firefox selenium-chrome
 
-if [ ${build_and_test_exit_code} -ne 0 ]
-then
-    echo -e "acceptance-tests failed."
+if [ ${build_and_test_exit_code} -ne 0 ]; then
+  echo -e "acceptance-tests failed."
 
 else
-    echo -e "acceptance-tests SUCCEEDED."
+  echo -e "acceptance-tests SUCCEEDED."
 fi
 
-./reset-test-data.sh
