@@ -11,6 +11,7 @@ import uk.gov.di.test.pages.CheckYourEmailPage;
 import uk.gov.di.test.pages.EnterYourPasswordPage;
 import uk.gov.di.test.pages.LoginPage;
 import uk.gov.di.test.pages.ResetYourPasswordPage;
+import uk.gov.di.test.pages.TermsAndConditionsPage;
 import uk.gov.di.test.utils.SignIn;
 
 import java.net.URI;
@@ -34,6 +35,7 @@ public class Login extends SignIn {
     public LoginPage loginPage = new LoginPage();
     public ResetYourPasswordPage resetYourPasswordPage = new ResetYourPasswordPage();
     public CheckYourEmailPage checkYourEmailPage = new CheckYourEmailPage();
+    public TermsAndConditionsPage termsAndConditionsPage = new TermsAndConditionsPage();
 
     public EnterYourPasswordPage enterYourPasswordPage = new EnterYourPasswordPage();
 
@@ -305,5 +307,23 @@ public class Login extends SignIn {
     @When("the existing user switches to {string} language")
     public void theExistingUserSwitchesLanguage(String language) {
         loginPage.switchLanguageTo(language);
+    }
+
+    @When("the user does not agree to the updated terms and conditions")
+    public void theUserDoesNotAgreeToTheUpdatedTermsAndConditions() {
+        termsAndConditionsPage.clickIDoNotAgreeLink();
+    }
+
+    @When("the user agrees to the updated terms and conditions")
+    public void theUserAgreesToTheUpdatedTermsAndConditions() {
+        termsAndConditionsPage.pressAgreeAndContinueButton();
+    }
+
+    @Given("the existing user has outdated terms and conditions")
+    public void theExistingUserHasOutdatedTermsAndConditions() {
+        emailAddress = System.getenv().get("TERMS_AND_CONDITIONS_TEST_USER_EMAIL");
+        password = System.getenv().get("TEST_USER_PASSWORD");
+        phoneNumber = System.getenv().get("TEST_USER_PHONE_NUMBER");
+        sixDigitCodePhone = System.getenv().get("TEST_USER_PHONE_CODE");
     }
 }

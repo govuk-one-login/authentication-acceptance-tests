@@ -35,7 +35,8 @@ public enum AuthenticationJourneyPages {
     RESEND_SECURITY_CODE("/resend-code", "Get security code"),
     RESEND_SECURITY_CODE_TOO_MANY_TIMES(
             "/security-code-requested-too-many-times",
-            "You asked to resend the security code too many times");
+            "You asked to resend the security code too many times"),
+    UPDATE_TERMS_OF_USE("/updated-terms-of-use", "GOV.UK One Login terms of use update");
 
     private static final String PRODUCT_NAME = "GOV.UK One Login";
 
