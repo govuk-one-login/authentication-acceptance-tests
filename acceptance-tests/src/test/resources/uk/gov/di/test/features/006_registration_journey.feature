@@ -37,7 +37,7 @@ Feature: Registration Journey
     Then the new user is taken to the sign in to your account page
     When the new user enters their email address
     Then the new user is taken to the account not found page
-    When the user selects create an account
+    When the new user selects create an account
     Then the user is taken to the "Check your email" page
 
   Scenario: User registration unsuccessful with invalid email, six digit code and password

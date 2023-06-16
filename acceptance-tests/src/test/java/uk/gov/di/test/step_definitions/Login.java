@@ -7,11 +7,7 @@ import io.cucumber.java.en.When;
 import org.junit.jupiter.api.Assertions;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import uk.gov.di.test.pages.CheckYourEmailPage;
-import uk.gov.di.test.pages.EnterYourPasswordPage;
-import uk.gov.di.test.pages.LoginPage;
-import uk.gov.di.test.pages.ResetYourPasswordPage;
-import uk.gov.di.test.pages.TermsAndConditionsPage;
+import uk.gov.di.test.pages.*;
 import uk.gov.di.test.utils.SignIn;
 
 import java.net.URI;
@@ -20,7 +16,6 @@ import java.util.UUID;
 
 import static java.time.temporal.ChronoUnit.MINUTES;
 import static org.junit.Assert.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static uk.gov.di.test.utils.AuthenticationJourneyPages.*;
 import static uk.gov.di.test.utils.Constants.*;
 
@@ -36,8 +31,11 @@ public class Login extends SignIn {
     public ResetYourPasswordPage resetYourPasswordPage = new ResetYourPasswordPage();
     public CheckYourEmailPage checkYourEmailPage = new CheckYourEmailPage();
     public TermsAndConditionsPage termsAndConditionsPage = new TermsAndConditionsPage();
-
     public EnterYourPasswordPage enterYourPasswordPage = new EnterYourPasswordPage();
+    public EnterYourEmailAddressToSignInPage enterYourEmailAddressToSignInPage =
+            new EnterYourEmailAddressToSignInPage();
+    public CreateOrSignInPage createOrSignInPage = new CreateOrSignInPage();
+
 
     @And("the existing user has valid credentials")
     public void theExistingUserHasValidCredentials() {
@@ -74,21 +72,10 @@ public class Login extends SignIn {
         enterYourPasswordPage.clickForgottenPasswordLink();
     }
 
-    @Then("the existing user is asked to check their email")
-    public void theExistingUserIsAskedToCheckTheirEmail() {
-        waitForPageLoadThenValidate(CHECK_YOUR_EMAIL);
-    }
-
     @Given("the existing user has a phone code that does not work")
     public void theExistingUserHasAPhoneCodeThatDoesNotWork() {
         emailAddress = System.getenv().get("IPN4_EXISTING_USER_EMAIL");
         password = System.getenv().get("IPN4_EXISTING_USER_PASSWORD");
-    }
-
-    @And("the existing user has invalid credentials")
-    public void theExistingUserHasInvalidCredentials() {
-        emailAddress = "joe.bloggs@digital.cabinet-office.gov.uk";
-        password = "wrong-password";
     }
 
     @When("the existing user visits the stub relying party")
@@ -108,7 +95,7 @@ public class Login extends SignIn {
 
     @When("the existing user selects sign in")
     public void theExistingUserSelectsSignIn() {
-        loginPage.signInButtonClick();
+        createOrSignInPage.clickSignInButton();
     }
 
     @Then("the existing user is taken to the enter your email page")
@@ -118,8 +105,7 @@ public class Login extends SignIn {
 
     @When("the existing user enters their email address")
     public void theExistingUserEntersEmailAddress() {
-        loginPage.enterEmailAddress(emailAddress);
-        findAndClickContinue();
+        enterYourEmailAddressToSignInPage.enterEmailAddressAndContinue(emailAddress);
     }
 
     @Then("the existing user is prompted for their password")
@@ -158,32 +144,10 @@ public class Login extends SignIn {
     @Then("the existing user is returned to the service")
     public void theExistingUserIsReturnedToTheService() {}
 
-    @Then("the existing user is taken to the Service User Info page")
-    public void theExistingUserIsTakenToTheServiceUserInfoPage() {
-        assertEquals("/oidc/callback", URI.create(driver.getCurrentUrl()).getPath());
-        assertEquals("Example - GOV.UK - User Info", driver.getTitle());
-        assertEquals(emailAddress, loginPage.emailDescription());
-    }
-
-    @Then("the existing user is shown an error message")
-    public void theExistingUserIsShownAnErrorMessageOnTheEnterEmailPage() {
-        assertTrue(loginPage.emailErrorDescriptionDetailsIsDisplayed());
-    }
-
-    @Then("the existing user is taken to the enter phone number page")
-    public void theExistingUserIsTakenToTheEnterPhoneNumberPage() {
-        waitForPageLoadThenValidate(ENTER_PHONE_NUMBER);
-    }
-
     @Then("the existing user is taken to the you have signed out page")
     public void theExistingUserIsTakenToTheYouHaveSignedOutPage() {
         waitForPageLoad("Signed out");
         assertEquals("/signed-out", URI.create(driver.getCurrentUrl()).getPath());
-    }
-
-    @And("the existing user clicks by name {string}")
-    public void theExistingUserClicksByName(String buttonName) {
-        loginPage.buttonClick(buttonName);
     }
 
     @When("the existing user requests the phone otp code {int} times")
@@ -249,35 +213,37 @@ public class Login extends SignIn {
 
     @When("the existing user enters their email address in Welsh")
     public void theExistingUserEntersTheirEmailAddressInWelsh() {
-        loginPage.enterEmailAddress(emailAddress);
+        enterYourEmailAddressToSignInPage.enterEmailAddress(emailAddress);
         findAndClickContinueWelsh();
     }
 
     @When("the user enters valid new password and correctly retypes it")
     public void theUserEntersValidNewPasswordAndCorrectlyRetypesIt() {
         String newPassword = UUID.randomUUID() + "a1";
-        resetYourPasswordPage.enterPasswordResetDetails(newPassword, newPassword);
+        resetYourPasswordPage.enterPasswordResetDetailsAndContinue(newPassword, newPassword);
     }
 
     @When("the user resets their password to be the same as their current password")
     public void theUserResetsTheirPasswordToBeTheSameAsTheirCurrentPassword() {
         String newPassword = System.getenv().get("RESET_PW_CURRENT_PW");
-        resetYourPasswordPage.enterPasswordResetDetails(newPassword, newPassword);
+        resetYourPasswordPage.enterPasswordResetDetailsAndContinue(newPassword, newPassword);
     }
 
     @When("the user resets their password to an invalid one")
     public void theUserResetsTheirPasswordToAnInvalidOne() {
-        resetYourPasswordPage.enterPasswordResetDetails(INVALID_PASSWORD, INVALID_PASSWORD);
+        resetYourPasswordPage.enterPasswordResetDetailsAndContinue(
+                INVALID_PASSWORD, INVALID_PASSWORD);
     }
 
     @When("the user resets their password to one that is on the list of top 100k passwords")
     public void theUserResetsTheirPasswordToOneThatIsOnTheListOfTop100kPasswords() {
-        resetYourPasswordPage.enterPasswordResetDetails(TOP_100K_PASSWORD, TOP_100K_PASSWORD);
+        resetYourPasswordPage.enterPasswordResetDetailsAndContinue(
+                TOP_100K_PASSWORD, TOP_100K_PASSWORD);
     }
 
     @When("the user resets their password but enters mismatching new passwords")
     public void theUserResetsTheirPasswordButEntersMismatchingNewPasswords() {
-        resetYourPasswordPage.enterPasswordResetDetails(
+        resetYourPasswordPage.enterPasswordResetDetailsAndContinue(
                 MISMATCHING_PASSWORD_1, MISMATCHING_PASSWORD_2);
     }
 
@@ -301,12 +267,12 @@ public class Login extends SignIn {
 
     @And("the existing user selects create an account")
     public void theExistingUserSelectsCreateAnAccount() {
-        loginPage.clickCreateAGovUkOneLoginButton();
+        createOrSignInPage.clickCreateAGovUkOneLoginButton();
     }
 
     @When("the existing user switches to {string} language")
     public void theExistingUserSwitchesLanguage(String language) {
-        loginPage.switchLanguageTo(language);
+        createOrSignInPage.switchLanguageTo(language);
     }
 
     @When("the user does not agree to the updated terms and conditions")

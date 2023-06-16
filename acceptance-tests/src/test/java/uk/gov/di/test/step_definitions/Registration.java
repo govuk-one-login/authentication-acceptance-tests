@@ -39,8 +39,12 @@ public class Registration extends SignIn {
     NoGovUkOneLoginFoundPage noGovUkOneLoginFoundPage = new NoGovUkOneLoginFoundPage();
     EnterYourMobilePhoneNumberPage enterYourMobilePhoneNumberPage =
             new EnterYourMobilePhoneNumberPage();
-
     EnterYourPasswordPage enterYourPasswordPage = new EnterYourPasswordPage();
+    EnterYourEmailAddressToSignInPage enterYourEmailAddressToSignInPage =
+            new EnterYourEmailAddressToSignInPage();
+    EnterYourEmailAddressPage enterYourEmailAddressPage = new EnterYourEmailAddressPage();
+
+    CreateOrSignInPage createOrSignInPage = new CreateOrSignInPage();
 
     @And("the new user has an invalid email format")
     public void theNewUserHasInvalidEmail() {
@@ -126,6 +130,11 @@ public class Registration extends SignIn {
     }
 
     @When("the user selects create an account")
+    public void theUserSelectsCreateAnAccount() {
+        createOrSignInPage.clickCreateAGovUkOneLoginButton();
+    }
+
+    @When("the new user selects create an account")
     public void theNewUserSelectsCreateAnAccount() {
         noGovUkOneLoginFoundPage.clickCreateGovUkOneLoginButton();
     }
@@ -137,7 +146,7 @@ public class Registration extends SignIn {
 
     @When("the new user selects sign in")
     public void theNewUserSelectsSignIn() {
-        loginPage.signInButtonClick();
+        createOrSignInPage.clickSignInButton();
     }
 
     @Then("the new user is taken to the sign in to your account page")
@@ -147,8 +156,9 @@ public class Registration extends SignIn {
 
     @When("the new user enters their email address")
     public void theNewUserEntersEmailAddress() {
-        loginPage.enterEmailAddress(emailAddress);
-        findAndClickContinue();
+        // loginPage.enterEmailAddress(emailAddress);
+        // findAndClickContinue();
+        enterYourEmailAddressPage.enterEmailAddressAndContinue(emailAddress);
     }
 
     @Then("the new user is taken to the account not found page")
@@ -229,7 +239,7 @@ public class Registration extends SignIn {
 
     @When("the existing auth app user selects sign in")
     public void theExistingAuthAppUserSelectsSignIn() {
-        loginPage.signInButtonClick();
+        createOrSignInPage.clickSignInButton();
     }
 
     @Then("the existing auth app user is taken to the enter your email page")
@@ -239,8 +249,7 @@ public class Registration extends SignIn {
 
     @When("the existing auth app user enters their email address")
     public void theExistingAuthAppUserEntersEmailAddress() {
-        loginPage.enterEmailAddress(emailAddress);
-        findAndClickContinue();
+        enterYourEmailAddressToSignInPage.enterEmailAddressAndContinue(emailAddress);
     }
 
     @Then("the existing auth app user is prompted for their password")

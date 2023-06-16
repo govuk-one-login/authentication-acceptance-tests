@@ -15,7 +15,7 @@ public class ResetYourPasswordPage extends SignIn {
         driver.findElement(confirmPasswordField).sendKeys(password);
     }
 
-    public void enterPasswordResetDetails(String newPassword, String confirmPassword) {
+    public void enterPasswordResetDetailsAndContinue(String newPassword, String confirmPassword) {
         enterPassword(newPassword);
         enterConfirmPassword(confirmPassword);
         findAndClickContinue();
