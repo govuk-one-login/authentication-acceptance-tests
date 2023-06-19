@@ -7,7 +7,13 @@ import io.cucumber.java.en.When;
 import org.junit.jupiter.api.Assertions;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import uk.gov.di.test.pages.*;
+import uk.gov.di.test.pages.CheckYourEmailPage;
+import uk.gov.di.test.pages.CreateOrSignInPage;
+import uk.gov.di.test.pages.EnterYourEmailAddressToSignInPage;
+import uk.gov.di.test.pages.EnterYourPasswordPage;
+import uk.gov.di.test.pages.LoginPage;
+import uk.gov.di.test.pages.ResetYourPasswordPage;
+import uk.gov.di.test.pages.TermsAndConditionsPage;
 import uk.gov.di.test.utils.SignIn;
 
 import java.net.URI;
@@ -16,8 +22,18 @@ import java.util.UUID;
 
 import static java.time.temporal.ChronoUnit.MINUTES;
 import static org.junit.Assert.assertEquals;
-import static uk.gov.di.test.utils.AuthenticationJourneyPages.*;
-import static uk.gov.di.test.utils.Constants.*;
+import static uk.gov.di.test.utils.AuthenticationJourneyPages.CANNOT_GET_NEW_SECURITY_CODE;
+import static uk.gov.di.test.utils.AuthenticationJourneyPages.ENTER_CODE;
+import static uk.gov.di.test.utils.AuthenticationJourneyPages.ENTER_CODE_UPLIFT;
+import static uk.gov.di.test.utils.AuthenticationJourneyPages.ENTER_EMAIL_EXISTING_USER;
+import static uk.gov.di.test.utils.AuthenticationJourneyPages.ENTER_PASSWORD;
+import static uk.gov.di.test.utils.AuthenticationJourneyPages.RESEND_SECURITY_CODE;
+import static uk.gov.di.test.utils.AuthenticationJourneyPages.RESEND_SECURITY_CODE_TOO_MANY_TIMES;
+import static uk.gov.di.test.utils.AuthenticationJourneyPages.SIGN_IN_OR_CREATE;
+import static uk.gov.di.test.utils.Constants.INVALID_PASSWORD;
+import static uk.gov.di.test.utils.Constants.MISMATCHING_PASSWORD_1;
+import static uk.gov.di.test.utils.Constants.MISMATCHING_PASSWORD_2;
+import static uk.gov.di.test.utils.Constants.TOP_100K_PASSWORD;
 
 public class Login extends SignIn {
 

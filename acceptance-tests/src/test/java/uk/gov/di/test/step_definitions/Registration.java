@@ -8,7 +8,14 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import uk.gov.di.test.pages.*;
+import uk.gov.di.test.pages.CreateOrSignInPage;
+import uk.gov.di.test.pages.EnterYourEmailAddressPage;
+import uk.gov.di.test.pages.EnterYourEmailAddressToSignInPage;
+import uk.gov.di.test.pages.EnterYourMobilePhoneNumberPage;
+import uk.gov.di.test.pages.EnterYourPasswordPage;
+import uk.gov.di.test.pages.LoginPage;
+import uk.gov.di.test.pages.NoGovUkOneLoginFoundPage;
+import uk.gov.di.test.pages.RegistrationPage;
 import uk.gov.di.test.utils.AuthAppStub;
 import uk.gov.di.test.utils.SignIn;
 
@@ -20,7 +27,20 @@ import java.util.Random;
 import static java.time.temporal.ChronoUnit.MINUTES;
 import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static uk.gov.di.test.utils.AuthenticationJourneyPages.*;
+import static uk.gov.di.test.utils.AuthenticationJourneyPages.ACCOUNT_CREATED;
+import static uk.gov.di.test.utils.AuthenticationJourneyPages.ACCOUNT_NOT_FOUND;
+import static uk.gov.di.test.utils.AuthenticationJourneyPages.CHECK_YOUR_EMAIL;
+import static uk.gov.di.test.utils.AuthenticationJourneyPages.CHECK_YOUR_PHONE;
+import static uk.gov.di.test.utils.AuthenticationJourneyPages.CREATE_PASSWORD;
+import static uk.gov.di.test.utils.AuthenticationJourneyPages.ENTER_AUTHENTICATOR_APP_CODE;
+import static uk.gov.di.test.utils.AuthenticationJourneyPages.ENTER_AUTHENTICATOR_APP_CODE_UPLIFT;
+import static uk.gov.di.test.utils.AuthenticationJourneyPages.ENTER_EMAIL_CREATE;
+import static uk.gov.di.test.utils.AuthenticationJourneyPages.ENTER_EMAIL_EXISTING_USER;
+import static uk.gov.di.test.utils.AuthenticationJourneyPages.ENTER_PASSWORD;
+import static uk.gov.di.test.utils.AuthenticationJourneyPages.ENTER_PHONE_NUMBER;
+import static uk.gov.di.test.utils.AuthenticationJourneyPages.GET_SECURITY_CODES;
+import static uk.gov.di.test.utils.AuthenticationJourneyPages.SETUP_AUTHENTICATOR_APP;
+import static uk.gov.di.test.utils.AuthenticationJourneyPages.SIGN_IN_OR_CREATE;
 
 public class Registration extends SignIn {
 
