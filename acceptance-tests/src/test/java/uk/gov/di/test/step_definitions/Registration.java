@@ -8,7 +8,14 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import uk.gov.di.test.pages.*;
+import uk.gov.di.test.pages.CreateOrSignInPage;
+import uk.gov.di.test.pages.EnterYourEmailAddressPage;
+import uk.gov.di.test.pages.EnterYourEmailAddressToSignInPage;
+import uk.gov.di.test.pages.EnterYourMobilePhoneNumberPage;
+import uk.gov.di.test.pages.EnterYourPasswordPage;
+import uk.gov.di.test.pages.LoginPage;
+import uk.gov.di.test.pages.NoGovUkOneLoginFoundPage;
+import uk.gov.di.test.pages.RegistrationPage;
 import uk.gov.di.test.utils.AuthAppStub;
 import uk.gov.di.test.utils.SignIn;
 
@@ -20,7 +27,20 @@ import java.util.Random;
 import static java.time.temporal.ChronoUnit.MINUTES;
 import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static uk.gov.di.test.utils.AuthenticationJourneyPages.*;
+import static uk.gov.di.test.utils.AuthenticationJourneyPages.ACCOUNT_CREATED;
+import static uk.gov.di.test.utils.AuthenticationJourneyPages.ACCOUNT_NOT_FOUND;
+import static uk.gov.di.test.utils.AuthenticationJourneyPages.CHECK_YOUR_EMAIL;
+import static uk.gov.di.test.utils.AuthenticationJourneyPages.CHECK_YOUR_PHONE;
+import static uk.gov.di.test.utils.AuthenticationJourneyPages.CREATE_PASSWORD;
+import static uk.gov.di.test.utils.AuthenticationJourneyPages.ENTER_AUTHENTICATOR_APP_CODE;
+import static uk.gov.di.test.utils.AuthenticationJourneyPages.ENTER_AUTHENTICATOR_APP_CODE_UPLIFT;
+import static uk.gov.di.test.utils.AuthenticationJourneyPages.ENTER_EMAIL_CREATE;
+import static uk.gov.di.test.utils.AuthenticationJourneyPages.ENTER_EMAIL_EXISTING_USER;
+import static uk.gov.di.test.utils.AuthenticationJourneyPages.ENTER_PASSWORD;
+import static uk.gov.di.test.utils.AuthenticationJourneyPages.ENTER_PHONE_NUMBER;
+import static uk.gov.di.test.utils.AuthenticationJourneyPages.GET_SECURITY_CODES;
+import static uk.gov.di.test.utils.AuthenticationJourneyPages.SETUP_AUTHENTICATOR_APP;
+import static uk.gov.di.test.utils.AuthenticationJourneyPages.SIGN_IN_OR_CREATE;
 
 public class Registration extends SignIn {
 
@@ -39,8 +59,12 @@ public class Registration extends SignIn {
     NoGovUkOneLoginFoundPage noGovUkOneLoginFoundPage = new NoGovUkOneLoginFoundPage();
     EnterYourMobilePhoneNumberPage enterYourMobilePhoneNumberPage =
             new EnterYourMobilePhoneNumberPage();
-
     EnterYourPasswordPage enterYourPasswordPage = new EnterYourPasswordPage();
+    EnterYourEmailAddressToSignInPage enterYourEmailAddressToSignInPage =
+            new EnterYourEmailAddressToSignInPage();
+    EnterYourEmailAddressPage enterYourEmailAddressPage = new EnterYourEmailAddressPage();
+
+    CreateOrSignInPage createOrSignInPage = new CreateOrSignInPage();
 
     @And("the new user has an invalid email format")
     public void theNewUserHasInvalidEmail() {
@@ -126,6 +150,11 @@ public class Registration extends SignIn {
     }
 
     @When("the user selects create an account")
+    public void theUserSelectsCreateAnAccount() {
+        createOrSignInPage.clickCreateAGovUkOneLoginButton();
+    }
+
+    @When("the new user selects create an account")
     public void theNewUserSelectsCreateAnAccount() {
         noGovUkOneLoginFoundPage.clickCreateGovUkOneLoginButton();
     }
@@ -137,7 +166,7 @@ public class Registration extends SignIn {
 
     @When("the new user selects sign in")
     public void theNewUserSelectsSignIn() {
-        loginPage.signInButtonClick();
+        createOrSignInPage.clickSignInButton();
     }
 
     @Then("the new user is taken to the sign in to your account page")
@@ -147,8 +176,9 @@ public class Registration extends SignIn {
 
     @When("the new user enters their email address")
     public void theNewUserEntersEmailAddress() {
-        loginPage.enterEmailAddress(emailAddress);
-        findAndClickContinue();
+        // loginPage.enterEmailAddress(emailAddress);
+        // findAndClickContinue();
+        enterYourEmailAddressPage.enterEmailAddressAndContinue(emailAddress);
     }
 
     @Then("the new user is taken to the account not found page")
@@ -229,7 +259,7 @@ public class Registration extends SignIn {
 
     @When("the existing auth app user selects sign in")
     public void theExistingAuthAppUserSelectsSignIn() {
-        loginPage.signInButtonClick();
+        createOrSignInPage.clickSignInButton();
     }
 
     @Then("the existing auth app user is taken to the enter your email page")
@@ -239,8 +269,7 @@ public class Registration extends SignIn {
 
     @When("the existing auth app user enters their email address")
     public void theExistingAuthAppUserEntersEmailAddress() {
-        loginPage.enterEmailAddress(emailAddress);
-        findAndClickContinue();
+        enterYourEmailAddressToSignInPage.enterEmailAddressAndContinue(emailAddress);
     }
 
     @Then("the existing auth app user is prompted for their password")

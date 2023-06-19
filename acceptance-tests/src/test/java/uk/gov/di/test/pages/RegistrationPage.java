@@ -16,33 +16,14 @@ public class RegistrationPage extends SignIn {
     By iCannotScanQrCode =
             By.cssSelector("#main-content > div > div > details:nth-child(6) > summary");
     By goBackButton = By.cssSelector("#form-tracking > button");
-    By radioShareInfoAccept = By.id("share-info-accepted");
-    By deleteAccountButton = By.className("govuk-button--warning");
-    By shareInfoReject = By.id("share-info-rejected");
-    By signinToServiceButton = By.cssSelector("form > button");
+
 
     public void radioTextMessageSecurityCodesClick() {
         driver.findElement(radioTextMessageSecurityCodes).click();
     }
 
-    public void deleteAccountButtonClick() {
-        driver.findElement(deleteAccountButton).click();
-    }
-
-    public void shareInfoRejectClick() {
-        driver.findElement(shareInfoReject).click();
-    }
-
     public void goBackClick() {
         driver.findElement(goBackButton).click();
-    }
-
-    public void shareInfoAcceptClick() {
-        driver.findElement(radioShareInfoAccept).click();
-    }
-
-    public void signinToServiceButtonClick() {
-        driver.findElement(signinToServiceButton).click();
     }
 
     public void iCannotScanQrCodeClick() {

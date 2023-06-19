@@ -4,11 +4,9 @@ import org.openqa.selenium.By;
 import uk.gov.di.test.utils.SignIn;
 
 public class LoginPage extends SignIn {
-    By signInButton = By.id("sign-in-button");
-    By emailAddressField = By.id("email");
+
     By confirmPasswordField = By.id("confirm-password");
     By logout = By.name("logout");
-    By termsAndConditions = By.name("termsAndConditionsResult");
     By passwordField = By.id("password");
     By problemWithTheCode = By.className("govuk-details__summary");
     By sendTheCodeAgainLink = By.cssSelector("#form-tracking > details > div > p > a");
@@ -19,9 +17,6 @@ public class LoginPage extends SignIn {
     By emailErrorDescriptionDetails = By.className("govuk-error-summary");
     By continueButton = By.cssSelector("#main-content > div > div > form > button");
     By backButton = By.className("govuk-back-link");
-    By createAGovUkOneLogin = By.id("create-account-link");
-    By linkToSwitchToWelsh = By.xpath("//a[@href='?lng=cy']");
-    By linkToSwitchToEnglish = By.xpath("//a[@href=\"?lng=en\"]");
 
     public void buttonClick(String name) {
         driver.findElement(By.id(name)).click();
@@ -29,14 +24,6 @@ public class LoginPage extends SignIn {
 
     public void logoutButtonClick() {
         driver.findElement(logout).click();
-    }
-
-    public void termsAndConditionsButtonClick() {
-        driver.findElement(termsAndConditions).click();
-    }
-
-    public void signInButtonClick() {
-        driver.findElement(signInButton).click();
     }
 
     public void getNewTheCodeAgainLinkClick() {
@@ -53,11 +40,6 @@ public class LoginPage extends SignIn {
 
     public void sendTheCodeAgainLinkClick() {
         driver.findElement(sendTheCodeAgainLink).click();
-    }
-
-    public void enterEmailAddress(String email) {
-        driver.findElement(emailAddressField).clear();
-        driver.findElement(emailAddressField).sendKeys(email);
     }
 
     public void enterSixDigitSecurityCode(String code) {
@@ -92,20 +74,5 @@ public class LoginPage extends SignIn {
 
     public Boolean emailErrorDescriptionDetailsIsDisplayed() {
         return driver.findElement(emailErrorDescriptionDetails).isDisplayed();
-    }
-
-    public void clickCreateAGovUkOneLoginButton() {
-        driver.findElement(createAGovUkOneLogin).click();
-    }
-
-    public void switchLanguageTo(String lang) {
-        switch (lang.toLowerCase()) {
-            case "welsh":
-                driver.findElement(linkToSwitchToWelsh).click();
-                break;
-            case "english":
-                driver.findElement(linkToSwitchToEnglish).click();
-                break;
-        }
     }
 }
