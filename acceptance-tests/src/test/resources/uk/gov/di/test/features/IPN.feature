@@ -14,7 +14,7 @@ Feature: International Phone Numbers
     Then the new user is taken to the create your password page
     When the new user creates a password
     Then the new user is taken to the get security codes page
-    When the new user chooses text message security codes
+    When the new user chooses "Text message" to get security codes
     Then the new user is taken to the enter phone number page
     When the new user submits a blank UK phone number
     Then the "Enter a UK mobile phone number" error message is displayed
@@ -39,7 +39,7 @@ Feature: International Phone Numbers
     Then the new user is taken to the create your password page
     When the new user creates a password
     Then the new user is taken to the get security codes page
-    When the new user chooses text message security codes
+    When the new user chooses "Text message" to get security codes
     Then the new user is taken to the enter phone number page
     When the new user ticks I do not have a UK mobile number
     Then the International mobile number field is displayed
@@ -72,7 +72,7 @@ Feature: International Phone Numbers
     Then the new user is taken to the create your password page
     When the new user creates a password
     Then the new user is taken to the get security codes page
-    When the new user chooses text message security codes
+    When the new user chooses "Text message" to get security codes
     Then the new user is taken to the enter phone number page
     When the new user ticks I do not have a UK mobile number
     Then the International mobile number field is displayed

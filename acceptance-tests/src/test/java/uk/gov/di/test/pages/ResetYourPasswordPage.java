@@ -8,11 +8,12 @@ public class ResetYourPasswordPage extends SignIn {
     By confirmPasswordField = By.id("confirm-password");
 
     public void enterPassword(String password) {
-        driver.findElement(passwordField).sendKeys(password);
+        clearFieldAndEnter(passwordField, password);
     }
 
     public void enterConfirmPassword(String password) {
-        driver.findElement(confirmPasswordField).sendKeys(password);
+        clearFieldAndEnter(confirmPasswordField, password);
+        ;
     }
 
     public void enterPasswordResetDetailsAndContinue(String newPassword, String confirmPassword) {

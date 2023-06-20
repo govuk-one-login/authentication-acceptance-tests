@@ -16,17 +16,11 @@ public class EnterYourMobilePhoneNumberPage extends SignIn {
         driver.findElement(iDoNotHaveUkMobilePhoneNumberCheckbox).click();
     }
 
-    public boolean getStatusOfUKMobileNumberField() {
-        return driver.findElement(ukPhoneNumberField).isEnabled();
-    }
-
     public void enterInternationalMobilePhoneNumber(String internationalMobilePhoneNumber) {
-        driver.findElement(internationalPhoneNumberField).clear();
-        driver.findElement(internationalPhoneNumberField).sendKeys(internationalMobilePhoneNumber);
+        clearFieldAndEnter(internationalPhoneNumberField, internationalMobilePhoneNumber);
     }
 
     public void enterUkPhoneNumber(String phoneNumber) {
-        driver.findElement(ukPhoneNumberField).clear();
-        driver.findElement(ukPhoneNumberField).sendKeys(phoneNumber);
+        clearFieldAndEnter(ukPhoneNumberField, phoneNumber);
     }
 }

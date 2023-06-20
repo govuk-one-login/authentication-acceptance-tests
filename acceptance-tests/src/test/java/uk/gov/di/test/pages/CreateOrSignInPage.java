@@ -10,7 +10,6 @@ public class CreateOrSignInPage extends SignIn {
     By linkToSwitchToWelsh = By.xpath("//a[@href='?lng=cy']");
     By linkToSwitchToEnglish = By.xpath("//a[@href='?lng=en']");
 
-
     public void clickCreateAGovUkOneLoginButton() {
         driver.findElement(createAGovUkOneLogin).click();
     }

@@ -6,6 +6,7 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.openqa.selenium.By;
 import uk.gov.di.test.pages.LoginPage;
+import uk.gov.di.test.pages.RpStubPage;
 import uk.gov.di.test.utils.SignIn;
 import uk.gov.di.test.utils.SupportingPages;
 
@@ -16,13 +17,14 @@ import static org.junit.Assert.assertEquals;
 public class LegalAndPolicy extends SignIn {
 
     LoginPage loginPage = new LoginPage();
+    RpStubPage rpStubPage = new RpStubPage();
 
     @Given("the services are running")
     public void theServicesAreRunning() {}
 
     @When("the user visits the stub relying party")
     public void theExistingUserVisitsTheStubRelyingParty() {
-        driver.get(RP_URL.toString());
+        rpStubPage.goToRpStub();
     }
 
     @And("the user clicks {string}")
@@ -62,6 +64,11 @@ public class LegalAndPolicy extends SignIn {
         checkPageLoadInTabAndClose(SupportingPages.PRIVACY_NOTICE);
     }
 
+    private void waitForPageLoadThenValidate(SupportingPages page) {
+        waitForPageLoad(page.getShortTitle());
+        assertEquals(page.getRoute(), URI.create(driver.getCurrentUrl()).getPath());
+    }
+
     private void checkPageLoadInTabAndClose(SupportingPages page) {
         String currentWindowHandle = driver.getWindowHandle();
         driver.getWindowHandles().stream()
@@ -74,10 +81,5 @@ public class LegalAndPolicy extends SignIn {
                             d.close();
                         });
         driver.switchTo().window(currentWindowHandle);
-    }
-
-    private void waitForPageLoadThenValidate(SupportingPages page) {
-        waitForPageLoad(page.getShortTitle());
-        assertEquals(page.getRoute(), URI.create(driver.getCurrentUrl()).getPath());
     }
 }

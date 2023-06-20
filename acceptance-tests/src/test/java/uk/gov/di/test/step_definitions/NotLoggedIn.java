@@ -5,19 +5,21 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import uk.gov.di.test.pages.LoginPage;
+import uk.gov.di.test.pages.RpStubPage;
 import uk.gov.di.test.utils.SignIn;
 
 import static uk.gov.di.test.utils.AuthenticationJourneyPages.SIGN_IN_OR_CREATE;
 
 public class NotLoggedIn extends SignIn {
     public LoginPage loginPage = new LoginPage();
+    public RpStubPage rpStubPage = new RpStubPage();
 
     @Given("the not logged in services are running")
     public void theServicesAreRunning() {}
 
     @When("the not logged in user visits the stub relying party")
     public void theNotLoggedInUserVisitsTheStubRelyingParty() {
-        driver.get(RP_URL.toString());
+        rpStubPage.goToRpStub();
     }
 
     @And("the not logged in user clicks {string}")
