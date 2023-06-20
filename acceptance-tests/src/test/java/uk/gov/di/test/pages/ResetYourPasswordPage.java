@@ -13,7 +13,6 @@ public class ResetYourPasswordPage extends SignIn {
 
     public void enterConfirmPassword(String password) {
         clearFieldAndEnter(confirmPasswordField, password);
-        ;
     }
 
     public void enterPasswordResetDetailsAndContinue(String newPassword, String confirmPassword) {
