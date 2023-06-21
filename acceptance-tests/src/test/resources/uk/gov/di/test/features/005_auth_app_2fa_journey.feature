@@ -16,10 +16,10 @@ Feature: Authentication App Journeys
     Then the new user is taken to the create your password page
     When the new user creates a password
     Then the new user is taken to the get security codes page
-    When the new user chooses "mfaOptions-2" to get security codes
+    When the new user chooses "Auth App" to get security codes
     Then the new user is taken to the setup authenticator app page
     When the new user adds the secret key on the screen to their auth app
-    And the user enters the security code from the auth app
+    And the user enters the security code from the auth app to set it up
     Then the new user is not shown an error message in field "code-error"
     Then the new user is taken to the account created page
     When the new user clicks the continue button

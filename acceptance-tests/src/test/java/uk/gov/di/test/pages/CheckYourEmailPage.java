@@ -4,10 +4,14 @@ import org.openqa.selenium.By;
 import uk.gov.di.test.utils.SignIn;
 
 public class CheckYourEmailPage extends SignIn {
-    By enterSixDigitEmailCodeField = By.id("code");
+    By emailCodeField = By.id("code");
 
-    public void enterEmailSecurityCode(String emailCode) {
-        driver.findElement(enterSixDigitEmailCodeField).clear();
-        driver.findElement(enterSixDigitEmailCodeField).sendKeys(emailCode);
+    public void enterEmailCode(String emailCode) {
+        clearFieldAndEnter(emailCodeField, emailCode);
+    }
+
+    public void enterEmailCodeAndContinue(String code) {
+        enterEmailCode(code);
+        findAndClickContinue();
     }
 }

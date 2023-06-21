@@ -7,6 +7,8 @@ import javax.crypto.spec.SecretKeySpec;
 
 import java.util.concurrent.TimeUnit;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 public class AuthAppStub {
     private static final int CODE_DIGITS = 6;
     private static final long TIME_WINDOW_IN_MILLISECONDS = TimeUnit.SECONDS.toMillis(30);
@@ -61,5 +63,15 @@ public class AuthAppStub {
 
     private long getTimeWindowFromTime(long time) {
         return time / TIME_WINDOW_IN_MILLISECONDS;
+    }
+
+    public static String getAuthAppCode(String authAppSecretKey) {
+        AuthAppStub authAppStub = new AuthAppStub();
+        String securityCode = authAppStub.getAuthAppOneTimeCode(authAppSecretKey);
+        if (securityCode.length() != 6) {
+            System.out.println("Auth App Security Code: " + securityCode);
+        }
+        assertTrue(securityCode.length() == 6);
+        return securityCode;
     }
 }

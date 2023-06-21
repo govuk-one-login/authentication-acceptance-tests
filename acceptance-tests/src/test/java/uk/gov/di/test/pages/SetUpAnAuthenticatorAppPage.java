@@ -4,30 +4,19 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import uk.gov.di.test.utils.AuthAppStub;
 import uk.gov.di.test.utils.SignIn;
 
 import java.util.List;
 
-public class RegistrationPage extends SignIn {
-
-    By radioTextMessageSecurityCodes = By.id("mfaOptions");
+public class SetUpAnAuthenticatorAppPage extends SignIn {
     By secretKeyField = By.id("secret-key");
     By secretKeyBlocks = By.cssSelector("#secret-key span");
-    By iCannotScanQrCode =
-            By.cssSelector("#main-content > div > div > details:nth-child(6) > summary");
-    By goBackButton = By.cssSelector("#form-tracking > button");
-
-
-    public void radioTextMessageSecurityCodesClick() {
-        driver.findElement(radioTextMessageSecurityCodes).click();
-    }
-
-    public void goBackClick() {
-        driver.findElement(goBackButton).click();
-    }
+    By iCannotScanTheQrCode = By.xpath("//span[contains(text(), 'I cannot scan the QR code')]");
+    By authAppCodeField = By.id("code");
 
     public void iCannotScanQrCodeClick() {
-        driver.findElement(iCannotScanQrCode).click();
+        driver.findElement(iCannotScanTheQrCode).click();
     }
 
     public String getSecretFieldText() {
@@ -39,5 +28,10 @@ public class RegistrationPage extends SignIn {
             secretKeyText = secretKeyText + secretKeyComponents.get(i).getText();
         }
         return secretKeyText;
+    }
+
+    public void enterCorrectAuthAppCode(String authAppSecretKey) {
+        String authAppCode = AuthAppStub.getAuthAppCode(authAppSecretKey);
+        clearFieldAndEnter(authAppCodeField, authAppCode);
     }
 }

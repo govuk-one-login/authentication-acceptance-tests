@@ -82,7 +82,7 @@ Feature: Registration Journey
     Then the new user is taken to the create your password page
     When the new user creates a password
     Then the new user is taken to the get security codes page
-    When the new user chooses text message security codes
+    When the new user chooses "Text message" to get security codes
     Then the new user is taken to the enter phone number page
     When the new user enters their mobile phone number using an international dialling code
     Then the new user is taken to the check your phone page

@@ -5,22 +5,22 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.junit.jupiter.api.Assertions;
-import org.openqa.selenium.support.ui.ExpectedCondition;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import uk.gov.di.test.pages.CheckYourEmailPage;
+import uk.gov.di.test.pages.CheckYourPhonePage;
 import uk.gov.di.test.pages.CreateOrSignInPage;
+import uk.gov.di.test.pages.EnterYourEmailAddressPage;
 import uk.gov.di.test.pages.EnterYourEmailAddressToSignInPage;
 import uk.gov.di.test.pages.EnterYourPasswordPage;
-import uk.gov.di.test.pages.LoginPage;
+import uk.gov.di.test.pages.GetSecurityCodePage;
 import uk.gov.di.test.pages.ResetYourPasswordPage;
+import uk.gov.di.test.pages.RpStubPage;
 import uk.gov.di.test.pages.TermsAndConditionsPage;
+import uk.gov.di.test.pages.YouAskedToResendTheSecurityCodeTooManyTimesPage;
 import uk.gov.di.test.utils.SignIn;
 
 import java.net.URI;
-import java.time.Duration;
 import java.util.UUID;
 
-import static java.time.temporal.ChronoUnit.MINUTES;
 import static org.junit.Assert.assertEquals;
 import static uk.gov.di.test.utils.AuthenticationJourneyPages.CANNOT_GET_NEW_SECURITY_CODE;
 import static uk.gov.di.test.utils.AuthenticationJourneyPages.ENTER_CODE;
@@ -43,15 +43,20 @@ public class Login extends SignIn {
     private String phoneNumber;
     private String sixDigitCodeEmail;
 
-    public LoginPage loginPage = new LoginPage();
     public ResetYourPasswordPage resetYourPasswordPage = new ResetYourPasswordPage();
     public CheckYourEmailPage checkYourEmailPage = new CheckYourEmailPage();
     public TermsAndConditionsPage termsAndConditionsPage = new TermsAndConditionsPage();
     public EnterYourPasswordPage enterYourPasswordPage = new EnterYourPasswordPage();
+    public CheckYourPhonePage checkYourPhonePage = new CheckYourPhonePage();
+    public GetSecurityCodePage getSecurityCodePage = new GetSecurityCodePage();
+    public RpStubPage rpStubPage = new RpStubPage();
     public EnterYourEmailAddressToSignInPage enterYourEmailAddressToSignInPage =
             new EnterYourEmailAddressToSignInPage();
     public CreateOrSignInPage createOrSignInPage = new CreateOrSignInPage();
-
+    public YouAskedToResendTheSecurityCodeTooManyTimesPage
+            youAskedToResendTheSecurityCodeTooManyTimesPage =
+                    new YouAskedToResendTheSecurityCodeTooManyTimesPage();
+    public EnterYourEmailAddressPage enterYourEmailAddressPage = new EnterYourEmailAddressPage();
 
     @And("the existing user has valid credentials")
     public void theExistingUserHasValidCredentials() {
@@ -96,12 +101,12 @@ public class Login extends SignIn {
 
     @When("the existing user visits the stub relying party")
     public void theExistingUserVisitsTheStubRelyingParty() {
-        driver.get(RP_URL.toString());
+        rpStubPage.goToRpStub();
     }
 
     @And("the existing user clicks {string}")
-    public void theExistingUserClicks(String buttonName) {
-        loginPage.buttonClick(buttonName);
+    public void theExistingUserClicks(String options) {
+        rpStubPage.selectRpOptionsById(options);
     }
 
     @Then("the existing user is taken to the Identity Provider Login Page")
@@ -146,15 +151,7 @@ public class Login extends SignIn {
 
     @When("the existing user enters the six digit security code from their phone")
     public void theExistingUserEntersTheSixDigitSecurityCodeFromTheirPhone() {
-        if (DEBUG_MODE) {
-            new WebDriverWait(driver, Duration.of(1, MINUTES))
-                    .until(
-                            (ExpectedCondition<Boolean>)
-                                    driver -> loginPage.getSixDigitSecurityCodeLength() == 6);
-        } else {
-            loginPage.enterSixDigitSecurityCode(sixDigitCodePhone);
-        }
-        findAndClickContinue();
+        checkYourPhonePage.enterPhoneCodeAndContinue(sixDigitCodePhone);
     }
 
     @Then("the existing user is returned to the service")
@@ -169,10 +166,10 @@ public class Login extends SignIn {
     @When("the existing user requests the phone otp code {int} times")
     public void theExistingUserRequestsThePhoneOtpCodeTimes(int timesCodeIncorrect) {
         for (int i = 0; i < timesCodeIncorrect; i++) {
-            loginPage.problemWithTheCodeClick();
-            loginPage.sendTheCodeAgainLinkClick();
+            checkYourPhonePage.clickProblemsWithTheCodeLink();
+            checkYourPhonePage.clickSendTheCodeAgainLink();
             waitForPageLoadThenValidate(RESEND_SECURITY_CODE);
-            loginPage.securityCodeClick();
+            getSecurityCodePage.pressGetSecurityCodeButton();
         }
     }
 
@@ -184,7 +181,7 @@ public class Login extends SignIn {
 
     @When("the existing user clicks the get a new code link")
     public void theExistingUserClicksTheGetANewCodeLink() {
-        loginPage.getNewTheCodeAgainLinkClick();
+        youAskedToResendTheSecurityCodeTooManyTimesPage.clickGetANewCodeLink();
     }
 
     @Then("the existing user is taken to the you cannot get a new security code page")
@@ -208,8 +205,8 @@ public class Login extends SignIn {
         assertEquals(
                 "Rhowch eich cyfeiriad e-bost i fewngofnodi i’ch GOV.UK One Login - GOV.UK One Login",
                 driver.getTitle());
-        Assertions.assertNotEquals("Continue", loginPage.continueButtonText());
-        Assertions.assertNotEquals("Back", loginPage.backButtonText());
+        Assertions.assertNotEquals("Continue", enterYourEmailAddressPage.continueButtonText());
+        Assertions.assertNotEquals("Back", enterYourEmailAddressPage.backButtonText());
     }
 
     @Then("the existing user is prompted for their password in Welsh")
@@ -263,21 +260,9 @@ public class Login extends SignIn {
                 MISMATCHING_PASSWORD_1, MISMATCHING_PASSWORD_2);
     }
 
-    @When("the user enters their email security code")
-    public void theUserEntersTheirEmailSecurityCode() {
-        checkYourEmailPage.enterEmailSecurityCode(sixDigitCodeEmail);
-    }
-
     @When("the user enters the six digit security code from their email")
     public void theUserEntersTheSixDigitSecurityCodeFromTheirEmail() {
-        if (DEBUG_MODE) {
-            new WebDriverWait(driver, Duration.of(1, MINUTES))
-                    .until(
-                            (ExpectedCondition<Boolean>)
-                                    driver -> loginPage.getSixDigitSecurityCodeLength() == 6);
-        } else {
-            loginPage.enterSixDigitSecurityCode(sixDigitCodeEmail);
-        }
+        checkYourEmailPage.enterEmailCode(sixDigitCodeEmail);
         findAndClickContinue();
     }
 

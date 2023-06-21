@@ -6,25 +6,25 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedCondition;
-import org.openqa.selenium.support.ui.WebDriverWait;
+import uk.gov.di.test.pages.CheckYourEmailPage;
+import uk.gov.di.test.pages.CheckYourPhonePage;
+import uk.gov.di.test.pages.ChooseHowToGetSecurityCodesPage;
 import uk.gov.di.test.pages.CreateOrSignInPage;
+import uk.gov.di.test.pages.CreateYourPasswordPage;
+import uk.gov.di.test.pages.EnterThe6DigitSecurityCodeShownInYourAuthenticatorAppPage;
 import uk.gov.di.test.pages.EnterYourEmailAddressPage;
 import uk.gov.di.test.pages.EnterYourEmailAddressToSignInPage;
 import uk.gov.di.test.pages.EnterYourMobilePhoneNumberPage;
 import uk.gov.di.test.pages.EnterYourPasswordPage;
 import uk.gov.di.test.pages.LoginPage;
 import uk.gov.di.test.pages.NoGovUkOneLoginFoundPage;
-import uk.gov.di.test.pages.RegistrationPage;
-import uk.gov.di.test.utils.AuthAppStub;
+import uk.gov.di.test.pages.RpStubPage;
+import uk.gov.di.test.pages.SetUpAnAuthenticatorAppPage;
 import uk.gov.di.test.utils.SignIn;
 
 import java.net.URI;
-import java.time.Duration;
 import java.util.List;
-import java.util.Random;
 
-import static java.time.temporal.ChronoUnit.MINUTES;
 import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static uk.gov.di.test.utils.AuthenticationJourneyPages.ACCOUNT_CREATED;
@@ -41,6 +41,7 @@ import static uk.gov.di.test.utils.AuthenticationJourneyPages.ENTER_PHONE_NUMBER
 import static uk.gov.di.test.utils.AuthenticationJourneyPages.GET_SECURITY_CODES;
 import static uk.gov.di.test.utils.AuthenticationJourneyPages.SETUP_AUTHENTICATOR_APP;
 import static uk.gov.di.test.utils.AuthenticationJourneyPages.SIGN_IN_OR_CREATE;
+import static uk.gov.di.test.utils.Constants.INCORRECT_PHONE_CODE;
 
 public class Registration extends SignIn {
 
@@ -55,7 +56,6 @@ public class Registration extends SignIn {
     private String internationalPhoneNumber;
 
     LoginPage loginPage = new LoginPage();
-    RegistrationPage registrationPage = new RegistrationPage();
     NoGovUkOneLoginFoundPage noGovUkOneLoginFoundPage = new NoGovUkOneLoginFoundPage();
     EnterYourMobilePhoneNumberPage enterYourMobilePhoneNumberPage =
             new EnterYourMobilePhoneNumberPage();
@@ -63,8 +63,17 @@ public class Registration extends SignIn {
     EnterYourEmailAddressToSignInPage enterYourEmailAddressToSignInPage =
             new EnterYourEmailAddressToSignInPage();
     EnterYourEmailAddressPage enterYourEmailAddressPage = new EnterYourEmailAddressPage();
-
     CreateOrSignInPage createOrSignInPage = new CreateOrSignInPage();
+    RpStubPage rpStubPage = new RpStubPage();
+    CheckYourEmailPage checkYourEmailPage = new CheckYourEmailPage();
+    CheckYourPhonePage checkYourPhonePage = new CheckYourPhonePage();
+    CreateYourPasswordPage createYourPasswordPage = new CreateYourPasswordPage();
+    ChooseHowToGetSecurityCodesPage chooseHowToGetSecurityCodesPage =
+            new ChooseHowToGetSecurityCodesPage();
+    SetUpAnAuthenticatorAppPage setUpAnAuthenticatorAppPage = new SetUpAnAuthenticatorAppPage();
+    EnterThe6DigitSecurityCodeShownInYourAuthenticatorAppPage
+            enterThe6DigitSecurityCodeShownInYourAuthenticatorAppPage =
+                    new EnterThe6DigitSecurityCodeShownInYourAuthenticatorAppPage();
 
     @And("the new user has an invalid email format")
     public void theNewUserHasInvalidEmail() {
@@ -140,8 +149,8 @@ public class Registration extends SignIn {
     }
 
     @And("the new user clicks {string}")
-    public void theNewUserClicks(String buttonName) {
-        loginPage.buttonClick(buttonName);
+    public void theNewUserClicks(String options) {
+        rpStubPage.selectRpOptionsById(options);
     }
 
     @Then("the new user is taken to the Identity Provider Login Page")
@@ -176,8 +185,6 @@ public class Registration extends SignIn {
 
     @When("the new user enters their email address")
     public void theNewUserEntersEmailAddress() {
-        // loginPage.enterEmailAddress(emailAddress);
-        // findAndClickContinue();
         enterYourEmailAddressPage.enterEmailAddressAndContinue(emailAddress);
     }
 
@@ -193,15 +200,7 @@ public class Registration extends SignIn {
 
     @When("the new user enters the six digit security code from their email")
     public void theNewUserEntersTheSixDigitSecurityCodeFromTheirEmail() {
-        if (DEBUG_MODE) {
-            new WebDriverWait(driver, Duration.of(1, MINUTES))
-                    .until(
-                            (ExpectedCondition<Boolean>)
-                                    driver -> loginPage.getSixDigitSecurityCodeLength() == 6);
-        } else {
-            loginPage.enterSixDigitSecurityCode(sixDigitCodeEmail);
-        }
-        findAndClickContinue();
+        checkYourEmailPage.enterEmailCodeAndContinue(sixDigitCodeEmail);
     }
 
     @Then("the new user is taken to the create your password page")
@@ -211,9 +210,7 @@ public class Registration extends SignIn {
 
     @When("the new user creates a password")
     public void theNewUserCreatesAValidPassword() {
-        loginPage.enterPassword(password);
-        loginPage.enterConfirmPassword(password);
-        findAndClickContinue();
+        createYourPasswordPage.enterBothPasswordsAndContinue(password, password);
     }
 
     @Then("the new user is taken to the get security codes page")
@@ -221,16 +218,9 @@ public class Registration extends SignIn {
         waitForPageLoadThenValidate(GET_SECURITY_CODES);
     }
 
-    @When("the new user chooses text message security codes")
-    public void theNewUserChoosesTextMessageSecurityCodes() {
-        registrationPage.radioTextMessageSecurityCodesClick();
-        findAndClickContinue();
-    }
-
     @When("the new user chooses {string} to get security codes")
     public void theNewUserChoosesHowToGetSecurityCodes(String mfaMethod) {
-        loginPage.buttonClick(mfaMethod);
-        findAndClickContinue();
+        chooseHowToGetSecurityCodesPage.selectAuthMethodAndContinue(mfaMethod);
     }
 
     @Then("the new user is taken to the setup authenticator app page")
@@ -240,20 +230,21 @@ public class Registration extends SignIn {
 
     @When("the new user adds the secret key on the screen to their auth app")
     public void theNewUserAddTheSecretKeyOnTheScreenToTheirAuthApp() {
-        registrationPage.iCannotScanQrCodeClick();
-        authAppSecretKey = registrationPage.getSecretFieldText();
-        assertTrue(registrationPage.getSecretFieldText().length() == 32);
+        setUpAnAuthenticatorAppPage.iCannotScanQrCodeClick();
+        authAppSecretKey = setUpAnAuthenticatorAppPage.getSecretFieldText();
+        assertTrue(setUpAnAuthenticatorAppPage.getSecretFieldText().length() == 32);
+    }
+
+    @And("the user enters the security code from the auth app to set it up")
+    public void theNewUserEntersTheSecurityCodeFromTheAuthAppToSetItUp() {
+        setUpAnAuthenticatorAppPage.enterCorrectAuthAppCode(authAppSecretKey);
+        findAndClickContinue();
     }
 
     @And("the user enters the security code from the auth app")
     public void theNewUserEntersTheSecurityCodeFromTheAuthApp() {
-        AuthAppStub authAppStub = new AuthAppStub();
-        String securityCode = authAppStub.getAuthAppOneTimeCode(authAppSecretKey);
-        if (securityCode.length() != 6) {
-            System.out.println("Auth App Security Code: " + securityCode);
-        }
-        assertTrue(securityCode.length() == 6);
-        loginPage.enterSixDigitSecurityCode(securityCode);
+        enterThe6DigitSecurityCodeShownInYourAuthenticatorAppPage.enterCorrectAuthAppCode(
+                authAppSecretKey);
         findAndClickContinue();
     }
 
@@ -310,15 +301,7 @@ public class Registration extends SignIn {
 
     @When("the new user enters the six digit security code from their phone")
     public void theNewUserEntersTheSixDigitSecurityCodeFromTheirPhone() {
-        if (DEBUG_MODE) {
-            new WebDriverWait(driver, Duration.of(1, MINUTES))
-                    .until(
-                            (ExpectedCondition<Boolean>)
-                                    driver -> loginPage.getSixDigitSecurityCodeLength() == 6);
-        } else {
-            loginPage.enterSixDigitSecurityCode(sixDigitCodePhone);
-        }
-        findAndClickContinue();
+        checkYourPhonePage.enterPhoneCodeAndContinue(sixDigitCodePhone);
     }
 
     @Then("the new user is taken to the account created page")
@@ -327,8 +310,8 @@ public class Registration extends SignIn {
     }
 
     @When("the new user clicks the continue button")
-    public void theNewUserClicksTheGoBackToGovUkButton() {
-        registrationPage.goBackClick();
+    public void theNewUserClicksTheContinueButton() {
+        findAndClickContinue();
     }
 
     @Then("the user is returned to the service")
@@ -364,19 +347,10 @@ public class Registration extends SignIn {
         assertEquals("/signed-out", URI.create(driver.getCurrentUrl()).getPath());
     }
 
-    private String getRandomInvalidCode() {
-        String randomCode = "";
-        do {
-            randomCode = String.format("%06d", new Random().nextInt(999999));
-        } while (randomCode.equals(sixDigitCodeEmail));
-        return randomCode;
-    }
-
     @When("the user enters an incorrect phone code one more time")
     @When("the user enters an incorrect phone code")
     public void theNewUserEntersAnIncorrectPhoneCodeOneMoreTime() {
-        loginPage.enterSixDigitSecurityCode(getRandomInvalidCode());
-        findAndClickContinue();
+        checkYourPhonePage.enterPhoneCodeAndContinue(INCORRECT_PHONE_CODE);
     }
 
     @When("the new user enters their mobile phone number using an international dialling code")
