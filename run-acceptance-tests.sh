@@ -2,7 +2,7 @@
 
 set -eu
 
-ENVIRONMENT=${2:-build}
+ENVIRONMENT=${2:-local}
 
 DOCKER_BASE=docker-compose
 SSM_VARS_PATH="/acceptance-tests/$ENVIRONMENT"
@@ -98,6 +98,12 @@ if [ ${build_and_test_exit_code} -ne 0 ]; then
   exit 1
 fi
 
+if [ $LOCAL == "1" ]; then
+  ./reset-test-data.sh -l
+else
+  ./reset-test-data.sh -r $ENVIRONMENT
+fi
+
 echo -e "Running di-authentication-acceptance-tests..."
 
 start_docker_services selenium-firefox selenium-chrome
@@ -121,10 +127,4 @@ if [ ${build_and_test_exit_code} -ne 0 ]; then
 
 else
   echo -e "acceptance-tests SUCCEEDED."
-fi
-
-if [ $LOCAL == "1" ]; then
-  ./reset-test-data.sh -l
-else
-  ./reset-test-data.sh -r $ENVIRONMENT
 fi
