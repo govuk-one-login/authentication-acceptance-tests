@@ -2,16 +2,19 @@
 
 set -eu
 
-ENVIRONMENT=${1:-local}
+ENVIRONMENT=${2:-build}
 
 source ./scripts/database.sh
 source ./scripts/reset-test-users.sh
 
 LOCAL=0
-while getopts "l" opt; do
+while getopts "lr" opt; do
   case ${opt} in
   l)
     LOCAL=1
+    ;;
+  r)
+    LOCAL=0
     ;;
   *)
     usage

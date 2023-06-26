@@ -2,7 +2,7 @@
 
 set -eu
 
-ENVIRONMENT=${1:-local}
+ENVIRONMENT=${2:-build}
 
 DOCKER_BASE=docker-compose
 SSM_VARS_PATH="/acceptance-tests/$ENVIRONMENT"
@@ -10,18 +10,21 @@ TESTDIR="/test"
 
 EXPORT_ENV=0
 LOCAL=0
-while getopts "le" opt; do
+while getopts "lre" opt; do
   case ${opt} in
-    l)
-        LOCAL=1
-      ;;
-    e)
-        EXPORT_ENV=1
-      ;;
-    *)
-        usage
-        exit 1
-      ;;
+  l)
+    LOCAL=1
+    ;;
+  r)
+    LOCAL=0
+    ;;
+  e)
+    EXPORT_ENV=1
+    ;;
+  *)
+    usage
+    exit 1
+    ;;
   esac
 done
 
@@ -37,7 +40,7 @@ function stop_docker_services() {
 
 function get_env_vars_from_SSM() {
   echo -n "Getting AWS credentials ... "
-  if [ $EXPORT_ENV == "1" ]; then 
+  if [ $EXPORT_ENV == "1" ]; then
     eval "$(gds aws digital-identity-dev -e)"
   fi
   echo "done!"
@@ -53,7 +56,7 @@ function get_env_vars_from_SSM() {
       echo "#"
       echo "# Rename to .env to use for testing"
       echo "#"
-    } >> $envfile
+    } >>$envfile
   fi
 
   VARS="$(aws ssm get-parameters-by-path --region eu-west-2 --with-decryption --path $SSM_VARS_PATH | jq -r '.Parameters[] | @base64')"
@@ -61,7 +64,7 @@ function get_env_vars_from_SSM() {
     VAR_NAME="$(echo ${VAR} | base64 -d | jq -r '.Name / "/" | .[3]')"
     VAR_NAME_VALUE=$VAR_NAME="$(echo ${VAR} | base64 -d | jq -r '.Value')"
     if [ $EXPORT_ENV == "1" ]; then
-      echo "$VAR_NAME_VALUE" >> $envfile
+      echo "$VAR_NAME_VALUE" >>$envfile
     fi
     export "$VAR_NAME"="$(echo ${VAR} | base64 -d | jq -r '.Value')"
   done
@@ -82,7 +85,7 @@ function export_selenium_config() {
 
 echo -e "Building di-authentication-acceptance-tests..."
 
-if  [ -d "$TESTDIR" ]; then
+if [ -d "$TESTDIR" ]; then
   echo "Changing to $TESTDIR"
   cd $TESTDIR
 fi
@@ -90,10 +93,9 @@ fi
 ./gradlew clean spotlessApply build -x :acceptance-tests:test
 
 build_and_test_exit_code=$?
-if [ ${build_and_test_exit_code} -ne 0 ]
-then
-    echo -e "acceptance-tests failed."
-    exit 1
+if [ ${build_and_test_exit_code} -ne 0 ]; then
+  echo -e "acceptance-tests failed."
+  exit 1
 fi
 
 echo -e "Running di-authentication-acceptance-tests..."
@@ -114,12 +116,15 @@ build_and_test_exit_code=$?
 
 stop_docker_services selenium-firefox selenium-chrome
 
-if [ ${build_and_test_exit_code} -ne 0 ]
-then
-    echo -e "acceptance-tests failed."
+if [ ${build_and_test_exit_code} -ne 0 ]; then
+  echo -e "acceptance-tests failed."
 
 else
-    echo -e "acceptance-tests SUCCEEDED."
+  echo -e "acceptance-tests SUCCEEDED."
 fi
 
-./reset-test-data.sh $ENVIRONMENT
+if [ $LOCAL == "1" ]; then
+  ./reset-test-data.sh -l
+else
+  ./reset-test-data.sh -r $ENVIRONMENT
+fi
