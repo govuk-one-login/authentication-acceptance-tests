@@ -98,12 +98,6 @@ if [ ${build_and_test_exit_code} -ne 0 ]; then
   exit 1
 fi
 
-if [ $LOCAL == "1" ]; then
-  ./reset-test-data.sh -l
-else
-  ./reset-test-data.sh -r $ENVIRONMENT
-fi
-
 echo -e "Running di-authentication-acceptance-tests..."
 
 start_docker_services selenium-firefox selenium-chrome
@@ -114,6 +108,12 @@ if [ $LOCAL == "1" ]; then
 else
   export_selenium_config
   get_env_vars_from_SSM
+fi
+
+if [ $LOCAL == "1" ]; then
+  ./reset-test-data.sh -l
+else
+  ./reset-test-data.sh -r $ENVIRONMENT
 fi
 
 ./gradlew cucumber
