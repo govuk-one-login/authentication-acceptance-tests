@@ -3,7 +3,7 @@ name: Build and Push Acceptance Tests
 on:
   push:
     branches:
-      - BAU/run-test-new-pipeline
+      - main
 
 jobs:
   build:
