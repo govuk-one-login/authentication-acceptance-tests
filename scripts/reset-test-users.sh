@@ -63,6 +63,8 @@ function resetTestUsers() {
   deleteUser $IPN1_NEW_USER_EMAIL
   deleteUser $IPN2_NEW_USER_EMAIL
   deleteUser $IPN3_NEW_USER_EMAIL
+  deleteUser $TEST_USER_STATE_PRESERVATION_EMAIL1
+  deleteUser $TEST_USER_STATE_PRESERVATION_EMAIL2
 
   updateTermsAndConditions $TERMS_AND_CONDITIONS_TEST_USER_EMAIL "1.0"
 

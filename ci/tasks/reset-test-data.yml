@@ -42,6 +42,10 @@ params:
   TEST_USER_ACCOUNT_RECOVERY_EMAIL_4: ((test-user-pw-not-reset-auth-app-email))
   PW_RESET_TEST_USER_PHONE: ((test-user-phone-number))
   SECTOR_HOST: https://identity.build.account.gov.uk
+  TEST_USER_STATE_PRESERVATION_EMAIL1: ((test-user-state-preservation-email1))
+  TEST_USER_STATE_PRESERVATION_EMAIL2: ((test-user-state-preservation-email2))
+  INCORRECT_EMAIL_OTP_FOR_PW_RESET_EMAIL: ((test-user-incorrect-email-otp-pw-reset))
+  TOO_MANY_EMAIL_OTP_REQUESTS_FOR_PW_RESET_EMAIL: ((test-user-too-many-email-otp-pw-reset))
 
 run:
   path: /bin/bash

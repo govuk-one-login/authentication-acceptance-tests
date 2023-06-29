@@ -26,6 +26,7 @@ import java.net.URI;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static uk.gov.di.test.utils.AuthenticationJourneyPages.ACCOUNT_CREATED;
 import static uk.gov.di.test.utils.AuthenticationJourneyPages.ACCOUNT_NOT_FOUND;
@@ -336,7 +337,7 @@ public class Registration extends SignIn {
         loginPage.logoutButtonClick();
     }
 
-    @When("the new user clicks the application Back button")
+    @When("the user clicks the Back link")
     public void theNewUserClicksTheApplicationBackButton() {
         pressBack();
     }
@@ -422,5 +423,60 @@ public class Registration extends SignIn {
     public void theNewUserEntersAValidInternationalMobilePhoneNumber() {
         enterYourMobilePhoneNumberPage.enterInternationalMobilePhoneNumber("+61412123123");
         findAndClickContinue();
+    }
+
+    @Given(
+            "a user has selected text message as their auth method and has moved on to the next page")
+    public void aUserHasSelectedAnAuthMethodAndHasMovedOnToTheNextPage() {
+        rpStubPage.goToRpStub();
+        rpStubPage.selectRpOptionsById("");
+        findAndClickContinue();
+        waitForPageLoad("Create a GOV.UK One Login or sign in");
+        createOrSignInPage.clickCreateAGovUkOneLoginButton();
+        waitForPageLoad("Enter your email address");
+        enterYourEmailAddressPage.enterEmailAddressAndContinue(
+                System.getenv().get("TEST_USER_STATE_PRESERVATION_EMAIL1"));
+        waitForPageLoad("Check your email");
+        checkYourEmailPage.enterEmailCodeAndContinue(System.getenv().get("TEST_USER_EMAIL_CODE"));
+        waitForPageLoad("Create your password");
+        createYourPasswordPage.enterBothPasswordsAndContinue("new-password1", "new-password1");
+        waitForPageLoad("Choose how to get security codes");
+        assertFalse(chooseHowToGetSecurityCodesPage.getTextMessageRadioButtonStatus());
+        assertFalse(chooseHowToGetSecurityCodesPage.getAuthAppRadioButtonStatus());
+        chooseHowToGetSecurityCodesPage.selectAuthMethodAndContinue("Text message");
+        waitForPageLoad("Enter your mobile phone number");
+    }
+
+    @Given("a user has selected auth app as their auth method and has moved on to the next page")
+    public void aUserHasSelectedAuthAppAsTheirAuthMethodAndHasMovedOnToTheNextPage() {
+        rpStubPage.goToRpStub();
+        rpStubPage.selectRpOptionsById("");
+        findAndClickContinue();
+        waitForPageLoad("Create a GOV.UK One Login or sign in");
+        createOrSignInPage.clickCreateAGovUkOneLoginButton();
+        waitForPageLoad("Enter your email address");
+        enterYourEmailAddressPage.enterEmailAddressAndContinue(
+                System.getenv().get("TEST_USER_STATE_PRESERVATION_EMAIL2"));
+        waitForPageLoad("Check your email");
+        checkYourEmailPage.enterEmailCodeAndContinue(System.getenv().get("TEST_USER_EMAIL_CODE"));
+        waitForPageLoad("Create your password");
+        createYourPasswordPage.enterBothPasswordsAndContinue("new-password1", "new-password1");
+        waitForPageLoad("Choose how to get security codes");
+        assertFalse(chooseHowToGetSecurityCodesPage.getTextMessageRadioButtonStatus());
+        assertFalse(chooseHowToGetSecurityCodesPage.getAuthAppRadioButtonStatus());
+        chooseHowToGetSecurityCodesPage.selectAuthMethodAndContinue("Auth app");
+        waitForPageLoad("Set up an authenticator app");
+    }
+
+    @And("their previously chosen text message auth method remains selected")
+    public void theirPreviouslySelectedTextMessageAuthMethodRemainsSelected() {
+        waitForPageLoad("Choose how to get security codes");
+        assertTrue(chooseHowToGetSecurityCodesPage.getTextMessageRadioButtonStatus());
+    }
+
+    @And("their previously chosen auth app auth method remains selected")
+    public void theirPreviouslySelectedAuthAppAuthMethodRemainsSelected() {
+        waitForPageLoad("Choose how to get security codes");
+        assertTrue(chooseHowToGetSecurityCodesPage.getAuthAppRadioButtonStatus());
     }
 }

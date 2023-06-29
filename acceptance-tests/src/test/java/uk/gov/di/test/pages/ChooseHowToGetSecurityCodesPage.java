@@ -18,4 +18,12 @@ public class ChooseHowToGetSecurityCodesPage extends SignIn {
         }
         findAndClickContinue();
     }
+
+    public Boolean getTextMessageRadioButtonStatus() {
+        return driver.findElement(textMessageRadioButton).isSelected();
+    }
+
+    public Boolean getAuthAppRadioButtonStatus() {
+        return driver.findElement(authAppRadioButton).isSelected();
+    }
 }

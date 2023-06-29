@@ -86,7 +86,7 @@ Feature: Registration Journey
     Then the new user is taken to the enter phone number page
     When the new user enters their mobile phone number using an international dialling code
     Then the new user is taken to the check your phone page
-    When the new user clicks the application Back button
+    When the user clicks the Back link
     Then the new user is taken to the enter phone number page
     When the new user enters their mobile phone number
     Then the new user is taken to the check your phone page
