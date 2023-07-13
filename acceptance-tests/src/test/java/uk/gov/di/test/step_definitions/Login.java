@@ -10,18 +10,22 @@ import uk.gov.di.test.pages.CheckYourPhonePage;
 import uk.gov.di.test.pages.CreateOrSignInPage;
 import uk.gov.di.test.pages.EnterYourEmailAddressPage;
 import uk.gov.di.test.pages.EnterYourEmailAddressToSignInPage;
+import uk.gov.di.test.pages.EnterYourMobilePhoneNumberPage;
 import uk.gov.di.test.pages.EnterYourPasswordPage;
 import uk.gov.di.test.pages.GetSecurityCodePage;
 import uk.gov.di.test.pages.ResetYourPasswordPage;
 import uk.gov.di.test.pages.RpStubPage;
+import uk.gov.di.test.pages.SetUpAnAuthenticatorAppPage;
 import uk.gov.di.test.pages.TermsAndConditionsPage;
 import uk.gov.di.test.pages.YouAskedToResendTheSecurityCodeTooManyTimesPage;
+import uk.gov.di.test.pages.YouveChangedHowYouGetSecurityCodesPage;
 import uk.gov.di.test.utils.SignIn;
 
 import java.net.URI;
-import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static uk.gov.di.test.utils.AuthenticationJourneyPages.CANNOT_GET_NEW_SECURITY_CODE;
 import static uk.gov.di.test.utils.AuthenticationJourneyPages.ENTER_CODE;
 import static uk.gov.di.test.utils.AuthenticationJourneyPages.ENTER_CODE_UPLIFT;
@@ -30,9 +34,11 @@ import static uk.gov.di.test.utils.AuthenticationJourneyPages.ENTER_PASSWORD;
 import static uk.gov.di.test.utils.AuthenticationJourneyPages.RESEND_SECURITY_CODE;
 import static uk.gov.di.test.utils.AuthenticationJourneyPages.RESEND_SECURITY_CODE_TOO_MANY_TIMES;
 import static uk.gov.di.test.utils.AuthenticationJourneyPages.SIGN_IN_OR_CREATE;
+import static uk.gov.di.test.utils.Constants.INCORRECT_EMAIL_OTP_CODE;
 import static uk.gov.di.test.utils.Constants.INVALID_PASSWORD;
 import static uk.gov.di.test.utils.Constants.MISMATCHING_PASSWORD_1;
 import static uk.gov.di.test.utils.Constants.MISMATCHING_PASSWORD_2;
+import static uk.gov.di.test.utils.Constants.NEW_VALID_PASSWORD;
 import static uk.gov.di.test.utils.Constants.TOP_100K_PASSWORD;
 
 public class Login extends SignIn {
@@ -42,9 +48,14 @@ public class Login extends SignIn {
     private String sixDigitCodePhone;
     private String phoneNumber;
     private String sixDigitCodeEmail;
+    private String authAppSecretKey;
 
     public ResetYourPasswordPage resetYourPasswordPage = new ResetYourPasswordPage();
     public CheckYourEmailPage checkYourEmailPage = new CheckYourEmailPage();
+    public YouveChangedHowYouGetSecurityCodesPage youveChangedHowYouGetSecurityCodes =
+            new YouveChangedHowYouGetSecurityCodesPage();
+    public EnterYourMobilePhoneNumberPage enterYourMobilePhoneNumberPage =
+            new EnterYourMobilePhoneNumberPage();
     public TermsAndConditionsPage termsAndConditionsPage = new TermsAndConditionsPage();
     public EnterYourPasswordPage enterYourPasswordPage = new EnterYourPasswordPage();
     public CheckYourPhonePage checkYourPhonePage = new CheckYourPhonePage();
@@ -57,6 +68,8 @@ public class Login extends SignIn {
             youAskedToResendTheSecurityCodeTooManyTimesPage =
                     new YouAskedToResendTheSecurityCodeTooManyTimesPage();
     public EnterYourEmailAddressPage enterYourEmailAddressPage = new EnterYourEmailAddressPage();
+    public SetUpAnAuthenticatorAppPage setUpAnAuthenticatorAppPage =
+            new SetUpAnAuthenticatorAppPage();
 
     @And("the existing user has valid credentials")
     public void theExistingUserHasValidCredentials() {
@@ -69,6 +82,43 @@ public class Login extends SignIn {
     public void theExistingUserHasValidCredentialsAndWantsToResetTheirPassword() {
         emailAddress = System.getenv().get("RESET_PW_USER_EMAIL");
         password = System.getenv().get("RESET_PW_CURRENT_PW");
+        phoneNumber = System.getenv().get("TEST_USER_PHONE_NUMBER");
+        sixDigitCodeEmail = System.getenv().get("TEST_USER_EMAIL_CODE");
+        sixDigitCodePhone = System.getenv().get("TEST_USER_PHONE_CODE");
+    }
+
+    @Given("the existing user has sms authentication method and their account is not blocked")
+    public void theExistingUserHasSmsAuthMethodAndTheirAccountIsNotBlocked() {
+        emailAddress = System.getenv().get("TEST_USER_ACCOUNT_RECOVERY_EMAIL_1");
+        password = System.getenv().get("TEST_USER_PASSWORD");
+        phoneNumber = System.getenv().get("TEST_USER_PHONE_NUMBER");
+        sixDigitCodeEmail = System.getenv().get("TEST_USER_EMAIL_CODE");
+        sixDigitCodePhone = System.getenv().get("TEST_USER_PHONE_CODE");
+    }
+
+    @Given("the existing user has auth app authentication method and their account is not blocked")
+    public void theExistingUserHasAuthAppAuthMethodAndTheirAccountIsNotBlocked() {
+        emailAddress = System.getenv().get("TEST_USER_ACCOUNT_RECOVERY_EMAIL_2");
+        password = System.getenv().get("TEST_USER_PASSWORD");
+        phoneNumber = System.getenv().get("TEST_USER_PHONE_NUMBER");
+        sixDigitCodeEmail = System.getenv().get("TEST_USER_EMAIL_CODE");
+        sixDigitCodePhone = System.getenv().get("TEST_USER_PHONE_CODE");
+        authAppSecretKey = System.getenv().get("ACCOUNT_RECOVERY_USER_AUTH_APP_SECRET");
+    }
+
+    @Given("the existing user has sms authentication method")
+    public void theExistingUserHasSmsAuthMethod() {
+        emailAddress = System.getenv().get("TEST_USER_ACCOUNT_RECOVERY_EMAIL_3");
+        password = System.getenv().get("TEST_USER_PASSWORD");
+        phoneNumber = System.getenv().get("TEST_USER_PHONE_NUMBER");
+        sixDigitCodeEmail = System.getenv().get("TEST_USER_EMAIL_CODE");
+        sixDigitCodePhone = System.getenv().get("TEST_USER_PHONE_CODE");
+    }
+
+    @Given("the existing user has auth app authentication method")
+    public void theExistingUserHasAuthAppAuthMethod() {
+        emailAddress = System.getenv().get("TEST_USER_ACCOUNT_RECOVERY_EMAIL_4");
+        password = System.getenv().get("TEST_USER_PASSWORD");
         phoneNumber = System.getenv().get("TEST_USER_PHONE_NUMBER");
         sixDigitCodeEmail = System.getenv().get("TEST_USER_EMAIL_CODE");
         sixDigitCodePhone = System.getenv().get("TEST_USER_PHONE_CODE");
@@ -137,6 +187,11 @@ public class Login extends SignIn {
     @When("the existing user enters their password")
     public void theExistingUserEntersTheirPassword() {
         enterYourPasswordPage.enterPasswordAndContinue(password);
+    }
+
+    @When("the existing user enters their new password")
+    public void theExistingUserEntersTheirNewPassword() {
+        enterYourPasswordPage.enterPasswordAndContinue(NEW_VALID_PASSWORD);
     }
 
     @Then("the existing user is taken to the enter code page")
@@ -232,8 +287,8 @@ public class Login extends SignIn {
 
     @When("the user enters valid new password and correctly retypes it")
     public void theUserEntersValidNewPasswordAndCorrectlyRetypesIt() {
-        String newPassword = UUID.randomUUID() + "a1";
-        resetYourPasswordPage.enterPasswordResetDetailsAndContinue(newPassword, newPassword);
+        resetYourPasswordPage.enterPasswordResetDetailsAndContinue(
+                NEW_VALID_PASSWORD, NEW_VALID_PASSWORD);
     }
 
     @When("the user resets their password to be the same as their current password")
@@ -263,6 +318,107 @@ public class Login extends SignIn {
     @When("the user enters the six digit security code from their email")
     public void theUserEntersTheSixDigitSecurityCodeFromTheirEmail() {
         checkYourEmailPage.enterEmailCode(sixDigitCodeEmail);
+        findAndClickContinue();
+    }
+
+    @When("the user enters their {string} code")
+    @When("the new user enters their {string} code")
+    public void theUserEntersTheirAuthCode(String codeType) {
+
+        switch (codeType.toLowerCase()) {
+            case "email":
+                checkYourEmailPage.enterEmailCodeAndContinue(
+                        System.getenv().get("TEST_USER_EMAIL_CODE"));
+                break;
+            case "auth app":
+                checkYourPhonePage.enterPhoneCodeAndContinue(
+                        System.getenv().get("TEST_USER_PHONE_CODE"));
+                break;
+        }
+    }
+
+    @And("confirmation that the user will get security codes via {string} is displayed")
+    public void confirmationThatTheUserWillGetSecurityCodesViaIsDisplayed(
+            String authenticationType) {
+
+        switch (authenticationType.toLowerCase()) {
+            case "text message":
+                // Check the last four digits of the phone number appear in the page message
+                phoneNumber = System.getenv().get("TEST_USER_PHONE_NUMBER");
+                String lastFourDigitsOfPhone = phoneNumber.substring(phoneNumber.length() - 4);
+                assertTrue(
+                        youveChangedHowYouGetSecurityCodes
+                                .getSecurityCodeMessageText()
+                                .contains(lastFourDigitsOfPhone));
+                break;
+            case "auth app":
+                assertTrue(
+                        youveChangedHowYouGetSecurityCodes
+                                .getSecurityCodeMessageText()
+                                .contains("authenticator app"));
+                break;
+        }
+
+        findAndClickContinue();
+    }
+
+    @When("the existing user adds the secret key on the screen to their auth app")
+    public void theNewUserAddTheSecretKeyOnTheScreenToTheirAuthApp() {
+        setUpAnAuthenticatorAppPage.iCannotScanQrCodeClick();
+        authAppSecretKey = setUpAnAuthenticatorAppPage.getSecretFieldText();
+        assertTrue(setUpAnAuthenticatorAppPage.getSecretFieldText().length() == 32);
+    }
+
+    @And("the existing user enters the security code from the auth app")
+    public void theNewUserEntersTheSecurityCodeFromTheAuthApp() {
+        setUpAnAuthenticatorAppPage.enterCorrectAuthAppCode(authAppSecretKey);
+        findAndClickContinue();
+    }
+
+    @When("the user selects link {string}")
+    public void theUserSelectsLink(String linkText) {
+        selectLinkByText(linkText);
+    }
+
+    @Then("the link {string} is not available")
+    public void theLinkIsNotAvailable(String linkText) {
+        assertFalse(isLinkTextDisplayed(linkText));
+    }
+
+    @And("the user requests the email OTP code be sent again a further {int} times")
+    public void theUserRequestsTheEmailOTPCodeIntTimes(Integer requestCount) {
+        for (int index = 0; index < requestCount; index++) {
+            waitForPageLoad("Check your email");
+            selectLinkByText("Problems with the code?");
+            selectLinkByText("send the code again");
+            waitForPageLoad("Get security code");
+            findAndClickButtonByText("Get security code");
+            System.out.println(
+                    "Code request count: "
+                            + (index + 1)
+                            + " ("
+                            + (index + 2)
+                            + " including code sent on initial entry to the Check Your Email page)");
+        }
+    }
+
+    @When("the user enters an incorrect email OTP {int} times")
+    public void theUserEntersAnIncorrectEmailOTPIntTimes(Integer attemptCount) {
+        for (int index = 0; index < attemptCount; index++) {
+            waitForPageLoad("Check your email");
+            checkYourEmailPage.enterEmailCodeAndContinue(INCORRECT_EMAIL_OTP_CODE);
+            System.out.println("Incorrect code entry count: " + (index + 1));
+        }
+    }
+
+    @When("the user selects {string} link")
+    public void theUserSelectsProblemsWithTheCode(String text) {
+        selectLinkByText(text);
+    }
+
+    @When("the user enters their mobile phone number")
+    public void theUserEntersTheirMobilePhoneNumber() {
+        enterYourMobilePhoneNumberPage.enterUkPhoneNumber(phoneNumber);
         findAndClickContinue();
     }
 

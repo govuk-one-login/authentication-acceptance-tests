@@ -51,10 +51,4 @@ public class DocApp extends SignIn {
     public void theUserClicksTheMyAccountLink() {
         docAppPage.accountLinkClick();
     }
-
-    @Then("the user is taken to the sign in page")
-    public void theUserIsTakenToTheSignInPage() {
-        waitForPageLoad("Create a GOV.UK One Login or sign in");
-        assertTrue(driver.getCurrentUrl().contains("/sign-in-or-create"));
-    }
 }

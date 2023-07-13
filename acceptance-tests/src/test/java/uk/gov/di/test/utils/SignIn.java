@@ -15,11 +15,13 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
 import java.time.Duration;
+import java.util.List;
 
 import static java.time.temporal.ChronoUnit.SECONDS;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class SignIn {
+
     protected static final String CHROME_BROWSER = "chrome";
     protected static final String FIREFOX_BROWSER = "firefox";
     protected static final String SELENIUM_URL =
@@ -117,6 +119,21 @@ public class SignIn {
                 driver.findElement(
                         By.xpath("//button[text()[normalize-space() = '" + buttonText + "']]"));
         continueButton.click();
+    }
+
+    protected void selectLinkByText(String linkText) {
+        driver.findElement(By.xpath("//*[text()[normalize-space() = '" + linkText + "']]")).click();
+    }
+
+    protected boolean isLinkTextDisplayed(String linkText) {
+        List elements =
+                driver.findElements(
+                        By.xpath("//*[text()[normalize-space() = '" + linkText + "']]"));
+        if (elements.size() > 0) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     protected String getUpperErrorMessageText() {
