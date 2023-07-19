@@ -81,7 +81,7 @@ public class Login extends SignIn {
     @Given("the existing user has valid credentials and wants to reset their password")
     public void theExistingUserHasValidCredentialsAndWantsToResetTheirPassword() {
         emailAddress = System.getenv().get("RESET_PW_USER_EMAIL");
-        password = System.getenv().get("RESET_PW_CURRENT_PW");
+        password = System.getenv().get("TEST_USER_PASSWORD");
         phoneNumber = System.getenv().get("TEST_USER_PHONE_NUMBER");
         sixDigitCodeEmail = System.getenv().get("TEST_USER_EMAIL_CODE");
         sixDigitCodePhone = System.getenv().get("TEST_USER_PHONE_CODE");
@@ -127,7 +127,7 @@ public class Login extends SignIn {
     @Given("the existing user has a password which is on the top 100k passwords list")
     public void theExistingUserHasAPasswordWhichIsOnTheTop100lPasswordsList() {
         emailAddress = System.getenv().get("REQ_RESET_PW_USER_EMAIL");
-        password = System.getenv().get("REQ_RESET_PW_CURRENT_PW");
+        password = System.getenv().get("TOP_100K_PASSWORD");
         phoneNumber = System.getenv().get("TEST_USER_PHONE_NUMBER");
         sixDigitCodeEmail = System.getenv().get("TEST_USER_EMAIL_CODE");
         sixDigitCodePhone = System.getenv().get("TEST_USER_PHONE_CODE");
@@ -146,7 +146,7 @@ public class Login extends SignIn {
     @Given("the existing user has a phone code that does not work")
     public void theExistingUserHasAPhoneCodeThatDoesNotWork() {
         emailAddress = System.getenv().get("IPN4_EXISTING_USER_EMAIL");
-        password = System.getenv().get("IPN4_EXISTING_USER_PASSWORD");
+        password = System.getenv().get("TEST_USER_PASSWORD");
     }
 
     @When("the existing user visits the stub relying party")
@@ -247,7 +247,7 @@ public class Login extends SignIn {
     @And("the existing resend code user has valid credentials")
     public void theExistingResendCodeUserHasValidCredentials() {
         emailAddress = System.getenv().get("RESEND_CODE_TEST_USER_EMAIL");
-        password = System.getenv().get("TERMS_AND_CONDITIONS_TEST_USER_PASSWORD");
+        password = System.getenv().get("TEST_USER_PASSWORD");
     }
 
     @Then("the existing user is taken to the Identity Provider Welsh Login Page")
@@ -293,7 +293,7 @@ public class Login extends SignIn {
 
     @When("the user resets their password to be the same as their current password")
     public void theUserResetsTheirPasswordToBeTheSameAsTheirCurrentPassword() {
-        String newPassword = System.getenv().get("RESET_PW_CURRENT_PW");
+        String newPassword = System.getenv().get("TEST_USER_PASSWORD");
         resetYourPasswordPage.enterPasswordResetDetailsAndContinue(newPassword, newPassword);
     }
 
