@@ -29,4 +29,20 @@ Feature: Reset password
     When the user clicks logout
     Then the user is taken to the "Signed out" page
 
+# REQUEST OTP TOO MANY TIMES DURING PASSWORD RESET --- AUT-1274
+  Scenario: A user is blocked when they request an email OTP more than 5 times during a password reset.
+    Given the existing user wants to change their password
+    When the existing user visits the stub relying party
+    And the existing user clicks "govuk-signin-button"
+    Then the existing user is taken to the Identity Provider Login Page
+    When the existing user selects sign in
+    Then the user is taken to the "Enter your email" page
+    When the existing user enters their email address
+    Then the user is taken to the "Enter your password" page
+    When the user clicks the forgotten password link
+    Then the user is taken to the "Check your email" page
+    When the user requests the email OTP code be sent again a further 5 times
+    Then the user is taken to the "You asked to resend the security code too many times" page
+    When the user selects link "get a new code"
+    Then the user is taken to the "You cannot get a new security code at the moment" page
 
