@@ -7,9 +7,9 @@ Feature: Reset password
     And the existing user clicks "govuk-signin-button"
     Then the existing user is taken to the Identity Provider Login Page
     When the existing user selects sign in
-    Then the existing user is taken to the enter your email page
+    Then the user is taken to the "Enter your email" page
     When the existing user enters their email address
-    Then the existing user is prompted for their password
+    Then the user is taken to the "Enter your password" page
     When the user clicks the forgotten password link
     Then the user is taken to the "Check your email" page
     When the user enters the six digit security code from their email
@@ -41,8 +41,24 @@ Feature: Reset password
     Then the user is taken to the "Enter your password" page
     When the user clicks the forgotten password link
     Then the user is taken to the "Check your email" page
+    When the user enters an incorrect email OTP 6 times
+    Then the user is taken to the "You entered the wrong security code too many times" page
+    When the user selects link "get a new code"
+    Then the user is taken to the "You cannot get a new security code at the moment" page
+
+# ENTER INCORRECT OTP TOO MANY TIMES DURING PASSWORD RESET  --- AUT-1283
+  Scenario: A user is blocked when they enter an incorrect email OTP more than 5 times during a password reset.
+    Given an existing user wants to reset their password
+    When the existing user visits the stub relying party
+    And the existing user clicks "govuk-signin-button"
+    Then the existing user is taken to the Identity Provider Login Page
+    When the existing user selects sign in
+    Then the user is taken to the "Enter your email" page
+    When the existing user enters their email address
+    Then the user is taken to the "Enter your password" page
+    When the user clicks the forgotten password link
+    Then the user is taken to the "Check your email" page
     When the user requests the email OTP code be sent again a further 5 times
     Then the user is taken to the "You asked to resend the security code too many times" page
     When the user selects link "get a new code"
     Then the user is taken to the "You cannot get a new security code at the moment" page
-

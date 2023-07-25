@@ -375,11 +375,6 @@ public class Login extends SignIn {
         findAndClickContinue();
     }
 
-    @When("the user selects link {string}")
-    public void theUserSelectsLink(String linkText) {
-        selectLinkByText(linkText);
-    }
-
     @Then("the link {string} is not available")
     public void theLinkIsNotAvailable(String linkText) {
         assertFalse(isLinkTextDisplayed(linkText));
@@ -402,15 +397,6 @@ public class Login extends SignIn {
         }
     }
 
-    @When("the user enters an incorrect email OTP {int} times")
-    public void theUserEntersAnIncorrectEmailOTPIntTimes(Integer attemptCount) {
-        for (int index = 0; index < attemptCount; index++) {
-            waitForPageLoad("Check your email");
-            checkYourEmailPage.enterEmailCodeAndContinue(INCORRECT_EMAIL_OTP_CODE);
-            System.out.println("Incorrect code entry count: " + (index + 1));
-        }
-    }
-
     @When("the user selects {string} link")
     public void theUserSelectsProblemsWithTheCode(String text) {
         selectLinkByText(text);
@@ -430,6 +416,26 @@ public class Login extends SignIn {
     @When("the existing user switches to {string} language")
     public void theExistingUserSwitchesLanguage(String language) {
         createOrSignInPage.switchLanguageTo(language);
+    }
+
+    @When("the user enters an incorrect email OTP {int} times")
+    public void theUserEntersAnIncorrectEmailOTPIntTimes(Integer attemptCount) {
+        for (int index = 0; index < attemptCount; index++) {
+            waitForPageLoad("Check your email");
+            checkYourEmailPage.enterEmailCodeAndContinue(INCORRECT_EMAIL_OTP_CODE);
+            System.out.println("Incorrect code entry count: " + (index + 1));
+        }
+    }
+
+    @Given("an existing user wants to reset their password")
+    public void anExistingUserWantsToResetTheirPassword() {
+        emailAddress = System.getenv().get("INCORRECT_EMAIL_OTP_FOR_PW_RESET_EMAIL");
+        password = System.getenv().get("TEST_USER_PASSWORD");
+    }
+
+    @When("the user selects link {string}")
+    public void theUserSelectsLink(String linkText) {
+        selectLinkByText(linkText);
     }
 
     @Given("the existing user wants to change their password")
