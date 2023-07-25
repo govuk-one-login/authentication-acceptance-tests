@@ -386,7 +386,7 @@ public class Login extends SignIn {
     }
 
     @And("the user requests the email OTP code be sent again a further {int} times")
-    public void theUserRequestsTheEmailOTPCodeIntTimes(Integer requestCount) {
+    public void theUserRequestsTheEmailOTPCodeBeSentAgainAFurtherIntTimes(Integer requestCount) {
         for (int index = 0; index < requestCount; index++) {
             waitForPageLoad("Check your email");
             selectLinkByText("Problems with the code?");
@@ -430,6 +430,24 @@ public class Login extends SignIn {
     @When("the existing user switches to {string} language")
     public void theExistingUserSwitchesLanguage(String language) {
         createOrSignInPage.switchLanguageTo(language);
+    }
+
+    @Given("the existing user wants to change their password")
+    public void theExistingUserWantsToResetTheirPassword() {
+        emailAddress = System.getenv().get("TOO_MANY_EMAIL_OTP_REQUESTS_FOR_PW_RESET_EMAIL");
+        password = System.getenv().get("TEST_USER_PASSWORD");
+    }
+
+    @And("the user requests the email OTP code {int} times")
+    public void theUserRequestsTheEmailOTPCodeIntTimes(Integer requestCount) {
+        for (int index = 0; index < requestCount; index++) {
+            waitForPageLoad("Check your email");
+            selectLinkByText("Problems with the code?");
+            selectLinkByText("send the code again");
+            waitForPageLoad("Get security code");
+            findAndClickButtonByText("Get security code");
+            System.out.println("Code request count: " + (index + 1));
+        }
     }
 
     @When("the user does not agree to the updated terms and conditions")

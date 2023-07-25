@@ -121,10 +121,6 @@ public class SignIn {
         continueButton.click();
     }
 
-    protected void selectLinkByText(String linkText) {
-        driver.findElement(By.xpath("//*[text()[normalize-space() = '" + linkText + "']]")).click();
-    }
-
     protected boolean isLinkTextDisplayed(String linkText) {
         List elements =
                 driver.findElements(
@@ -144,6 +140,10 @@ public class SignIn {
 
     protected void pressBack() {
         driver.findElement(By.xpath("//a[text()[normalize-space() = 'Back']]")).click();
+    }
+
+    protected void selectLinkByText(String linkText) {
+        driver.findElement(By.xpath("//*[text()[normalize-space() = '" + linkText + "']]")).click();
     }
 
     protected void clearFieldAndEnter(By ele, String text) {
