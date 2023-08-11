@@ -456,11 +456,6 @@ public class Login extends SignIn {
         }
     }
 
-    @When("the user does not agree to the updated terms and conditions")
-    public void theUserDoesNotAgreeToTheUpdatedTermsAndConditions() {
-        termsAndConditionsPage.clickIDoNotAgreeLink();
-    }
-
     @When("the user agrees to the updated terms and conditions")
     public void theUserAgreesToTheUpdatedTermsAndConditions() {
         termsAndConditionsPage.pressAgreeAndContinueButton();

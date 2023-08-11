@@ -11,8 +11,4 @@ public class TermsAndConditionsPage extends SignIn {
     public void pressAgreeAndContinueButton() {
         driver.findElement(agreeAndContinueButton).click();
     }
-
-    public void clickIDoNotAgreeLink() {
-        driver.findElement(iDoNotAgreeLink).click();
-    }
 }
