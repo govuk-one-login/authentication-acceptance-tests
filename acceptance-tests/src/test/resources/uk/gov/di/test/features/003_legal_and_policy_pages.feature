@@ -29,7 +29,6 @@ Feature: Legal and policy pages
     Then the user is taken to the "Check your phone" page
     When the existing user enters the six digit security code from their phone
     Then the user is taken to the "terms of use update" page
-    Then the user is taken to the "Agree to the updated terms of use to continue" page
     When the user agrees to the updated terms and conditions
     Then the user is taken to the "Example - GOV.UK - User Info" page
     When the user clicks logout
