@@ -28,6 +28,8 @@ public class Hooks extends SignIn {
         if (scenario.isFailed()) {
             final byte[] screenshot = ((TakesScreenshot) driver).getScreenshotAs(OutputType.BYTES);
             scenario.attach(screenshot, "image/png", "Failure screenshot");
+
+            super.closeWebdriver();
         }
     }
 }

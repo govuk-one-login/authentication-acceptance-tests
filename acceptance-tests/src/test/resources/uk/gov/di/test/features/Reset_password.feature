@@ -3,9 +3,8 @@ Feature: Reset password
 
   Scenario: User can successfully reset their password
     Given the existing user has valid credentials and wants to reset their password
-    When the existing user visits the stub relying party
-    And the existing user clicks "govuk-signin-button"
-    Then the existing user is taken to the Identity Provider Login Page
+    When the user comes from the stub relying party with options: "default"
+    Then the user is taken to the "Create a GOV.UK One Login or sign in" page
     When the existing user selects sign in
     Then the user is taken to the "Enter your email" page
     When the existing user enters their email address
@@ -32,9 +31,8 @@ Feature: Reset password
 # REQUEST OTP TOO MANY TIMES DURING PASSWORD RESET --- AUT-1274
   Scenario: A user is blocked when they request an email OTP more than 5 times during a password reset.
     Given the existing user wants to change their password
-    When the existing user visits the stub relying party
-    And the existing user clicks "govuk-signin-button"
-    Then the existing user is taken to the Identity Provider Login Page
+    When the user comes from the stub relying party with options: "default"
+    Then the user is taken to the "Create a GOV.UK One Login or sign in" page
     When the existing user selects sign in
     Then the user is taken to the "Enter your email" page
     When the existing user enters their email address
@@ -49,9 +47,8 @@ Feature: Reset password
 # ENTER INCORRECT OTP TOO MANY TIMES DURING PASSWORD RESET  --- AUT-1283
   Scenario: A user is blocked when they enter an incorrect email OTP more than 5 times during a password reset.
     Given an existing user wants to reset their password
-    When the existing user visits the stub relying party
-    And the existing user clicks "govuk-signin-button"
-    Then the existing user is taken to the Identity Provider Login Page
+    When the user comes from the stub relying party with options: "default"
+    Then the user is taken to the "Create a GOV.UK One Login or sign in" page
     When the existing user selects sign in
     Then the user is taken to the "Enter your email" page
     When the existing user enters their email address

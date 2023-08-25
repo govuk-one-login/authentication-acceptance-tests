@@ -14,9 +14,8 @@ public class Support extends SignIn {
 
     SupportPage supportPage = new SupportPage();
 
-    @When("the user clicks the support link having not received their security code")
-    @When("the user clicks the support link due to their security code not working")
-    public void theUserClicksTheSupportLinkHavingNotReceivedTheirSecurityCode() {
+    @When("the user clicks on the support link")
+    public void theUserClicksOnTheSupportLink() {
         supportPage.clickSupportLink();
     }
 
@@ -28,11 +27,6 @@ public class Support extends SignIn {
     @When("the user selects {string}")
     public void theUserSelectsRadioButtonAndProceeds(String option) {
         supportPage.selectRadioButtonAndProceed(option);
-    }
-
-    @Then("the user is taken to the {string} page")
-    public void theUserIsTakenToThePage(String pageTitle) {
-        waitForPageLoad(pageTitle);
     }
 
     @And("the user enters more details")

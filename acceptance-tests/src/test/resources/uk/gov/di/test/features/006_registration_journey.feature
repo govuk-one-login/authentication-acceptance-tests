@@ -4,15 +4,14 @@ Feature: Registration Journey
 
   Scenario: User selects sign in without having an account
     Given a new user has valid credentials
-    When the user visits the stub relying party
-    And the new user clicks "govuk-signin-button"
-    Then the new user is taken to the Identity Provider Login Page
+    When the user comes from the stub relying party with options: "default"
+    Then the user is taken to the "Create a GOV.UK One Login or sign in" page
     When the new user selects sign in
-    Then the new user is taken to the sign in to your account page
+    Then the user is taken to the "Enter your email address to sign in to your GOV.UK One Login" page
     When the new user enters their email address
-    Then the new user is taken to the account not found page
+    Then the user is taken to the "No GOV.UK One Login found" page
     When the user clicks link "Try another email address"
-    Then the new user is taken to the sign in to your account page
+    Then the user is taken to the "Enter your email address to sign in to your GOV.UK One Login" page
 
 # commented this test out for now as the stub config has been changed. may be able to use at a later date when the whole stub strategy has been reviewed
 
@@ -30,21 +29,19 @@ Feature: Registration Journey
 
   Scenario: User is taken to Check your email page from No GOV.UK One Login found page when Create selected
     Given a new user has valid credentials
-    When the user visits the stub relying party
-    And the new user clicks "govuk-signin-button"
-    Then the new user is taken to the Identity Provider Login Page
+    When the user comes from the stub relying party with options: "default"
+    Then the user is taken to the "Create a GOV.UK One Login or sign in" page
     When the new user selects sign in
-    Then the new user is taken to the sign in to your account page
+    Then the user is taken to the "Enter your email address to sign in to your GOV.UK One Login" page
     When the new user enters their email address
-    Then the new user is taken to the account not found page
+    Then the user is taken to the "No GOV.UK One Login found" page
     When the new user selects create an account
     Then the user is taken to the "Check your email" page
 
   Scenario: User registration unsuccessful with invalid email, six digit code and password
     Given the new user has an invalid email format
-    When the user visits the stub relying party
-    And the new user clicks "govuk-signin-button"
-    Then the new user is taken to the Identity Provider Login Page
+    When the user comes from the stub relying party with options: "default"
+    Then the user is taken to the "Create a GOV.UK One Login or sign in" page
     When the user selects create an account
     Then the new user is taken to the enter your email page
     When the new user enters their email address
@@ -71,9 +68,8 @@ Feature: Registration Journey
 
   Scenario: User successfully registers using sms
     Given a new user has valid credentials
-    When the user visits the stub relying party
-    And the new user clicks "govuk-signin-button"
-    Then the new user is taken to the Identity Provider Login Page
+    When the user comes from the stub relying party with options: "default"
+    Then the user is taken to the "Create a GOV.UK One Login or sign in" page
     When the user selects create an account
     Then the new user is taken to the enter your email page
     When the new user enters their email address

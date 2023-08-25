@@ -4,9 +4,8 @@ Feature: Enforce 100k password check
 
   Scenario: Existing user forced to reset their top 100k password
     Given the existing user has a password which is on the top 100k passwords list
-    When the existing user visits the stub relying party
-    And the existing user clicks "govuk-signin-button"
-    Then the existing user is taken to the Identity Provider Login Page
+    When the user comes from the stub relying party with options: "default"
+    Then the user is taken to the "Create a GOV.UK One Login or sign in" page
     When the existing user selects sign in
     Then the existing user is taken to the enter your email page
     When the existing user enters their email address

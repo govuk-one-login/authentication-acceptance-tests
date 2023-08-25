@@ -15,4 +15,13 @@ public class CheckYourEmailPage extends SignIn {
         enterEmailCode(code);
         findAndClickContinue();
     }
+
+    public void requestResendOfEmailOTPCode() {
+        selectLinkByText("Problems with the code?");
+        selectLinkByText("send the code again");
+    }
+
+    public void waitForPage() {
+        waitForPageLoad("Check your email");
+    }
 }

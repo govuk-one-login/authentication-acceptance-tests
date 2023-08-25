@@ -132,7 +132,7 @@ public class SignIn {
         }
     }
 
-    protected String getUpperErrorMessageText() {
+    protected String getErrorSummaryText() {
         return driver.findElement(By.cssSelector(".govuk-error-summary__body li a"))
                 .getText()
                 .trim();
@@ -149,5 +149,9 @@ public class SignIn {
     protected void clearFieldAndEnter(By ele, String text) {
         driver.findElement(ele).clear();
         driver.findElement(ele).sendKeys(text);
+    }
+
+    public Boolean isErrorSummaryDisplayed() {
+        return driver.findElement(By.className("govuk-error-summary")).isDisplayed();
     }
 }

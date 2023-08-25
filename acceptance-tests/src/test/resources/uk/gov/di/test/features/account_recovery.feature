@@ -3,9 +3,8 @@ Feature: Account recovery
 
   Scenario: A user with text message authentication changes password and logs in with their MFA. Changes their auth method to auth app, then logs in with the new password and auth app.
     Given the existing user has sms authentication method and their account is not blocked
-    When the existing user visits the stub relying party
-    And the existing user clicks "govuk-signin-button"
-    Then the existing user is taken to the Identity Provider Login Page
+    When the user comes from the stub relying party with options: "default"
+    Then the user is taken to the "Create a GOV.UK One Login or sign in" page
     When the existing user selects sign in
     Then the existing user is taken to the enter your email page
     When the existing user enters their email address
@@ -23,9 +22,8 @@ Feature: Account recovery
     When the user clicks logout
     Then the user is taken to the "Signed out" page
 
-    When the existing user visits the stub relying party
-    And the existing user clicks "govuk-signin-button"
-    Then the existing user is taken to the Identity Provider Login Page
+    When the user comes from the stub relying party with options: "default"
+    Then the user is taken to the "Create a GOV.UK One Login or sign in" page
     When the existing user selects sign in
     Then the existing user is taken to the enter your email page
     When the existing user enters their email address
@@ -47,9 +45,8 @@ Feature: Account recovery
     When the user clicks logout
     Then the user is taken to the "Signed out" page
 
-    When the existing user visits the stub relying party
-    And the existing user clicks "govuk-signin-button"
-    Then the existing user is taken to the Identity Provider Login Page
+    When the user comes from the stub relying party with options: "default"
+    Then the user is taken to the "Create a GOV.UK One Login or sign in" page
     When the existing user selects sign in
     Then the existing user is taken to the enter your email page
     When the existing user enters their email address
@@ -64,9 +61,8 @@ Feature: Account recovery
 
   Scenario: A user with auth app authentication changes password and logs in with their MFA. Changes their auth method to text message, then logs in with the new password and text message auth method.
     Given the existing user has auth app authentication method and their account is not blocked
-    When the existing user visits the stub relying party
-    And the existing user clicks "govuk-signin-button"
-    Then the existing user is taken to the Identity Provider Login Page
+    When the user comes from the stub relying party with options: "default"
+    Then the user is taken to the "Create a GOV.UK One Login or sign in" page
     When the existing user selects sign in
     Then the existing user is taken to the enter your email page
     When the existing user enters their email address
@@ -84,9 +80,8 @@ Feature: Account recovery
     When the user clicks logout
     Then the user is taken to the "Signed out" page
 
-    When the existing user visits the stub relying party
-    And the existing user clicks "govuk-signin-button"
-    Then the existing user is taken to the Identity Provider Login Page
+    When the user comes from the stub relying party with options: "default"
+    Then the user is taken to the "Create a GOV.UK One Login or sign in" page
     When the existing user selects sign in
     Then the existing user is taken to the enter your email page
     When the existing user enters their email address
@@ -109,9 +104,8 @@ Feature: Account recovery
     When the user clicks logout
     Then the user is taken to the "Signed out" page
 
-    When the existing user visits the stub relying party
-    And the existing user clicks "govuk-signin-button"
-    Then the existing user is taken to the Identity Provider Login Page
+    When the user comes from the stub relying party with options: "default"
+    Then the user is taken to the "Create a GOV.UK One Login or sign in" page
     When the existing user selects sign in
     Then the existing user is taken to the enter your email page
     When the existing user enters their email address
@@ -126,9 +120,8 @@ Feature: Account recovery
 
   Scenario: A user with sms authentication is blocked when they request their email OTP code 6 times (including the initial send on entry to screen) during a change of auth method.
     Given the existing user has sms authentication method
-    When the existing user visits the stub relying party
-    And the existing user clicks "govuk-signin-button"
-    Then the existing user is taken to the Identity Provider Login Page
+    When the user comes from the stub relying party with options: "default"
+    Then the user is taken to the "Create a GOV.UK One Login or sign in" page
     When the existing user selects sign in
     Then the existing user is taken to the enter your email page
     When the existing user enters their email address
@@ -144,9 +137,8 @@ Feature: Account recovery
     When the user selects "get a new code" link
     Then the user is taken to the "You cannot get a new security code at the moment" page
 
-    When the existing user visits the stub relying party
-    And the existing user clicks "govuk-signin-button"
-    Then the existing user is taken to the Identity Provider Login Page
+    When the user comes from the stub relying party with options: "default"
+    Then the user is taken to the "Create a GOV.UK One Login or sign in" page
     When the existing user selects sign in
     Then the existing user is taken to the enter your email page
     When the existing user enters their email address
@@ -160,9 +152,8 @@ Feature: Account recovery
 
   Scenario: A user with auth app authentication is blocked when they enter an incorrect email OTP 6 times during a change of auth method.
     Given the existing user has auth app authentication method
-    When the existing user visits the stub relying party
-    And the existing user clicks "govuk-signin-button"
-    Then the existing user is taken to the Identity Provider Login Page
+    When the user comes from the stub relying party with options: "default"
+    Then the user is taken to the "Create a GOV.UK One Login or sign in" page
     When the existing user selects sign in
     Then the existing user is taken to the enter your email page
     When the existing user enters their email address
@@ -177,9 +168,8 @@ Feature: Account recovery
     When the user selects "get a new code" link
     Then the user is taken to the "You cannot get a new security code at the moment" page
 
-    When the existing user visits the stub relying party
-    And the existing user clicks "govuk-signin-button"
-    Then the existing user is taken to the Identity Provider Login Page
+    When the user comes from the stub relying party with options: "default"
+    Then the user is taken to the "Create a GOV.UK One Login or sign in" page
     When the existing user selects sign in
     Then the existing user is taken to the enter your email page
     When the existing user enters their email address
