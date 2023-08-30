@@ -16,7 +16,6 @@ import uk.gov.di.test.pages.EnterYourEmailAddressPage;
 import uk.gov.di.test.pages.EnterYourEmailAddressToSignInPage;
 import uk.gov.di.test.pages.EnterYourMobilePhoneNumberPage;
 import uk.gov.di.test.pages.EnterYourPasswordPage;
-import uk.gov.di.test.pages.LoginPage;
 import uk.gov.di.test.pages.NoGovUkOneLoginFoundPage;
 import uk.gov.di.test.pages.RpStubPage;
 import uk.gov.di.test.pages.SetUpAnAuthenticatorAppPage;
@@ -33,16 +32,10 @@ import static uk.gov.di.test.utils.AuthenticationJourneyPages.ACCOUNT_NOT_FOUND;
 import static uk.gov.di.test.utils.AuthenticationJourneyPages.CHECK_YOUR_EMAIL;
 import static uk.gov.di.test.utils.AuthenticationJourneyPages.CHECK_YOUR_PHONE;
 import static uk.gov.di.test.utils.AuthenticationJourneyPages.CREATE_PASSWORD;
-import static uk.gov.di.test.utils.AuthenticationJourneyPages.ENTER_AUTHENTICATOR_APP_CODE;
-import static uk.gov.di.test.utils.AuthenticationJourneyPages.ENTER_AUTHENTICATOR_APP_CODE_UPLIFT;
 import static uk.gov.di.test.utils.AuthenticationJourneyPages.ENTER_EMAIL_CREATE;
 import static uk.gov.di.test.utils.AuthenticationJourneyPages.ENTER_EMAIL_EXISTING_USER;
-import static uk.gov.di.test.utils.AuthenticationJourneyPages.ENTER_PASSWORD;
 import static uk.gov.di.test.utils.AuthenticationJourneyPages.ENTER_PHONE_NUMBER;
 import static uk.gov.di.test.utils.AuthenticationJourneyPages.GET_SECURITY_CODES;
-import static uk.gov.di.test.utils.AuthenticationJourneyPages.SETUP_AUTHENTICATOR_APP;
-import static uk.gov.di.test.utils.AuthenticationJourneyPages.SIGN_IN_OR_CREATE;
-import static uk.gov.di.test.utils.Constants.INCORRECT_PHONE_CODE;
 
 public class Registration extends SignIn {
 
@@ -56,7 +49,6 @@ public class Registration extends SignIn {
     private String authAppSecretKey;
     private String internationalPhoneNumber;
 
-    LoginPage loginPage = new LoginPage();
     NoGovUkOneLoginFoundPage noGovUkOneLoginFoundPage = new NoGovUkOneLoginFoundPage();
     EnterYourMobilePhoneNumberPage enterYourMobilePhoneNumberPage =
             new EnterYourMobilePhoneNumberPage();
@@ -98,8 +90,8 @@ public class Registration extends SignIn {
         sixDigitCodePhone = System.getenv().get("TEST_USER_PHONE_CODE");
     }
 
-    @Given("a new user has a valid international mobile phone number")
-    public void aNewUserHasAValidInternationalMobilePhoneNumber() {
+    @Given("a user has a valid international mobile phone number")
+    public void aUserHasAValidInternationalMobilePhoneNumber() {
         emailAddress = System.getenv().get("IPN3_NEW_USER_EMAIL");
         password = System.getenv().get("TEST_USER_PASSWORD");
         sixDigitCodeEmail = System.getenv().get("TEST_USER_EMAIL_CODE");
@@ -147,16 +139,6 @@ public class Registration extends SignIn {
     @When("the new user has a valid email address")
     public void theNewUserHasValidEmailAddress() {
         emailAddress = System.getenv().get("TEST_USER_EMAIL");
-    }
-
-    @And("the new user clicks {string}")
-    public void theNewUserClicks(String options) {
-        rpStubPage.selectRpOptionsById(options);
-    }
-
-    @Then("the new user is taken to the Identity Provider Login Page")
-    public void theNewUserIsTakenToTheIdentityProviderLoginPage() {
-        waitForPageLoadThenValidate(SIGN_IN_OR_CREATE);
     }
 
     @When("the user selects create an account")
@@ -224,11 +206,6 @@ public class Registration extends SignIn {
         chooseHowToGetSecurityCodesPage.selectAuthMethodAndContinue(mfaMethod);
     }
 
-    @Then("the new user is taken to the setup authenticator app page")
-    public void theNewUserIsTakenToTheSetupAuthenticatorAppPage() {
-        waitForPageLoadThenValidate(SETUP_AUTHENTICATOR_APP);
-    }
-
     @When("the new user adds the secret key on the screen to their auth app")
     public void theNewUserAddTheSecretKeyOnTheScreenToTheirAuthApp() {
         setUpAnAuthenticatorAppPage.iCannotScanQrCodeClick();
@@ -254,34 +231,14 @@ public class Registration extends SignIn {
         createOrSignInPage.clickSignInButton();
     }
 
-    @Then("the existing auth app user is taken to the enter your email page")
-    public void theExistingAuthAppUserIsTakenToTheEnterYourEmailPage() {
-        waitForPageLoadThenValidate(ENTER_EMAIL_EXISTING_USER);
-    }
-
     @When("the existing auth app user enters their email address")
     public void theExistingAuthAppUserEntersEmailAddress() {
         enterYourEmailAddressToSignInPage.enterEmailAddressAndContinue(emailAddress);
     }
 
-    @Then("the existing auth app user is prompted for their password")
-    public void theExistingUserIsPromptedForPassword() {
-        waitForPageLoadThenValidate(ENTER_PASSWORD);
-    }
-
     @When("the existing auth app user enters their password")
     public void theExistingUserEntersTheirPassword() {
         enterYourPasswordPage.enterPasswordAndContinue(password);
-    }
-
-    @Then("the existing user is taken to the enter authenticator app code page")
-    public void theNewUserIsTakenToTheEnterAuthenticatorAppCodePage() {
-        waitForPageLoadThenValidate(ENTER_AUTHENTICATOR_APP_CODE);
-    }
-
-    @Then("the existing user is taken to the enter authenticator app code uplifted page")
-    public void theNewUserIsTakenToTheEnterAuthenticatorAppCodeUpliftedPage() {
-        waitForPageLoadThenValidate(ENTER_AUTHENTICATOR_APP_CODE_UPLIFT);
     }
 
     @Then("the new user is taken to the enter phone number page")
@@ -320,12 +277,12 @@ public class Registration extends SignIn {
 
     @Then("the user is shown an error message")
     public void theUserIsShownAnErrorMessageOnTheEnterEmailPage() {
-        assertTrue(loginPage.emailErrorDescriptionDetailsIsDisplayed());
+        assertTrue(isErrorSummaryDisplayed());
     }
 
-    @Then("the new user is not shown an error message in field {string}")
-    public void theNewUserIsNotShownAnErrorMessage(String errorFieldId) {
-        List<WebElement> errorFields = driver.findElements(By.id(errorFieldId));
+    @Then("the user is not shown any error messages")
+    public void theNewUserIsNotShownAnErrorMessage() {
+        List<WebElement> errorFields = driver.findElements(By.id("code-error"));
         if (!errorFields.isEmpty()) {
             System.out.println("setup-authenticator-app error: " + errorFields.get(0));
         }
@@ -334,7 +291,7 @@ public class Registration extends SignIn {
 
     @When("the user clicks logout")
     public void theUserClicksLogout() {
-        loginPage.logoutButtonClick();
+        findAndClickButtonByText("Log out");
     }
 
     @When("the user clicks the Back link")
@@ -346,12 +303,6 @@ public class Registration extends SignIn {
     public void theNewUsereIsTakenToTheSignedOutPage() {
         waitForPageLoad("Signed out");
         assertEquals("/signed-out", URI.create(driver.getCurrentUrl()).getPath());
-    }
-
-    @When("the user enters an incorrect phone code one more time")
-    @When("the user enters an incorrect phone code")
-    public void theNewUserEntersAnIncorrectPhoneCodeOneMoreTime() {
-        checkYourPhonePage.enterPhoneCodeAndContinue(INCORRECT_PHONE_CODE);
     }
 
     @When("the new user enters their mobile phone number using an international dialling code")
@@ -382,11 +333,6 @@ public class Registration extends SignIn {
     public void theNewUserSubmitsAUKPhoneNumberContainingNonDigitCharacters() {
         enterYourMobilePhoneNumberPage.enterUkPhoneNumber("0780312*a45");
         findAndClickContinue();
-    }
-
-    @Then("the {string} error message is displayed")
-    public void theErrorMessageIsDisplayed(String expectedErrorMessage) {
-        assertEquals(expectedErrorMessage, getUpperErrorMessageText());
     }
 
     @When("the new user ticks I do not have a UK mobile number")

@@ -4,71 +4,62 @@ Feature: Authentication App Journeys
 
   Scenario: User successfully registers with auth app 2FA and login with 2fa-on
     Given the auth app user has valid credentials
-    And the user visits the stub relying party
-    And the new user clicks "2fa-off"
-    And the new user clicks "govuk-signin-button"
-    Then the new user is taken to the Identity Provider Login Page
+    And the user comes from the stub relying party with options: "2fa-off"
+    Then the user is taken to the "Create a GOV.UK One Login or sign in" page
     When the user selects create an account
-    Then the new user is taken to the enter your email page
+    Then the user is taken to the "Enter your email" page
     When the new user enters their email address
-    Then the new user is asked to check their email
+    Then the user is taken to the "Check your email" page
     When the new user enters the six digit security code from their email
-    Then the new user is taken to the create your password page
+    Then the user is taken to the "Create your password" page
     When the new user creates a password
-    Then the new user is taken to the get security codes page
+    Then the user is taken to the "Choose how to get security codes" page
     When the new user chooses "Auth App" to get security codes
-    Then the new user is taken to the setup authenticator app page
+    Then the user is taken to the "Set up an authenticator app" page
     When the new user adds the secret key on the screen to their auth app
     And the user enters the security code from the auth app to set it up
-    Then the new user is not shown an error message in field "code-error"
-    Then the new user is taken to the account created page
+    Then the user is not shown any error messages
+    And the user is taken to the "You’ve created your GOV.UK One Login" page
     When the new user clicks the continue button
     Then the user is returned to the service
-    When the user visits the stub relying party
-    And the new user clicks "govuk-signin-button"
     When the user clicks logout
-    Then the new user is taken to the signed out page
-    And the user visits the stub relying party
-    And the new user clicks "govuk-signin-button"
-    Then the new user is taken to the Identity Provider Login Page
+    Then the user is taken to the "Signed out" page
+
+    When the user comes from the stub relying party with options: "default"
+    Then the user is taken to the "Create a GOV.UK One Login or sign in" page
     When the existing auth app user selects sign in
-    Then the existing auth app user is taken to the enter your email page
+    Then the user is taken to the "Enter your email" page
     When the existing auth app user enters their email address
-    Then the existing auth app user is prompted for their password
+    Then the user is taken to the "Enter your password" page
     When the existing auth app user enters their password
-    Then the existing user is taken to the enter authenticator app code page
+    Then the user is taken to the "Enter the 6 digit security code shown in your authenticator app" page
     When the user enters the security code from the auth app
     Then the user is returned to the service
     When the user clicks logout
-    Then the new user is taken to the signed out page
+    Then the user is taken to the "Signed out" page
 
   Scenario: User successfully login without 2FA
     Given the auth app user has valid credentials
-    When the user visits the stub relying party
-    And the existing user clicks "2fa-off"
-    And the existing user clicks "govuk-signin-button"
-    Then the existing user is taken to the Identity Provider Login Page
+    When the user comes from the stub relying party with options: "2fa-off"
+    Then the user is taken to the "Create a GOV.UK One Login or sign in" page
     When the existing auth app user selects sign in
-    Then the existing auth app user is taken to the enter your email page
+    Then the user is taken to the "Enter your email" page
     When the existing auth app user enters their email address
-    Then the existing auth app user is prompted for their password
+    Then the user is taken to the "Enter your password" page
     When the existing auth app user enters their password
     Then the user is returned to the service
     When the user clicks logout
-    Then the new user is taken to the signed out page
+    Then the user is taken to the "Signed out" page
 
   Scenario: User signs in auth app without 2FA, then uplifts
     Given the auth app user has valid credentials
-    When the user visits the stub relying party
-    And the existing user clicks "2fa-off"
-    And the existing user clicks "govuk-signin-button"
-    Then the existing user is taken to the Identity Provider Login Page
+    When the user comes from the stub relying party with options: "2fa-off"
+    Then the user is taken to the "Create a GOV.UK One Login or sign in" page
     When the existing auth app user selects sign in
-    Then the existing auth app user is taken to the enter your email page
+    Then the user is taken to the "Enter your email" page
     When the existing auth app user enters their email address
-    Then the existing auth app user is prompted for their password
+    Then the user is taken to the "Enter your password" page
     When the existing auth app user enters their password
     Then the user is returned to the service
-    When the user visits the stub relying party
-    And the existing user clicks "govuk-signin-button"
-    Then the existing user is taken to the enter authenticator app code uplifted page
+    When the user comes from the stub relying party with options: "default"
+    Then the user is taken to the "You need to enter a security code" page

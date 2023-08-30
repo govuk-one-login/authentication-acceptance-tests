@@ -10,7 +10,7 @@ public class RpStubPage extends SignIn {
     }
 
     public void selectRpOptionsById(String opts) {
-        if (!opts.isEmpty()) {
+        if (!opts.isEmpty() && !opts.equalsIgnoreCase("default")) {
             String ids[] = opts.split(",");
             for (String id : ids) {
                 driver.findElement(By.id(id)).click();

@@ -9,4 +9,8 @@ public class GetSecurityCodePage extends SignIn {
     public void pressGetSecurityCodeButton() {
         driver.findElement(getSecurityCodeButton).click();
     }
+
+    public void waitForPage() {
+        waitForPageLoad("Get security code");
+    }
 }

@@ -33,7 +33,6 @@ import static uk.gov.di.test.utils.AuthenticationJourneyPages.ENTER_EMAIL_EXISTI
 import static uk.gov.di.test.utils.AuthenticationJourneyPages.ENTER_PASSWORD;
 import static uk.gov.di.test.utils.AuthenticationJourneyPages.RESEND_SECURITY_CODE;
 import static uk.gov.di.test.utils.AuthenticationJourneyPages.RESEND_SECURITY_CODE_TOO_MANY_TIMES;
-import static uk.gov.di.test.utils.AuthenticationJourneyPages.SIGN_IN_OR_CREATE;
 import static uk.gov.di.test.utils.Constants.INCORRECT_EMAIL_OTP_CODE;
 import static uk.gov.di.test.utils.Constants.INVALID_PASSWORD;
 import static uk.gov.di.test.utils.Constants.MISMATCHING_PASSWORD_1;
@@ -143,25 +142,10 @@ public class Login extends SignIn {
         enterYourPasswordPage.clickForgottenPasswordLink();
     }
 
-    @Given("the existing user has a phone code that does not work")
+    @Given("a user has a phone code that does not work")
     public void theExistingUserHasAPhoneCodeThatDoesNotWork() {
         emailAddress = System.getenv().get("IPN4_EXISTING_USER_EMAIL");
         password = System.getenv().get("TEST_USER_PASSWORD");
-    }
-
-    @When("the existing user visits the stub relying party")
-    public void theExistingUserVisitsTheStubRelyingParty() {
-        rpStubPage.goToRpStub();
-    }
-
-    @And("the existing user clicks {string}")
-    public void theExistingUserClicks(String options) {
-        rpStubPage.selectRpOptionsById(options);
-    }
-
-    @Then("the existing user is taken to the Identity Provider Login Page")
-    public void theExistingUserIsTakenToTheIdentityProviderLoginPage() {
-        waitForPageLoadThenValidate(SIGN_IN_OR_CREATE);
     }
 
     @When("the existing user selects sign in")
@@ -383,11 +367,10 @@ public class Login extends SignIn {
     @And("the user requests the email OTP code be sent again a further {int} times")
     public void theUserRequestsTheEmailOTPCodeBeSentAgainAFurtherIntTimes(Integer requestCount) {
         for (int index = 0; index < requestCount; index++) {
-            waitForPageLoad("Check your email");
-            selectLinkByText("Problems with the code?");
-            selectLinkByText("send the code again");
-            waitForPageLoad("Get security code");
-            findAndClickButtonByText("Get security code");
+            checkYourEmailPage.waitForPage();
+            checkYourEmailPage.requestResendOfEmailOTPCode();
+            getSecurityCodePage.waitForPage();
+            getSecurityCodePage.pressGetSecurityCodeButton();
             System.out.println(
                     "Code request count: "
                             + (index + 1)
@@ -421,7 +404,7 @@ public class Login extends SignIn {
     @When("the user enters an incorrect email OTP {int} times")
     public void theUserEntersAnIncorrectEmailOTPIntTimes(Integer attemptCount) {
         for (int index = 0; index < attemptCount; index++) {
-            waitForPageLoad("Check your email");
+            checkYourEmailPage.waitForPage();
             checkYourEmailPage.enterEmailCodeAndContinue(INCORRECT_EMAIL_OTP_CODE);
             System.out.println("Incorrect code entry count: " + (index + 1));
         }

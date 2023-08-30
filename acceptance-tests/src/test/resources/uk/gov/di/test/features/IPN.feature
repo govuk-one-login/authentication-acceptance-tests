@@ -3,9 +3,8 @@ Feature: International Phone Numbers
 
   Scenario: User cannot register using an invalid UK mobile phone number
     Given a new user has an invalid UK mobile phone number
-    When the user visits the stub relying party
-    And the new user clicks "govuk-signin-button"
-    Then the new user is taken to the Identity Provider Login Page
+    When the user comes from the stub relying party with options: "default"
+    Then the user is taken to the "Create a GOV.UK One Login or sign in" page
     When the user selects create an account
     Then the new user is taken to the enter your email page
     When the new user enters their email address
@@ -28,9 +27,8 @@ Feature: International Phone Numbers
 
   Scenario: User can successfully complete registration using an international phone number
     Given a new user has an invalid international mobile phone number
-    When the user visits the stub relying party
-    And the new user clicks "govuk-signin-button"
-    Then the new user is taken to the Identity Provider Login Page
+    When the user comes from the stub relying party with options: "default"
+    Then the user is taken to the "Create a GOV.UK One Login or sign in" page
     When the user selects create an account
     Then the new user is taken to the enter your email page
     When the new user enters their email address
@@ -59,26 +57,11 @@ Feature: International Phone Numbers
     Then the new user is taken to the signed out page
 
 
-  Scenario: New user with an international phone number reports that they did not receive their security code
-    Given a new user has a valid international mobile phone number
-    When the user visits the stub relying party
-    And the new user clicks "govuk-signin-button"
-    Then the new user is taken to the Identity Provider Login Page
-    When the user selects create an account
-    Then the new user is taken to the enter your email page
-    When the new user enters their email address
-    Then the new user is asked to check their email
-    When the new user enters the six digit security code from their email
-    Then the new user is taken to the create your password page
-    When the new user creates a password
-    Then the new user is taken to the get security codes page
-    When the new user chooses "Text message" to get security codes
-    Then the new user is taken to the enter phone number page
-    When the new user ticks I do not have a UK mobile number
-    Then the International mobile number field is displayed
-    When the new user enters a valid international mobile phone number
-    Then the new user is taken to the check your phone page
-    When the user clicks the support link having not received their security code
+  Scenario: User with an international phone number reports that they did not receive their security code
+    Given a user has a valid international mobile phone number
+    When the user comes from the stub relying party with options: "default"
+    Then the user is taken to the "Create a GOV.UK One Login or sign in" page
+    When the user clicks on the support link
     Then the user is taken to the Contact us page in a new tab
     When the user selects "A problem creating a GOV.UK One Login"
     Then the user is taken to the "A problem creating a GOV.UK One Login" page
@@ -88,20 +71,11 @@ Feature: International Phone Numbers
     #Test stopped here so as not to submit case to the actual support desk
 
 
-  Scenario: Existing user with an international phone number reports that their security code did not work
-    Given the existing user has a phone code that does not work
-    When the existing user visits the stub relying party
-    And the existing user clicks "govuk-signin-button"
-    Then the existing user is taken to the Identity Provider Login Page
-    When the existing user selects sign in
-    Then the existing user is taken to the enter your email page
-    When the existing user enters their email address
-    Then the existing user is prompted for their password
-    When the existing user enters their password
-    Then the existing user is taken to the enter code page
-    When the user enters an incorrect phone code
-    Then the user is shown an error message
-    When the user clicks the support link due to their security code not working
+  Scenario: User with an international phone number reports that their security code did not work
+    Given a user has a phone code that does not work
+    When the user comes from the stub relying party with options: "default"
+    Then the user is taken to the "Create a GOV.UK One Login or sign in" page
+    When the user clicks on the support link
     Then the user is taken to the Contact us page in a new tab
     When the user selects "A problem signing in to your GOV.UK One Login"
     Then the user is taken to the "A problem signing in to your GOV.UK One Login" page
