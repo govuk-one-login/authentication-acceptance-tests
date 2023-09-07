@@ -1,10 +1,19 @@
 plugins {
     id 'java'
     id "com.diffplug.spotless" version "6.9.0"
+    id "org.sonarqube" version "4.3.1.3277"
 }
 
 group 'uk.gov.di'
 version '1.0-SNAPSHOT'
+
+sonar {
+    properties {
+        property "sonar.projectKey", "alphagov_di-authentication-acceptance-tests"
+        property "sonar.organization", "alphagov"
+        property "sonar.host.url", "https://sonarcloud.io"
+    }
+}
 
 spotless {
     java {
