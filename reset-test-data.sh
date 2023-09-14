@@ -34,9 +34,11 @@ if [ $LOCAL == "1" ]; then
 fi
 
 if [ $LOCAL == "1" ]; then
-  echo -e "Getting AWS credentials ..."
-  eval "$(gds aws ${GDS_AWS_ACCOUNT} -e)"
-  echo "done!"
+  # Ensure AWS credentials are set in the environment
+  if [[ -z "${AWS_ACCESS_KEY_ID:-}" || -z "${AWS_SECRET_ACCESS_KEY:-}" ]]; then
+    echo "!! AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY must be set in the environment" >&2
+    exit 1
+  fi
 fi
 
 resetTestUsers

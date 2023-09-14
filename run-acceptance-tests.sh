@@ -39,11 +39,11 @@ function stop_docker_services() {
 }
 
 function get_env_vars_from_SSM() {
-  echo -n "Getting AWS credentials ... "
-  if [ $EXPORT_ENV == "1" ]; then
-    eval "$(gds aws digital-identity-dev -e)"
+  # Ensure AWS credentials are set in the environment
+  if [[ -z "${AWS_ACCESS_KEY_ID:-}" || -z "${AWS_SECRET_ACCESS_KEY:-}" ]]; then
+    echo "!! AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY must be set in the environment" >&2
+    exit 1
   fi
-  echo "done!"
 
   echo "Getting environment variables from SSM ... "
   if [ $EXPORT_ENV == "1" ]; then
