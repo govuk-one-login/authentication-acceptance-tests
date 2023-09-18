@@ -3,14 +3,14 @@ package uk.gov.di.test.step_definitions;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import uk.gov.di.test.pages.BasePage;
 import uk.gov.di.test.pages.SupportPage;
-import uk.gov.di.test.utils.SignIn;
 
 import java.util.ArrayList;
 
 import static org.junit.Assert.assertTrue;
 
-public class Support extends SignIn {
+public class SupportStepDef extends BasePage {
 
     SupportPage supportPage = new SupportPage();
 

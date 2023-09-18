@@ -1,9 +1,8 @@
 package uk.gov.di.test.pages;
 
 import org.openqa.selenium.By;
-import uk.gov.di.test.utils.SignIn;
 
-public class CreateYourPasswordPage extends SignIn {
+public class CreateYourPasswordPage extends BasePage {
     By passwordField = By.id("password");
     By confirmPasswordField = By.id("confirm-password");
 

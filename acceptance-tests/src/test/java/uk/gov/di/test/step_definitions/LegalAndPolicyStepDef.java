@@ -4,15 +4,15 @@ import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import org.openqa.selenium.By;
+import uk.gov.di.test.pages.BasePage;
 import uk.gov.di.test.pages.RpStubPage;
-import uk.gov.di.test.utils.SignIn;
 import uk.gov.di.test.utils.SupportingPages;
 
 import java.net.URI;
 
 import static org.junit.Assert.assertEquals;
 
-public class LegalAndPolicy extends SignIn {
+public class LegalAndPolicyStepDef extends BasePage {
 
     RpStubPage rpStubPage = new RpStubPage();
 

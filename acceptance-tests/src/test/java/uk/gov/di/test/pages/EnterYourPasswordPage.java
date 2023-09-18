@@ -1,9 +1,8 @@
 package uk.gov.di.test.pages;
 
 import org.openqa.selenium.By;
-import uk.gov.di.test.utils.SignIn;
 
-public class EnterYourPasswordPage extends SignIn {
+public class EnterYourPasswordPage extends BasePage {
 
     By passwordField = By.id("password");
     By forgottenPasswordLink = By.xpath("//a[@href='/reset-password-request']");

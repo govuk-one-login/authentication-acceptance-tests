@@ -1,10 +1,10 @@
 package uk.gov.di.test.step_definitions;
 
 import io.cucumber.java.en.When;
+import uk.gov.di.test.pages.BasePage;
 import uk.gov.di.test.pages.RpStubPage;
-import uk.gov.di.test.utils.SignIn;
 
-public class RpStub extends SignIn {
+public class RpStubStepDef extends BasePage {
 
     RpStubPage rpStubPage = new RpStubPage();
 

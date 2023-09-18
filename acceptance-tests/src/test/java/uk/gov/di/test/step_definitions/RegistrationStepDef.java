@@ -6,6 +6,7 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import uk.gov.di.test.pages.BasePage;
 import uk.gov.di.test.pages.CheckYourEmailPage;
 import uk.gov.di.test.pages.CheckYourPhonePage;
 import uk.gov.di.test.pages.ChooseHowToGetSecurityCodesPage;
@@ -19,7 +20,6 @@ import uk.gov.di.test.pages.EnterYourPasswordPage;
 import uk.gov.di.test.pages.NoGovUkOneLoginFoundPage;
 import uk.gov.di.test.pages.RpStubPage;
 import uk.gov.di.test.pages.SetUpAnAuthenticatorAppPage;
-import uk.gov.di.test.utils.SignIn;
 
 import java.net.URI;
 import java.util.List;
@@ -37,7 +37,7 @@ import static uk.gov.di.test.utils.AuthenticationJourneyPages.ENTER_EMAIL_EXISTI
 import static uk.gov.di.test.utils.AuthenticationJourneyPages.ENTER_PHONE_NUMBER;
 import static uk.gov.di.test.utils.AuthenticationJourneyPages.GET_SECURITY_CODES;
 
-public class Registration extends SignIn {
+public class RegistrationStepDef extends BasePage {
 
     private String emailAddress;
     private String password;

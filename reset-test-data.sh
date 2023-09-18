@@ -33,10 +33,10 @@ if [ $LOCAL == "1" ]; then
   export $(grep -v '^#' .env | xargs)
 fi
 
-if [ $LOCAL == "1" ]; then
-  echo -e "Getting AWS credentials ..."
-  eval "$(gds aws ${GDS_AWS_ACCOUNT} -e)"
-  echo "done!"
-fi
+#if [ $LOCAL == "1" ]; then
+#  echo -e "Getting AWS credentials ..."
+#  eval "$(gds aws ${GDS_AWS_ACCOUNT} -e)"
+#  echo "done!"
+#fi
 
 resetTestUsers

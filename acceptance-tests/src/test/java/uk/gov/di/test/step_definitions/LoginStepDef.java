@@ -5,6 +5,7 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.junit.jupiter.api.Assertions;
+import uk.gov.di.test.pages.BasePage;
 import uk.gov.di.test.pages.CheckYourEmailPage;
 import uk.gov.di.test.pages.CheckYourPhonePage;
 import uk.gov.di.test.pages.CreateOrSignInPage;
@@ -19,7 +20,6 @@ import uk.gov.di.test.pages.SetUpAnAuthenticatorAppPage;
 import uk.gov.di.test.pages.TermsAndConditionsPage;
 import uk.gov.di.test.pages.YouAskedToResendTheSecurityCodeTooManyTimesPage;
 import uk.gov.di.test.pages.YouveChangedHowYouGetSecurityCodesPage;
-import uk.gov.di.test.utils.SignIn;
 
 import java.net.URI;
 
@@ -40,7 +40,7 @@ import static uk.gov.di.test.utils.Constants.MISMATCHING_PASSWORD_2;
 import static uk.gov.di.test.utils.Constants.NEW_VALID_PASSWORD;
 import static uk.gov.di.test.utils.Constants.TOP_100K_PASSWORD;
 
-public class Login extends SignIn {
+public class LoginStepDef extends BasePage {
 
     private String emailAddress;
     private String password;
@@ -72,9 +72,9 @@ public class Login extends SignIn {
 
     @And("the existing user has valid credentials")
     public void theExistingUserHasValidCredentials() {
-        emailAddress = SignIn.TEST_USER_EMAIL;
-        password = SignIn.TEST_USER_PASSWORD;
-        sixDigitCodePhone = SignIn.TEST_USER_PHONE_CODE;
+        emailAddress = BasePage.TEST_USER_EMAIL;
+        password = BasePage.TEST_USER_PASSWORD;
+        sixDigitCodePhone = BasePage.TEST_USER_PHONE_CODE;
     }
 
     @Given("the existing user has valid credentials and wants to reset their password")
