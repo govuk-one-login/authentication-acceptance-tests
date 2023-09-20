@@ -4,12 +4,12 @@ import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import uk.gov.di.test.pages.BasePage;
 import uk.gov.di.test.pages.DocAppPage;
-import uk.gov.di.test.utils.SignIn;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class DocApp extends SignIn {
+public class DocAppStepDef extends BasePage {
 
     private String jsonPayLoad;
     public DocAppPage docAppPage = new DocAppPage();

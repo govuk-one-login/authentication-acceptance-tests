@@ -1,9 +1,8 @@
 package uk.gov.di.test.pages;
 
 import org.openqa.selenium.By;
-import uk.gov.di.test.utils.SignIn;
 
-public class DocAppPage extends SignIn {
+public class DocAppPage extends BasePage {
 
     By myAccountLink = By.cssSelector("#navigation > li > a");
 

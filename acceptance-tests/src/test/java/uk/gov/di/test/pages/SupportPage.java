@@ -1,11 +1,10 @@
 package uk.gov.di.test.pages;
 
 import org.openqa.selenium.By;
-import uk.gov.di.test.utils.SignIn;
 
 import java.util.ArrayList;
 
-public class SupportPage extends SignIn {
+public class SupportPage extends BasePage {
 
     By supportLink = By.xpath("//*[contains(text(), 'Support (opens in new tab)')]");
     By moreDetailsField = By.id("moreDetailDescription");

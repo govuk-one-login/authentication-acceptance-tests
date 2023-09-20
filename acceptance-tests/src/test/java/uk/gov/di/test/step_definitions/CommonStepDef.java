@@ -1,11 +1,11 @@
 package uk.gov.di.test.step_definitions;
 
 import io.cucumber.java.en.Then;
-import uk.gov.di.test.utils.SignIn;
+import uk.gov.di.test.pages.BasePage;
 
 import static org.junit.Assert.assertEquals;
 
-public class Common extends SignIn {
+public class CommonStepDef extends BasePage {
 
     @Then("the user is taken to the {string} page")
     public void theUserIsTakenToThePage(String pageTitle) {
