@@ -6,20 +6,20 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import uk.gov.di.test.pages.BasePage;
 import uk.gov.di.test.pages.CheckYourEmailPage;
 import uk.gov.di.test.pages.CheckYourPhonePage;
 import uk.gov.di.test.pages.ChooseHowToGetSecurityCodesPage;
-import uk.gov.di.test.pages.CreateOrSignInPage;
+import uk.gov.di.test.pages.CreateOrBasePagePage;
 import uk.gov.di.test.pages.CreateYourPasswordPage;
 import uk.gov.di.test.pages.EnterThe6DigitSecurityCodeShownInYourAuthenticatorAppPage;
 import uk.gov.di.test.pages.EnterYourEmailAddressPage;
-import uk.gov.di.test.pages.EnterYourEmailAddressToSignInPage;
+import uk.gov.di.test.pages.EnterYourEmailAddressToBasePagePage;
 import uk.gov.di.test.pages.EnterYourMobilePhoneNumberPage;
 import uk.gov.di.test.pages.EnterYourPasswordPage;
 import uk.gov.di.test.pages.NoGovUkOneLoginFoundPage;
 import uk.gov.di.test.pages.RpStubPage;
 import uk.gov.di.test.pages.SetUpAnAuthenticatorAppPage;
-import uk.gov.di.test.utils.SignIn;
 
 import java.net.URI;
 import java.util.List;
@@ -37,7 +37,7 @@ import static uk.gov.di.test.utils.AuthenticationJourneyPages.ENTER_EMAIL_EXISTI
 import static uk.gov.di.test.utils.AuthenticationJourneyPages.ENTER_PHONE_NUMBER;
 import static uk.gov.di.test.utils.AuthenticationJourneyPages.GET_SECURITY_CODES;
 
-public class Registration extends SignIn {
+public class RegistrationStepDef extends BasePage {
 
     private String emailAddress;
     private String password;
@@ -53,10 +53,10 @@ public class Registration extends SignIn {
     EnterYourMobilePhoneNumberPage enterYourMobilePhoneNumberPage =
             new EnterYourMobilePhoneNumberPage();
     EnterYourPasswordPage enterYourPasswordPage = new EnterYourPasswordPage();
-    EnterYourEmailAddressToSignInPage enterYourEmailAddressToSignInPage =
-            new EnterYourEmailAddressToSignInPage();
+    EnterYourEmailAddressToBasePagePage enterYourEmailAddressToSignInPage =
+            new EnterYourEmailAddressToBasePagePage();
     EnterYourEmailAddressPage enterYourEmailAddressPage = new EnterYourEmailAddressPage();
-    CreateOrSignInPage createOrSignInPage = new CreateOrSignInPage();
+    CreateOrBasePagePage createOrSignInPage = new CreateOrBasePagePage();
     RpStubPage rpStubPage = new RpStubPage();
     CheckYourEmailPage checkYourEmailPage = new CheckYourEmailPage();
     CheckYourPhonePage checkYourPhonePage = new CheckYourPhonePage();

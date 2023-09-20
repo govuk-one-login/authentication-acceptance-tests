@@ -6,11 +6,11 @@ import io.cucumber.java.Before;
 import io.cucumber.java.Scenario;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
-import uk.gov.di.test.utils.SignIn;
+import uk.gov.di.test.pages.BasePage;
 
 import java.net.MalformedURLException;
 
-public class Hooks extends SignIn {
+public class Hooks extends BasePage {
 
     @Before
     public void setupWebdriver() throws MalformedURLException {
@@ -20,7 +20,7 @@ public class Hooks extends SignIn {
 
     @AfterStep
     public void checkAccessibility() {
-        Axe.thereAreNoAccessibilityViolations();
+        AxeStepDef.thereAreNoAccessibilityViolations();
     }
 
     @After

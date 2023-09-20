@@ -4,15 +4,15 @@ import com.deque.axe.AXE;
 import io.cucumber.java.en.And;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import uk.gov.di.test.utils.SignIn;
+import uk.gov.di.test.pages.BasePage;
 
 import java.net.URL;
 
 import static org.junit.Assert.assertEquals;
 
-public class Axe extends SignIn {
+public class AxeStepDef extends BasePage {
 
-    private static final URL scriptUrl = Axe.class.getResource("/axe.min.js");
+    private static final URL scriptUrl = AxeStepDef.class.getResource("/axe.min.js");
     protected static final Boolean ACCESSIBILITY_CHECKS =
             Boolean.parseBoolean(System.getenv().getOrDefault("ACCESSIBILITY_CHECKS", "false"));
 

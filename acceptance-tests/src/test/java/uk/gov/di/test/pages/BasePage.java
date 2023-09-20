@@ -1,4 +1,4 @@
-package uk.gov.di.test.utils;
+package uk.gov.di.test.pages;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -10,6 +10,7 @@ import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import uk.gov.di.test.utils.AuthenticationJourneyPages;
 
 import java.net.MalformedURLException;
 import java.net.URI;
@@ -20,7 +21,7 @@ import java.util.List;
 import static java.time.temporal.ChronoUnit.SECONDS;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class SignIn {
+public class BasePage {
 
     protected static final String CHROME_BROWSER = "chrome";
     protected static final String FIREFOX_BROWSER = "firefox";
