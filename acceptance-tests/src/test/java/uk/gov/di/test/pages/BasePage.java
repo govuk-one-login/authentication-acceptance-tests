@@ -92,37 +92,37 @@ public class BasePage {
         }
     }
 
-    protected void waitForPageLoad(String titleContains) {
+    public void waitForPageLoad(String titleContains) {
         new WebDriverWait(driver, DEFAULT_PAGE_LOAD_WAIT_TIME)
                 .until(ExpectedConditions.titleContains(titleContains));
     }
 
-    protected void waitForPageLoadThenValidate(AuthenticationJourneyPages page) {
+    public void waitForPageLoadThenValidate(AuthenticationJourneyPages page) {
         waitForPageLoad(page.getShortTitle());
         assertEquals(page.getRoute(), URI.create(driver.getCurrentUrl()).getPath());
         assertEquals(page.getFullTitle(), driver.getTitle());
     }
 
-    protected void findAndClickContinue() {
+    public void findAndClickContinue() {
         WebElement continueButton =
                 driver.findElement(By.xpath("//button[text()[normalize-space() = 'Continue']]"));
         continueButton.click();
     }
 
-    protected void findAndClickContinueWelsh() {
+    public void findAndClickContinueWelsh() {
         WebElement continueButton =
                 driver.findElement(By.cssSelector("#main-content > div > div > form > button"));
         continueButton.click();
     }
 
-    protected void findAndClickButtonByText(String buttonText) {
+    public void findAndClickButtonByText(String buttonText) {
         WebElement continueButton =
                 driver.findElement(
                         By.xpath("//button[text()[normalize-space() = '" + buttonText + "']]"));
         continueButton.click();
     }
 
-    protected boolean isLinkTextDisplayed(String linkText) {
+    public boolean isLinkTextDisplayed(String linkText) {
         List elements =
                 driver.findElements(
                         By.xpath("//*[text()[normalize-space() = '" + linkText + "']]"));
@@ -133,21 +133,21 @@ public class BasePage {
         }
     }
 
-    protected String getErrorSummaryText() {
+    public String getErrorSummaryText() {
         return driver.findElement(By.cssSelector(".govuk-error-summary__body li a"))
                 .getText()
                 .trim();
     }
 
-    protected void pressBack() {
+    public void pressBack() {
         driver.findElement(By.xpath("//a[text()[normalize-space() = 'Back']]")).click();
     }
 
-    protected void selectLinkByText(String linkText) {
+    public void selectLinkByText(String linkText) {
         driver.findElement(By.xpath("//*[text()[normalize-space() = '" + linkText + "']]")).click();
     }
 
-    protected void clearFieldAndEnter(By ele, String text) {
+    public void clearFieldAndEnter(By ele, String text) {
         driver.findElement(ele).clear();
         driver.findElement(ele).sendKeys(text);
     }
