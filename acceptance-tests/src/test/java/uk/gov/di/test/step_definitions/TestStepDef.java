@@ -19,6 +19,10 @@ public class TestStepDef extends BasePage {
     CheckYourPhonePage checkYourPhonePage = new CheckYourPhonePage();
     EnterASecurityCodeToContinuePage enterASecurityCodeToContinuePage =
             new EnterASecurityCodeToContinuePage();
+    SetUpAnAuthenticatorAppPage setUpAnAuthenticatorAppPage = new SetUpAnAuthenticatorAppPage();
+    EnterThe6DigitSecurityCodeShownInYourAuthenticatorAppPage
+            enterThe6DigitSecurityCodeShownInYourAuthenticatorAppPage =
+                    new EnterThe6DigitSecurityCodeShownInYourAuthenticatorAppPage();
 
     @And("user selects the sign in button")
     public void userSelectsTheSignInButton() {
@@ -60,10 +64,17 @@ public class TestStepDef extends BasePage {
     @And("the users last {int} digits of {string} SMS number is displayed")
     public void theUsersLastDigitsOfSMSNumberIsDisplayed(int digitNo, String userPhoneNumber) {
         var phoneNumber = System.getenv().get(userPhoneNumber);
-        String expectedLastThreeDigitsOfPhoneNo = phoneNumber.substring(phoneNumber.length() - digitNo);
+        String expectedLastThreeDigitsOfPhoneNo =
+                phoneNumber.substring(phoneNumber.length() - digitNo);
 
         assertEquals(
                 expectedLastThreeDigitsOfPhoneNo,
                 enterASecurityCodeToContinuePage.getThreeDigitsNumber());
+    }
+
+    @When("the user enters their {string} code from the auth app")
+    public void theUserEntersTheirCodeFromTheAuthApp(String authAppSecretKey) {
+        setUpAnAuthenticatorAppPage.enterCorrectAuthAppCode(System.getenv().get(authAppSecretKey));
+        findAndClickContinue();
     }
 }
