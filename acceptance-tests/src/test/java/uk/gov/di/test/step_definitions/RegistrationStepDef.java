@@ -36,6 +36,7 @@ import static uk.gov.di.test.utils.AuthenticationJourneyPages.ENTER_EMAIL_CREATE
 import static uk.gov.di.test.utils.AuthenticationJourneyPages.ENTER_EMAIL_EXISTING_USER;
 import static uk.gov.di.test.utils.AuthenticationJourneyPages.ENTER_PHONE_NUMBER;
 import static uk.gov.di.test.utils.AuthenticationJourneyPages.GET_SECURITY_CODES;
+import static uk.gov.di.test.utils.Constants.*;
 
 public class RegistrationStepDef extends BasePage {
 
@@ -108,32 +109,30 @@ public class RegistrationStepDef extends BasePage {
 
     @And("the new user creates a password")
     public void theNewUserCreatesAPassword() {
-        var passwordVal = System.getenv().get("TEST_USER_PASSWORD");
+        String passwordVal = System.getenv().get("TEST_USER_PASSWORD");
         createYourPasswordPage.enterBothPasswordsAndContinue(passwordVal, passwordVal);
     }
 
     @And("the new user creates and enters an invalid password")
     public void theNewUserCreatesAndEntersAnInvalidPassword() {
-        var passwordVal = System.getenv().get("TEST_USER_INVALID_PASSWORD");
-        createYourPasswordPage.enterBothPasswordsAndContinue(passwordVal, passwordVal);
+        createYourPasswordPage.enterBothPasswordsAndContinue(INVALID_PASSWORD, INVALID_PASSWORD);
     }
 
     @And("the new user creates and enters a weak password")
     public void theNewUserCreatesAndEntersAWeakPassword() {
-        var passwordVal = System.getenv().get("TEST_USER_WEAK_PASSWORD");
-        createYourPasswordPage.enterBothPasswordsAndContinue(passwordVal, passwordVal);
+        createYourPasswordPage.enterBothPasswordsAndContinue(WEAK_PASSWORD, WEAK_PASSWORD);
     }
 
     @And("the new user creates and enters short digit only password")
     public void theNewUserCreatesAndEntersShortDigitOnlyPassword() {
-        var passwordVal = System.getenv().get("TEST_USER_SHORT_DIGIT_PASSWORD");
-        createYourPasswordPage.enterBothPasswordsAndContinue(passwordVal, passwordVal);
+        createYourPasswordPage.enterBothPasswordsAndContinue(
+                SHORT_DIGIT_PASSWORD, SHORT_DIGIT_PASSWORD);
     }
 
     @And("the new user creates and enters a sequence of numbers password")
     public void theNewUserCreatesAndEntersASequenceOfNumbersPassword() {
-        var passwordVal = System.getenv().get("TEST_USER_SEQUENCE_NUMBER_PASSWORD");
-        createYourPasswordPage.enterBothPasswordsAndContinue(passwordVal, passwordVal);
+        createYourPasswordPage.enterBothPasswordsAndContinue(
+                SEQUENCE_NUMBER_PASSWORD, SEQUENCE_NUMBER_PASSWORD);
     }
 
     @Then("the new user is taken to the get security codes page")

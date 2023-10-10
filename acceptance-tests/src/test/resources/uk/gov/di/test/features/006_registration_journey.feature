@@ -41,7 +41,7 @@ Feature: Registration Journey
     Then the user is taken to the "Create a GOV.UK One Login or sign in" page
     When the user selects create an account
     Then the new user is taken to the enter your email page
-    When user enters "TEST_USER_INVALID_EMAIL" email address
+    When user enters invalid email address
     Then the user is shown an error message
     When user enters "TEST_USER_EMAIL" email address
     Then the new user is asked to check their email

@@ -32,6 +32,7 @@ import static uk.gov.di.test.utils.AuthenticationJourneyPages.ENTER_EMAIL_EXISTI
 import static uk.gov.di.test.utils.AuthenticationJourneyPages.ENTER_PASSWORD;
 import static uk.gov.di.test.utils.AuthenticationJourneyPages.RESEND_SECURITY_CODE;
 import static uk.gov.di.test.utils.AuthenticationJourneyPages.RESEND_SECURITY_CODE_TOO_MANY_TIMES;
+import static uk.gov.di.test.utils.Constants.*;
 
 public class LoginStepDef extends BasePage {
 
@@ -83,6 +84,11 @@ public class LoginStepDef extends BasePage {
         enterYourEmailAddressToSignInPage.enterEmailAddressAndContinue(System.getenv().get(email));
     }
 
+    @When("user enters invalid email address")
+    public void userEntersInvalidEmailAddress() {
+        enterYourEmailAddressToSignInPage.enterEmailAddressAndContinue(INVALID_EMAIL);
+    }
+
     @Then("the existing user is prompted for their password")
     public void theExistingUserIsPromptedForPassword() {
         waitForPageLoadThenValidate(ENTER_PASSWORD);
@@ -96,8 +102,7 @@ public class LoginStepDef extends BasePage {
 
     @When("the existing user enters their new password")
     public void theExistingUserEntersTheirNewPassword() {
-        enterYourPasswordPage.enterPasswordAndContinue(
-                System.getenv().get("TEST_USER_NEW_VALID_PASSWORD"));
+        enterYourPasswordPage.enterPasswordAndContinue(NEW_VALID_PASSWORD);
     }
 
     @Then("the existing user is taken to the enter code page")
@@ -175,11 +180,6 @@ public class LoginStepDef extends BasePage {
         assertEquals("Gwiriwch eich ffôn - GOV.UK One Login", driver.getTitle());
     }
 
-    //    @When("the existing user enters their password in Welsh")
-    //    public void theExistingUserEntersTheirPasswordInWelsh() {
-    //        enterYourPasswordPage.enterPasswordAndContinue(password);
-    //    }
-
     @When("user enters {string} email address in Welsh")
     public void userEntersEmailAddressInWelsh(String email) {
         enterYourEmailAddressToSignInPage.enterEmailAddress(System.getenv().get(email));
@@ -188,8 +188,8 @@ public class LoginStepDef extends BasePage {
 
     @When("the user enters valid new password and correctly retypes it")
     public void theUserEntersValidNewPasswordAndCorrectlyRetypesIt() {
-        String passwordVal = System.getenv().get("TEST_USER_NEW_VALID_PASSWORD");
-        resetYourPasswordPage.enterPasswordResetDetailsAndContinue(passwordVal, passwordVal);
+        resetYourPasswordPage.enterPasswordResetDetailsAndContinue(
+                NEW_VALID_PASSWORD, NEW_VALID_PASSWORD);
     }
 
     @When("the user resets their password to be the same as their current password")
@@ -200,21 +200,20 @@ public class LoginStepDef extends BasePage {
 
     @When("the user resets their password to an invalid one")
     public void theUserResetsTheirPasswordToAnInvalidOne() {
-        String passwordVal = System.getenv().get("TEST_USER_INVALID_PASSWORD");
-        resetYourPasswordPage.enterPasswordResetDetailsAndContinue(passwordVal, passwordVal);
+        resetYourPasswordPage.enterPasswordResetDetailsAndContinue(
+                INVALID_PASSWORD, INVALID_PASSWORD);
     }
 
     @When("the user resets their password to one that is on the list of top 100k passwords")
     public void theUserResetsTheirPasswordToOneThatIsOnTheListOfTop100kPasswords() {
-        String passwordVal = System.getenv().get("TEST_USER_TOP_100K_PASSWORD");
-        resetYourPasswordPage.enterPasswordResetDetailsAndContinue(passwordVal, passwordVal);
+        resetYourPasswordPage.enterPasswordResetDetailsAndContinue(
+                TOP_100K_PASSWORD, TOP_100K_PASSWORD);
     }
 
     @When("the user resets their password but enters mismatching new passwords")
     public void theUserResetsTheirPasswordButEntersMismatchingNewPasswords() {
-        String passwordVal1 = System.getenv().get("TEST_USER_MISMATCHING_PASSWORD_1");
-        String passwordVal2 = System.getenv().get("TEST_USER_MISMATCHING_PASSWORD_2");
-        resetYourPasswordPage.enterPasswordResetDetailsAndContinue(passwordVal1, passwordVal2);
+        resetYourPasswordPage.enterPasswordResetDetailsAndContinue(
+                MISMATCHING_PASSWORD_1, MISMATCHING_PASSWORD_2);
     }
 
     @And("confirmation that the user will get security codes via {string} is displayed")
@@ -224,7 +223,7 @@ public class LoginStepDef extends BasePage {
         switch (authenticationType.toLowerCase()) {
             case "text message":
                 // Check the last four digits of the phone number appear in the page message
-                var phoneNumber = System.getenv().get("TEST_USER_PHONE_NUMBER");
+                String phoneNumber = System.getenv().get("TEST_USER_PHONE_NUMBER");
                 String lastFourDigitsOfPhone = phoneNumber.substring(phoneNumber.length() - 4);
                 assertTrue(
                         youveChangedHowYouGetSecurityCodes
@@ -306,8 +305,7 @@ public class LoginStepDef extends BasePage {
     public void theUserEntersAnIncorrectEmailOTPIntTimes(Integer attemptCount) {
         for (int index = 0; index < attemptCount; index++) {
             checkYourEmailPage.waitForPage();
-            checkYourEmailPage.enterEmailCodeAndContinue(
-                    System.getenv().get("INCORRECT_EMAIL_OTP_CODE"));
+            checkYourEmailPage.enterEmailCodeAndContinue(INCORRECT_EMAIL_OTP_CODE);
             System.out.println("Incorrect code entry count: " + (index + 1));
         }
     }
