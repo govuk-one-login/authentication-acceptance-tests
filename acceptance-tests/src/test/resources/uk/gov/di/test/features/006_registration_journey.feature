@@ -3,12 +3,11 @@ Feature: Registration Journey
   New user walks through a registration journey
 
   Scenario: User selects sign in without having an account
-    Given a new user has valid credentials
-    When the user comes from the stub relying party with options: "default"
+    Given the user comes from the stub relying party with options: "default"
     Then the user is taken to the "Create a GOV.UK One Login or sign in" page
     When the new user selects sign in
     Then the user is taken to the "Enter your email address to sign in to your GOV.UK One Login" page
-    When the new user enters their email address
+    When user enters "TEST_USER_EMAIL" email address
     Then the user is taken to the "No GOV.UK One Login found" page
     When the user clicks link "Try another email address"
     Then the user is taken to the "Enter your email address to sign in to your GOV.UK One Login" page
@@ -28,51 +27,42 @@ Feature: Registration Journey
 #    Then the new user is taken to the sign in to a service page
 
   Scenario: User is taken to Check your email page from No GOV.UK One Login found page when Create selected
-    Given a new user has valid credentials
-    When the user comes from the stub relying party with options: "default"
+    Given the user comes from the stub relying party with options: "default"
     Then the user is taken to the "Create a GOV.UK One Login or sign in" page
     When the new user selects sign in
     Then the user is taken to the "Enter your email address to sign in to your GOV.UK One Login" page
-    When the new user enters their email address
+    When user enters "TEST_USER_EMAIL" email address
     Then the user is taken to the "No GOV.UK One Login found" page
     When the new user selects create an account
     Then the user is taken to the "Check your email" page
 
   Scenario: User registration unsuccessful with invalid email, six digit code and password
-    Given the new user has an invalid email format
-    When the user comes from the stub relying party with options: "default"
+    Given the user comes from the stub relying party with options: "default"
     Then the user is taken to the "Create a GOV.UK One Login or sign in" page
     When the user selects create an account
     Then the new user is taken to the enter your email page
-    When the new user enters their email address
+    When user enters "TEST_USER_INVALID_EMAIL" email address
     Then the user is shown an error message
-    When the new user has a valid email address
-    And the new user enters their email address
+    When user enters "TEST_USER_EMAIL" email address
     Then the new user is asked to check their email
-    When a new user has valid credentials
     When the new user enters the six digit security code from their email
     Then the new user is taken to the create your password page
-    When the new user has an invalid password
-    And the new user creates a password
+    And the new user creates and enters an invalid password
     And there are no accessibility violations
     Then the user is shown an error message
-    When the new user has a weak password
-    And the new user creates a password
+    And the new user creates and enters a weak password
     Then the user is shown an error message
-    When the new user has a short digit only password
-    And the new user creates a password
+    When the new user creates and enters short digit only password
     Then the user is shown an error message
-    When the new user has a sequence of numbers password
-    And the new user creates a password
+    When the new user creates and enters a sequence of numbers password
     Then the user is shown an error message
 
   Scenario: User successfully registers using sms
-    Given a new user has valid credentials
-    When the user comes from the stub relying party with options: "default"
+    Given the user comes from the stub relying party with options: "default"
     Then the user is taken to the "Create a GOV.UK One Login or sign in" page
     When the user selects create an account
     Then the new user is taken to the enter your email page
-    When the new user enters their email address
+    When user enters "TEST_USER_EMAIL" email address
     Then the new user is asked to check their email
     When the new user enters the six digit security code from their email
     Then the new user is taken to the create your password page

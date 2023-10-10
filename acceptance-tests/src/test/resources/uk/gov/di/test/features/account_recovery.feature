@@ -2,12 +2,11 @@
 Feature: Account recovery
 
   Scenario: A user with text message authentication changes password and logs in with their MFA. Changes their auth method to auth app, then logs in with the new password and auth app.
-    Given the existing user has sms authentication method and their account is not blocked
-    When the user comes from the stub relying party with options: "default"
+    Given the user comes from the stub relying party with options: "default"
     Then the user is taken to the "Create a GOV.UK One Login or sign in" page
     When the existing user selects sign in
     Then the existing user is taken to the enter your email page
-    When the existing user enters their email address
+    When user enters "TEST_USER_ACCOUNT_RECOVERY_EMAIL_1" email address
     Then the existing user is prompted for their password
     When the user clicks the forgotten password link
     Then the user is taken to the "Check your email" page
@@ -26,14 +25,14 @@ Feature: Account recovery
     Then the user is taken to the "Create a GOV.UK One Login or sign in" page
     When the existing user selects sign in
     Then the existing user is taken to the enter your email page
-    When the existing user enters their email address
+    When user enters "TEST_USER_ACCOUNT_RECOVERY_EMAIL_1" email address
     Then the existing user is prompted for their password
     When the existing user enters their new password
     Then the user is taken to the "Check your phone" page
     When the user selects "Problems with the code?" link
     And the user selects "change how you get security codes" link
     Then the user is taken to the "Check your email" page
-    When the user enters their "email" code
+    When the user enters the six digit security code from their email
     Then the user is taken to the "How do you want to get security codes" page
     When the user selects "Authenticator app for smartphone, tablet or computer"
     Then the user is taken to the "Set up an authenticator app" page
@@ -49,7 +48,7 @@ Feature: Account recovery
     Then the user is taken to the "Create a GOV.UK One Login or sign in" page
     When the existing user selects sign in
     Then the existing user is taken to the enter your email page
-    When the existing user enters their email address
+    When user enters "TEST_USER_ACCOUNT_RECOVERY_EMAIL_1" email address
     Then the existing user is prompted for their password
     When the existing user enters their new password
     Then the user is taken to the "Enter the 6 digit security code shown in your authenticator app" page
@@ -60,12 +59,11 @@ Feature: Account recovery
 
 
   Scenario: A user with auth app authentication changes password and logs in with their MFA. Changes their auth method to text message, then logs in with the new password and text message auth method.
-    Given the existing user has auth app authentication method and their account is not blocked
-    When the user comes from the stub relying party with options: "default"
+    Given the user comes from the stub relying party with options: "default"
     Then the user is taken to the "Create a GOV.UK One Login or sign in" page
     When the existing user selects sign in
     Then the existing user is taken to the enter your email page
-    When the existing user enters their email address
+    When user enters "TEST_USER_ACCOUNT_RECOVERY_EMAIL_2" email address
     Then the existing user is prompted for their password
     When the user clicks the forgotten password link
     Then the user is taken to the "Check your email" page
@@ -84,14 +82,14 @@ Feature: Account recovery
     Then the user is taken to the "Create a GOV.UK One Login or sign in" page
     When the existing user selects sign in
     Then the existing user is taken to the enter your email page
-    When the existing user enters their email address
+    When user enters "TEST_USER_ACCOUNT_RECOVERY_EMAIL_2" email address
     Then the existing user is prompted for their password
     When the existing user enters their new password
     Then the user is taken to the "Enter the 6 digit security code shown in your authenticator app" page
     When the user selects link "I do not have access to the authenticator app"
     And the user selects link "change how you get security codes"
     Then the user is taken to the "Check your email" page
-    When the user enters their "email" code
+    When the user enters the six digit security code from their email
     Then the user is taken to the "How do you want to get security codes" page
     When the user selects "Text message"
     Then the user is taken to the "Enter your mobile phone number" page
@@ -108,7 +106,7 @@ Feature: Account recovery
     Then the user is taken to the "Create a GOV.UK One Login or sign in" page
     When the existing user selects sign in
     Then the existing user is taken to the enter your email page
-    When the existing user enters their email address
+    When user enters "TEST_USER_ACCOUNT_RECOVERY_EMAIL_2" email address
     Then the existing user is prompted for their password
     When the existing user enters their new password
     Then the user is taken to the "Check your phone" page
@@ -119,12 +117,11 @@ Feature: Account recovery
 
 
   Scenario: A user with sms authentication is blocked when they request their email OTP code 6 times (including the initial send on entry to screen) during a change of auth method.
-    Given the existing user has sms authentication method
-    When the user comes from the stub relying party with options: "default"
+    Given the user comes from the stub relying party with options: "default"
     Then the user is taken to the "Create a GOV.UK One Login or sign in" page
     When the existing user selects sign in
     Then the existing user is taken to the enter your email page
-    When the existing user enters their email address
+    When user enters "TEST_USER_ACCOUNT_RECOVERY_EMAIL_3" email address
     Then the existing user is prompted for their password
     When the existing user enters their password
     Then the user is taken to the "Check your phone" page
@@ -141,7 +138,7 @@ Feature: Account recovery
     Then the user is taken to the "Create a GOV.UK One Login or sign in" page
     When the existing user selects sign in
     Then the existing user is taken to the enter your email page
-    When the existing user enters their email address
+    When user enters "TEST_USER_ACCOUNT_RECOVERY_EMAIL_3" email address
     Then the existing user is prompted for their password
     When the existing user enters their password
     Then the user is taken to the "Check your phone" page
@@ -151,12 +148,11 @@ Feature: Account recovery
 
 
   Scenario: A user with auth app authentication is blocked when they enter an incorrect email OTP 6 times during a change of auth method.
-    Given the existing user has auth app authentication method
-    When the user comes from the stub relying party with options: "default"
+    Given the user comes from the stub relying party with options: "default"
     Then the user is taken to the "Create a GOV.UK One Login or sign in" page
     When the existing user selects sign in
     Then the existing user is taken to the enter your email page
-    When the existing user enters their email address
+    When user enters "TEST_USER_ACCOUNT_RECOVERY_EMAIL_4" email address
     Then the existing user is prompted for their password
     When the existing user enters their password
     Then the user is taken to the "Enter the 6 digit security code shown in your authenticator app" page
@@ -172,7 +168,7 @@ Feature: Account recovery
     Then the user is taken to the "Create a GOV.UK One Login or sign in" page
     When the existing user selects sign in
     Then the existing user is taken to the enter your email page
-    When the existing user enters their email address
+    When user enters "TEST_USER_ACCOUNT_RECOVERY_EMAIL_4" email address
     Then the existing user is prompted for their password
     When the existing user enters their password
     Then the user is taken to the "Enter the 6 digit security code shown in your authenticator app" page
