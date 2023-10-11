@@ -402,11 +402,13 @@ public class LoginStepDef extends BasePage {
     }
 
     @When("the user enters an incorrect email OTP {int} times")
-    public void theUserEntersAnIncorrectEmailOTPIntTimes(Integer attemptCount) {
+    public void theUserEntersAnIncorrectEmailOTPIntTimes(Integer attemptCount)
+            throws InterruptedException {
         for (int index = 0; index < attemptCount; index++) {
             checkYourEmailPage.waitForPage();
             checkYourEmailPage.enterEmailCodeAndContinue(INCORRECT_EMAIL_OTP_CODE);
             System.out.println("Incorrect code entry count: " + (index + 1));
+            Thread.sleep(2000);
         }
     }
 

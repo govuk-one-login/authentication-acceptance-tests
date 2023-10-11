@@ -133,10 +133,12 @@ public class BasePage {
         }
     }
 
-    protected String getErrorSummaryText() {
-        return driver.findElement(By.cssSelector(".govuk-error-summary__body li a"))
-                .getText()
-                .trim();
+    public void waitForThisErrorMessage(String expectedMessage) {
+        new WebDriverWait(driver, DEFAULT_PAGE_LOAD_WAIT_TIME)
+                .until(
+                        ExpectedConditions.visibilityOf(
+                                driver.findElement(
+                                        By.xpath("//li/a[text() = '" + expectedMessage + "']"))));
     }
 
     protected void pressBack() {
