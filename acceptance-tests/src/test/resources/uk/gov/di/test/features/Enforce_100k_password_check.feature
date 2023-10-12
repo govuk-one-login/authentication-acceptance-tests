@@ -3,12 +3,11 @@ Feature: Enforce 100k password check
   If an existing user has a current password that is in the list of top 100k passwords, they are forced to change their password
 
   Scenario: Existing user forced to reset their top 100k password
-    Given the existing user has a password which is on the top 100k passwords list
-    When the user comes from the stub relying party with options: "default"
+    Given the user comes from the stub relying party with options: "default"
     Then the user is taken to the "Create a GOV.UK One Login or sign in" page
     When the existing user selects sign in
     Then the existing user is taken to the enter your email page
-    When the existing user enters their email address
+    When user enters "REQ_RESET_PW_USER_EMAIL" email address
     Then the user is taken to the "Enter your password" page
     When the user enters their password which is on the top 100k password list
     Then the user is taken to the "Reset your password" page

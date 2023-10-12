@@ -36,18 +36,11 @@ import static uk.gov.di.test.utils.AuthenticationJourneyPages.ENTER_EMAIL_CREATE
 import static uk.gov.di.test.utils.AuthenticationJourneyPages.ENTER_EMAIL_EXISTING_USER;
 import static uk.gov.di.test.utils.AuthenticationJourneyPages.ENTER_PHONE_NUMBER;
 import static uk.gov.di.test.utils.AuthenticationJourneyPages.GET_SECURITY_CODES;
+import static uk.gov.di.test.utils.Constants.*;
 
 public class RegistrationStepDef extends BasePage {
 
-    private String emailAddress;
-    private String password;
-    private String phoneNumber;
-    private String sixDigitCodeEmail;
-    private String sixDigitCodePhone;
-    private String tcEmailAddress;
-    private String tcPassword;
     private String authAppSecretKey;
-    private String internationalPhoneNumber;
 
     NoGovUkOneLoginFoundPage noGovUkOneLoginFoundPage = new NoGovUkOneLoginFoundPage();
     EnterYourMobilePhoneNumberPage enterYourMobilePhoneNumberPage =
@@ -67,79 +60,6 @@ public class RegistrationStepDef extends BasePage {
     EnterThe6DigitSecurityCodeShownInYourAuthenticatorAppPage
             enterThe6DigitSecurityCodeShownInYourAuthenticatorAppPage =
                     new EnterThe6DigitSecurityCodeShownInYourAuthenticatorAppPage();
-
-    @And("the new user has an invalid email format")
-    public void theNewUserHasInvalidEmail() {
-        emailAddress = "joe.bloggs";
-        password = "password";
-    }
-
-    @Given("a new user has an invalid UK mobile phone number")
-    public void aNewUserHasAnInvalidUkMobilePhoneNumber() {
-        emailAddress = System.getenv().get("IPN1_NEW_USER_EMAIL");
-        password = System.getenv().get("TEST_USER_PASSWORD");
-        sixDigitCodeEmail = System.getenv().get("TEST_USER_EMAIL_CODE");
-        sixDigitCodePhone = System.getenv().get("TEST_USER_PHONE_CODE");
-    }
-
-    @Given("a new user has an invalid international mobile phone number")
-    public void aNewUserHasAnInvalidInternationalMobilePhoneNumber() {
-        emailAddress = System.getenv().get("IPN2_NEW_USER_EMAIL");
-        password = System.getenv().get("TEST_USER_PASSWORD");
-        sixDigitCodeEmail = System.getenv().get("TEST_USER_EMAIL_CODE");
-        sixDigitCodePhone = System.getenv().get("TEST_USER_PHONE_CODE");
-    }
-
-    @Given("a user has a valid international mobile phone number")
-    public void aUserHasAValidInternationalMobilePhoneNumber() {
-        emailAddress = System.getenv().get("IPN3_NEW_USER_EMAIL");
-        password = System.getenv().get("TEST_USER_PASSWORD");
-        sixDigitCodeEmail = System.getenv().get("TEST_USER_EMAIL_CODE");
-    }
-
-    @When("the new user has an invalid password")
-    public void theUserHasInvalidPassword() {
-        password = "password";
-    }
-
-    @When("the new user has a weak password")
-    public void theUserHasAWeakPassword() {
-        password = "password1";
-    }
-
-    @When("the new user has a short digit only password")
-    public void theNewUserHasAShortDigitOnlyPassword() {
-        password = "44445555";
-    }
-
-    @When("the new user has a sequence of numbers password")
-    public void theNewUserHasASequenceOfNumbersPassword() {
-        password = "12345678";
-    }
-
-    @And("a new user has valid credentials")
-    public void theNewUserHasValidCredential() {
-        emailAddress = System.getenv().get("TEST_USER_EMAIL");
-        password = System.getenv().get("TEST_USER_PASSWORD");
-        phoneNumber = System.getenv().get("TEST_USER_PHONE_NUMBER");
-        sixDigitCodeEmail = System.getenv().get("TEST_USER_EMAIL_CODE");
-        sixDigitCodePhone = System.getenv().get("TEST_USER_PHONE_CODE");
-        tcEmailAddress = System.getenv().get("TERMS_AND_CONDITIONS_TEST_USER_EMAIL");
-        tcPassword = System.getenv().get("TERMS_AND_CONDITIONS_TEST_USER_PASSWORD");
-        internationalPhoneNumber = System.getenv().get("TEST_USER_INTERNATIONAL_PHONE_NUMBER");
-    }
-
-    @And("the auth app user has valid credentials")
-    public void theAuthAppUserHasValidCredentials() {
-        emailAddress = System.getenv().get("TEST_USER_AUTH_APP_EMAIL");
-        password = System.getenv().get("TEST_USER_PASSWORD");
-        sixDigitCodeEmail = System.getenv().get("TEST_USER_EMAIL_CODE");
-    }
-
-    @When("the new user has a valid email address")
-    public void theNewUserHasValidEmailAddress() {
-        emailAddress = System.getenv().get("TEST_USER_EMAIL");
-    }
 
     @When("the user selects create an account")
     public void theUserSelectsCreateAnAccount() {
@@ -166,11 +86,6 @@ public class RegistrationStepDef extends BasePage {
         waitForPageLoadThenValidate(ENTER_EMAIL_EXISTING_USER);
     }
 
-    @When("the new user enters their email address")
-    public void theNewUserEntersEmailAddress() {
-        enterYourEmailAddressPage.enterEmailAddressAndContinue(emailAddress);
-    }
-
     @Then("the new user is taken to the account not found page")
     public void theNewUserIsTakenToTheAccountNotFoundPage() {
         waitForPageLoadThenValidate(ACCOUNT_NOT_FOUND);
@@ -181,9 +96,10 @@ public class RegistrationStepDef extends BasePage {
         waitForPageLoadThenValidate(CHECK_YOUR_EMAIL);
     }
 
+    @When("the user enters the six digit security code from their email")
     @When("the new user enters the six digit security code from their email")
     public void theNewUserEntersTheSixDigitSecurityCodeFromTheirEmail() {
-        checkYourEmailPage.enterEmailCodeAndContinue(sixDigitCodeEmail);
+        checkYourEmailPage.enterEmailCodeAndContinue(System.getenv().get("TEST_USER_EMAIL_CODE"));
     }
 
     @Then("the new user is taken to the create your password page")
@@ -191,9 +107,32 @@ public class RegistrationStepDef extends BasePage {
         waitForPageLoadThenValidate(CREATE_PASSWORD);
     }
 
-    @When("the new user creates a password")
-    public void theNewUserCreatesAValidPassword() {
-        createYourPasswordPage.enterBothPasswordsAndContinue(password, password);
+    @And("the new user creates a password")
+    public void theNewUserCreatesAPassword() {
+        String passwordVal = System.getenv().get("TEST_USER_PASSWORD");
+        createYourPasswordPage.enterBothPasswordsAndContinue(passwordVal, passwordVal);
+    }
+
+    @And("the new user creates and enters an invalid password")
+    public void theNewUserCreatesAndEntersAnInvalidPassword() {
+        createYourPasswordPage.enterBothPasswordsAndContinue(INVALID_PASSWORD, INVALID_PASSWORD);
+    }
+
+    @And("the new user creates and enters a weak password")
+    public void theNewUserCreatesAndEntersAWeakPassword() {
+        createYourPasswordPage.enterBothPasswordsAndContinue(WEAK_PASSWORD, WEAK_PASSWORD);
+    }
+
+    @And("the new user creates and enters short digit only password")
+    public void theNewUserCreatesAndEntersShortDigitOnlyPassword() {
+        createYourPasswordPage.enterBothPasswordsAndContinue(
+                SHORT_DIGIT_PASSWORD, SHORT_DIGIT_PASSWORD);
+    }
+
+    @And("the new user creates and enters a sequence of numbers password")
+    public void theNewUserCreatesAndEntersASequenceOfNumbersPassword() {
+        createYourPasswordPage.enterBothPasswordsAndContinue(
+                SEQUENCE_NUMBER_PASSWORD, SEQUENCE_NUMBER_PASSWORD);
     }
 
     @Then("the new user is taken to the get security codes page")
@@ -231,16 +170,6 @@ public class RegistrationStepDef extends BasePage {
         createOrSignInPage.clickSignInButton();
     }
 
-    @When("the existing auth app user enters their email address")
-    public void theExistingAuthAppUserEntersEmailAddress() {
-        enterYourEmailAddressToSignInPage.enterEmailAddressAndContinue(emailAddress);
-    }
-
-    @When("the existing auth app user enters their password")
-    public void theExistingUserEntersTheirPassword() {
-        enterYourPasswordPage.enterPasswordAndContinue(password);
-    }
-
     @Then("the new user is taken to the enter phone number page")
     public void theNewUserIsTakenToTheEnterPhoneNumberPage() {
         waitForPageLoadThenValidate(ENTER_PHONE_NUMBER);
@@ -248,18 +177,14 @@ public class RegistrationStepDef extends BasePage {
 
     @When("the new user enters their mobile phone number")
     public void theNewUserEntersTheirMobilePhoneNumber() {
-        enterYourMobilePhoneNumberPage.enterUkPhoneNumber(phoneNumber);
+        enterYourMobilePhoneNumberPage.enterUkPhoneNumber(
+                System.getenv().get("TEST_USER_PHONE_NUMBER"));
         findAndClickContinue();
     }
 
     @Then("the new user is taken to the check your phone page")
     public void theNewUserIsTakenToTheCheckYourPhonePage() {
         waitForPageLoadThenValidate(CHECK_YOUR_PHONE);
-    }
-
-    @When("the new user enters the six digit security code from their phone")
-    public void theNewUserEntersTheSixDigitSecurityCodeFromTheirPhone() {
-        checkYourPhonePage.enterPhoneCodeAndContinue(sixDigitCodePhone);
     }
 
     @Then("the new user is taken to the account created page")
@@ -307,7 +232,8 @@ public class RegistrationStepDef extends BasePage {
 
     @When("the new user enters their mobile phone number using an international dialling code")
     public void theNewUserEntersTheirMobilePhoneNumberUsingAnInternationalDiallingCode() {
-        enterYourMobilePhoneNumberPage.enterUkPhoneNumber(internationalPhoneNumber);
+        enterYourMobilePhoneNumberPage.enterUkPhoneNumber(
+                System.getenv().get("TEST_USER_INTERNATIONAL_PHONE_NUMBER"));
         findAndClickContinue();
     }
 

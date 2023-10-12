@@ -1,7 +1,6 @@
 package uk.gov.di.test.step_definitions;
 
 import io.cucumber.java.en.And;
-import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.junit.jupiter.api.Assertions;
@@ -33,20 +32,10 @@ import static uk.gov.di.test.utils.AuthenticationJourneyPages.ENTER_EMAIL_EXISTI
 import static uk.gov.di.test.utils.AuthenticationJourneyPages.ENTER_PASSWORD;
 import static uk.gov.di.test.utils.AuthenticationJourneyPages.RESEND_SECURITY_CODE;
 import static uk.gov.di.test.utils.AuthenticationJourneyPages.RESEND_SECURITY_CODE_TOO_MANY_TIMES;
-import static uk.gov.di.test.utils.Constants.INCORRECT_EMAIL_OTP_CODE;
-import static uk.gov.di.test.utils.Constants.INVALID_PASSWORD;
-import static uk.gov.di.test.utils.Constants.MISMATCHING_PASSWORD_1;
-import static uk.gov.di.test.utils.Constants.MISMATCHING_PASSWORD_2;
-import static uk.gov.di.test.utils.Constants.NEW_VALID_PASSWORD;
-import static uk.gov.di.test.utils.Constants.TOP_100K_PASSWORD;
+import static uk.gov.di.test.utils.Constants.*;
 
 public class LoginStepDef extends BasePage {
 
-    private String emailAddress;
-    private String password;
-    private String sixDigitCodePhone;
-    private String phoneNumber;
-    private String sixDigitCodeEmail;
     private String authAppSecretKey;
 
     public ResetYourPasswordPage resetYourPasswordPage = new ResetYourPasswordPage();
@@ -70,82 +59,14 @@ public class LoginStepDef extends BasePage {
     public SetUpAnAuthenticatorAppPage setUpAnAuthenticatorAppPage =
             new SetUpAnAuthenticatorAppPage();
 
-    @And("the existing user has valid credentials")
-    public void theExistingUserHasValidCredentials() {
-        emailAddress = BasePage.TEST_USER_EMAIL;
-        password = BasePage.TEST_USER_PASSWORD;
-        sixDigitCodePhone = BasePage.TEST_USER_PHONE_CODE;
-    }
-
-    @Given("the existing user has valid credentials and wants to reset their password")
-    public void theExistingUserHasValidCredentialsAndWantsToResetTheirPassword() {
-        emailAddress = System.getenv().get("RESET_PW_USER_EMAIL");
-        password = System.getenv().get("TEST_USER_PASSWORD");
-        phoneNumber = System.getenv().get("TEST_USER_PHONE_NUMBER");
-        sixDigitCodeEmail = System.getenv().get("TEST_USER_EMAIL_CODE");
-        sixDigitCodePhone = System.getenv().get("TEST_USER_PHONE_CODE");
-    }
-
-    @Given("the existing user has sms authentication method and their account is not blocked")
-    public void theExistingUserHasSmsAuthMethodAndTheirAccountIsNotBlocked() {
-        emailAddress = System.getenv().get("TEST_USER_ACCOUNT_RECOVERY_EMAIL_1");
-        password = System.getenv().get("TEST_USER_PASSWORD");
-        phoneNumber = System.getenv().get("TEST_USER_PHONE_NUMBER");
-        sixDigitCodeEmail = System.getenv().get("TEST_USER_EMAIL_CODE");
-        sixDigitCodePhone = System.getenv().get("TEST_USER_PHONE_CODE");
-    }
-
-    @Given("the existing user has auth app authentication method and their account is not blocked")
-    public void theExistingUserHasAuthAppAuthMethodAndTheirAccountIsNotBlocked() {
-        emailAddress = System.getenv().get("TEST_USER_ACCOUNT_RECOVERY_EMAIL_2");
-        password = System.getenv().get("TEST_USER_PASSWORD");
-        phoneNumber = System.getenv().get("TEST_USER_PHONE_NUMBER");
-        sixDigitCodeEmail = System.getenv().get("TEST_USER_EMAIL_CODE");
-        sixDigitCodePhone = System.getenv().get("TEST_USER_PHONE_CODE");
-        authAppSecretKey = System.getenv().get("ACCOUNT_RECOVERY_USER_AUTH_APP_SECRET");
-    }
-
-    @Given("the existing user has sms authentication method")
-    public void theExistingUserHasSmsAuthMethod() {
-        emailAddress = System.getenv().get("TEST_USER_ACCOUNT_RECOVERY_EMAIL_3");
-        password = System.getenv().get("TEST_USER_PASSWORD");
-        phoneNumber = System.getenv().get("TEST_USER_PHONE_NUMBER");
-        sixDigitCodeEmail = System.getenv().get("TEST_USER_EMAIL_CODE");
-        sixDigitCodePhone = System.getenv().get("TEST_USER_PHONE_CODE");
-    }
-
-    @Given("the existing user has auth app authentication method")
-    public void theExistingUserHasAuthAppAuthMethod() {
-        emailAddress = System.getenv().get("TEST_USER_ACCOUNT_RECOVERY_EMAIL_4");
-        password = System.getenv().get("TEST_USER_PASSWORD");
-        phoneNumber = System.getenv().get("TEST_USER_PHONE_NUMBER");
-        sixDigitCodeEmail = System.getenv().get("TEST_USER_EMAIL_CODE");
-        sixDigitCodePhone = System.getenv().get("TEST_USER_PHONE_CODE");
-    }
-
-    @Given("the existing user has a password which is on the top 100k passwords list")
-    public void theExistingUserHasAPasswordWhichIsOnTheTop100lPasswordsList() {
-        emailAddress = System.getenv().get("REQ_RESET_PW_USER_EMAIL");
-        password = System.getenv().get("TOP_100K_PASSWORD");
-        phoneNumber = System.getenv().get("TEST_USER_PHONE_NUMBER");
-        sixDigitCodeEmail = System.getenv().get("TEST_USER_EMAIL_CODE");
-        sixDigitCodePhone = System.getenv().get("TEST_USER_PHONE_CODE");
-    }
-
     @When("the user enters their password which is on the top 100k password list")
     public void theUserEntersTheirPasswordWhichIsOnTheTop100kPasswordList() {
-        enterYourPasswordPage.enterPasswordAndContinue(password);
+        enterYourPasswordPage.enterPasswordAndContinue(System.getenv().get("TOP_100K_PASSWORD"));
     }
 
     @When("the user clicks the forgotten password link")
     public void theUserClicksTheForgottenPasswordLink() {
         enterYourPasswordPage.clickForgottenPasswordLink();
-    }
-
-    @Given("a user has a phone code that does not work")
-    public void theExistingUserHasAPhoneCodeThatDoesNotWork() {
-        emailAddress = System.getenv().get("IPN4_EXISTING_USER_EMAIL");
-        password = System.getenv().get("TEST_USER_PASSWORD");
     }
 
     @When("the existing user selects sign in")
@@ -158,9 +79,14 @@ public class LoginStepDef extends BasePage {
         waitForPageLoadThenValidate(ENTER_EMAIL_EXISTING_USER);
     }
 
-    @When("the existing user enters their email address")
-    public void theExistingUserEntersEmailAddress() {
-        enterYourEmailAddressToSignInPage.enterEmailAddressAndContinue(emailAddress);
+    @And("user enters {string} email address")
+    public void userEntersEmailAddress(String email) {
+        enterYourEmailAddressToSignInPage.enterEmailAddressAndContinue(System.getenv().get(email));
+    }
+
+    @When("user enters invalid email address")
+    public void userEntersInvalidEmailAddress() {
+        enterYourEmailAddressToSignInPage.enterEmailAddressAndContinue(INVALID_EMAIL);
     }
 
     @Then("the existing user is prompted for their password")
@@ -168,9 +94,10 @@ public class LoginStepDef extends BasePage {
         waitForPageLoadThenValidate(ENTER_PASSWORD);
     }
 
+    @When("the existing auth app user enters their password")
     @When("the existing user enters their password")
     public void theExistingUserEntersTheirPassword() {
-        enterYourPasswordPage.enterPasswordAndContinue(password);
+        enterYourPasswordPage.enterPasswordAndContinue(System.getenv().get("TEST_USER_PASSWORD"));
     }
 
     @When("the existing user enters their new password")
@@ -188,9 +115,10 @@ public class LoginStepDef extends BasePage {
         waitForPageLoadThenValidate(ENTER_CODE_UPLIFT);
     }
 
+    @When("the new user enters the six digit security code from their phone")
     @When("the existing user enters the six digit security code from their phone")
     public void theExistingUserEntersTheSixDigitSecurityCodeFromTheirPhone() {
-        checkYourPhonePage.enterPhoneCodeAndContinue(sixDigitCodePhone);
+        checkYourPhonePage.enterPhoneCodeAndContinue(System.getenv().get("TEST_USER_PHONE_CODE"));
     }
 
     @Then("the existing user is returned to the service")
@@ -228,12 +156,6 @@ public class LoginStepDef extends BasePage {
         waitForPageLoadThenValidate(CANNOT_GET_NEW_SECURITY_CODE);
     }
 
-    @And("the existing resend code user has valid credentials")
-    public void theExistingResendCodeUserHasValidCredentials() {
-        emailAddress = System.getenv().get("RESEND_CODE_TEST_USER_EMAIL");
-        password = System.getenv().get("TEST_USER_PASSWORD");
-    }
-
     @Then("the existing user is taken to the Identity Provider Welsh Login Page")
     public void theExistingUserIsTakenToTheIdentityProviderWelshLoginPage() {
         assertEquals("Creu GOV.UK One Login neu fewngofnodi - GOV.UK One Login", driver.getTitle());
@@ -258,14 +180,9 @@ public class LoginStepDef extends BasePage {
         assertEquals("Gwiriwch eich ffôn - GOV.UK One Login", driver.getTitle());
     }
 
-    @When("the existing user enters their password in Welsh")
-    public void theExistingUserEntersTheirPasswordInWelsh() {
-        enterYourPasswordPage.enterPasswordAndContinue(password);
-    }
-
-    @When("the existing user enters their email address in Welsh")
-    public void theExistingUserEntersTheirEmailAddressInWelsh() {
-        enterYourEmailAddressToSignInPage.enterEmailAddress(emailAddress);
+    @When("user enters {string} email address in Welsh")
+    public void userEntersEmailAddressInWelsh(String email) {
+        enterYourEmailAddressToSignInPage.enterEmailAddress(System.getenv().get(email));
         findAndClickContinueWelsh();
     }
 
@@ -299,28 +216,6 @@ public class LoginStepDef extends BasePage {
                 MISMATCHING_PASSWORD_1, MISMATCHING_PASSWORD_2);
     }
 
-    @When("the user enters the six digit security code from their email")
-    public void theUserEntersTheSixDigitSecurityCodeFromTheirEmail() {
-        checkYourEmailPage.enterEmailCode(sixDigitCodeEmail);
-        findAndClickContinue();
-    }
-
-    @When("the user enters their {string} code")
-    @When("the new user enters their {string} code")
-    public void theUserEntersTheirAuthCode(String codeType) {
-
-        switch (codeType.toLowerCase()) {
-            case "email":
-                checkYourEmailPage.enterEmailCodeAndContinue(
-                        System.getenv().get("TEST_USER_EMAIL_CODE"));
-                break;
-            case "auth app":
-                checkYourPhonePage.enterPhoneCodeAndContinue(
-                        System.getenv().get("TEST_USER_PHONE_CODE"));
-                break;
-        }
-    }
-
     @And("confirmation that the user will get security codes via {string} is displayed")
     public void confirmationThatTheUserWillGetSecurityCodesViaIsDisplayed(
             String authenticationType) {
@@ -328,7 +223,7 @@ public class LoginStepDef extends BasePage {
         switch (authenticationType.toLowerCase()) {
             case "text message":
                 // Check the last four digits of the phone number appear in the page message
-                phoneNumber = System.getenv().get("TEST_USER_PHONE_NUMBER");
+                String phoneNumber = System.getenv().get("TEST_USER_PHONE_NUMBER");
                 String lastFourDigitsOfPhone = phoneNumber.substring(phoneNumber.length() - 4);
                 assertTrue(
                         youveChangedHowYouGetSecurityCodes
@@ -348,6 +243,7 @@ public class LoginStepDef extends BasePage {
 
     @When("the existing user adds the secret key on the screen to their auth app")
     public void theNewUserAddTheSecretKeyOnTheScreenToTheirAuthApp() {
+        authAppSecretKey = System.getenv().get("ACCOUNT_RECOVERY_USER_AUTH_APP_SECRET");
         setUpAnAuthenticatorAppPage.iCannotScanQrCodeClick();
         authAppSecretKey = setUpAnAuthenticatorAppPage.getSecretFieldText();
         assertTrue(setUpAnAuthenticatorAppPage.getSecretFieldText().length() == 32);
@@ -355,6 +251,9 @@ public class LoginStepDef extends BasePage {
 
     @And("the existing user enters the security code from the auth app")
     public void theNewUserEntersTheSecurityCodeFromTheAuthApp() {
+        if (authAppSecretKey == null) {
+            authAppSecretKey = System.getenv().get("ACCOUNT_RECOVERY_USER_AUTH_APP_SECRET");
+        }
         setUpAnAuthenticatorAppPage.enterCorrectAuthAppCode(authAppSecretKey);
         findAndClickContinue();
     }
@@ -387,7 +286,8 @@ public class LoginStepDef extends BasePage {
 
     @When("the user enters their mobile phone number")
     public void theUserEntersTheirMobilePhoneNumber() {
-        enterYourMobilePhoneNumberPage.enterUkPhoneNumber(phoneNumber);
+        enterYourMobilePhoneNumberPage.enterUkPhoneNumber(
+                System.getenv().get("TEST_USER_PHONE_NUMBER"));
         findAndClickContinue();
     }
 
@@ -412,21 +312,9 @@ public class LoginStepDef extends BasePage {
         }
     }
 
-    @Given("an existing user wants to reset their password")
-    public void anExistingUserWantsToResetTheirPassword() {
-        emailAddress = System.getenv().get("INCORRECT_EMAIL_OTP_FOR_PW_RESET_EMAIL");
-        password = System.getenv().get("TEST_USER_PASSWORD");
-    }
-
     @When("the user selects link {string}")
     public void theUserSelectsLink(String linkText) {
         selectLinkByText(linkText);
-    }
-
-    @Given("the existing user wants to change their password")
-    public void theExistingUserWantsToResetTheirPassword() {
-        emailAddress = System.getenv().get("TOO_MANY_EMAIL_OTP_REQUESTS_FOR_PW_RESET_EMAIL");
-        password = System.getenv().get("TEST_USER_PASSWORD");
     }
 
     @And("the user requests the email OTP code {int} times")
@@ -444,13 +332,5 @@ public class LoginStepDef extends BasePage {
     @When("the user agrees to the updated terms and conditions")
     public void theUserAgreesToTheUpdatedTermsAndConditions() {
         termsAndConditionsPage.pressAgreeAndContinueButton();
-    }
-
-    @Given("the existing user has outdated terms and conditions")
-    public void theExistingUserHasOutdatedTermsAndConditions() {
-        emailAddress = System.getenv().get("TERMS_AND_CONDITIONS_TEST_USER_EMAIL");
-        password = System.getenv().get("TEST_USER_PASSWORD");
-        phoneNumber = System.getenv().get("TEST_USER_PHONE_NUMBER");
-        sixDigitCodePhone = System.getenv().get("TEST_USER_PHONE_CODE");
     }
 }

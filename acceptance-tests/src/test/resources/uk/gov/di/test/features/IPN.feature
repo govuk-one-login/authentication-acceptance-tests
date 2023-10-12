@@ -1,13 +1,13 @@
 @IPN
 Feature: International Phone Numbers
 
+
   Scenario: User cannot register using an invalid UK mobile phone number
-    Given a new user has an invalid UK mobile phone number
-    When the user comes from the stub relying party with options: "default"
+    Given the user comes from the stub relying party with options: "default"
     Then the user is taken to the "Create a GOV.UK One Login or sign in" page
     When the user selects create an account
     Then the new user is taken to the enter your email page
-    When the new user enters their email address
+    When user enters "IPN1_NEW_USER_EMAIL" email address
     Then the new user is asked to check their email
     When the new user enters the six digit security code from their email
     Then the new user is taken to the create your password page
@@ -25,13 +25,13 @@ Feature: International Phone Numbers
     Then the "Enter a UK mobile phone number using only numbers or the + symbol" error message is displayed
 
 
+
   Scenario: User can successfully complete registration using an international phone number
-    Given a new user has an invalid international mobile phone number
-    When the user comes from the stub relying party with options: "default"
+    Given the user comes from the stub relying party with options: "default"
     Then the user is taken to the "Create a GOV.UK One Login or sign in" page
     When the user selects create an account
     Then the new user is taken to the enter your email page
-    When the new user enters their email address
+    When user enters "IPN2_NEW_USER_EMAIL" email address
     Then the new user is asked to check their email
     When the new user enters the six digit security code from their email
     Then the new user is taken to the create your password page
@@ -58,8 +58,7 @@ Feature: International Phone Numbers
 
 
   Scenario: User with an international phone number reports that they did not receive their security code
-    Given a user has a valid international mobile phone number
-    When the user comes from the stub relying party with options: "default"
+    Given the user comes from the stub relying party with options: "default"
     Then the user is taken to the "Create a GOV.UK One Login or sign in" page
     When the user clicks on the support link
     Then the user is taken to the Contact us page in a new tab
@@ -72,8 +71,7 @@ Feature: International Phone Numbers
 
 
   Scenario: User with an international phone number reports that their security code did not work
-    Given a user has a phone code that does not work
-    When the user comes from the stub relying party with options: "default"
+    Given the user comes from the stub relying party with options: "default"
     Then the user is taken to the "Create a GOV.UK One Login or sign in" page
     When the user clicks on the support link
     Then the user is taken to the Contact us page in a new tab
