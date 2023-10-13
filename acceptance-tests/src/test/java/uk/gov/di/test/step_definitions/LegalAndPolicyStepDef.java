@@ -5,7 +5,6 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import org.openqa.selenium.By;
 import uk.gov.di.test.pages.BasePage;
-import uk.gov.di.test.pages.RpStubPage;
 import uk.gov.di.test.utils.SupportingPages;
 
 import java.net.URI;
@@ -14,17 +13,8 @@ import static org.junit.Assert.assertEquals;
 
 public class LegalAndPolicyStepDef extends BasePage {
 
-    RpStubPage rpStubPage = new RpStubPage();
-
     @Given("the services are running")
     public void theServicesAreRunning() {}
-
-    @Then("the user is taken to the Identity Provider Login Page")
-    public void theExistingUserIsTakenToTheIdentityProviderLoginPage() {
-        waitForPageLoad("Create a GOV.UK One Login or sign in");
-        assertEquals("/sign-in-or-create", URI.create(driver.getCurrentUrl()).getPath());
-        assertEquals("Create a GOV.UK One Login or sign in - GOV.UK One Login", driver.getTitle());
-    }
 
     @And("the user clicks link {string}")
     public void theUserClicksLink(String linkText) {

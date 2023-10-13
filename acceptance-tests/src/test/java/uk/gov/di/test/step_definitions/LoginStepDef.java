@@ -14,30 +14,23 @@ import uk.gov.di.test.pages.EnterYourMobilePhoneNumberPage;
 import uk.gov.di.test.pages.EnterYourPasswordPage;
 import uk.gov.di.test.pages.GetSecurityCodePage;
 import uk.gov.di.test.pages.ResetYourPasswordPage;
-import uk.gov.di.test.pages.RpStubPage;
 import uk.gov.di.test.pages.SetUpAnAuthenticatorAppPage;
 import uk.gov.di.test.pages.TermsAndConditionsPage;
 import uk.gov.di.test.pages.YouAskedToResendTheSecurityCodeTooManyTimesPage;
 import uk.gov.di.test.pages.YouveChangedHowYouGetSecurityCodesPage;
 
-import java.net.URI;
-
 import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static uk.gov.di.test.utils.AuthenticationJourneyPages.CANNOT_GET_NEW_SECURITY_CODE;
-import static uk.gov.di.test.utils.AuthenticationJourneyPages.ENTER_CODE;
 import static uk.gov.di.test.utils.AuthenticationJourneyPages.ENTER_CODE_UPLIFT;
 import static uk.gov.di.test.utils.AuthenticationJourneyPages.ENTER_EMAIL_EXISTING_USER;
 import static uk.gov.di.test.utils.AuthenticationJourneyPages.ENTER_PASSWORD;
 import static uk.gov.di.test.utils.AuthenticationJourneyPages.RESEND_SECURITY_CODE;
-import static uk.gov.di.test.utils.AuthenticationJourneyPages.RESEND_SECURITY_CODE_TOO_MANY_TIMES;
 import static uk.gov.di.test.utils.Constants.*;
 
 public class LoginStepDef extends BasePage {
 
     private String authAppSecretKey;
-
     public ResetYourPasswordPage resetYourPasswordPage = new ResetYourPasswordPage();
     public CheckYourEmailPage checkYourEmailPage = new CheckYourEmailPage();
     public YouveChangedHowYouGetSecurityCodesPage youveChangedHowYouGetSecurityCodes =
@@ -48,7 +41,6 @@ public class LoginStepDef extends BasePage {
     public EnterYourPasswordPage enterYourPasswordPage = new EnterYourPasswordPage();
     public CheckYourPhonePage checkYourPhonePage = new CheckYourPhonePage();
     public GetSecurityCodePage getSecurityCodePage = new GetSecurityCodePage();
-    public RpStubPage rpStubPage = new RpStubPage();
     public EnterYourEmailAddressToBasePagePage enterYourEmailAddressToSignInPage =
             new EnterYourEmailAddressToBasePagePage();
     public CreateOrBasePagePage createOrSignInPage = new CreateOrBasePagePage();
@@ -105,11 +97,6 @@ public class LoginStepDef extends BasePage {
         enterYourPasswordPage.enterPasswordAndContinue(NEW_VALID_PASSWORD);
     }
 
-    @Then("the existing user is taken to the enter code page")
-    public void theExistingUserIsTakenToTheEnterCodePage() {
-        waitForPageLoadThenValidate(ENTER_CODE);
-    }
-
     @Then("the existing user is taken to the enter code uplifted page")
     public void theExistingUserIsTakenToTheEnterCodeUpliftedPage() {
         waitForPageLoadThenValidate(ENTER_CODE_UPLIFT);
@@ -124,12 +111,6 @@ public class LoginStepDef extends BasePage {
     @Then("the existing user is returned to the service")
     public void theExistingUserIsReturnedToTheService() {}
 
-    @Then("the existing user is taken to the you have signed out page")
-    public void theExistingUserIsTakenToTheYouHaveSignedOutPage() {
-        waitForPageLoad("Signed out");
-        assertEquals("/signed-out", URI.create(driver.getCurrentUrl()).getPath());
-    }
-
     @When("the existing user requests the phone otp code {int} times")
     public void theExistingUserRequestsThePhoneOtpCodeTimes(int timesCodeIncorrect) {
         for (int i = 0; i < timesCodeIncorrect; i++) {
@@ -140,20 +121,9 @@ public class LoginStepDef extends BasePage {
         }
     }
 
-    @Then(
-            "the existing user is taken to the you asked to resend the security code too many times page")
-    public void theExistingUserIsTakenToTheYouAskedToResendTheSecurityCodeTooManyTimesPage() {
-        waitForPageLoadThenValidate(RESEND_SECURITY_CODE_TOO_MANY_TIMES);
-    }
-
     @When("the existing user clicks the get a new code link")
     public void theExistingUserClicksTheGetANewCodeLink() {
         youAskedToResendTheSecurityCodeTooManyTimesPage.clickGetANewCodeLink();
-    }
-
-    @Then("the existing user is taken to the you cannot get a new security code page")
-    public void theExistingUserIsTakenToTheYouCannotGetANewSecurityCodePage() {
-        waitForPageLoadThenValidate(CANNOT_GET_NEW_SECURITY_CODE);
     }
 
     @Then("the existing user is taken to the Identity Provider Welsh Login Page")
@@ -173,11 +143,6 @@ public class LoginStepDef extends BasePage {
     @Then("the existing user is prompted for their password in Welsh")
     public void theExistingUserIsPromptedForTheirPasswordInWelsh() {
         assertEquals("Rhowch eich cyfrinair - GOV.UK One Login", driver.getTitle());
-    }
-
-    @Then("the existing user is taken to the Welsh enter code page")
-    public void theExistingUserIsTakenToTheWelshEnterCodePage() {
-        assertEquals("Gwiriwch eich ffôn - GOV.UK One Login", driver.getTitle());
     }
 
     @When("user enters {string} email address in Welsh")
@@ -315,18 +280,6 @@ public class LoginStepDef extends BasePage {
     @When("the user selects link {string}")
     public void theUserSelectsLink(String linkText) {
         selectLinkByText(linkText);
-    }
-
-    @And("the user requests the email OTP code {int} times")
-    public void theUserRequestsTheEmailOTPCodeIntTimes(Integer requestCount) {
-        for (int index = 0; index < requestCount; index++) {
-            waitForPageLoad("Check your email");
-            selectLinkByText("Problems with the code?");
-            selectLinkByText("send the code again");
-            waitForPageLoad("Get security code");
-            findAndClickButtonByText("Get security code");
-            System.out.println("Code request count: " + (index + 1));
-        }
     }
 
     @When("the user agrees to the updated terms and conditions")

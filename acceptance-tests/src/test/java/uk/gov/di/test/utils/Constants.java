@@ -12,5 +12,4 @@ public final class Constants {
     public static final String MISMATCHING_PASSWORD_2 = "test2-password";
     public static final String NEW_VALID_PASSWORD = "new-password1";
     public static final String INCORRECT_EMAIL_OTP_CODE = "123456";
-    public static final String INCORRECT_PHONE_CODE = "987654";
 }
