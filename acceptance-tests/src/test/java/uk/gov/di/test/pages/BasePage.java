@@ -10,6 +10,7 @@ import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import uk.gov.di.test.utils.AuthAppStub;
 import uk.gov.di.test.utils.AuthenticationJourneyPages;
 
 import java.net.MalformedURLException;
@@ -47,6 +48,7 @@ public class BasePage {
             System.getenv().getOrDefault("SELENIUM_BROWSER", FIREFOX_BROWSER);
     protected static final Duration DEFAULT_PAGE_LOAD_WAIT_TIME = Duration.of(20, SECONDS);
     protected static WebDriver driver;
+    public By authAppCodeField = By.id("code");
 
     protected void setupWebdriver() throws MalformedURLException {
         if (driver == null) {
@@ -146,5 +148,11 @@ public class BasePage {
 
     public Boolean isErrorSummaryDisplayed() {
         return driver.findElement(By.className("govuk-error-summary")).isDisplayed();
+    }
+
+    public void enterCorrectAuthAppCodeAndContinue(String authAppSecretKey) {
+        String authAppCode = AuthAppStub.getAuthAppCode(authAppSecretKey);
+        clearFieldAndEnter(authAppCodeField, authAppCode);
+        findAndClickContinue();
     }
 }

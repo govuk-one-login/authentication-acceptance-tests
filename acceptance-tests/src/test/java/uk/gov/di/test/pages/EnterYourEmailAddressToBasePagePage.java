@@ -13,4 +13,9 @@ public class EnterYourEmailAddressToBasePagePage extends BasePage {
         enterEmailAddress(emailAddress);
         findAndClickContinue();
     }
+
+    public void enterEmailAddressAndContinueWelsh(String emailAddress) {
+        enterEmailAddress(emailAddress);
+        findAndClickContinueWelsh();
+    }
 }

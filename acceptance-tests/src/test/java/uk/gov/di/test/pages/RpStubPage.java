@@ -8,12 +8,13 @@ public class RpStubPage extends BasePage {
         driver.get(RP_URL.toString());
     }
 
-    public void selectRpOptionsById(String opts) {
+    public void selectRpOptionsByIdAndContinue(String opts) {
         if (!opts.isEmpty() && !opts.equalsIgnoreCase("default")) {
             String ids[] = opts.split(",");
             for (String id : ids) {
                 driver.findElement(By.id(id)).click();
             }
         }
+        findAndClickContinue();
     }
 }

@@ -17,9 +17,11 @@ public class EnterYourMobilePhoneNumberPage extends BasePage {
 
     public void enterInternationalMobilePhoneNumber(String internationalMobilePhoneNumber) {
         clearFieldAndEnter(internationalPhoneNumberField, internationalMobilePhoneNumber);
+        findAndClickContinue();
     }
 
-    public void enterUkPhoneNumber(String phoneNumber) {
+    public void enterUkPhoneNumberAndContinue(String phoneNumber) {
         clearFieldAndEnter(ukPhoneNumberField, phoneNumber);
+        findAndClickContinue();
     }
 }
