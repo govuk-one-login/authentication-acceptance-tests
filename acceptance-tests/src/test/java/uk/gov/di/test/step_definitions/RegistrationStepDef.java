@@ -8,15 +8,12 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import uk.gov.di.test.pages.BasePage;
 import uk.gov.di.test.pages.CheckYourEmailPage;
-import uk.gov.di.test.pages.CheckYourPhonePage;
 import uk.gov.di.test.pages.ChooseHowToGetSecurityCodesPage;
 import uk.gov.di.test.pages.CreateOrBasePagePage;
 import uk.gov.di.test.pages.CreateYourPasswordPage;
 import uk.gov.di.test.pages.EnterThe6DigitSecurityCodeShownInYourAuthenticatorAppPage;
 import uk.gov.di.test.pages.EnterYourEmailAddressPage;
-import uk.gov.di.test.pages.EnterYourEmailAddressToBasePagePage;
 import uk.gov.di.test.pages.EnterYourMobilePhoneNumberPage;
-import uk.gov.di.test.pages.EnterYourPasswordPage;
 import uk.gov.di.test.pages.NoGovUkOneLoginFoundPage;
 import uk.gov.di.test.pages.RpStubPage;
 import uk.gov.di.test.pages.SetUpAnAuthenticatorAppPage;
@@ -28,12 +25,10 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static uk.gov.di.test.utils.AuthenticationJourneyPages.ACCOUNT_CREATED;
-import static uk.gov.di.test.utils.AuthenticationJourneyPages.ACCOUNT_NOT_FOUND;
 import static uk.gov.di.test.utils.AuthenticationJourneyPages.CHECK_YOUR_EMAIL;
 import static uk.gov.di.test.utils.AuthenticationJourneyPages.CHECK_YOUR_PHONE;
 import static uk.gov.di.test.utils.AuthenticationJourneyPages.CREATE_PASSWORD;
 import static uk.gov.di.test.utils.AuthenticationJourneyPages.ENTER_EMAIL_CREATE;
-import static uk.gov.di.test.utils.AuthenticationJourneyPages.ENTER_EMAIL_EXISTING_USER;
 import static uk.gov.di.test.utils.AuthenticationJourneyPages.ENTER_PHONE_NUMBER;
 import static uk.gov.di.test.utils.AuthenticationJourneyPages.GET_SECURITY_CODES;
 import static uk.gov.di.test.utils.Constants.*;
@@ -45,14 +40,10 @@ public class RegistrationStepDef extends BasePage {
     NoGovUkOneLoginFoundPage noGovUkOneLoginFoundPage = new NoGovUkOneLoginFoundPage();
     EnterYourMobilePhoneNumberPage enterYourMobilePhoneNumberPage =
             new EnterYourMobilePhoneNumberPage();
-    EnterYourPasswordPage enterYourPasswordPage = new EnterYourPasswordPage();
-    EnterYourEmailAddressToBasePagePage enterYourEmailAddressToSignInPage =
-            new EnterYourEmailAddressToBasePagePage();
     EnterYourEmailAddressPage enterYourEmailAddressPage = new EnterYourEmailAddressPage();
     CreateOrBasePagePage createOrSignInPage = new CreateOrBasePagePage();
     RpStubPage rpStubPage = new RpStubPage();
     CheckYourEmailPage checkYourEmailPage = new CheckYourEmailPage();
-    CheckYourPhonePage checkYourPhonePage = new CheckYourPhonePage();
     CreateYourPasswordPage createYourPasswordPage = new CreateYourPasswordPage();
     ChooseHowToGetSecurityCodesPage chooseHowToGetSecurityCodesPage =
             new ChooseHowToGetSecurityCodesPage();
@@ -79,16 +70,6 @@ public class RegistrationStepDef extends BasePage {
     @When("the new user selects sign in")
     public void theNewUserSelectsSignIn() {
         createOrSignInPage.clickSignInButton();
-    }
-
-    @Then("the new user is taken to the sign in to your account page")
-    public void theNewUserIsTakenToTheSignInToYourAccountPage() {
-        waitForPageLoadThenValidate(ENTER_EMAIL_EXISTING_USER);
-    }
-
-    @Then("the new user is taken to the account not found page")
-    public void theNewUserIsTakenToTheAccountNotFoundPage() {
-        waitForPageLoadThenValidate(ACCOUNT_NOT_FOUND);
     }
 
     @Then("the new user is asked to check their email")

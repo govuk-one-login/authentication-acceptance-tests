@@ -39,20 +39,10 @@ public class BasePage {
                             "RP_URL",
                             "https://di-auth-stub-relying-party-build-s2.london.cloudapps.digital/");
 
-    protected static final String TEST_USER_EMAIL =
-            System.getenv().getOrDefault("TEST_USER_EMAIL", "");
-
-    protected static final String TEST_USER_PASSWORD =
-            System.getenv().getOrDefault("TEST_USER_PASSWORD", "");
-
-    protected static final String TEST_USER_PHONE_CODE =
-            System.getenv().getOrDefault("TEST_USER_PHONE_CODE", "");
     protected static final Boolean SELENIUM_LOCAL =
             Boolean.parseBoolean(System.getenv().getOrDefault("SELENIUM_LOCAL", "false"));
     protected static final Boolean SELENIUM_HEADLESS =
             Boolean.parseBoolean(System.getenv().getOrDefault("SELENIUM_HEADLESS", "false"));
-    protected static final Boolean DEBUG_MODE =
-            Boolean.parseBoolean(System.getenv().getOrDefault("DEBUG_MODE", "false"));
     protected static final String SELENIUM_BROWSER =
             System.getenv().getOrDefault("SELENIUM_BROWSER", FIREFOX_BROWSER);
     protected static final Duration DEFAULT_PAGE_LOAD_WAIT_TIME = Duration.of(20, SECONDS);
