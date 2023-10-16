@@ -1,0 +1,13 @@
+@SupportPages
+Feature: Support pages
+
+  Scenario: Support pages available in Welsh language when switched on create / sign-in page
+    Given the user comes from the stub relying party with options: "lng-en"
+    And the user switches to Welsh language
+    When the user selects the Welsh support link in the footer
+    Then the contact us page is displayed in Welsh
+
+  Scenario: Support pages available in Welsh language when user arrives from RP with Welsh already chosen
+    Given the user comes from the stub relying party with options: "lng-cy"
+    When the user selects the Welsh support link in the footer
+    Then the contact us page is displayed in Welsh
