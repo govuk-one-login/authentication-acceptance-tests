@@ -7,9 +7,9 @@ import org.junit.jupiter.api.Assertions;
 import uk.gov.di.test.pages.BasePage;
 import uk.gov.di.test.pages.CheckYourEmailPage;
 import uk.gov.di.test.pages.CheckYourPhonePage;
-import uk.gov.di.test.pages.CreateOrBasePagePage;
+import uk.gov.di.test.pages.CreateOrSignInPage;
 import uk.gov.di.test.pages.EnterYourEmailAddressPage;
-import uk.gov.di.test.pages.EnterYourEmailAddressToBasePagePage;
+import uk.gov.di.test.pages.EnterYourEmailAddressToSignInPage;
 import uk.gov.di.test.pages.EnterYourMobilePhoneNumberPage;
 import uk.gov.di.test.pages.EnterYourPasswordPage;
 import uk.gov.di.test.pages.GetSecurityCodePage;
@@ -41,9 +41,9 @@ public class LoginStepDef extends BasePage {
     public EnterYourPasswordPage enterYourPasswordPage = new EnterYourPasswordPage();
     public CheckYourPhonePage checkYourPhonePage = new CheckYourPhonePage();
     public GetSecurityCodePage getSecurityCodePage = new GetSecurityCodePage();
-    public EnterYourEmailAddressToBasePagePage enterYourEmailAddressToSignInPage =
-            new EnterYourEmailAddressToBasePagePage();
-    public CreateOrBasePagePage createOrSignInPage = new CreateOrBasePagePage();
+    public EnterYourEmailAddressToSignInPage enterYourEmailAddressToSignInPage =
+            new EnterYourEmailAddressToSignInPage();
+    public CreateOrSignInPage createOrSignInPage = new CreateOrSignInPage();
     public YouAskedToResendTheSecurityCodeTooManyTimesPage
             youAskedToResendTheSecurityCodeTooManyTimesPage =
                     new YouAskedToResendTheSecurityCodeTooManyTimesPage();

@@ -15,7 +15,8 @@ public class EnterYourMobilePhoneNumberPage extends BasePage {
         driver.findElement(iDoNotHaveUkMobilePhoneNumberCheckbox).click();
     }
 
-    public void enterInternationalMobilePhoneNumber(String internationalMobilePhoneNumber) {
+    public void enterInternationalMobilePhoneNumberAndContinue(
+            String internationalMobilePhoneNumber) {
         clearFieldAndEnter(internationalPhoneNumberField, internationalMobilePhoneNumber);
         findAndClickContinue();
     }

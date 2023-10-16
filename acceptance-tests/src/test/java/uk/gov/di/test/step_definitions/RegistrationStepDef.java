@@ -9,7 +9,7 @@ import org.openqa.selenium.WebElement;
 import uk.gov.di.test.pages.BasePage;
 import uk.gov.di.test.pages.CheckYourEmailPage;
 import uk.gov.di.test.pages.ChooseHowToGetSecurityCodesPage;
-import uk.gov.di.test.pages.CreateOrBasePagePage;
+import uk.gov.di.test.pages.CreateOrSignInPage;
 import uk.gov.di.test.pages.CreateYourPasswordPage;
 import uk.gov.di.test.pages.EnterThe6DigitSecurityCodeShownInYourAuthenticatorAppPage;
 import uk.gov.di.test.pages.EnterYourEmailAddressPage;
@@ -41,7 +41,7 @@ public class RegistrationStepDef extends BasePage {
     EnterYourMobilePhoneNumberPage enterYourMobilePhoneNumberPage =
             new EnterYourMobilePhoneNumberPage();
     EnterYourEmailAddressPage enterYourEmailAddressPage = new EnterYourEmailAddressPage();
-    CreateOrBasePagePage createOrSignInPage = new CreateOrBasePagePage();
+    CreateOrSignInPage createOrSignInPage = new CreateOrSignInPage();
     RpStubPage rpStubPage = new RpStubPage();
     CheckYourEmailPage checkYourEmailPage = new CheckYourEmailPage();
     CreateYourPasswordPage createYourPasswordPage = new CreateYourPasswordPage();
@@ -246,24 +246,26 @@ public class RegistrationStepDef extends BasePage {
 
     @When("the new user submits a blank international mobile phone number")
     public void theNewUserSubmitsABlankInternationalMobilePhoneNumber() {
-        enterYourMobilePhoneNumberPage.enterInternationalMobilePhoneNumber("");
+        enterYourMobilePhoneNumberPage.enterInternationalMobilePhoneNumberAndContinue("");
     }
 
     @When("the new user submits an incorrectly formatted international mobile phone number")
     public void theNewUserSubmitsAnIncorrectlyFormattedInternationalMobilePhoneNumber() {
-        enterYourMobilePhoneNumberPage.enterInternationalMobilePhoneNumber(
+        enterYourMobilePhoneNumberPage.enterInternationalMobilePhoneNumberAndContinue(
                 "+123456789123456789123456");
     }
 
     @When(
             "the new user submits an international mobile phone number containing non-digit characters")
     public void theNewUserSubmitsAnInternationalMobilePhoneNumberContainingNonDigitCharacters() {
-        enterYourMobilePhoneNumberPage.enterInternationalMobilePhoneNumber("/3383838383");
+        enterYourMobilePhoneNumberPage.enterInternationalMobilePhoneNumberAndContinue(
+                "/3383838383");
     }
 
     @When("the new user enters a valid international mobile phone number")
     public void theNewUserEntersAValidInternationalMobilePhoneNumber() {
-        enterYourMobilePhoneNumberPage.enterInternationalMobilePhoneNumber("+61412123123");
+        enterYourMobilePhoneNumberPage.enterInternationalMobilePhoneNumberAndContinue(
+                "+61412123123");
     }
 
     @Given(
