@@ -17,7 +17,9 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import static java.time.temporal.ChronoUnit.SECONDS;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -148,6 +150,34 @@ public class BasePage {
 
     public Boolean isErrorSummaryDisplayed() {
         return driver.findElement(By.className("govuk-error-summary")).isDisplayed();
+    }
+
+    public String getPageHeading() {
+        return driver.findElement(By.cssSelector("h1")).getText().trim();
+    }
+
+    public void checkForNewTabAndGoToIt(String newTabTitle) {
+        switchToTabByIndex(1);
+        waitForPageLoad(newTabTitle);
+    }
+
+    public void switchToTabByIndex(Integer idx) {
+        ArrayList<String> tabs = new ArrayList<String>(driver.getWindowHandles());
+        driver.switchTo().window(tabs.get(idx));
+    }
+
+    public void switchToTabWithTitleContaining(String titleToSwitchTo) {
+        Set<String> allTabs = driver.getWindowHandles();
+        for (String tab : allTabs) {
+            String title = driver.switchTo().window(tab).getTitle();
+            if (title.contains(titleToSwitchTo)) {
+                break;
+            }
+        }
+    }
+
+    protected void closeActiveTab() {
+        driver.close();
     }
 
     public void enterCorrectAuthAppCodeAndContinue(String authAppSecretKey) {

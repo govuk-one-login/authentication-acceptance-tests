@@ -2,8 +2,6 @@ package uk.gov.di.test.pages;
 
 import org.openqa.selenium.By;
 
-import java.util.ArrayList;
-
 public class SupportPage extends BasePage {
 
     By supportLink = By.xpath("//*[contains(text(), 'Support (opens in new tab)')]");
@@ -41,20 +39,10 @@ public class SupportPage extends BasePage {
             enterMoreDetails("More details text");
             canWeReplyViaEmail("No");
             // pressSendMessage(); //removed so as not to submit case to support desk!
-            driver.close(); // close support tab (current tab)
+            closeActiveTab();
             switchToTabByIndex(0); // switch back to main tab
         } else {
             findAndClickContinue();
         }
-    }
-
-    public void checkForNewTabAndGoToIt(String newTabTitle) {
-        switchToTabByIndex(1);
-        waitForPageLoad(newTabTitle);
-    }
-
-    public void switchToTabByIndex(Integer idx) {
-        ArrayList<String> tabs = new ArrayList<String>(driver.getWindowHandles());
-        driver.switchTo().window(tabs.get(idx));
     }
 }

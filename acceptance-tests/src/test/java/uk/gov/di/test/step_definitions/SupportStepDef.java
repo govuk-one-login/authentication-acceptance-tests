@@ -4,19 +4,27 @@ import io.cucumber.java.en.And;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import uk.gov.di.test.pages.BasePage;
+import uk.gov.di.test.pages.FooterPage;
 import uk.gov.di.test.pages.SupportPage;
 
 import java.util.ArrayList;
 
 import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class SupportStepDef extends BasePage {
 
     SupportPage supportPage = new SupportPage();
+    FooterPage footer = new FooterPage();
 
     @When("the user clicks on the support link")
     public void theUserClicksOnTheSupportLink() {
         supportPage.clickSupportLink();
+    }
+
+    @When("the user selects the Welsh support link in the footer")
+    public void theUserSelectsTheWelshSupportLink() {
+        footer.selectWelshSupportLink();
     }
 
     @Then("the user is taken to the Contact us page in a new tab")
@@ -24,7 +32,15 @@ public class SupportStepDef extends BasePage {
         supportPage.checkForNewTabAndGoToIt("Contact us - GOV.UK One Login");
     }
 
-    @When("the user selects {string}")
+    @Then("the contact us page is displayed in Welsh")
+    public void theContactUsPageIsDisplayedInWelsh() {
+        switchToTabWithTitleContaining("Cysylltu â ni - GOV.UK One Login");
+        assertEquals("Cyfrif GOV.UK: rhoi gwybod am broblem neu roi adborth", getPageHeading());
+        closeActiveTab();
+        switchToTabWithTitleContaining("Creu GOV.UK One Login neu fewngofnodi");
+    }
+
+    @When("the user selects radio button {string}")
     public void theUserSelectsRadioButtonAndProceeds(String option) {
         supportPage.selectRadioButtonAndProceed(option);
     }
@@ -47,7 +63,7 @@ public class SupportStepDef extends BasePage {
     @Then("the user receives confirmation that their message has been submitted")
     public void theUserReceivesConfirmationThatTheirMessageHasBeenSent() {
         assertTrue(supportPage.isSuccessMessageDisplayed());
-        driver.close(); // close support tab (current tab)
+        closeActiveTab();
         ArrayList<String> tabs = new ArrayList<String>(driver.getWindowHandles());
         driver.switchTo().window(tabs.get(0)); // switch back to main tab
     }

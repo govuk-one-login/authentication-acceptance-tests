@@ -34,7 +34,7 @@ Feature: Account recovery
     Then the user is taken to the "Check your email" page
     When the user enters the six digit security code from their email
     Then the user is taken to the "How do you want to get security codes" page
-    When the user selects "Authenticator app for smartphone, tablet or computer"
+    When the user selects radio button "Authenticator app for smartphone, tablet or computer"
     Then the user is taken to the "Set up an authenticator app" page
     When the existing user adds the secret key on the screen to their auth app
     And the existing user enters the security code from the auth app
@@ -91,7 +91,7 @@ Feature: Account recovery
     Then the user is taken to the "Check your email" page
     When the user enters the six digit security code from their email
     Then the user is taken to the "How do you want to get security codes" page
-    When the user selects "Text message"
+    When the user selects radio button "Text message"
     Then the user is taken to the "Enter your mobile phone number" page
     When the user enters their mobile phone number
     Then the user is taken to the "Check your phone" page
