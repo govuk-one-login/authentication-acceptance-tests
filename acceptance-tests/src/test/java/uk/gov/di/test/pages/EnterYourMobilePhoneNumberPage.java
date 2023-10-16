@@ -15,11 +15,14 @@ public class EnterYourMobilePhoneNumberPage extends BasePage {
         driver.findElement(iDoNotHaveUkMobilePhoneNumberCheckbox).click();
     }
 
-    public void enterInternationalMobilePhoneNumber(String internationalMobilePhoneNumber) {
+    public void enterInternationalMobilePhoneNumberAndContinue(
+            String internationalMobilePhoneNumber) {
         clearFieldAndEnter(internationalPhoneNumberField, internationalMobilePhoneNumber);
+        findAndClickContinue();
     }
 
-    public void enterUkPhoneNumber(String phoneNumber) {
+    public void enterUkPhoneNumberAndContinue(String phoneNumber) {
         clearFieldAndEnter(ukPhoneNumberField, phoneNumber);
+        findAndClickContinue();
     }
 }

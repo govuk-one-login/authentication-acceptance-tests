@@ -11,7 +11,6 @@ public class RpStubStepDef extends BasePage {
     @When("the user comes from the stub relying party with options: {string}")
     public void theExistingUserVisitsTheStubRelyingParty(String options) {
         rpStubPage.goToRpStub();
-        rpStubPage.selectRpOptionsById(options);
-        findAndClickContinue();
+        rpStubPage.selectRpOptionsByIdAndContinue(options);
     }
 }

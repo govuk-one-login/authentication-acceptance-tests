@@ -4,7 +4,6 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import uk.gov.di.test.utils.AuthAppStub;
 
 import java.util.List;
 
@@ -27,10 +26,5 @@ public class SetUpAnAuthenticatorAppPage extends BasePage {
             secretKeyText = secretKeyText + secretKeyComponents.get(i).getText();
         }
         return secretKeyText;
-    }
-
-    public void enterCorrectAuthAppCode(String authAppSecretKey) {
-        String authAppCode = AuthAppStub.getAuthAppCode(authAppSecretKey);
-        clearFieldAndEnter(authAppCodeField, authAppCode);
     }
 }

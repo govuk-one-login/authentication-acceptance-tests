@@ -7,9 +7,9 @@ import org.junit.jupiter.api.Assertions;
 import uk.gov.di.test.pages.BasePage;
 import uk.gov.di.test.pages.CheckYourEmailPage;
 import uk.gov.di.test.pages.CheckYourPhonePage;
-import uk.gov.di.test.pages.CreateOrBasePagePage;
+import uk.gov.di.test.pages.CreateOrSignInPage;
 import uk.gov.di.test.pages.EnterYourEmailAddressPage;
-import uk.gov.di.test.pages.EnterYourEmailAddressToBasePagePage;
+import uk.gov.di.test.pages.EnterYourEmailAddressToSignInPage;
 import uk.gov.di.test.pages.EnterYourMobilePhoneNumberPage;
 import uk.gov.di.test.pages.EnterYourPasswordPage;
 import uk.gov.di.test.pages.GetSecurityCodePage;
@@ -41,9 +41,9 @@ public class LoginStepDef extends BasePage {
     public EnterYourPasswordPage enterYourPasswordPage = new EnterYourPasswordPage();
     public CheckYourPhonePage checkYourPhonePage = new CheckYourPhonePage();
     public GetSecurityCodePage getSecurityCodePage = new GetSecurityCodePage();
-    public EnterYourEmailAddressToBasePagePage enterYourEmailAddressToSignInPage =
-            new EnterYourEmailAddressToBasePagePage();
-    public CreateOrBasePagePage createOrSignInPage = new CreateOrBasePagePage();
+    public EnterYourEmailAddressToSignInPage enterYourEmailAddressToSignInPage =
+            new EnterYourEmailAddressToSignInPage();
+    public CreateOrSignInPage createOrSignInPage = new CreateOrSignInPage();
     public YouAskedToResendTheSecurityCodeTooManyTimesPage
             youAskedToResendTheSecurityCodeTooManyTimesPage =
                     new YouAskedToResendTheSecurityCodeTooManyTimesPage();
@@ -147,8 +147,8 @@ public class LoginStepDef extends BasePage {
 
     @When("user enters {string} email address in Welsh")
     public void userEntersEmailAddressInWelsh(String email) {
-        enterYourEmailAddressToSignInPage.enterEmailAddress(System.getenv().get(email));
-        findAndClickContinueWelsh();
+        enterYourEmailAddressToSignInPage.enterEmailAddressAndContinueWelsh(
+                System.getenv().get(email));
     }
 
     @When("the user enters valid new password and correctly retypes it")
@@ -219,8 +219,7 @@ public class LoginStepDef extends BasePage {
         if (authAppSecretKey == null) {
             authAppSecretKey = System.getenv().get("ACCOUNT_RECOVERY_USER_AUTH_APP_SECRET");
         }
-        setUpAnAuthenticatorAppPage.enterCorrectAuthAppCode(authAppSecretKey);
-        findAndClickContinue();
+        setUpAnAuthenticatorAppPage.enterCorrectAuthAppCodeAndContinue(authAppSecretKey);
     }
 
     @Then("the link {string} is not available")
@@ -251,9 +250,8 @@ public class LoginStepDef extends BasePage {
 
     @When("the user enters their mobile phone number")
     public void theUserEntersTheirMobilePhoneNumber() {
-        enterYourMobilePhoneNumberPage.enterUkPhoneNumber(
+        enterYourMobilePhoneNumberPage.enterUkPhoneNumberAndContinue(
                 System.getenv().get("TEST_USER_PHONE_NUMBER"));
-        findAndClickContinue();
     }
 
     @And("the existing user selects create an account")

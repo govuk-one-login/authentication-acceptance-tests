@@ -2,7 +2,7 @@ package uk.gov.di.test.pages;
 
 import org.openqa.selenium.By;
 
-public class EnterYourEmailAddressToBasePagePage extends BasePage {
+public class EnterYourEmailAddressToSignInPage extends BasePage {
     By emailField = By.id("email");
 
     public void enterEmailAddress(String emailAddress) {
@@ -12,5 +12,10 @@ public class EnterYourEmailAddressToBasePagePage extends BasePage {
     public void enterEmailAddressAndContinue(String emailAddress) {
         enterEmailAddress(emailAddress);
         findAndClickContinue();
+    }
+
+    public void enterEmailAddressAndContinueWelsh(String emailAddress) {
+        enterEmailAddress(emailAddress);
+        findAndClickContinueWelsh();
     }
 }

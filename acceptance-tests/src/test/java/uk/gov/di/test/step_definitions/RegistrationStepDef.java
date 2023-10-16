@@ -9,7 +9,7 @@ import org.openqa.selenium.WebElement;
 import uk.gov.di.test.pages.BasePage;
 import uk.gov.di.test.pages.CheckYourEmailPage;
 import uk.gov.di.test.pages.ChooseHowToGetSecurityCodesPage;
-import uk.gov.di.test.pages.CreateOrBasePagePage;
+import uk.gov.di.test.pages.CreateOrSignInPage;
 import uk.gov.di.test.pages.CreateYourPasswordPage;
 import uk.gov.di.test.pages.EnterThe6DigitSecurityCodeShownInYourAuthenticatorAppPage;
 import uk.gov.di.test.pages.EnterYourEmailAddressPage;
@@ -41,7 +41,7 @@ public class RegistrationStepDef extends BasePage {
     EnterYourMobilePhoneNumberPage enterYourMobilePhoneNumberPage =
             new EnterYourMobilePhoneNumberPage();
     EnterYourEmailAddressPage enterYourEmailAddressPage = new EnterYourEmailAddressPage();
-    CreateOrBasePagePage createOrSignInPage = new CreateOrBasePagePage();
+    CreateOrSignInPage createOrSignInPage = new CreateOrSignInPage();
     RpStubPage rpStubPage = new RpStubPage();
     CheckYourEmailPage checkYourEmailPage = new CheckYourEmailPage();
     CreateYourPasswordPage createYourPasswordPage = new CreateYourPasswordPage();
@@ -135,15 +135,13 @@ public class RegistrationStepDef extends BasePage {
 
     @And("the user enters the security code from the auth app to set it up")
     public void theNewUserEntersTheSecurityCodeFromTheAuthAppToSetItUp() {
-        setUpAnAuthenticatorAppPage.enterCorrectAuthAppCode(authAppSecretKey);
-        findAndClickContinue();
+        setUpAnAuthenticatorAppPage.enterCorrectAuthAppCodeAndContinue(authAppSecretKey);
     }
 
     @And("the user enters the security code from the auth app")
     public void theNewUserEntersTheSecurityCodeFromTheAuthApp() {
-        enterThe6DigitSecurityCodeShownInYourAuthenticatorAppPage.enterCorrectAuthAppCode(
-                authAppSecretKey);
-        findAndClickContinue();
+        enterThe6DigitSecurityCodeShownInYourAuthenticatorAppPage
+                .enterCorrectAuthAppCodeAndContinue(authAppSecretKey);
     }
 
     @When("the existing auth app user selects sign in")
@@ -158,9 +156,8 @@ public class RegistrationStepDef extends BasePage {
 
     @When("the new user enters their mobile phone number")
     public void theNewUserEntersTheirMobilePhoneNumber() {
-        enterYourMobilePhoneNumberPage.enterUkPhoneNumber(
+        enterYourMobilePhoneNumberPage.enterUkPhoneNumberAndContinue(
                 System.getenv().get("TEST_USER_PHONE_NUMBER"));
-        findAndClickContinue();
     }
 
     @Then("the new user is taken to the check your phone page")
@@ -213,33 +210,28 @@ public class RegistrationStepDef extends BasePage {
 
     @When("the new user enters their mobile phone number using an international dialling code")
     public void theNewUserEntersTheirMobilePhoneNumberUsingAnInternationalDiallingCode() {
-        enterYourMobilePhoneNumberPage.enterUkPhoneNumber(
+        enterYourMobilePhoneNumberPage.enterUkPhoneNumberAndContinue(
                 System.getenv().get("TEST_USER_INTERNATIONAL_PHONE_NUMBER"));
-        findAndClickContinue();
     }
 
     @When("the new user submits a blank UK phone number")
     public void theNewUserSubmitsABlankUKPhoneNumber() {
-        enterYourMobilePhoneNumberPage.enterUkPhoneNumber("");
-        findAndClickContinue();
+        enterYourMobilePhoneNumberPage.enterUkPhoneNumberAndContinue("");
     }
 
     @When("the new user submits an international phone number in the UK phone number field")
     public void theNewUserSubmitsAnInternationalPhoneNumberInTheUKPhoneNumberField() {
-        enterYourMobilePhoneNumberPage.enterUkPhoneNumber("+61412123123");
-        findAndClickContinue();
+        enterYourMobilePhoneNumberPage.enterUkPhoneNumberAndContinue("+61412123123");
     }
 
     @When("the new user submits an incorrectly formatted UK phone number")
     public void theNewUserSubmitsAnIncorrectlyFormattedUKPhoneNumber() {
-        enterYourMobilePhoneNumberPage.enterUkPhoneNumber("070000000000000");
-        findAndClickContinue();
+        enterYourMobilePhoneNumberPage.enterUkPhoneNumberAndContinue("070000000000000");
     }
 
     @When("the new user submits a UK phone number containing non-digit characters")
     public void theNewUserSubmitsAUKPhoneNumberContainingNonDigitCharacters() {
-        enterYourMobilePhoneNumberPage.enterUkPhoneNumber("0780312*a45");
-        findAndClickContinue();
+        enterYourMobilePhoneNumberPage.enterUkPhoneNumberAndContinue("0780312*a45");
     }
 
     @When("the new user ticks I do not have a UK mobile number")
@@ -254,36 +246,33 @@ public class RegistrationStepDef extends BasePage {
 
     @When("the new user submits a blank international mobile phone number")
     public void theNewUserSubmitsABlankInternationalMobilePhoneNumber() {
-        enterYourMobilePhoneNumberPage.enterInternationalMobilePhoneNumber("");
-        findAndClickContinue();
+        enterYourMobilePhoneNumberPage.enterInternationalMobilePhoneNumberAndContinue("");
     }
 
     @When("the new user submits an incorrectly formatted international mobile phone number")
     public void theNewUserSubmitsAnIncorrectlyFormattedInternationalMobilePhoneNumber() {
-        enterYourMobilePhoneNumberPage.enterInternationalMobilePhoneNumber(
+        enterYourMobilePhoneNumberPage.enterInternationalMobilePhoneNumberAndContinue(
                 "+123456789123456789123456");
-        findAndClickContinue();
     }
 
     @When(
             "the new user submits an international mobile phone number containing non-digit characters")
     public void theNewUserSubmitsAnInternationalMobilePhoneNumberContainingNonDigitCharacters() {
-        enterYourMobilePhoneNumberPage.enterInternationalMobilePhoneNumber("/3383838383");
-        findAndClickContinue();
+        enterYourMobilePhoneNumberPage.enterInternationalMobilePhoneNumberAndContinue(
+                "/3383838383");
     }
 
     @When("the new user enters a valid international mobile phone number")
     public void theNewUserEntersAValidInternationalMobilePhoneNumber() {
-        enterYourMobilePhoneNumberPage.enterInternationalMobilePhoneNumber("+61412123123");
-        findAndClickContinue();
+        enterYourMobilePhoneNumberPage.enterInternationalMobilePhoneNumberAndContinue(
+                "+61412123123");
     }
 
     @Given(
             "a user has selected text message as their auth method and has moved on to the next page")
     public void aUserHasSelectedAnAuthMethodAndHasMovedOnToTheNextPage() {
         rpStubPage.goToRpStub();
-        rpStubPage.selectRpOptionsById("");
-        findAndClickContinue();
+        rpStubPage.selectRpOptionsByIdAndContinue("");
         waitForPageLoad("Create a GOV.UK One Login or sign in");
         createOrSignInPage.clickCreateAGovUkOneLoginButton();
         waitForPageLoad("Enter your email address");
@@ -303,8 +292,7 @@ public class RegistrationStepDef extends BasePage {
     @Given("a user has selected auth app as their auth method and has moved on to the next page")
     public void aUserHasSelectedAuthAppAsTheirAuthMethodAndHasMovedOnToTheNextPage() {
         rpStubPage.goToRpStub();
-        rpStubPage.selectRpOptionsById("");
-        findAndClickContinue();
+        rpStubPage.selectRpOptionsByIdAndContinue("");
         waitForPageLoad("Create a GOV.UK One Login or sign in");
         createOrSignInPage.clickCreateAGovUkOneLoginButton();
         waitForPageLoad("Enter your email address");
