@@ -33,7 +33,7 @@ Feature: Reset password
     Then the user is taken to the "Create a GOV.UK One Login or sign in" page
     When the existing user selects sign in
     Then the user is taken to the "Enter your email" page
-    When user enters "RESET_PW_USER_EMAIL" email address
+    When user enters "RESET_PW_USER_2_EMAIL" email address
     Then the user is taken to the "Enter your password" page
     When the user clicks the forgotten password link
     Then the user is taken to the "Check your email" page
