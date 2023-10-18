@@ -1,7 +1,7 @@
 @ResetPassword
 Feature: Reset password
 
-  Scenario: User can successfully reset their password
+  Scenario: User can successfully reset their password for 2FA
     Given the user comes from the stub relying party with options: "default"
     Then the user is taken to the "Create a GOV.UK One Login or sign in" page
     When the existing user selects sign in
@@ -26,6 +26,34 @@ Feature: Reset password
     Then the user is taken to the "Example - GOV.UK - User Info" page
     When the user clicks logout
     Then the user is taken to the "Signed out" page
+
+
+  Scenario: User can successfully reset their password for 1FA
+    Given the user comes from the stub relying party with options: "2fa-off"
+    Then the user is taken to the "Create a GOV.UK One Login or sign in" page
+    When the existing user selects sign in
+    Then the user is taken to the "Enter your email" page
+    When user enters "RESET_PW_USER_EMAIL" email address
+    Then the user is taken to the "Enter your password" page
+    When the user clicks the forgotten password link
+    Then the user is taken to the "Check your email" page
+    When the user enters the six digit security code from their email
+    Then the user is taken to the "Reset your password" page
+    When the user resets their password to be the same as their current password
+    Then the "You are already using that password. Enter a different password" error message is displayed
+    When the user resets their password to an invalid one
+    Then the "Your password must be at least 8 characters long and must include letters and numbers" error message is displayed
+    When the user resets their password to one that is on the list of top 100k passwords
+    Then the "Enter a stronger password. Do not use very common passwords, such as ‘password’ or a sequence of numbers." error message is displayed
+    When the user resets their password but enters mismatching new passwords
+    Then the "Enter the same password in both fields" error message is displayed
+    When the user enters valid new password and correctly retypes it
+    Then the user is taken to the "Check your phone" page
+    When the existing user enters the six digit security code from their phone
+    Then the user is taken to the "Example - GOV.UK - User Info" page
+    When the user clicks logout
+    Then the user is taken to the "Signed out" page
+
 
 # REQUEST OTP TOO MANY TIMES DURING PASSWORD RESET --- AUT-1274
   Scenario: A user is blocked when they request an email OTP more than 5 times during a password reset.
