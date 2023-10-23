@@ -5,7 +5,7 @@ Feature: Registration Journey
   Scenario: User selects sign in without having an account
     Given the user comes from the stub relying party with options: "default"
     Then the user is taken to the "Create a GOV.UK One Login or sign in" page
-    When the new user selects sign in
+    When the user selects sign in
     Then the user is taken to the "Enter your email address to sign in to your GOV.UK One Login" page
     When user enters "TEST_USER_EMAIL" email address
     Then the user is taken to the "No GOV.UK One Login found" page
@@ -29,56 +29,56 @@ Feature: Registration Journey
   Scenario: User is taken to Check your email page from No GOV.UK One Login found page when Create selected
     Given the user comes from the stub relying party with options: "default"
     Then the user is taken to the "Create a GOV.UK One Login or sign in" page
-    When the new user selects sign in
+    When the user selects sign in
     Then the user is taken to the "Enter your email address to sign in to your GOV.UK One Login" page
     When user enters "TEST_USER_EMAIL" email address
     Then the user is taken to the "No GOV.UK One Login found" page
-    When the new user selects create an account
+    When the user selects create an account
     Then the user is taken to the "Check your email" page
 
   Scenario: User registration unsuccessful with invalid email, six digit code and password
     Given the user comes from the stub relying party with options: "default"
     Then the user is taken to the "Create a GOV.UK One Login or sign in" page
     When the user selects create an account
-    Then the new user is taken to the enter your email page
+    Then the user is taken to the "Enter your email address" page
     When user enters invalid email address
     Then the user is shown an error message
     When user enters "TEST_USER_EMAIL" email address
-    Then the new user is asked to check their email
-    When the new user enters the six digit security code from their email
-    Then the new user is taken to the create your password page
-    And the new user creates and enters an invalid password
+    Then the user is taken to the "Check your email" page
+    When the user enters the six digit security code from their email
+    Then the user is taken to the "Create your password" page
+    And the user creates and enters an invalid password
     And there are no accessibility violations
     Then the user is shown an error message
-    And the new user creates and enters a weak password
+    And the user creates and enters a weak password
     Then the user is shown an error message
-    When the new user creates and enters short digit only password
+    When the user creates and enters short digit only password
     Then the user is shown an error message
-    When the new user creates and enters a sequence of numbers password
+    When the user creates and enters a sequence of numbers password
     Then the user is shown an error message
 
   Scenario: User successfully registers using sms
     Given the user comes from the stub relying party with options: "default"
     Then the user is taken to the "Create a GOV.UK One Login or sign in" page
     When the user selects create an account
-    Then the new user is taken to the enter your email page
+    Then the user is taken to the "Enter your email address" page
     When user enters "TEST_USER_EMAIL" email address
-    Then the new user is asked to check their email
-    When the new user enters the six digit security code from their email
-    Then the new user is taken to the create your password page
-    When the new user creates a password
-    Then the new user is taken to the get security codes page
-    When the new user chooses "Text message" to get security codes
-    Then the new user is taken to the enter phone number page
-    When the new user enters their mobile phone number using an international dialling code
-    Then the new user is taken to the check your phone page
+    Then the user is taken to the "Check your email" page
+    When the user enters the six digit security code from their email
+    Then the user is taken to the "Create your password" page
+    When the user creates a password
+    Then the user is taken to the "Choose how to get security codes" page
+    When the user chooses "Text message" to get security codes
+    Then the user is taken to the "Enter your mobile phone number" page
+    When the user enters their mobile phone number using an international dialling code
+    Then the user is taken to the "Check your phone" page
     When the user clicks the Back link
-    Then the new user is taken to the enter phone number page
-    When the new user enters their mobile phone number
-    Then the new user is taken to the check your phone page
-    When the new user enters the six digit security code from their phone
-    Then the new user is taken to the account created page
-    When the new user clicks the continue button
+    Then the user is taken to the "Enter your mobile phone number" page
+    When the user enters their mobile phone number
+    Then the user is taken to the "Check your phone" page
+    When the user enters the six digit security code from their phone
+    Then the user is taken to the "You’ve created your GOV.UK One Login" page
+    When the user clicks the continue button
     Then the user is returned to the service
     When the user clicks logout
-    Then the new user is taken to the signed out page
+    Then the user is taken to the "Signed out" page

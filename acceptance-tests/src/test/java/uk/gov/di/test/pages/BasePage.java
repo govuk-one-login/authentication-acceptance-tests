@@ -1,6 +1,7 @@
 package uk.gov.di.test.pages;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.Cookie;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -184,5 +185,10 @@ public class BasePage {
         String authAppCode = AuthAppStub.getAuthAppCode(authAppSecretKey);
         clearFieldAndEnter(authAppCodeField, authAppCode);
         findAndClickContinue();
+    }
+
+    public void setAnalyticsCookieTo(Boolean state) {
+        driver.manage()
+                .addCookie(new Cookie("cookies_preferences_set", "{\"analytics\":" + state + "}"));
     }
 }

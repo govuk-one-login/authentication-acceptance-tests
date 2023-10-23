@@ -18,13 +18,13 @@ Feature: Legal and policy pages
   Scenario: User accepts updated terms and conditions
     Given the user comes from the stub relying party with options: "default"
     Then the user is taken to the "Create a GOV.UK One Login or sign in" page
-    When the existing user selects sign in
+    When the user selects sign in
     Then the user is taken to the "Enter your email" page
     When user enters "TERMS_AND_CONDITIONS_TEST_USER_EMAIL" email address
     Then the user is taken to the "Enter your password" page
-    When the existing user enters their password
+    When the user enters their password
     Then the user is taken to the "Check your phone" page
-    When the existing user enters the six digit security code from their phone
+    When the user enters the six digit security code from their phone
     Then the user is taken to the "terms of use update" page
     When the user agrees to the updated terms and conditions
     Then the user is taken to the "Example - GOV.UK - User Info" page

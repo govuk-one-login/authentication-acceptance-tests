@@ -4,7 +4,7 @@ Feature: Reset password
   Scenario: User can successfully reset their password
     Given the user comes from the stub relying party with options: "default"
     Then the user is taken to the "Create a GOV.UK One Login or sign in" page
-    When the existing user selects sign in
+    When the user selects sign in
     Then the user is taken to the "Enter your email" page
     When user enters "RESET_PW_USER_EMAIL" email address
     Then the user is taken to the "Enter your password" page
@@ -22,7 +22,7 @@ Feature: Reset password
     Then the "Enter the same password in both fields" error message is displayed
     When the user enters valid new password and correctly retypes it
     Then the user is taken to the "Check your phone" page
-    When the existing user enters the six digit security code from their phone
+    When the user enters the six digit security code from their phone
     Then the user is taken to the "Example - GOV.UK - User Info" page
     When the user clicks logout
     Then the user is taken to the "Signed out" page
@@ -31,7 +31,7 @@ Feature: Reset password
   Scenario: A user is blocked when they request an email OTP more than 5 times during a password reset.
     Given the user comes from the stub relying party with options: "default"
     Then the user is taken to the "Create a GOV.UK One Login or sign in" page
-    When the existing user selects sign in
+    When the user selects sign in
     Then the user is taken to the "Enter your email" page
     When user enters "TOO_MANY_EMAIL_OTP_REQUESTS_FOR_PW_RESET_EMAIL" email address
     Then the user is taken to the "Enter your password" page
@@ -46,7 +46,7 @@ Feature: Reset password
   Scenario: A user is blocked when they enter an incorrect email OTP more than 5 times during a password reset.
     Given the user comes from the stub relying party with options: "default"
     Then the user is taken to the "Create a GOV.UK One Login or sign in" page
-    When the existing user selects sign in
+    When the user selects sign in
     Then the user is taken to the "Enter your email" page
     When user enters "INCORRECT_EMAIL_OTP_FOR_PW_RESET_EMAIL" email address
     Then the user is taken to the "Enter your password" page

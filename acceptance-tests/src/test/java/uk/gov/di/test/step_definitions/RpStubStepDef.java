@@ -12,5 +12,6 @@ public class RpStubStepDef extends BasePage {
     public void theExistingUserVisitsTheStubRelyingParty(String options) {
         rpStubPage.goToRpStub();
         rpStubPage.selectRpOptionsByIdAndContinue(options);
+        setAnalyticsCookieTo(false);
     }
 }

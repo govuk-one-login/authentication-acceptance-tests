@@ -10,7 +10,6 @@ import uk.gov.di.test.pages.CheckYourPhonePage;
 import uk.gov.di.test.pages.CreateOrSignInPage;
 import uk.gov.di.test.pages.EnterYourEmailAddressPage;
 import uk.gov.di.test.pages.EnterYourEmailAddressToSignInPage;
-import uk.gov.di.test.pages.EnterYourMobilePhoneNumberPage;
 import uk.gov.di.test.pages.EnterYourPasswordPage;
 import uk.gov.di.test.pages.GetSecurityCodePage;
 import uk.gov.di.test.pages.ResetYourPasswordPage;
@@ -20,13 +19,14 @@ import uk.gov.di.test.pages.YouAskedToResendTheSecurityCodeTooManyTimesPage;
 import uk.gov.di.test.pages.YouveChangedHowYouGetSecurityCodesPage;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static uk.gov.di.test.utils.AuthenticationJourneyPages.ENTER_CODE_UPLIFT;
-import static uk.gov.di.test.utils.AuthenticationJourneyPages.ENTER_EMAIL_EXISTING_USER;
-import static uk.gov.di.test.utils.AuthenticationJourneyPages.ENTER_PASSWORD;
-import static uk.gov.di.test.utils.AuthenticationJourneyPages.RESEND_SECURITY_CODE;
-import static uk.gov.di.test.utils.Constants.*;
+import static uk.gov.di.test.utils.Constants.INCORRECT_EMAIL_OTP_CODE;
+import static uk.gov.di.test.utils.Constants.INVALID_EMAIL;
+import static uk.gov.di.test.utils.Constants.INVALID_PASSWORD;
+import static uk.gov.di.test.utils.Constants.MISMATCHING_PASSWORD_1;
+import static uk.gov.di.test.utils.Constants.MISMATCHING_PASSWORD_2;
+import static uk.gov.di.test.utils.Constants.NEW_VALID_PASSWORD;
+import static uk.gov.di.test.utils.Constants.TOP_100K_PASSWORD;
 
 public class LoginStepDef extends BasePage {
 
@@ -35,8 +35,6 @@ public class LoginStepDef extends BasePage {
     public CheckYourEmailPage checkYourEmailPage = new CheckYourEmailPage();
     public YouveChangedHowYouGetSecurityCodesPage youveChangedHowYouGetSecurityCodes =
             new YouveChangedHowYouGetSecurityCodesPage();
-    public EnterYourMobilePhoneNumberPage enterYourMobilePhoneNumberPage =
-            new EnterYourMobilePhoneNumberPage();
     public TermsAndConditionsPage termsAndConditionsPage = new TermsAndConditionsPage();
     public EnterYourPasswordPage enterYourPasswordPage = new EnterYourPasswordPage();
     public CheckYourPhonePage checkYourPhonePage = new CheckYourPhonePage();
@@ -61,14 +59,9 @@ public class LoginStepDef extends BasePage {
         enterYourPasswordPage.clickForgottenPasswordLink();
     }
 
-    @When("the existing user selects sign in")
-    public void theExistingUserSelectsSignIn() {
+    @When("the user selects sign in")
+    public void theUserSelectsSignIn() {
         createOrSignInPage.clickSignInButton();
-    }
-
-    @Then("the existing user is taken to the enter your email page")
-    public void theNewUserIsTakenToTheEnterYourEmailPage() {
-        waitForPageLoadThenValidate(ENTER_EMAIL_EXISTING_USER);
     }
 
     @And("user enters {string} email address")
@@ -81,58 +74,43 @@ public class LoginStepDef extends BasePage {
         enterYourEmailAddressToSignInPage.enterEmailAddressAndContinue(INVALID_EMAIL);
     }
 
-    @Then("the existing user is prompted for their password")
-    public void theExistingUserIsPromptedForPassword() {
-        waitForPageLoadThenValidate(ENTER_PASSWORD);
-    }
-
-    @When("the existing auth app user enters their password")
-    @When("the existing user enters their password")
-    public void theExistingUserEntersTheirPassword() {
+    @When("the user enters their password")
+    public void theUserEntersTheirPassword() {
         enterYourPasswordPage.enterPasswordAndContinue(System.getenv().get("TEST_USER_PASSWORD"));
     }
 
-    @When("the existing user enters their new password")
-    public void theExistingUserEntersTheirNewPassword() {
+    @When("the user enters their new password")
+    public void theUserEntersTheirNewPassword() {
         enterYourPasswordPage.enterPasswordAndContinue(NEW_VALID_PASSWORD);
     }
 
-    @Then("the existing user is taken to the enter code uplifted page")
-    public void theExistingUserIsTakenToTheEnterCodeUpliftedPage() {
-        waitForPageLoadThenValidate(ENTER_CODE_UPLIFT);
-    }
-
-    @When("the new user enters the six digit security code from their phone")
-    @When("the existing user enters the six digit security code from their phone")
+    @When("the user enters the six digit security code from their phone")
     public void theExistingUserEntersTheSixDigitSecurityCodeFromTheirPhone() {
         checkYourPhonePage.enterPhoneCodeAndContinue(System.getenv().get("TEST_USER_PHONE_CODE"));
     }
 
-    @Then("the existing user is returned to the service")
-    public void theExistingUserIsReturnedToTheService() {}
-
-    @When("the existing user requests the phone otp code {int} times")
-    public void theExistingUserRequestsThePhoneOtpCodeTimes(int timesCodeIncorrect) {
+    @When("the user requests the phone otp code {int} times")
+    public void theUserRequestsThePhoneOtpCodeTimes(int timesCodeIncorrect) {
         for (int i = 0; i < timesCodeIncorrect; i++) {
             checkYourPhonePage.clickProblemsWithTheCodeLink();
             checkYourPhonePage.clickSendTheCodeAgainLink();
-            waitForPageLoadThenValidate(RESEND_SECURITY_CODE);
+            waitForPageLoad("Get security code");
             getSecurityCodePage.pressGetSecurityCodeButton();
         }
     }
 
-    @When("the existing user clicks the get a new code link")
-    public void theExistingUserClicksTheGetANewCodeLink() {
+    @When("the user clicks the get a new code link")
+    public void theUserClicksTheGetANewCodeLink() {
         youAskedToResendTheSecurityCodeTooManyTimesPage.clickGetANewCodeLink();
     }
 
-    @Then("the existing user is taken to the Identity Provider Welsh Login Page")
-    public void theExistingUserIsTakenToTheIdentityProviderWelshLoginPage() {
+    @Then("the user is taken to the Identity Provider Welsh Login Page")
+    public void theUserIsTakenToTheIdentityProviderWelshLoginPage() {
         assertEquals("Creu GOV.UK One Login neu fewngofnodi - GOV.UK One Login", driver.getTitle());
     }
 
-    @Then("the existing user is taken to the Welsh enter your email page")
-    public void theExistingUserIsTakenToTheWelshEnterYourEmailPage() {
+    @Then("the user is taken to the Welsh enter your email page")
+    public void theUserIsTakenToTheWelshEnterYourEmailPage() {
         assertEquals(
                 "Rhowch eich cyfeiriad e-bost i fewngofnodi i’ch GOV.UK One Login - GOV.UK One Login",
                 driver.getTitle());
@@ -140,8 +118,8 @@ public class LoginStepDef extends BasePage {
         Assertions.assertNotEquals("Back", enterYourEmailAddressPage.backButtonText());
     }
 
-    @Then("the existing user is prompted for their password in Welsh")
-    public void theExistingUserIsPromptedForTheirPasswordInWelsh() {
+    @Then("the user is prompted for their password in Welsh")
+    public void theUserIsPromptedForTheirPasswordInWelsh() {
         assertEquals("Rhowch eich cyfrinair - GOV.UK One Login", driver.getTitle());
     }
 
@@ -206,7 +184,7 @@ public class LoginStepDef extends BasePage {
         findAndClickContinue();
     }
 
-    @When("the existing user adds the secret key on the screen to their auth app")
+    @When("the user adds the secret key on the screen to their auth app")
     public void theNewUserAddTheSecretKeyOnTheScreenToTheirAuthApp() {
         authAppSecretKey = System.getenv().get("ACCOUNT_RECOVERY_USER_AUTH_APP_SECRET");
         setUpAnAuthenticatorAppPage.iCannotScanQrCodeClick();
@@ -214,17 +192,12 @@ public class LoginStepDef extends BasePage {
         assertTrue(setUpAnAuthenticatorAppPage.getSecretFieldText().length() == 32);
     }
 
-    @And("the existing user enters the security code from the auth app")
+    @And("the user enters the security code from the auth app")
     public void theNewUserEntersTheSecurityCodeFromTheAuthApp() {
         if (authAppSecretKey == null) {
             authAppSecretKey = System.getenv().get("ACCOUNT_RECOVERY_USER_AUTH_APP_SECRET");
         }
         setUpAnAuthenticatorAppPage.enterCorrectAuthAppCodeAndContinue(authAppSecretKey);
-    }
-
-    @Then("the link {string} is not available")
-    public void theLinkIsNotAvailable(String linkText) {
-        assertFalse(isLinkTextDisplayed(linkText));
     }
 
     @And("the user requests the email OTP code be sent again a further {int} times")
@@ -243,24 +216,8 @@ public class LoginStepDef extends BasePage {
         }
     }
 
-    @When("the user selects {string} link")
-    public void theUserSelectsProblemsWithTheCode(String text) {
-        selectLinkByText(text);
-    }
-
-    @When("the user enters their mobile phone number")
-    public void theUserEntersTheirMobilePhoneNumber() {
-        enterYourMobilePhoneNumberPage.enterUkPhoneNumberAndContinue(
-                System.getenv().get("TEST_USER_PHONE_NUMBER"));
-    }
-
-    @And("the existing user selects create an account")
-    public void theExistingUserSelectsCreateAnAccount() {
-        createOrSignInPage.clickCreateAGovUkOneLoginButton();
-    }
-
-    @When("the existing user switches to {string} language")
-    public void theExistingUserSwitchesLanguage(String language) {
+    @When("the user switches to {string} language")
+    public void theUserSwitchesLanguage(String language) {
         createOrSignInPage.switchLanguageTo(language);
     }
 
@@ -273,11 +230,6 @@ public class LoginStepDef extends BasePage {
             System.out.println("Incorrect code entry count: " + (index + 1));
             Thread.sleep(2000);
         }
-    }
-
-    @When("the user selects link {string}")
-    public void theUserSelectsLink(String linkText) {
-        selectLinkByText(linkText);
     }
 
     @When("the user agrees to the updated terms and conditions")
