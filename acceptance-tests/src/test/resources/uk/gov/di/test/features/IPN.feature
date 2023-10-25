@@ -6,22 +6,22 @@ Feature: International Phone Numbers
     Given the user comes from the stub relying party with options: "default"
     Then the user is taken to the "Create a GOV.UK One Login or sign in" page
     When the user selects create an account
-    Then the new user is taken to the enter your email page
+    Then the user is taken to the "Enter your email" page
     When user enters "IPN1_NEW_USER_EMAIL" email address
-    Then the new user is asked to check their email
-    When the new user enters the six digit security code from their email
-    Then the new user is taken to the create your password page
-    When the new user creates a password
-    Then the new user is taken to the get security codes page
-    When the new user chooses "Text message" to get security codes
-    Then the new user is taken to the enter phone number page
-    When the new user submits a blank UK phone number
+    Then the user is taken to the "Check your email" page
+    When the user enters the six digit security code from their email
+    Then the user is taken to the "Create your password" page
+    When the user creates a password
+    Then the user is taken to the "Choose how to get security codes" page
+    When the user chooses "Text message" to get security codes
+    Then the user is taken to the "Enter your mobile phone number" page
+    When the user submits a blank UK phone number
     Then the "Enter a UK mobile phone number" error message is displayed
-    When the new user submits an international phone number in the UK phone number field
+    When the user submits an international phone number in the UK phone number field
     Then the "Enter a UK mobile phone number" error message is displayed
-    When the new user submits an incorrectly formatted UK phone number
+    When the user submits an incorrectly formatted UK phone number
     Then the "Enter a UK mobile phone number, like 07700 900000" error message is displayed
-    When the new user submits a UK phone number containing non-digit characters
+    When the user submits a UK phone number containing non-digit characters
     Then the "Enter a UK mobile phone number using only numbers or the + symbol" error message is displayed
 
 
@@ -30,31 +30,31 @@ Feature: International Phone Numbers
     Given the user comes from the stub relying party with options: "default"
     Then the user is taken to the "Create a GOV.UK One Login or sign in" page
     When the user selects create an account
-    Then the new user is taken to the enter your email page
+    Then the user is taken to the "Enter your email" page
     When user enters "IPN2_NEW_USER_EMAIL" email address
-    Then the new user is asked to check their email
-    When the new user enters the six digit security code from their email
-    Then the new user is taken to the create your password page
-    When the new user creates a password
-    Then the new user is taken to the get security codes page
-    When the new user chooses "Text message" to get security codes
-    Then the new user is taken to the enter phone number page
-    When the new user ticks I do not have a UK mobile number
+    Then the user is taken to the "Check your email" page
+    When the user enters the six digit security code from their email
+    Then the user is taken to the "Create your password" page
+    When the user creates a password
+    Then the user is taken to the "Choose how to get security codes" page
+    When the user chooses "Text message" to get security codes
+    Then the user is taken to the "Enter your mobile phone number" page
+    When the user ticks I do not have a UK mobile number
     Then the International mobile number field is displayed
-    When the new user submits a blank international mobile phone number
+    When the user submits a blank international mobile phone number
     Then the "Enter a mobile phone number" error message is displayed
-    When the new user submits an incorrectly formatted international mobile phone number
+    When the user submits an incorrectly formatted international mobile phone number
     Then the "Enter a mobile phone number in the correct format, including the country code" error message is displayed
-    When the new user submits an international mobile phone number containing non-digit characters
+    When the user submits an international mobile phone number containing non-digit characters
     Then the "Enter a mobile phone number using only numbers or the + symbol" error message is displayed
-    When the new user enters a valid international mobile phone number
-    Then the new user is taken to the check your phone page
-    When the new user enters the six digit security code from their phone
-    Then the new user is taken to the account created page
-    When the new user clicks the continue button
+    When the user enters a valid international mobile phone number
+    Then the user is taken to the "Check your phone" page
+    When the user enters the six digit security code from their phone
+    Then the user is taken to the "You’ve created your GOV.UK One Login" page
+    When the user clicks the continue button
     Then the user is returned to the service
     When the user clicks logout
-    Then the new user is taken to the signed out page
+    Then the user is taken to the "Signed out" page
 
 
 #  Scenario: User with an international phone number reports that they did not receive their security code

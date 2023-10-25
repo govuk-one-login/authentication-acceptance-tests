@@ -27,11 +27,6 @@ public class DocAppStepDef extends BasePage {
         driver.get(DOC_APP_URL.toString());
     }
 
-    @And("the user clicks the continue button")
-    public void theUserClicksTheContinueButton() {
-        docAppPage.continueButtonClick();
-    }
-
     @And("the user sends a valid json payload")
     public void theUserSendsAValidJsonPayload() {
         jsonPayLoad = "{\"test\" : \"example\"}";
