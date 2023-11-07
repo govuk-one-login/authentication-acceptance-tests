@@ -24,8 +24,6 @@ Feature: International Phone Numbers
     When the user submits a UK phone number containing non-digit characters
     Then the "Enter a UK mobile phone number using only numbers or the + symbol" error message is displayed
 
-
-
   Scenario: User can successfully complete registration using an international phone number
     Given the user comes from the stub relying party with options: "default"
     Then the user is taken to the "Create a GOV.UK One Login or sign in" page
@@ -53,9 +51,7 @@ Feature: International Phone Numbers
     Then the user is taken to the "You’ve created your GOV.UK One Login" page
     When the user clicks the continue button
     Then the user is returned to the service
-    When the user clicks logout
-    Then the user is taken to the "Signed out" page
-
+    And the user logs out
 
 #  Scenario: User with an international phone number reports that they did not receive their security code
 #    Given the user comes from the stub relying party with options: "default"

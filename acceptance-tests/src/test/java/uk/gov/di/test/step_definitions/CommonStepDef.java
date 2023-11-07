@@ -1,5 +1,6 @@
 package uk.gov.di.test.step_definitions;
 
+import io.cucumber.java.en.And;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.openqa.selenium.By;
@@ -42,7 +43,7 @@ public class CommonStepDef extends BasePage {
 
     @Then("the link {string} is not available")
     public void theLinkIsNotAvailable(String linkText) {
-        assertFalse(isLinkTextDisplayed(linkText));
+        assertFalse(isLinkTextDisplayedImmediately(linkText));
     }
 
     @When("the user clicks the continue button")
@@ -51,7 +52,15 @@ public class CommonStepDef extends BasePage {
     }
 
     @Then("the user is returned to the service")
-    public void theUserIsReturnedToTheService() {}
+    public void theUserIsReturnedToTheService() {
+        waitForPageLoad("Example - GOV.UK - User Info");
+    }
+
+    @And("the user logs out")
+    public void theUserLogsOut() {
+        findAndClickButtonByText("Log out");
+        waitForPageLoad("Signed out");
+    }
 
     @Then("the user is shown an error message")
     public void theUserIsShownAnErrorMessageOnTheEnterEmailPage() {
@@ -60,7 +69,9 @@ public class CommonStepDef extends BasePage {
 
     @Then("the user is not shown any error messages")
     public void theNewUserIsNotShownAnErrorMessage() {
+        switchDefaultTimeout("off");
         List<WebElement> errorFields = driver.findElements(By.id("code-error"));
+        switchDefaultTimeout("on");
         if (!errorFields.isEmpty()) {
             System.out.println("setup-authenticator-app error: " + errorFields.get(0));
         }
