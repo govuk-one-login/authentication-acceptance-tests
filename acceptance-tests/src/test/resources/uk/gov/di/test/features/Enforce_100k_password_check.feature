@@ -20,6 +20,5 @@ Feature: Enforce 100k password check
     When the user enters valid new password and correctly retypes it
     Then the user is taken to the "Check your phone" page
     When the user enters the six digit security code from their phone
-    Then the user is taken to the "Example - GOV.UK - User Info" page
-    When the user clicks logout
-    Then the user is taken to the "Signed out" page
+    Then the user is returned to the service
+    And the user logs out

@@ -17,9 +17,8 @@ Feature: Account recovery
     When the user selects "Problems with the code?" link
     Then the link "change how you get security codes" is not available
     When the user enters the six digit security code from their phone
-    Then the user is taken to the "Example - GOV.UK - User Info" page
-    When the user clicks logout
-    Then the user is taken to the "Signed out" page
+    Then the user is returned to the service
+    And the user logs out
 
     When the user comes from the stub relying party with options: "default"
     Then the user is taken to the "Create a GOV.UK One Login or sign in" page
@@ -40,9 +39,8 @@ Feature: Account recovery
     And the user enters the security code from the auth app
     Then the user is taken to the "You’ve changed how you get security codes" page
     And confirmation that the user will get security codes via "auth app" is displayed
-    Then the user is taken to the "Example - GOV.UK - User Info" page
-    When the user clicks logout
-    Then the user is taken to the "Signed out" page
+    Then the user is returned to the service
+    And the user logs out
 
     When the user comes from the stub relying party with options: "default"
     Then the user is taken to the "Create a GOV.UK One Login or sign in" page
@@ -53,9 +51,8 @@ Feature: Account recovery
     When the user enters their new password
     Then the user is taken to the "Enter the 6 digit security code shown in your authenticator app" page
     When the user enters the security code from the auth app
-    Then the user is taken to the "Example - GOV.UK - User Info" page
-    When the user clicks logout
-    Then the user is taken to the "Signed out" page
+    Then the user is returned to the service
+    And the user logs out
 
 
   Scenario: A user with auth app authentication changes password and logs in with their MFA. Changes their auth method to text message, then logs in with the new password and text message auth method.
@@ -74,9 +71,8 @@ Feature: Account recovery
     And the link "I do not have access to the authenticator app" is not available
     And the link "change how you get security codes" is not available
     When the user enters the security code from the auth app
-    Then the user is taken to the "Example - GOV.UK - User Info" page
-    When the user clicks logout
-    Then the user is taken to the "Signed out" page
+    Then the user is returned to the service
+    And the user logs out
 
     When the user comes from the stub relying party with options: "default"
     Then the user is taken to the "Create a GOV.UK One Login or sign in" page
@@ -98,9 +94,8 @@ Feature: Account recovery
     When the user enters the six digit security code from their phone
     Then the user is taken to the "You’ve changed how you get security codes" page
     And confirmation that the user will get security codes via "text message" is displayed
-    Then the user is taken to the "Example - GOV.UK - User Info" page
-    When the user clicks logout
-    Then the user is taken to the "Signed out" page
+    Then the user is returned to the service
+    And the user logs out
 
     When the user comes from the stub relying party with options: "default"
     Then the user is taken to the "Create a GOV.UK One Login or sign in" page
@@ -111,9 +106,8 @@ Feature: Account recovery
     When the user enters their new password
     Then the user is taken to the "Check your phone" page
     When the user enters the six digit security code from their phone
-    Then the user is taken to the "Example - GOV.UK - User Info" page
-    When the user clicks logout
-    Then the user is taken to the "Signed out" page
+    Then the user is returned to the service
+    And the user logs out
 
 
   Scenario: A user with sms authentication is blocked when they request their email OTP code 6 times (including the initial send on entry to screen) during a change of auth method.

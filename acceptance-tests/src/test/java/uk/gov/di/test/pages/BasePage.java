@@ -21,6 +21,7 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 import static java.time.temporal.ChronoUnit.SECONDS;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -117,10 +118,23 @@ public class BasePage {
         continueButton.click();
     }
 
-    protected boolean isLinkTextDisplayed(String linkText) {
+    public void switchDefaultTimeout(String status) {
+        switch (status.toLowerCase()) {
+            case "on":
+                driver.manage().timeouts().implicitlyWait(DEFAULT_PAGE_LOAD_WAIT_TIME);
+                break;
+            case "off":
+                driver.manage().timeouts().implicitlyWait(0, TimeUnit.SECONDS);
+                break;
+        }
+    }
+
+    protected boolean isLinkTextDisplayedImmediately(String linkText) {
+        switchDefaultTimeout("off");
         List elements =
                 driver.findElements(
                         By.xpath("//*[text()[normalize-space() = '" + linkText + "']]"));
+        switchDefaultTimeout("off");
         if (elements.size() > 0) {
             return true;
         } else {
