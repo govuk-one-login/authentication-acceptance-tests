@@ -36,9 +36,6 @@ RUN apk update && apk add --update --no-cache \
 
 ENV PATH="/usr/bin/chromedriver:${PATH}"
 
-# install geckodriver
-#RUN curl -L https://github.com/mozilla/geckodriver/releases/download/v0.33.0/geckodriver-v0.33.0-linux64.tar.gz | tar xz -C /usr/local/bin
-
 COPY . /test
 
 RUN addgroup -S auth_user_group
