@@ -2,13 +2,11 @@
 
 This repo contains automated browser based [Cucumber](https://cucumber.io/) tests for [GOV.UK Sign In](https://auth-tech-docs.london.cloudapps.digital/).
 
- The acceptance tests runs against the build environment in the di-authentication-deployment pipeline. The [acceptance-tests](https://cd.gds-reliability.engineering/teams/verify/pipelines/di-authentication-deployment/jobs/acceptance-tests) job must pass before any code is deployed to the production and integration environments. They can also be run locally in order to build and make changes to the test suite.
+The acceptance tests runs against the build environment in the di-authentication-deployment pipeline. The [acceptance-tests](https://cd.gds-reliability.engineering/teams/verify/pipelines/di-authentication-deployment/jobs/acceptance-tests) job must pass before any code is deployed to the production and integration environments. They can also be run locally in order to build and make changes to the test suite.
 
 ## How to run the tests
 
-The tests can be run either in debug mode, where the tests will pause to accept entry of one-time password (OTP) codes before continuing, or in fully automated mode, where a test client is used to handle OTP.  The tests run in fully automated mode in the build pipeline.
-
-
+The tests can be run either in debug mode, where the tests will pause to accept entry of one-time password (OTP) codes before continuing, or in fully automated mode, where a test client is used to handle OTP. The tests run in fully automated mode in the build pipeline.
 
 ### Test configuration
 
@@ -19,7 +17,7 @@ There are two different ways to retrieve configuration environment variables to 
 
 #### AWS SSM Parameter Store Configuration
 
-This is the default option if running the tests using `./run-acceptance-tests.sh`.  You need to have access to the `digital-identity-dev` AWS account and be on the VPN for it to work.  You do not need to create a local .env file to use this option.
+This is the default option if running the tests using `./run-acceptance-tests.sh`. You need to have access to the `gds-di-development` AWS account and be on the VPN for it to work. You do not need to create a local .env file to use this option.
 
 The configuration provided will connect to the build environment.
 
@@ -27,8 +25,11 @@ The configuration provided will connect to the build environment.
 
 To create a .env file based on the values in AWS SSM Parameter Store: 
 
-- Run `./run-acceptance-tests.sh -e`.  This will export a .env file with a timestamp.
+- Run `./run-acceptance-tests.sh -e`. This will export a .env file with a timestamp.
 - Rename this file to `.env` before use.
+- Replace all email usernames with `auth-test-user-<yourInitials>-<number>`; e.g., `auth-test-user-hl-1@digital.cabinet-office.gov.uk`
+  - This is so that it uses different data and do not conflict with the build pipeline if running at the same time
+  - Note: `<number>` should be replaced with different numbers for each email to make them unique
 - Run `./run-acceptance-tests.sh -l` to make use of the local .env file.
 
 You do not need to be on the VPN to run the tests using an .env file.
@@ -38,7 +39,8 @@ You do not need to be on the VPN to run the tests using an .env file.
 1. Clone the repo
 2. Install Java 16+
 3. Install Docker Desktop
-4. Choose your configuration method as described in the previous section.
+4. Depending on which browser you wish to use, ensure you have either geckodriver (Mozilla Firefox) or ChromeDriver (Google Chrome) installed.
+5. Choose your configuration method as described in the previous section.
 
 ### Clean up
 
@@ -46,35 +48,35 @@ The `./run-acceptance-tests.sh` script will clean up the test data state after a
 
 ### Test Clients
 
-A test client is needed to run in fully automated mode.  A test client:
+A test client is needed to run in fully automated mode. A test client:
 
--   Suppresses sending OTP codes and allows usage of known, secret codes
--   Suppresses emails from the [Frontend](https://github.com/alphagov/di-authentication-frontend) application but not from [Account Management](https://github.com/alphagov/di-authentication-account-management)
--   Has an allowlist of known users for whom emails and OTP are suppressed
--   Is only available in test environments
--   Requires database access to setup
--   Cannot be setup using any API
+- Suppresses sending OTP codes and allows usage of known, secret codes
+- Suppresses emails from the [Frontend](https://github.com/alphagov/di-authentication-frontend) application but not from [Account Management](https://github.com/alphagov/di-authentication-account-management)
+- Has an allowlist of known users for whom emails and OTP are suppressed 
+- Is only available in test environments 
+- Requires database access to setup 
+- Cannot be setup using any API
 
 ### Debug mode
 
 Using debug mode avoids the need to configure a test client, but means the UI will pause to allow OTP entry.
 
-1.  In `.env` or `./run-acceptance-tests.sh` set:
-    - SELENIUM_HEADLESS=false
-    - DEBUG_MODE=true
-1.  Run: [./run-acceptance-tests.sh](run-acceptance-tests.sh)
+1. In `.env` or `./run-acceptance-tests.sh` set:
+   - SELENIUM_HEADLESS=false
+   - DEBUG_MODE=true
+2. Run: [./run-acceptance-tests.sh](run-acceptance-tests.sh)
 
 Email and SMS OTP notifications will be sent to the email address and phone number configured as long as they have been added to the test [Notify](https://www.notifications.service.gov.uk/) team.
 
 ### Fully automated mode
 
-1.  Find a test client in a test environment
-1.  Add the test email address to `TestClientEmailAllowlist` in the client-registry database table for the test client
-1.  Configure secret email and phone OTP codes for testing
-1.  In `.env` or `./run-acceptance-tests.sh` set:
-    - SELENIUM_HEADLESS=true
-    - DEBUG_MODE=false
-1.  Run: [./run-acceptance-tests.sh](run-acceptance-tests.sh)
+1. Find a test client in a test environment
+2. Add the test email address to `TestClientEmailAllowlist` in the client-registry database table for the test client
+3. Configure secret email and phone OTP codes for testing
+4. In `.env` or `./run-acceptance-tests.sh` set:
+   - SELENIUM_HEADLESS=true
+   - DEBUG_MODE=false
+5. Run: [./run-acceptance-tests.sh](run-acceptance-tests.sh)
 
 Email and SMS OTP notifications will be suppressed for [Frontend](https://github.com/alphagov/di-authentication-frontend), but not for [Account Management](https://github.com/alphagov/di-authentication-account-management).
 

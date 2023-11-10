@@ -2,6 +2,8 @@ FROM docker
 
 RUN apk update && apk add --update --no-cache \
     bash \
+    chromium \
+    chromium-chromedriver \
     curl \
     openjdk17 \
     jq \
@@ -26,13 +28,11 @@ RUN apk update && apk add --update --no-cache \
     libxdamage \
     libxext \
     libxfixes \
-    tzdata \
     libexif \
+    tzdata \
     udev \
     xvfb \
-    zlib-dev \
-    chromium \
-    chromium-chromedriver
+    zlib-dev
 
 ENV PATH="/usr/bin/chromedriver:${PATH}"
 
