@@ -61,7 +61,12 @@ public class BasePage {
                     ChromeOptions chromeOptions = new ChromeOptions();
                     chromeOptions.setHeadless(SELENIUM_HEADLESS);
                     chromeOptions.addArguments("--remote-allow-origins=*");
+                    chromeOptions.addArguments("--disable-gpu");
+                    chromeOptions.addArguments("--disable-extensions");
+                    chromeOptions.addArguments("--no-sandbox");
+                    chromeOptions.addArguments("--disable-dev-shm-usage");
                     if (SELENIUM_LOCAL) {
+                        System.setProperty("webdriver.chrome.whitelistedIps", "");
                         driver = new ChromeDriver(chromeOptions);
                     } else {
                         driver = new RemoteWebDriver(new URL(SELENIUM_URL), chromeOptions);
