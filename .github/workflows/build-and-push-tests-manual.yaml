@@ -1,5 +1,11 @@
 name: Build and Push Acceptance Tests
 
+env:
+  AWS_REGION: eu-west-2
+
+#Role to Assume is  dev-auth-deploy-pipeline githubaction Role
+#ECR repo is acceptance test ECR repo 
+
 on:
   workflow_dispatch:
 
@@ -17,8 +23,8 @@ jobs:
       - name: Set up AWS credentials
         uses: aws-actions/configure-aws-credentials@v2
         with:
-          role-to-assume: arn:aws:iam::761723964695:role/auth-deploy-pipeline-dev-GitHubActionsRole-17Z6L5D2KMOAC
-          aws-region: eu-west-2
+          role-to-assume: ${{ secrets.GHA_ROLE }}
+          aws-region: ${{ env.AWS_REGION }}
 
       - name: Login to Amazon ECR
         id: login-ecr
@@ -27,7 +33,7 @@ jobs:
       - name: Build, tag, and push acceptance tests image to Amazon ECR
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          ECR_REPOSITORY: acceptance-tests-testrunnerimagerepository-yaqn2qfs5qn2
+          ECR_REPOSITORY: ${{ secrets.ACCEPTANCE_ECR_REPO }}
           IMAGE_TAG: chrome
         run: |
           docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
