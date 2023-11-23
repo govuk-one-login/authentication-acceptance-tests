@@ -73,7 +73,7 @@ Feature: Login Journey
     Then the user is taken to the "Create a GOV.UK One Login or sign in" page
     When the user selects sign in
     Then the user is taken to the "Enter your email" page
-    When user enters "TEST_USER_2_EMAIL" email address
+    When user enters "TEST_USER_3_EMAIL" email address
     Then the user is taken to the "Enter your password" page
     When the user enters their password
     Then the user is taken to the "Check your phone" page
@@ -86,7 +86,7 @@ Feature: Login Journey
     Then the user is taken to the "Create a GOV.UK One Login or sign in" page
     When the user selects sign in
     Then the user is taken to the "Enter your email" page
-    When user enters "TEST_USER_2_EMAIL" email address
+    When user enters "TEST_USER_3_EMAIL" email address
     Then the user is taken to the "Enter your password" page
     When the user enters their password
     Then the user is taken to the "Check your phone" page
@@ -101,7 +101,7 @@ Feature: Login Journey
     Then the user is taken to the "Create a GOV.UK One Login or sign in" page
     When the user selects sign in
     Then the user is taken to the "Enter your email" page
-    When user enters "TEST_USER_2_EMAIL" email address
+    When user enters "TEST_USER_3_EMAIL" email address
     Then the user is taken to the "Enter your password" page
     When the user enters their password
     Then the user is taken to the "Check your phone" page
@@ -117,7 +117,7 @@ Feature: Login Journey
 #    Then the user is taken to the "Create a GOV.UK One Login or sign in" page
 #    When the user selects sign in
 #    Then the user is taken to the "Enter your email" page
-#    When user enters "TEST_USER_2_EMAIL" email address
+#    When user enters "TEST_USER_3_EMAIL" email address
 #    Then the user is taken to the "Enter your password" page
 #    When the user enters their password
 #    Then the user is taken to the "Check your phone" page
