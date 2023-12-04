@@ -64,6 +64,33 @@ function updateAccountRecoveryBlock() {
     --region "${AWS_REGION}"
 }
 
+function createOrUpdateInterventionsUser() {
+  up="$(
+    aws dynamodb get-item \
+      --table-name "${ENVIRONMENT_NAME}-user-profile" \
+      --key "{\"Email\": {\"S\": \"$1\"}}" \
+      --projection-expression "#E, #ST, #S, #PS, #LS" \
+      --expression-attribute-names "{\"#E\": \"Email\", \"#ST\": \"salt\", \"#S\": \"SubjectID\", \"#PS\": \"PublicSubjectID\", \"#LS\": \"LegacySubjectId\"}" \
+      --region "${AWS_REGION}" \
+      --no-paginate
+  )"
+
+  ics="$(echo -n $up | jq -r '.Item.SubjectID.S')"
+  salt="$(echo -n $up | jq -r '.Item.salt.B' | base64 -d)"
+  digest="$(echo -n "$2$ics$salt" | openssl dgst -sha256 -binary | base64 | tr '/+' '_-' | tr -d '=')"
+  pwid="urn:fdc:gov.uk:2022:$digest"
+
+  echo "resetting interventions block for: $1 internalCommonSubjectId: $pwid"
+
+  aws dynamodb update-item \
+    --table-name "${ENVIRONMENT_NAME}-stub-account-interventions" \
+    --key "{\"InternalPairwiseId\": {\"S\": \"$pwid\"}}" \
+    --update-expression "SET #BLOCKED = :blocked, #SUSPENDED = :suspended, #RESETPASSWORD = :resetpassword, #REPROVEIDENTITY = :reproveidentity" \
+    --expression-attribute-names "{ \"#BLOCKED\": \"Blocked\", \"#SUSPENDED\": \"Suspended\", \"#RESETPASSWORD\": \"ResetPassword\", \"#REPROVEIDENTITY\": \"ReproveIdentity\" }" \
+    --expression-attribute-values "{ \":blocked\":{\"BOOL\": $2}, \":suspended\":{\"BOOL\": $3}, \":resetpassword\":{\"BOOL\": $4}, \":reproveidentity\":{\"BOOL\": false} }" \
+    --region "${AWS_REGION}"
+}
+
 function removeMfaMethods() {
   echo "Removing mfa methods for user $1 in user-credentials..."
   aws dynamodb update-item \
@@ -129,4 +156,19 @@ function createAuthAppUser() {
   createOrUpdateUser $1 $2
   updateMfaAuthApp $1 $3
   updateTermsAndConditions $1 $4
+}
+
+function createBlockedAccountInterventionsBlock() {
+  echo "Creating blocked intervention for user $1..."
+  createOrUpdateInterventionsUser $1 true false false
+}
+
+function createSuspendedAccountInterventionsBlock() {
+  echo "Creating suspended account intervention for user $1..."
+  createOrUpdateInterventionsUser $1 false true false
+}
+
+function createResetPasswordInterventionsBlock() {
+  echo "Creating reset password account intervention for user $1..."
+  createOrUpdateInterventionsUser $1 false false true
 }
