@@ -138,7 +138,7 @@ Feature: Account recovery
     Then the user is taken to the "Check your phone" page
     When the user selects "Problems with the code?" link
     And the user selects "change how you get security codes" link
-    Then the user is taken to the "You asked to resend the security code too many times" page
+    Then the user is taken to the "You cannot get a new security code at the moment" page
 
 
   Scenario: A user with auth app authentication is blocked when they enter an incorrect email OTP 6 times during a change of auth method.
@@ -168,4 +168,4 @@ Feature: Account recovery
     Then the user is taken to the "Enter the 6 digit security code shown in your authenticator app" page
     When the user selects "I do not have access to the authenticator app" link
     And the user selects "change how you get security codes" link
-    Then the user is taken to the "You entered the wrong security code too many times" page
+    Then the user is taken to the "You cannot get a new security code at the moment" page
