@@ -27,7 +27,7 @@ Feature: Reset password
     And the user logs out
 
 # REQUEST OTP TOO MANY TIMES DURING PASSWORD RESET --- AUT-1274
-  Scenario: A user is blocked when they enter an incorrect email OTP more than 6 times during a password reset.
+  Scenario: A user is blocked when they enter an incorrect email OTP more than 5 times during a password reset.
     Given the user comes from the stub relying party with options: "default"
     Then the user is taken to the "Create a GOV.UK One Login or sign in" page
     When the user selects sign in
