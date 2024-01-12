@@ -75,19 +75,20 @@ function createOrUpdateInterventionsUser() {
       --no-paginate
   )"
 
+  sector="identity.${ENVIRONMENT_NAME}.account.gov.uk"
   ics="$(echo -n $up | jq -r '.Item.SubjectID.S')"
   salt="$(echo -n $up | jq -r '.Item.salt.B' | base64 -d)"
-  digest="$(echo -n "$2$ics$salt" | openssl dgst -sha256 -binary | base64 | tr '/+' '_-' | tr -d '=')"
+  digest="$(echo -n "$sector$ics$salt" | openssl dgst -sha256 -binary | base64 | tr '/+' '_-' | tr -d '=')"
   pwid="urn:fdc:gov.uk:2022:$digest"
 
-  echo "resetting interventions block for: $1 internalCommonSubjectId: $pwid"
+  echo "resetting interventions block for: $1 sector: $sector internalCommonSubjectId: $pwid"
 
   aws dynamodb update-item \
     --table-name "${ENVIRONMENT_NAME}-stub-account-interventions" \
     --key "{\"InternalPairwiseId\": {\"S\": \"$pwid\"}}" \
-    --update-expression "SET #BLOCKED = :blocked, #SUSPENDED = :suspended, #RESETPASSWORD = :resetpassword, #REPROVEIDENTITY = :reproveidentity" \
-    --expression-attribute-names "{ \"#BLOCKED\": \"Blocked\", \"#SUSPENDED\": \"Suspended\", \"#RESETPASSWORD\": \"ResetPassword\", \"#REPROVEIDENTITY\": \"ReproveIdentity\" }" \
-    --expression-attribute-values "{ \":blocked\":{\"BOOL\": $2}, \":suspended\":{\"BOOL\": $3}, \":resetpassword\":{\"BOOL\": $4}, \":reproveidentity\":{\"BOOL\": false} }" \
+    --update-expression "SET #BLOCKED = :blocked, #SUSPENDED = :suspended, #RESETPASSWORD = :resetpassword, #REPROVEIDENTITY = :reproveidentity, #EQUIVALENTPLAINEMAILADDRESS = :equivalentplainemailaddress" \
+    --expression-attribute-names "{ \"#BLOCKED\": \"Blocked\", \"#SUSPENDED\": \"Suspended\", \"#RESETPASSWORD\": \"ResetPassword\", \"#REPROVEIDENTITY\": \"ReproveIdentity\", \"#EQUIVALENTPLAINEMAILADDRESS\": \"EquivalentPlainEmailAddress\" }" \
+    --expression-attribute-values "{ \":blocked\":{\"BOOL\": $2}, \":suspended\":{\"BOOL\": $3}, \":resetpassword\":{\"BOOL\": $4}, \":reproveidentity\":{\"BOOL\": false}, \":equivalentplainemailaddress\":{\"S\": $1} }" \
     --region "${AWS_REGION}"
 }
 
