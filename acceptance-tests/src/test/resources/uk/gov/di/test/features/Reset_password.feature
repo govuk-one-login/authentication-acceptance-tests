@@ -26,13 +26,13 @@ Feature: Reset password
     Then the user is returned to the service
     And the user logs out
 
-# REQUEST OTP TOO MANY TIMES DURING PASSWORD RESET --- AUT-1274
-  Scenario: A user is blocked when they request an email OTP more than 5 times during a password reset.
+# ENTER INCORRECT OTP TOO MANY TIMES DURING PASSWORD RESET
+  Scenario: A user is blocked when they enter an incorrect email OTP more than 5 times during a password reset.
     Given the user comes from the stub relying party with options: "default"
     Then the user is taken to the "Create a GOV.UK One Login or sign in" page
     When the user selects sign in
     Then the user is taken to the "Enter your email" page
-    When user enters "TOO_MANY_EMAIL_OTP_REQUESTS_FOR_PW_RESET_EMAIL" email address
+    When user enters "INCORRECT_EMAIL_OTP_FOR_PW_RESET_EMAIL" email address
     Then the user is taken to the "Enter your password" page
     When the user clicks the forgotten password link
     Then the user is taken to the "Check your email" page
@@ -41,13 +41,13 @@ Feature: Reset password
     When the user selects link "get a new code"
     Then the user is taken to the "You cannot get a new security code at the moment" page
 
-# ENTER INCORRECT OTP TOO MANY TIMES DURING PASSWORD RESET  --- AUT-1283
-  Scenario: A user is blocked when they enter an incorrect email OTP more than 5 times during a password reset.
+# REQUEST OTP TOO MANY TIMES DURING PASSWORD RESET
+  Scenario: A user is blocked when they request an email OTP more than 5 times during a password reset.
     Given the user comes from the stub relying party with options: "default"
     Then the user is taken to the "Create a GOV.UK One Login or sign in" page
     When the user selects sign in
     Then the user is taken to the "Enter your email" page
-    When user enters "INCORRECT_EMAIL_OTP_FOR_PW_RESET_EMAIL" email address
+    When user enters "TOO_MANY_EMAIL_OTP_REQUESTS_FOR_PW_RESET_EMAIL" email address
     Then the user is taken to the "Enter your password" page
     When the user clicks the forgotten password link
     Then the user is taken to the "Check your email" page
