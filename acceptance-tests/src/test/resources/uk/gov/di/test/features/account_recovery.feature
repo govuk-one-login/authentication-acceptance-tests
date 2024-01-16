@@ -168,4 +168,4 @@ Feature: Account recovery
     Then the user is taken to the "Enter the 6 digit security code shown in your authenticator app" page
     When the user selects "I do not have access to the authenticator app" link
     And the user selects "change how you get security codes" link
-    Then the user is taken to the "You cannot get a new security code at the moment" page
+    Then the user is taken to the "You entered the wrong security code too many times" page
