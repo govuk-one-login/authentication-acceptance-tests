@@ -155,7 +155,6 @@ public class BasePage {
                                         By.xpath("//li/a[text() = '" + expectedMessage + "']"))));
     }
 
-    //todo: need to add xpath element when dev is completed
     public void waitForThisText(String expectedText) {
         new WebDriverWait(driver, DEFAULT_PAGE_LOAD_WAIT_TIME)
                 .until(ExpectedConditions.visibilityOf(
