@@ -88,7 +88,7 @@ function createOrUpdateInterventionsUser() {
     --key "{\"InternalPairwiseId\": {\"S\": \"$pwid\"}}" \
     --update-expression "SET #BLOCKED = :blocked, #SUSPENDED = :suspended, #RESETPASSWORD = :resetpassword, #REPROVEIDENTITY = :reproveidentity, #EQUIVALENTPLAINEMAILADDRESS = :equivalentplainemailaddress" \
     --expression-attribute-names "{ \"#BLOCKED\": \"Blocked\", \"#SUSPENDED\": \"Suspended\", \"#RESETPASSWORD\": \"ResetPassword\", \"#REPROVEIDENTITY\": \"ReproveIdentity\", \"#EQUIVALENTPLAINEMAILADDRESS\": \"EquivalentPlainEmailAddress\" }" \
-    --expression-attribute-values "{ \":blocked\":{\"BOOL\": $2}, \":suspended\":{\"BOOL\": $3}, \":resetpassword\":{\"BOOL\": $4}, \":reproveidentity\":{\"BOOL\": false}, \":equivalentplainemailaddress\":{\"S\": $1} }" \
+    --expression-attribute-values "{ \":blocked\":{\"BOOL\": $2}, \":suspended\":{\"BOOL\": $3}, \":resetpassword\":{\"BOOL\": $4}, \":reproveidentity\":{\"BOOL\": false}, \":equivalentplainemailaddress\":{\"S\": \"$1\"} }" \
     --region "${AWS_REGION}"
 }
 
