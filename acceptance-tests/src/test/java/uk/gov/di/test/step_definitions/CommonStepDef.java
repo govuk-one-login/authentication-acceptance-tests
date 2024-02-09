@@ -26,6 +26,11 @@ public class CommonStepDef extends BasePage {
         waitForThisErrorMessage(expectedErrorMessage);
     }
 
+    @And("{string} text is displayed")
+    public void textIsDisplayed(String expectedText) {
+        waitForThisText(expectedText);
+    }
+
     @When("the user switches to Welsh language")
     public void theUserSwitchesToWelshLanguage() {
         createOrSignInPage.switchLanguageTo("Welsh");

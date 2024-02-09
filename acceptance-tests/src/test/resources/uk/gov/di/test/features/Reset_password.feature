@@ -1,7 +1,7 @@
 @ResetPassword
 Feature: Reset password
 
-  Scenario: User can successfully reset their password
+  Scenario: An sms user can successfully reset their password
     Given the user comes from the stub relying party with options: "default"
     Then the user is taken to the "Create a GOV.UK One Login or sign in" page
     When the user selects sign in
@@ -10,7 +10,12 @@ Feature: Reset password
     Then the user is taken to the "Enter your password" page
     When the user clicks the forgotten password link
     Then the user is taken to the "Check your email" page
+    And "We need to make sure this is your GOV.UK One Login before you can reset your password" text is displayed
     When the user enters the six digit security code from their email
+    Then the user is taken to the "Check your phone" page
+    When the user selects "Problems with the code?" link
+    Then the link "change how you get security codes" is not available
+    When the user enters the six digit security code from their phone
     Then the user is taken to the "Reset your password" page
     When the user resets their password to be the same as their current password
     Then the "You are already using that password. Enter a different password" error message is displayed
@@ -21,12 +26,51 @@ Feature: Reset password
     When the user resets their password but enters mismatching new passwords
     Then the "Enter the same password in both fields" error message is displayed
     When the user enters valid new password and correctly retypes it
-    Then the user is taken to the "Check your phone" page
-    When the user enters the six digit security code from their phone
-    Then the user is returned to the service
-    And the user logs out
+    Then the user is taken to the "Example - GOV.UK - User Info" page
+    When the user clicks logout
+    Then the user is taken to the "Signed out" page
 
-# ENTER INCORRECT OTP TOO MANY TIMES DURING PASSWORD RESET
+
+  Scenario: An auth app user can successfully reset their password
+    Given the user comes from the stub relying party with options: "default"
+    Then the user is taken to the "Create a GOV.UK One Login or sign in" page
+    When the user selects sign in
+    Then the user is taken to the "Enter your email" page
+    When user enters "RESET_PW_USER_EMAIL_2" email address
+    Then the user is taken to the "Enter your password" page
+    When the user clicks the forgotten password link
+    Then the user is taken to the "Check your email" page
+    And "We need to make sure this is your GOV.UK One Login before you can reset your password" text is displayed
+    When the user enters the six digit security code from their email
+    Then the user is taken to the "Enter the 6 digit security code shown in your authenticator app" page
+    And the link "I do not have access to the authenticator app" is not available
+    And the link "change how you get security codes" is not available
+    And "To get a security code, open the authenticator app you used to create your GOV.UK One Login" text is displayed
+    And "Enter the 6 digit security code" text is displayed
+    When the user enters the security code from the auth app
+    Then the user is taken to the "Reset your password" page
+    When the user enters valid new password and correctly retypes it
+    Then the user is taken to the "Example - GOV.UK - User Info" page
+    When the user clicks logout
+    Then the user is taken to the "Signed out" page
+
+
+# REQUEST OTP TOO MANY TIMES DURING PASSWORD RESET --- AUT-1274
+  Scenario: A user is blocked when they request an email OTP more than 5 times during a password reset.
+    Given the user comes from the stub relying party with options: "default"
+    Then the user is taken to the "Create a GOV.UK One Login or sign in" page
+    When the user selects sign in
+    Then the user is taken to the "Enter your email" page
+    When user enters "TOO_MANY_EMAIL_OTP_REQUESTS_FOR_PW_RESET_EMAIL" email address
+    Then the user is taken to the "Enter your password" page
+    When the user clicks the forgotten password link
+    Then the user is taken to the "Check your email" page
+    When the user enters an incorrect email OTP 6 times
+    Then the user is taken to the "You entered the wrong security code too many times" page
+    When the user selects link "get a new code"
+    Then the user is taken to the "You cannot get a new security code at the moment" page
+
+# ENTER INCORRECT OTP TOO MANY TIMES DURING PASSWORD RESET  --- AUT-1283
   Scenario: A user is blocked when they enter an incorrect email OTP more than 5 times during a password reset.
     Given the user comes from the stub relying party with options: "default"
     Then the user is taken to the "Create a GOV.UK One Login or sign in" page
