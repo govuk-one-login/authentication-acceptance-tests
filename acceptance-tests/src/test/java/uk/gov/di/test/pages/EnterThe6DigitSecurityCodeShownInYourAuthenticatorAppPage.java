@@ -10,4 +10,17 @@ public class EnterThe6DigitSecurityCodeShownInYourAuthenticatorAppPage extends B
         String authAppCode = AuthAppStub.getAuthAppCode(authAppSecretKey);
         clearFieldAndEnter(authAppCodeField, authAppCode);
     }
+
+    public void enterIncorrectAuthAppCodeAndContnue() {
+        clearFieldAndEnter(authAppCodeField, "123456");
+        findAndClickContinue();
+    }
+
+    public void enterIncorrectAuthAppCodeNumberOfTimes(int numberOfTimes) {
+        for (int index = 0; index < numberOfTimes; index++) {
+            waitForPageLoad("security code");
+            enterIncorrectAuthAppCodeAndContnue();
+            System.out.println("Incorrect auth app security code count: " + (index + 1));
+        }
+    }
 }

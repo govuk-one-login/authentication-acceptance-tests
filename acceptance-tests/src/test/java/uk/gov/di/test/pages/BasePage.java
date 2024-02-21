@@ -155,6 +155,15 @@ public class BasePage {
                                         By.xpath("//li/a[text() = '" + expectedMessage + "']"))));
     }
 
+    public void waitForThisText(String expectedText) {
+        new WebDriverWait(driver, DEFAULT_PAGE_LOAD_WAIT_TIME)
+                .until(
+                        ExpectedConditions.visibilityOf(
+                                driver.findElement(
+                                        By.xpath(
+                                                "//*[contains(text(), '" + expectedText + "')]"))));
+    }
+
     protected void pressBack() {
         driver.findElement(By.xpath("//a[text()[normalize-space() = 'Back']]")).click();
     }

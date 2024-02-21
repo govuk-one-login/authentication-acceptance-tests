@@ -23,4 +23,12 @@ public class CheckYourPhonePage extends BasePage {
     public void clickSendTheCodeAgainLink() {
         driver.findElement(sendTheCodeAgainLink).click();
     }
+
+    public void enterIncorrectPhoneSecurityCodeNumberOfTimes(Integer numberOfTimes) {
+        for (int index = 0; index < numberOfTimes; index++) {
+            waitForPageLoad("Check your phone");
+            enterPhoneCodeAndContinue("123456");
+            System.out.println("Incorrect phone security code count: " + (index + 1));
+        }
+    }
 }

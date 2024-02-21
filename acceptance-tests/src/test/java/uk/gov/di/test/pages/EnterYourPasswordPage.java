@@ -19,4 +19,12 @@ public class EnterYourPasswordPage extends BasePage {
         enterPassword(pw);
         findAndClickContinue();
     }
+
+    public void enterIncorrectPasswordNumberOfTimes(Integer numberOfTimes) {
+        for (int index = 0; index < numberOfTimes; index++) {
+            waitForPageLoad("Enter your password");
+            enterPasswordAndContinue("IncorrectPassword");
+            System.out.println("Incorrect password entry count: " + (index + 1));
+        }
+    }
 }

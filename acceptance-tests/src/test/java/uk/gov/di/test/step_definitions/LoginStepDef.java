@@ -8,10 +8,10 @@ import uk.gov.di.test.pages.BasePage;
 import uk.gov.di.test.pages.CheckYourEmailPage;
 import uk.gov.di.test.pages.CheckYourPhonePage;
 import uk.gov.di.test.pages.CreateOrSignInPage;
+import uk.gov.di.test.pages.EnterThe6DigitSecurityCodeShownInYourAuthenticatorAppPage;
 import uk.gov.di.test.pages.EnterYourEmailAddressPage;
 import uk.gov.di.test.pages.EnterYourEmailAddressToSignInPage;
 import uk.gov.di.test.pages.EnterYourPasswordPage;
-import uk.gov.di.test.pages.GetSecurityCodePage;
 import uk.gov.di.test.pages.ResetYourPasswordPage;
 import uk.gov.di.test.pages.SetUpAnAuthenticatorAppPage;
 import uk.gov.di.test.pages.TermsAndConditionsPage;
@@ -20,7 +20,6 @@ import uk.gov.di.test.pages.YouveChangedHowYouGetSecurityCodesPage;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static uk.gov.di.test.utils.Constants.INCORRECT_EMAIL_OTP_CODE;
 import static uk.gov.di.test.utils.Constants.INVALID_EMAIL;
 import static uk.gov.di.test.utils.Constants.INVALID_PASSWORD;
 import static uk.gov.di.test.utils.Constants.MISMATCHING_PASSWORD_1;
@@ -38,7 +37,6 @@ public class LoginStepDef extends BasePage {
     public TermsAndConditionsPage termsAndConditionsPage = new TermsAndConditionsPage();
     public EnterYourPasswordPage enterYourPasswordPage = new EnterYourPasswordPage();
     public CheckYourPhonePage checkYourPhonePage = new CheckYourPhonePage();
-    public GetSecurityCodePage getSecurityCodePage = new GetSecurityCodePage();
     public EnterYourEmailAddressToSignInPage enterYourEmailAddressToSignInPage =
             new EnterYourEmailAddressToSignInPage();
     public CreateOrSignInPage createOrSignInPage = new CreateOrSignInPage();
@@ -48,6 +46,11 @@ public class LoginStepDef extends BasePage {
     public EnterYourEmailAddressPage enterYourEmailAddressPage = new EnterYourEmailAddressPage();
     public SetUpAnAuthenticatorAppPage setUpAnAuthenticatorAppPage =
             new SetUpAnAuthenticatorAppPage();
+    public CrossPageFlows crossPageFlows = new CrossPageFlows();
+
+    public EnterThe6DigitSecurityCodeShownInYourAuthenticatorAppPage
+            enterThe6DigitSecurityCodeShownInYourAuthenticatorAppPage =
+                    new EnterThe6DigitSecurityCodeShownInYourAuthenticatorAppPage();
 
     @When("the user enters their password which is on the top 100k password list")
     public void theUserEntersTheirPasswordWhichIsOnTheTop100kPasswordList() {
@@ -90,13 +93,9 @@ public class LoginStepDef extends BasePage {
     }
 
     @When("the user requests the phone otp code {int} times")
+    @When("the user requests the phone otp code a further {int} times")
     public void theUserRequestsThePhoneOtpCodeTimes(int timesCodeIncorrect) {
-        for (int i = 0; i < timesCodeIncorrect; i++) {
-            checkYourPhonePage.clickProblemsWithTheCodeLink();
-            checkYourPhonePage.clickSendTheCodeAgainLink();
-            waitForPageLoad("Get security code");
-            getSecurityCodePage.pressGetSecurityCodeButton();
-        }
+        crossPageFlows.requestPhoneSecurityCodeResendNumberOfTimes(timesCodeIncorrect);
     }
 
     @When("the user clicks the get a new code link")
@@ -202,18 +201,7 @@ public class LoginStepDef extends BasePage {
 
     @And("the user requests the email OTP code be sent again a further {int} times")
     public void theUserRequestsTheEmailOTPCodeBeSentAgainAFurtherIntTimes(Integer requestCount) {
-        for (int index = 0; index < requestCount; index++) {
-            checkYourEmailPage.waitForPage();
-            checkYourEmailPage.requestResendOfEmailOTPCode();
-            getSecurityCodePage.waitForPage();
-            getSecurityCodePage.pressGetSecurityCodeButton();
-            System.out.println(
-                    "Code request count: "
-                            + (index + 1)
-                            + " ("
-                            + (index + 2)
-                            + " including code sent on initial entry to the Check Your Email page)");
-        }
+        crossPageFlows.requestEmailOTPCodeResendNumberOfTimes(requestCount);
     }
 
     @When("the user switches to {string} language")
@@ -222,18 +210,44 @@ public class LoginStepDef extends BasePage {
     }
 
     @When("the user enters an incorrect email OTP {int} times")
-    public void theUserEntersAnIncorrectEmailOTPIntTimes(Integer attemptCount)
-            throws InterruptedException {
-        for (int index = 0; index < attemptCount; index++) {
-            checkYourEmailPage.waitForPage();
-            checkYourEmailPage.enterEmailCodeAndContinue(INCORRECT_EMAIL_OTP_CODE);
-            System.out.println("Incorrect code entry count: " + (index + 1));
-            Thread.sleep(2000);
-        }
+    public void theUserEntersAnIncorrectEmailOTPIntTimes(Integer attemptCount) {
+        checkYourEmailPage.enterIncorrectEmailOTPNumberOfTimes(attemptCount);
     }
 
     @When("the user agrees to the updated terms and conditions")
     public void theUserAgreesToTheUpdatedTermsAndConditions() {
         termsAndConditionsPage.pressAgreeAndContinueButton();
+    }
+
+    @When("the user enters incorrect password")
+    public void theUserEntersIncorrectPassword() {
+        enterYourPasswordPage.enterIncorrectPasswordNumberOfTimes(1);
+    }
+
+    @When("the user enters an incorrect password a further {int} times")
+    public void theUserEntersAnIncorrectPasswordAFurtherXTimes(Integer attemptCount) {
+        enterYourPasswordPage.enterIncorrectPasswordNumberOfTimes(attemptCount);
+    }
+
+    @And("the user enters an incorrect phone security code {int} times")
+    public void theUserEntersAnIncorrectPhoneSecurityCode(Integer attemptCount) {
+        checkYourPhonePage.enterIncorrectPhoneSecurityCodeNumberOfTimes(attemptCount);
+    }
+
+    @When("the user enters an incorrect phone security code a further {int} times")
+    public void theUserEntersAnIncorrectPhoneSecurityCodeAFurtherXTimes(Integer attemptCount) {
+        checkYourPhonePage.enterIncorrectPhoneSecurityCodeNumberOfTimes(attemptCount);
+    }
+
+    @And("the user enters an incorrect auth app security code {int} times")
+    public void theUserEntersAnIncorrectAuthAppSecurityCode(Integer attemptCount) {
+        enterThe6DigitSecurityCodeShownInYourAuthenticatorAppPage
+                .enterIncorrectAuthAppCodeNumberOfTimes(attemptCount);
+    }
+
+    @When("the user enters an incorrect auth app security code a further {int} times")
+    public void theUserEntersIncorrectAuthAppCodeAFurtherXTimes(Integer attemptCount) {
+        enterThe6DigitSecurityCodeShownInYourAuthenticatorAppPage
+                .enterIncorrectAuthAppCodeNumberOfTimes(attemptCount);
     }
 }
