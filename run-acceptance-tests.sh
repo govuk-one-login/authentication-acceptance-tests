@@ -111,7 +111,7 @@ else
 fi
 
 if [ $LOCAL == "1" ]; then
-  ./reset-test-data.sh -l
+  ./reset-test-data.sh -l $ENVIRONMENT
 else
   ./reset-test-data.sh -r $ENVIRONMENT
 fi
