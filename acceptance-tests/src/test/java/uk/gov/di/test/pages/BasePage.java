@@ -42,7 +42,7 @@ public class BasePage {
             System.getenv()
                     .getOrDefault(
                             "RP_URL",
-                            "https://di-auth-stub-relying-party-build-s2.london.cloudapps.digital/");
+                            "https://acceptance-test-rp-build.build.stubs.account.gov.uk/");
 
     protected static final Boolean SELENIUM_LOCAL =
             Boolean.parseBoolean(System.getenv().getOrDefault("SELENIUM_LOCAL", "false"));
