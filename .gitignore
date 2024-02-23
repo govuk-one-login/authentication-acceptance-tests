@@ -11,3 +11,4 @@ bin/
 *.bat
 node_modules/
 target/
+*.pem
