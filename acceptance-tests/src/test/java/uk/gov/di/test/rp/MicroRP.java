@@ -28,8 +28,7 @@ public class MicroRP {
 
     public enum JourneyType {
         LOW_CONFIDENCE("[\"Cl\"]"),
-        MED_CONFIDENCE("[\"Cl.Cm\"]"),
-        PROVE_IDENTITY("[\"Cl.Cm.P2\"]");
+        MED_CONFIDENCE("[\"Cl.Cm\"]");
 
         private final String vectorOfTrust;
 
