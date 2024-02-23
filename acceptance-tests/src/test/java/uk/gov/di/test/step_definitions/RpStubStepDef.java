@@ -5,6 +5,8 @@ import uk.gov.di.test.pages.BasePage;
 import uk.gov.di.test.pages.RpStubPage;
 import uk.gov.di.test.rp.MicroRP;
 
+import static uk.gov.di.test.rp.MicroRP.JourneyType.*;
+
 public class RpStubStepDef extends BasePage {
 
     RpStubPage rpStubPage = new RpStubPage();
@@ -25,7 +27,7 @@ public class RpStubStepDef extends BasePage {
 
     @When("the user starts a low confidence journey")
     public void theUserStartsALowConfidenceJourney() {
-        driver.get(rp.startJourneyUrl());
+        driver.get(rp.startJourneyUrl(LOW_CONFIDENCE));
         setAnalyticsCookieTo(false);
     }
 }

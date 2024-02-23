@@ -26,6 +26,22 @@ import static uk.gov.di.test.utils.Unchecked.unchecked;
 
 public class MicroRP {
 
+    public enum JourneyType {
+        LOW_CONFIDENCE("[\"Cl\"]"),
+        MED_CONFIDENCE("[\"Cl.Cm\"]"),
+        PROVE_IDENTITY("[\"Cl.Cm.P2\"]");
+
+        private final String vectorOfTrust;
+
+        JourneyType(String vectorOfTrust) {
+            this.vectorOfTrust = vectorOfTrust;
+        }
+
+        public String vectorOfTrust() {
+            return vectorOfTrust;
+        }
+    }
+
     private static final HttpClient httpClient = HttpClient.newHttpClient();
     private static final Gson gson = new Gson();
 
@@ -50,7 +66,7 @@ public class MicroRP {
         return this;
     }
 
-    public String startJourneyUrl() {
+    public String startJourneyUrl(JourneyType journeyType) {
         var authRequest =
                 unchecked(() -> new URIBuilder(this.baseUrl))
                         .setPath("authorize")
@@ -60,7 +76,7 @@ public class MicroRP {
                         .addParameter("redirect_uri", "http://localhost:3031/callback")
                         .addParameter("client_id", this.clientId)
                         .addParameter("response_type", "code")
-                        .addParameter("vtr", "[\"Cl\"]");
+                        .addParameter("vtr", journeyType.vectorOfTrust());
 
         return unchecked(authRequest::build).toString();
     }
