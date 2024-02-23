@@ -3,7 +3,7 @@ Feature: Login Journey
   Existing user walks through a login journey
 
   Scenario: Existing user requests phone OTP code 5 times
-    Given the user comes from the stub relying party with options: "default"
+    Given the user starts a medium confidence journey
     Then the user is taken to the "Create a GOV.UK One Login or sign in" page
     When the user selects sign in
     Then the user is taken to the "Enter your email" page
@@ -17,7 +17,7 @@ Feature: Login Journey
     Then the user is taken to the "You cannot get a new security code at the moment" page
 
   Scenario: Existing user tries to create an account with the same email address
-    Given the user comes from the stub relying party with options: "default"
+    Given the user starts a medium confidence journey
     Then the user is taken to the "Create a GOV.UK One Login or sign in" page
     When the user selects create an account
     Then the user is taken to the "Enter your email address" page
@@ -25,7 +25,7 @@ Feature: Login Journey
     Then the user is taken to the "You have a GOV.UK One Login" page
 
   Scenario: Existing user is correctly prompted to login using sms
-    Given the user comes from the stub relying party with options: "default"
+    Given the user starts a medium confidence journey
     Then the user is taken to the "Create a GOV.UK One Login or sign in" page
     When the user selects sign in
     Then the user is taken to the "Enter your email" page
@@ -38,7 +38,7 @@ Feature: Login Journey
     And the user logs out
 
   Scenario: Existing user switches content to Welsh
-    Given the user comes from the stub relying party with options: "default"
+    Given the user starts a medium confidence journey
     Then the user is taken to the "Create a GOV.UK One Login or sign in" page
     And the user switches to "Welsh" language
     Then the user is taken to the Identity Provider Welsh Login Page
@@ -62,7 +62,7 @@ Feature: Login Journey
     Then the user is taken to the "Enter your password" page
     When the user enters their password
     Then the user is returned to the service
-    When the user comes from the stub relying party with options: "default"
+    When the user starts a medium confidence journey
     Then the user is taken to the "Enter a security code to continue" page
     When the user enters the six digit security code from their phone
     Then the user is returned to the service

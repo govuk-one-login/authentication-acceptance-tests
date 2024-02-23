@@ -4,7 +4,7 @@ Feature: Legal and policy pages
 
   Scenario: User views legal and policy pages
     Given the services are running
-    When the user comes from the stub relying party with options: "default"
+    When the user starts a medium confidence journey
     Then the user is taken to the "Create a GOV.UK One Login or sign in" page
     When the user clicks link "Accessibility statement"
     Then the user is taken to the accessibility statement page
@@ -16,7 +16,7 @@ Feature: Legal and policy pages
     Then the user is taken to the privacy notice page
 
   Scenario: User accepts updated terms and conditions
-    Given the user comes from the stub relying party with options: "default"
+    Given the user starts a medium confidence journey
     Then the user is taken to the "Create a GOV.UK One Login or sign in" page
     When the user selects sign in
     Then the user is taken to the "Enter your email" page

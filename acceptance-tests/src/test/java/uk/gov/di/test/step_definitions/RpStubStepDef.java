@@ -30,4 +30,10 @@ public class RpStubStepDef extends BasePage {
         driver.get(rp.startJourneyUrl(LOW_CONFIDENCE));
         setAnalyticsCookieTo(false);
     }
+
+    @When("the user starts a medium confidence journey")
+    public void theUserStartsAMediumConfidenceJourney() {
+        driver.get(rp.startJourneyUrl(MED_CONFIDENCE));
+        setAnalyticsCookieTo(false);
+    }
 }
