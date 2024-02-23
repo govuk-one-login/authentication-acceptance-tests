@@ -3,7 +3,7 @@ Feature: Authentication App Journeys
   New user creates an account and logs in using an auth app
 
   Scenario: User successfully registers with auth app 2FA and login with 2fa-on
-    Given the user comes from the stub relying party with options: "2fa-off"
+    Given the user starts a low confidence journey
     Then the user is taken to the "Create a GOV.UK One Login or sign in" page
     When the user selects create an account
     Then the user is taken to the "Enter your email" page
@@ -36,7 +36,7 @@ Feature: Authentication App Journeys
     And the user logs out
 
   Scenario: User successfully login without 2FA
-    Given the user comes from the stub relying party with options: "2fa-off"
+    Given the user starts a low confidence journey
     Then the user is taken to the "Create a GOV.UK One Login or sign in" page
     When the user selects sign in
     Then the user is taken to the "Enter your email" page
@@ -47,7 +47,7 @@ Feature: Authentication App Journeys
     And the user logs out
 
   Scenario: User signs in auth app without 2FA, then uplifts
-    Given the user comes from the stub relying party with options: "2fa-off"
+    Given the user starts a low confidence journey
     Then the user is taken to the "Create a GOV.UK One Login or sign in" page
     When the user selects sign in
     Then the user is taken to the "Enter your email" page

@@ -39,13 +39,15 @@ public class MicroRP {
         this.privateKey = privateKey;
     }
 
-    public void start() {
+    public MicroRP start() {
         Spark.stop();
         Spark.awaitStop();
 
         Spark.port(3031);
 
         Spark.get("/callback", this::callback);
+
+        return this;
     }
 
     public String startJourneyUrl() {

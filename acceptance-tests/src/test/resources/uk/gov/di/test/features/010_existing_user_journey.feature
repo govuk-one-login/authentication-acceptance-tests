@@ -54,7 +54,7 @@ Feature: Login Journey
     Then the user is taken to the "Create a GOV.UK One Login or sign in" page
 
   Scenario: Existing user logs in without 2FA then uplift with 2FA
-    Given the user comes from the stub relying party with options: "2fa-off"
+    Given the user starts a low confidence journey
     Then the user is taken to the "Create a GOV.UK One Login or sign in" page
     When the user selects sign in
     Then the user is taken to the "Enter your email" page
