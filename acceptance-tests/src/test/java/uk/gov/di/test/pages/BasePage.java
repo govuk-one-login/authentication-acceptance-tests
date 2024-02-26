@@ -117,10 +117,11 @@ public class BasePage {
     }
 
     protected void findAndClickButtonByText(String buttonText) {
-        WebElement continueButton =
+        WebElement button =
                 driver.findElement(
                         By.xpath("//button[text()[normalize-space() = '" + buttonText + "']]"));
-        continueButton.click();
+        waitForClickable(button);
+        button.click();
     }
 
     public void switchDefaultTimeout(String status) {
@@ -218,5 +219,10 @@ public class BasePage {
     public void setAnalyticsCookieTo(Boolean state) {
         driver.manage()
                 .addCookie(new Cookie("cookies_preferences_set", "{\"analytics\":" + state + "}"));
+    }
+
+    public void waitForClickable(WebElement ele) {
+        new WebDriverWait(driver, DEFAULT_PAGE_LOAD_WAIT_TIME)
+                .until(ExpectedConditions.elementToBeClickable(ele));
     }
 }

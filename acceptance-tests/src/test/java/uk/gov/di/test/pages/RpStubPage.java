@@ -5,6 +5,7 @@ import org.openqa.selenium.By;
 public class RpStubPage extends BasePage {
 
     public void goToRpStub() {
+        driver.manage().window().maximize();
         driver.get(RP_URL.toString());
     }
 

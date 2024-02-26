@@ -24,6 +24,7 @@ public class DocAppStepDef extends BasePage {
 
     @When("the user visits the doc app relying party")
     public void theUserVisitsTheDocAppRelyingParty() {
+        driver.manage().window().maximize();
         driver.get(DOC_APP_URL.toString());
     }
 
