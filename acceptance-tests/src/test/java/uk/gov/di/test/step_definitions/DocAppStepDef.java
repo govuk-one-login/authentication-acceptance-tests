@@ -16,8 +16,7 @@ public class DocAppStepDef extends BasePage {
     protected static final String DOC_APP_URL =
             System.getenv()
                     .getOrDefault(
-                            "DOC_APP_URL",
-                            "https://acceptance-test-rp-build.build.stubs.account.gov.uk/");
+                            "DOC_APP_URL", "https://doc-app-rp-build.build.stubs.account.gov.uk/");
 
     @Given("the doc app services are running")
     public void theDocAppServicesAreRunning() {}
