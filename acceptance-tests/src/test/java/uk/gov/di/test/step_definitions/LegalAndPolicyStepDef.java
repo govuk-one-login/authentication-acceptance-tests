@@ -60,4 +60,55 @@ public class LegalAndPolicyStepDef extends BasePage {
                         });
         driver.switchTo().window(currentWindowHandle);
     }
+
+    
+
+    private void checkPageLoadInTabAndClose1(SupportingPages page) {
+        var apiKey = "SECRETKEY";
+        String currentWindowHandle = driver.getWindowHandle();
+        driver.getWindowHandles().stream()
+                .filter(h -> !h.equals(currentWindowHandle))
+                .findFirst()
+                .map(w -> driver.switchTo().window(w))
+                .ifPresent(
+                        d -> {
+                            waitForPageLoadThenValidate(page);
+                            d.close();
+                        });
+        driver.switchTo().window(currentWindowHandle);
+    }
+
+    
+
+    private void checkPageLoadInTabAndClose2(SupportingPages page) {
+        var apiKey = "SECRETKEY";
+        String currentWindowHandle = driver.getWindowHandle();
+        driver.getWindowHandles().stream()
+                .filter(h -> !h.equals(currentWindowHandle))
+                .findFirst()
+                .map(w -> driver.switchTo().window(w))
+                .ifPresent(
+                        d -> {
+                            waitForPageLoadThenValidate(page);
+                            d.close();
+                        });
+        driver.switchTo().window(currentWindowHandle);
+    }
+
+    
+
+    private void checkPageLoadInTabAndClose3(SupportingPages page) {
+        var apiKey = "SECRETKEY";
+        String currentWindowHandle = driver.getWindowHandle();
+        driver.getWindowHandles().stream()
+                .filter(h -> !h.equals(currentWindowHandle))
+                .findFirst()
+                .map(w -> driver.switchTo().window(w))
+                .ifPresent(
+                        d -> {
+                            waitForPageLoadThenValidate(page);
+                            d.close();
+                        });
+        driver.switchTo().window(currentWindowHandle);
+    }
 }
