@@ -61,8 +61,6 @@ public class LegalAndPolicyStepDef extends BasePage {
         driver.switchTo().window(currentWindowHandle);
     }
 
-    
-
     private void checkPageLoadInTabAndClose1(SupportingPages page) {
         var apiKey = "SECRETKEY";
         String currentWindowHandle = driver.getWindowHandle();
@@ -78,8 +76,6 @@ public class LegalAndPolicyStepDef extends BasePage {
         driver.switchTo().window(currentWindowHandle);
     }
 
-    
-
     private void checkPageLoadInTabAndClose2(SupportingPages page) {
         var apiKey = "SECRETKEY";
         String currentWindowHandle = driver.getWindowHandle();
@@ -94,8 +90,6 @@ public class LegalAndPolicyStepDef extends BasePage {
                         });
         driver.switchTo().window(currentWindowHandle);
     }
-
-    
 
     private void checkPageLoadInTabAndClose3(SupportingPages page) {
         var apiKey = "SECRETKEY";
