@@ -1,36 +1,7 @@
 @AccountRecovery
 Feature: Account recovery
 
-  Scenario: When an sms user has not logged in using their MFA since they last changed their password, they cannot change how they get security codes
-    Given the user comes from the stub relying party with options: "default"
-    Then the user is taken to the "Create a GOV.UK One Login or sign in" page
-    When the user selects sign in
-    Then the user is taken to the "Enter your email" page
-    When user enters "TEST_USER_ACCOUNT_RECOVERY_EMAIL_5" email address
-    Then the user is taken to the "Enter your password" page
-    When the user clicks the forgotten password link
-    Then the user is taken to the "Check your email" page
-    When the user enters the six digit security code from their email
-    Then the user is taken to the "Check your phone" page
-    When the user enters the six digit security code from their phone
-    Then the user is taken to the "Reset your password" page
-    When the user enters valid new password and correctly retypes it
-    Then the user is returned to the service
-    And the user logs out
-
-    When the user comes from the stub relying party with options: "default"
-    Then the user is taken to the "Create a GOV.UK One Login or sign in" page
-    When the user selects sign in
-    Then the user is taken to the "Enter your email" page
-    When user enters "TEST_USER_ACCOUNT_RECOVERY_EMAIL_5" email address
-    Then the user is taken to the "Enter your password" page
-    When the user enters their new password
-    Then the user is taken to the "Check your phone" page
-    When the user selects "Problems with the code?" link
-    Then the link "change how you get security codes" is not available
-
-
-  Scenario: When an sms user has logged in using their MFA since changing their password, they can change how they get security codes, and log in with new method
+  Scenario: An sms user can change how they get security codes and log in with new method
     When the user comes from the stub relying party with options: "default"
     Then the user is taken to the "Create a GOV.UK One Login or sign in" page
     When the user selects sign in
@@ -66,36 +37,7 @@ Feature: Account recovery
     And the user logs out
 
 
-  Scenario: When an auth app user has not logged in using their MFA since changing their password, they cannot change how they get security codes
-    Given the user comes from the stub relying party with options: "default"
-    Then the user is taken to the "Create a GOV.UK One Login or sign in" page
-    When the user selects sign in
-    Then the user is taken to the "Enter your email" page
-    When user enters "TEST_USER_ACCOUNT_RECOVERY_EMAIL_6" email address
-    Then the user is taken to the "Enter your password" page
-    When the user clicks the forgotten password link
-    Then the user is taken to the "Check your email" page
-    When the user enters the six digit security code from their email
-    Then the user is taken to the "Enter a security code from your authenticator app" page
-    When the user enters the security code from the auth app
-    Then the user is taken to the "Reset your password" page
-    When the user enters valid new password and correctly retypes it
-    Then the user is returned to the service
-    And the user logs out
-
-    When the user comes from the stub relying party with options: "default"
-    Then the user is taken to the "Create a GOV.UK One Login or sign in" page
-    When the user selects sign in
-    Then the user is taken to the "Enter your email" page
-    When user enters "TEST_USER_ACCOUNT_RECOVERY_EMAIL_6" email address
-    Then the user is taken to the "Enter your password" page
-    When the user enters their new password
-    Then the user is taken to the "Enter the 6 digit security code shown in your authenticator app" page
-    And the link "I do not have access to the authenticator app" is not available
-    And the link "change how you get security codes" is not available
-
-
-  Scenario: When an auth app user has logged in using their MFA since changing their password, they can change how they get security codes, and log in with new method
+  Scenario: An auth app user can change how they get security codes and log in with new method
     When the user comes from the stub relying party with options: "default"
     Then the user is taken to the "Create a GOV.UK One Login or sign in" page
     When the user selects sign in

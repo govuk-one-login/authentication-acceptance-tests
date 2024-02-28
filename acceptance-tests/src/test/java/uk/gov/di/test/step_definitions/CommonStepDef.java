@@ -46,6 +46,11 @@ public class CommonStepDef extends BasePage {
         assertFalse(isLinkTextDisplayedImmediately(linkText));
     }
 
+    @Then("the link {string} is available")
+    public void theLinkIsAvailable(String linkText) {
+        assertTrue(isLinkTextDisplayedImmediately(linkText));
+    }
+
     @When("the user clicks the continue button")
     public void theUserClicksTheContinueButton() {
         findAndClickContinue();
