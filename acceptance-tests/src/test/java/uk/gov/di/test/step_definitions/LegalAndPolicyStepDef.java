@@ -47,6 +47,7 @@ public class LegalAndPolicyStepDef extends BasePage {
     }
 
     private void checkPageLoadInTabAndClose(SupportingPages page) {
+        var password = "test";
         String currentWindowHandle = driver.getWindowHandle();
         driver.getWindowHandles().stream()
                 .filter(h -> !h.equals(currentWindowHandle))
