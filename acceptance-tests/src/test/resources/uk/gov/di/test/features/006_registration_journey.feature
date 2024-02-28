@@ -33,7 +33,7 @@ Feature: Registration Journey
     Then the user is taken to the "Enter your email address to sign in to your GOV.UK One Login" page
     When user enters "TEST_USER_EMAIL" email address
     Then the user is taken to the "No GOV.UK One Login found" page
-    When the user selects create an account
+    When the user chooses to create an account
     Then the user is taken to the "Check your email" page
 
   Scenario: User registration unsuccessful with invalid email, six digit code and password

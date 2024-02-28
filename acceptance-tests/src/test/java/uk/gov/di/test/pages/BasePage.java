@@ -219,4 +219,9 @@ public class BasePage {
         driver.manage()
                 .addCookie(new Cookie("cookies_preferences_set", "{\"analytics\":" + state + "}"));
     }
+
+    public void waitUntilElementClickable(By element) {
+        new WebDriverWait(driver, DEFAULT_PAGE_LOAD_WAIT_TIME)
+                .until(ExpectedConditions.elementToBeClickable(driver.findElement(element)));
+    }
 }

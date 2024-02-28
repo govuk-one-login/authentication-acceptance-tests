@@ -11,6 +11,7 @@ import uk.gov.di.test.pages.CreateOrSignInPage;
 import uk.gov.di.test.pages.CreateYourPasswordPage;
 import uk.gov.di.test.pages.EnterYourEmailAddressPage;
 import uk.gov.di.test.pages.EnterYourMobilePhoneNumberPage;
+import uk.gov.di.test.pages.NoGovUkOneLoginFoundPage;
 import uk.gov.di.test.pages.RpStubPage;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -28,10 +29,16 @@ public class RegistrationStepDef extends BasePage {
     CreateYourPasswordPage createYourPasswordPage = new CreateYourPasswordPage();
     ChooseHowToGetSecurityCodesPage chooseHowToGetSecurityCodesPage =
             new ChooseHowToGetSecurityCodesPage();
+    NoGovUkOneLoginFoundPage noGovUkOneLoginFoundPage = new NoGovUkOneLoginFoundPage();
 
     @When("the user selects create an account")
     public void theUserSelectsCreateAnAccount() {
-        findAndClickButtonByText("Create a GOV.UK One Login");
+        createOrSignInPage.clickCreateAGovUkOneLoginButton();
+    }
+
+    @When("the user chooses to create an account")
+    public void theUserChoosesToCreateAnAccount() {
+        noGovUkOneLoginFoundPage.clickCreateGovUkOneLoginButton();
     }
 
     @When("the user enters the six digit security code from their email")
