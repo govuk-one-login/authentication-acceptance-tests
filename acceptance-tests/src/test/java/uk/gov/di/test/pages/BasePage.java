@@ -107,20 +107,23 @@ public class BasePage {
     protected void findAndClickContinue() {
         WebElement continueButton =
                 driver.findElement(By.xpath("//button[text()[normalize-space() = 'Continue']]"));
+        waitUntilElementClickable(continueButton);
         continueButton.click();
     }
 
     protected void findAndClickContinueWelsh() {
         WebElement continueButton =
                 driver.findElement(By.cssSelector("#main-content > div > div > form > button"));
+        waitUntilElementClickable(continueButton);
         continueButton.click();
     }
 
     protected void findAndClickButtonByText(String buttonText) {
-        WebElement continueButton =
+        WebElement button =
                 driver.findElement(
                         By.xpath("//button[text()[normalize-space() = '" + buttonText + "']]"));
-        continueButton.click();
+        waitUntilElementClickable(button);
+        button.click();
     }
 
     public void switchDefaultTimeout(String status) {
@@ -220,8 +223,13 @@ public class BasePage {
                 .addCookie(new Cookie("cookies_preferences_set", "{\"analytics\":" + state + "}"));
     }
 
-    public void waitUntilElementClickable(By element) {
+    public void waitUntilElementClickable(By by) {
         new WebDriverWait(driver, DEFAULT_PAGE_LOAD_WAIT_TIME)
-                .until(ExpectedConditions.elementToBeClickable(driver.findElement(element)));
+                .until(ExpectedConditions.elementToBeClickable(driver.findElement(by)));
+    }
+
+    public void waitUntilElementClickable(WebElement element) {
+        new WebDriverWait(driver, DEFAULT_PAGE_LOAD_WAIT_TIME)
+                .until(ExpectedConditions.elementToBeClickable(element));
     }
 }
