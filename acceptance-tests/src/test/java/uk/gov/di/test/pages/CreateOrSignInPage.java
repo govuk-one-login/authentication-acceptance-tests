@@ -10,10 +10,12 @@ public class CreateOrSignInPage extends BasePage {
     By linkToSwitchToEnglish = By.xpath("//a[@href='?lng=en']");
 
     public void clickCreateAGovUkOneLoginButton() {
+        waitUntilElementClickable(createAGovUkOneLogin);
         driver.findElement(createAGovUkOneLogin).click();
     }
 
     public void clickSignInButton() {
+        waitUntilElementClickable(signInButton);
         driver.findElement(signInButton).click();
     }
 
