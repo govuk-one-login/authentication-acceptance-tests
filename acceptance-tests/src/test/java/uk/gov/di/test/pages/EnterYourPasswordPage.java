@@ -12,7 +12,6 @@ public class EnterYourPasswordPage extends BasePage {
     }
 
     public void clickForgottenPasswordLink() {
-        waitUntilElementClickable(forgottenPasswordLink);
         driver.findElement(forgottenPasswordLink).click();
     }
 
