@@ -6,7 +6,6 @@ public class NoGovUkOneLoginFoundPage extends BasePage {
     By createAccountButton = By.xpath("//button[contains(text(), 'Create a GOV.UK One Login')]");
 
     public void clickCreateGovUkOneLoginButton() {
-        waitUntilElementClickable(createAccountButton);
         driver.findElement(createAccountButton).click();
     }
 }

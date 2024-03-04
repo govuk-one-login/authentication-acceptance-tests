@@ -2,6 +2,7 @@ package uk.gov.di.test.pages;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.Cookie;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -9,6 +10,7 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.remote.RemoteWebDriver;
+import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import uk.gov.di.test.utils.AuthAppStub;
@@ -96,6 +98,7 @@ public class BasePage {
     protected void waitForPageLoad(String titleContains) {
         new WebDriverWait(driver, DEFAULT_PAGE_LOAD_WAIT_TIME)
                 .until(ExpectedConditions.titleContains(titleContains));
+        waitForReadyStateComplete();
     }
 
     protected void waitForPageLoadThenValidate(AuthenticationJourneyPages page) {
@@ -105,24 +108,24 @@ public class BasePage {
     }
 
     protected void findAndClickContinue() {
+        waitForReadyStateComplete();
         WebElement continueButton =
                 driver.findElement(By.xpath("//button[text()[normalize-space() = 'Continue']]"));
-        waitUntilElementClickable(continueButton);
         continueButton.click();
     }
 
     protected void findAndClickContinueWelsh() {
+        waitForReadyStateComplete();
         WebElement continueButton =
                 driver.findElement(By.cssSelector("#main-content > div > div > form > button"));
-        waitUntilElementClickable(continueButton);
         continueButton.click();
     }
 
     protected void findAndClickButtonByText(String buttonText) {
+        waitForReadyStateComplete();
         WebElement button =
                 driver.findElement(
                         By.xpath("//button[text()[normalize-space() = '" + buttonText + "']]"));
-        waitUntilElementClickable(button);
         button.click();
     }
 
@@ -231,5 +234,15 @@ public class BasePage {
     public void waitUntilElementClickable(WebElement element) {
         new WebDriverWait(driver, DEFAULT_PAGE_LOAD_WAIT_TIME)
                 .until(ExpectedConditions.elementToBeClickable(element));
+    }
+
+    public void waitForReadyStateComplete() {
+        new WebDriverWait(driver, DEFAULT_PAGE_LOAD_WAIT_TIME)
+                .until(
+                        (ExpectedCondition<Boolean>)
+                                wd ->
+                                        ((JavascriptExecutor) wd)
+                                                .executeScript("return document.readyState")
+                                                .equals("complete"));
     }
 }
