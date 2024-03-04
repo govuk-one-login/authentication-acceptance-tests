@@ -6,6 +6,7 @@ public class RpStubPage extends BasePage {
 
     public void goToRpStub() {
         driver.get(RP_URL.toString());
+        waitForPageLoad("Test Client Sample Service");
     }
 
     public void selectRpOptionsByIdAndContinue(String opts) {
