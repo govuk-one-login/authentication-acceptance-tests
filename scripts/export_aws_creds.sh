@@ -12,7 +12,9 @@ if [[ -n "${AWS_VAULT:-}" ]]; then
   echo "In future, this script will error and exit here, not show a warning." >&2
 fi
 
-if [[ -n "${AWS_ACCESS_KEY_ID:-}" && -n "${AWS_SECRET_ACCESS_KEY:-}" ]]; then
+if [[ -n "${CODEBUILD_BUILD_ID:-}" ]]; then
+  true # Running in CodeBuild, do nothing
+elif [[ -n "${AWS_ACCESS_KEY_ID:-}" && -n "${AWS_SECRET_ACCESS_KEY:-}" ]]; then
   echo "Using AWS credentials from existing environment variables"
   export AWS_REGION="${AWS_REGION:-eu-west-2}"
 else
@@ -41,3 +43,4 @@ else
   configured_region="$(aws configure get region --profile "${AWS_PROFILE}" 2>/dev/null || true)"
   export AWS_REGION="${configured_region:-eu-west-2}"
 fi
+unset AWS_PROFILE

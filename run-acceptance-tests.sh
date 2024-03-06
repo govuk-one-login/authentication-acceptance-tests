@@ -41,9 +41,6 @@ function stop_docker_services() {
 }
 
 function get_env_vars_from_SSM() {
-  export AWS_PROFILE="gds-di-development-admin"
-  # shellcheck source=./scripts/export_aws_creds.sh
-  source "${DIR}/scripts/export_aws_creds.sh"
 
   echo "Getting environment variables from SSM ... "
   if [ $EXPORT_ENV == "1" ]; then
@@ -102,11 +99,14 @@ echo -e "Running di-authentication-acceptance-tests..."
 
 start_docker_services selenium-firefox selenium-chrome
 
+export_selenium_config
 if [ $LOCAL == "1" ]; then
-  export_selenium_config
-  export $(grep -v '^#' .env | xargs)
+  # shellcheck source=/dev/null
+  set -o allexport && source .env && set +o allexport
 else
-  export_selenium_config
+  export AWS_PROFILE="gds-di-development-admin"
+  # shellcheck source=./scripts/export_aws_creds.sh
+  source "${DIR}/scripts/export_aws_creds.sh"
   get_env_vars_from_SSM
 fi
 
