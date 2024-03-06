@@ -2,6 +2,8 @@
 
 set -eu
 
+DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1 && pwd)"
+
 ENVIRONMENT=${2:-local}
 
 DOCKER_BASE=docker-compose
@@ -39,11 +41,9 @@ function stop_docker_services() {
 }
 
 function get_env_vars_from_SSM() {
-  echo -n "Getting AWS credentials ... "
-  if [ $EXPORT_ENV == "1" ]; then
-    eval "$(gds aws digital-identity-dev -e)"
-  fi
-  echo "done!"
+  export AWS_PROFILE="gds-di-development-admin"
+  # shellcheck source=./scripts/export_aws_creds.sh
+  source "${DIR}/scripts/export_aws_creds.sh"
 
   echo "Getting environment variables from SSM ... "
   if [ $EXPORT_ENV == "1" ]; then
@@ -59,7 +59,7 @@ function get_env_vars_from_SSM() {
     } >>$envfile
   fi
 
-  VARS="$(aws ssm get-parameters-by-path --region eu-west-2 --with-decryption --path $SSM_VARS_PATH | jq -r '.Parameters[] | @base64')"
+  VARS="$(aws ssm get-parameters-by-path --with-decryption --path $SSM_VARS_PATH | jq -r '.Parameters[] | @base64')"
   for VAR in $VARS; do
     VAR_NAME="$(echo ${VAR} | base64 -d | jq -r '.Name / "/" | .[3]')"
     VAR_NAME_VALUE=$VAR_NAME="$(echo ${VAR} | base64 -d | jq -r '.Value')"
