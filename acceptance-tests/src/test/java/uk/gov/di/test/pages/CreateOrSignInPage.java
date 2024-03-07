@@ -5,6 +5,7 @@ import org.openqa.selenium.By;
 public class CreateOrSignInPage extends BasePage {
 
     By signInButton = By.id("sign-in-button");
+    By welshSignInButton = By.xpath("//button[contains(text(),'Fewngofnodi')]");
     By createAGovUkOneLogin = By.id("create-account-link");
     By linkToSwitchToWelsh = By.xpath("//a[@href='?lng=cy']");
     By linkToSwitchToEnglish = By.xpath("//a[@href='?lng=en']");
@@ -15,6 +16,10 @@ public class CreateOrSignInPage extends BasePage {
 
     public void clickSignInButton() {
         driver.findElement(signInButton).click();
+    }
+
+    public void clickWelshSignInButton() {
+        driver.findElement(welshSignInButton).click();
     }
 
     public void switchLanguageTo(String lang) {

@@ -8,8 +8,10 @@ import org.openqa.selenium.WebElement;
 import uk.gov.di.test.pages.BasePage;
 import uk.gov.di.test.pages.CreateOrSignInPage;
 
+import java.net.URI;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -86,5 +88,11 @@ public class CommonStepDef extends BasePage {
     @When("the user clicks the Back link")
     public void theNewUserClicksTheApplicationBackButton() {
         pressBack();
+    }
+
+    @Then("the {string} page is displayed")
+    public void thePageIsDisplayed(String expectedPage) {
+        String actualPage = URI.create(driver.getCurrentUrl()).getPath();
+        assertEquals(expectedPage, actualPage);
     }
 }

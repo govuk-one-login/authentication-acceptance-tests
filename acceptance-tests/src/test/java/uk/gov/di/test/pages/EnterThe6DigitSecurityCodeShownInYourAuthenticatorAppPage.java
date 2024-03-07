@@ -6,7 +6,10 @@ import uk.gov.di.test.utils.AuthAppStub;
 public class EnterThe6DigitSecurityCodeShownInYourAuthenticatorAppPage extends BasePage {
     By authAppCodeField = By.id("code");
 
-    public void enterCorrectAuthAppCode(String authAppSecretKey) {
+    public void enterAuthAppCodeAndContinue(String authAppSecretKey) {
+        if (authAppSecretKey == null) {
+            authAppSecretKey = System.getenv().get("ACCOUNT_RECOVERY_USER_AUTH_APP_SECRET");
+        }
         String authAppCode = AuthAppStub.getAuthAppCode(authAppSecretKey);
         clearFieldAndEnter(authAppCodeField, authAppCode);
     }
