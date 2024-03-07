@@ -171,35 +171,5 @@ function createSuspendedAccountInterventionsBlock() {
 
 function createResetPasswordInterventionsBlock() {
   echo "Creating reset password account intervention for user $1..."
-  createOrUpdateInterventionsUser $1 false true true
-}
-
-function removeAccountInterventionBlocks() {
-  echo "Removing blocked, suspended, reset password account interventions for user $1..."
-  createOrUpdateInterventionsUser $1 false false false
-}
-
-function deleteIntervention() {
-  up="$(
-    aws dynamodb get-item \
-      --table-name "${ENVIRONMENT_NAME}-user-profile" \
-      --key "{\"Email\": {\"S\": \"$1\"}}" \
-      --projection-expression "#E, #ST, #S, #PS, #LS" \
-      --expression-attribute-names "{\"#E\": \"Email\", \"#ST\": \"salt\", \"#S\": \"SubjectID\", \"#PS\": \"PublicSubjectID\", \"#LS\": \"LegacySubjectId\"}" \
-      --region "${AWS_REGION}" \
-      --no-paginate
-  )"
-
-  sector="identity.${ENVIRONMENT_NAME}.account.gov.uk"
-  ics="$(echo -n $up | jq -r '.Item.SubjectID.S')"
-  salt="$(echo -n $up | jq -r '.Item.salt.B' | base64 -d)"
-  digest="$(echo -n "$sector$ics$salt" | openssl dgst -sha256 -binary | base64 | tr '/+' '_-' | tr -d '=')"
-  pwid="urn:fdc:gov.uk:2022:$digest"
-
-  echo "deleting interventions block for: $1 sector: $sector internalCommonSubjectId: $pwid"
-
-  aws dynamodb delete-item \
-    --table-name "${ENVIRONMENT_NAME}-stub-account-interventions" \
-    --key "{\"InternalPairwiseId\": {\"S\": \"$pwid\"}}" \
-    --region "${AWS_REGION}"
+  createOrUpdateInterventionsUser $1 false false true
 }
