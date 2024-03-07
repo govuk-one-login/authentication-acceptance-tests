@@ -48,6 +48,8 @@ function updateAccountRecoveryBlock() {
       --no-paginate
   )"
 
+  echo "before resetting updateAccountRecoveryBlock for: $1 user-profile retrieved: $up"
+
   ics="$(echo -n $up | jq -r '.Item.SubjectID.S')"
   salt="$(echo -n $up | jq -r '.Item.salt.B' | base64 -d)"
   digest="$(echo -n "$2$ics$salt" | openssl dgst -sha256 -binary | base64 | tr '/+' '_-' | tr -d '=')"
@@ -74,6 +76,8 @@ function createOrUpdateInterventionsUser() {
       --region "${AWS_REGION}" \
       --no-paginate
   )"
+
+  echo "before resetting interventions block for: $1 user-profile retrieved: $up"
 
   sector="identity.${ENVIRONMENT_NAME}.account.gov.uk"
   ics="$(echo -n $up | jq -r '.Item.SubjectID.S')"
@@ -189,6 +193,8 @@ function deleteIntervention() {
       --region "${AWS_REGION}" \
       --no-paginate
   )"
+
+  echo "before deleteIntervention for: $1 user-profile retrieved: $up"
 
   sector="identity.${ENVIRONMENT_NAME}.account.gov.uk"
   ics="$(echo -n $up | jq -r '.Item.SubjectID.S')"
