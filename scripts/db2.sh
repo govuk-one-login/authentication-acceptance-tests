@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+export ENVIRONMENT_NAME=build
+
 function deleteUser() {
   echo "Truncating test user data in user-profile: $1"
   aws dynamodb delete-item \
@@ -48,8 +50,10 @@ function updateAccountRecoveryBlock() {
       --no-paginate
   )"
 
-  ics="$(echo -n "$up" | jq -r '.Item.SubjectID.S')"
-  salt="$(echo -n "$up" | jq -r '.Item.salt.B' | base64 -d)"
+  echo "before resetting updateAccountRecoveryBlock for: $1 user-profile retrieved: $up"
+
+  ics="$(echo -n $up | jq -r '.Item.SubjectID.S')"
+  salt="$(echo -n $up | jq -r '.Item.salt.B' | base64 -d)"
   digest="$(echo -n "$2$ics$salt" | openssl dgst -sha256 -binary | base64 | tr '/+' '_-' | tr -d '=')"
   pwid="urn:fdc:gov.uk:2022:$digest"
 
@@ -64,7 +68,7 @@ function updateAccountRecoveryBlock() {
     --region "${AWS_REGION}"
 }
 
-function createOrUpdateInterventionsUser() {
+function createOrUpdateInterventionsUser2() {
   up="$(
     aws dynamodb get-item \
       --table-name "${ENVIRONMENT_NAME}-user-profile" \
@@ -75,21 +79,24 @@ function createOrUpdateInterventionsUser() {
       --no-paginate
   )"
 
+  echo "before resetting interventions block for: $1 user-profile retrieved: $up"
+
   sector="identity.${ENVIRONMENT_NAME}.account.gov.uk"
-  ics="$(echo -n "$up" | jq -r '.Item.SubjectID.S')"
-  salt="$(echo -n "$up" | jq -r '.Item.salt.B' | base64 -d)"
+  ics="$(echo -n $up | jq -r '.Item.SubjectID.S')"
+  salt="$(echo -n $up | jq -r '.Item.salt.B' | base64 -d)"
   digest="$(echo -n "$sector$ics$salt" | openssl dgst -sha256 -binary | base64 | tr '/+' '_-' | tr -d '=')"
   pwid="urn:fdc:gov.uk:2022:$digest"
 
   echo "resetting interventions block for: $1 sector: $sector internalCommonSubjectId: $pwid"
 
-  aws dynamodb update-item \
-    --table-name "${ENVIRONMENT_NAME}-stub-account-interventions" \
-    --key "{\"InternalPairwiseId\": {\"S\": \"$pwid\"}}" \
-    --update-expression "SET #BLOCKED = :blocked, #SUSPENDED = :suspended, #RESETPASSWORD = :resetpassword, #REPROVEIDENTITY = :reproveidentity, #EQUIVALENTPLAINEMAILADDRESS = :equivalentplainemailaddress" \
-    --expression-attribute-names "{ \"#BLOCKED\": \"Blocked\", \"#SUSPENDED\": \"Suspended\", \"#RESETPASSWORD\": \"ResetPassword\", \"#REPROVEIDENTITY\": \"ReproveIdentity\", \"#EQUIVALENTPLAINEMAILADDRESS\": \"EquivalentPlainEmailAddress\" }" \
-    --expression-attribute-values "{ \":blocked\":{\"BOOL\": $2}, \":suspended\":{\"BOOL\": $3}, \":resetpassword\":{\"BOOL\": $4}, \":reproveidentity\":{\"BOOL\": false}, \":equivalentplainemailaddress\":{\"S\": \"$1\"} }" \
-    --region "${AWS_REGION}"
+#  aws dynamodb update-item \
+#    --table-name "${ENVIRONMENT_NAME}-stub-account-interventions" \
+#    --key "{\"InternalPairwiseId\": {\"S\": \"$pwid\"}}" \
+#    --update-expression "SET #BLOCKED = :blocked, #SUSPENDED = :suspended, #RESETPASSWORD = :resetpassword, #REPROVEIDENTITY = :reproveidentity, #EQUIVALENTPLAINEMAILADDRESS = :equivalentplainemailaddress" \
+#    --expression-attribute-names "{ \"#BLOCKED\": \"Blocked\", \"#SUSPENDED\": \"Suspended\", \"#RESETPASSWORD\": \"ResetPassword\", \"#REPROVEIDENTITY\": \"ReproveIdentity\", \"#EQUIVALENTPLAINEMAILADDRESS\": \"EquivalentPlainEmailAddress\" }" \
+#    --expression-attribute-values "{ \":blocked\":{\"BOOL\": $2}, \":suspended\":{\"BOOL\": $3}, \":resetpassword\":{\"BOOL\": $4}, \":reproveidentity\":{\"BOOL\": false}, \":equivalentplainemailaddress\":{\"S\": \"$1\"} }" \
+#    --region "${AWS_REGION}"
+
 }
 
 function removeMfaMethods() {
@@ -190,6 +197,8 @@ function deleteIntervention() {
       --no-paginate
   )"
 
+  echo "before deleteIntervention for: $1 user-profile retrieved: $up"
+
   sector="identity.${ENVIRONMENT_NAME}.account.gov.uk"
   ics="$(echo -n "$up" | jq -r '.Item.SubjectID.S')"
   salt="$(echo -n "$up" | jq -r '.Item.salt.B' | base64 -d)"
@@ -203,3 +212,4 @@ function deleteIntervention() {
     --key "{\"InternalPairwiseId\": {\"S\": \"$pwid\"}}" \
     --region "${AWS_REGION}"
 }
+
