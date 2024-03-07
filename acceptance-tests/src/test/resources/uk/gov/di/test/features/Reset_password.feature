@@ -94,7 +94,7 @@ Feature: Reset password
     Then the user is taken to the "Check your email" page
     When the user enters the six digit security code from their email
     Then the user is taken to the "Check your phone" page
-    When the user requests the phone otp code a further 5 times
+    When the user requests the phone security code a further 5 times
     Then the user is taken to the "You asked to resend the security code too many times" page
 
   # ENTER INCORRECT AUTH APP CODE TOO MANY TIMES DURING PASSWORD RESET
