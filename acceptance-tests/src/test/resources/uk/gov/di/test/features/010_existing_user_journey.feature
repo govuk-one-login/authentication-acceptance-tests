@@ -11,7 +11,7 @@ Feature: Login Journey
     Then the user is taken to the "Enter your password" page
     When the user enters their password
     Then the user is taken to the "Check your phone" page
-    When the user requests the phone security code a further 5 times
+    When the user requests the phone otp code 5 times
     Then the user is taken to the "You asked to resend the security code too many times" page
     When the user clicks the get a new code link
     Then the user is taken to the "You cannot get a new security code at the moment" page
@@ -42,7 +42,7 @@ Feature: Login Journey
     Then the user is taken to the "Create a GOV.UK One Login or sign in" page
     And the user switches to "Welsh" language
     Then the user is taken to the Identity Provider Welsh Login Page
-    When the user selects Welsh sign in
+    When the user selects sign in
     Then the user is taken to the Welsh enter your email page
     When user enters "TEST_USER_2_EMAIL" email address in Welsh
     Then the user is prompted for their password in Welsh
@@ -64,6 +64,6 @@ Feature: Login Journey
     Then the user is returned to the service
     When the user comes from the stub relying party with options: "default"
     Then the user is taken to the "You need to enter a security code" page
-    When the user enters the six digit security code from their phone to uplift to 2FA
+    When the user enters the six digit security code from their phone
     Then the user is returned to the service
     And the user logs out

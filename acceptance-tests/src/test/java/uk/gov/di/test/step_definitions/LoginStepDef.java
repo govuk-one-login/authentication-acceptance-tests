@@ -13,7 +13,6 @@ import uk.gov.di.test.pages.EnterYourEmailAddressPage;
 import uk.gov.di.test.pages.EnterYourEmailAddressToSignInPage;
 import uk.gov.di.test.pages.EnterYourPasswordPage;
 import uk.gov.di.test.pages.ResetYourPasswordPage;
-import uk.gov.di.test.pages.RpStubPage;
 import uk.gov.di.test.pages.SetUpAnAuthenticatorAppPage;
 import uk.gov.di.test.pages.TermsAndConditionsPage;
 import uk.gov.di.test.pages.YouAskedToResendTheSecurityCodeTooManyTimesPage;
@@ -47,11 +46,11 @@ public class LoginStepDef extends BasePage {
     public EnterYourEmailAddressPage enterYourEmailAddressPage = new EnterYourEmailAddressPage();
     public SetUpAnAuthenticatorAppPage setUpAnAuthenticatorAppPage =
             new SetUpAnAuthenticatorAppPage();
+    public CrossPageFlows crossPageFlows = new CrossPageFlows();
+
     public EnterThe6DigitSecurityCodeShownInYourAuthenticatorAppPage
             enterThe6DigitSecurityCodeShownInYourAuthenticatorAppPage =
                     new EnterThe6DigitSecurityCodeShownInYourAuthenticatorAppPage();
-    public RpStubPage rpStubPage = new RpStubPage();
-    public CrossPageFlows crossPageFlows = new CrossPageFlows();
 
     @When("the user enters their password which is on the top 100k password list")
     public void theUserEntersTheirPasswordWhichIsOnTheTop100kPasswordList() {
@@ -65,14 +64,7 @@ public class LoginStepDef extends BasePage {
 
     @When("the user selects sign in")
     public void theUserSelectsSignIn() {
-        waitForPageLoad("Create a GOV.UK One Login or sign in");
         createOrSignInPage.clickSignInButton();
-    }
-
-    @When("the user selects Welsh sign in")
-    public void theUserSelectsWelshSignIn() {
-        waitForPageLoad("Creu GOV.UK One Login neu fewngofnodi");
-        createOrSignInPage.clickWelshSignInButton();
     }
 
     @And("user enters {string} email address")
@@ -87,7 +79,6 @@ public class LoginStepDef extends BasePage {
 
     @When("the user enters their password")
     public void theUserEntersTheirPassword() {
-        // waitForPageLoad("Enter your password");
         enterYourPasswordPage.enterPasswordAndContinue(System.getenv().get("TEST_USER_PASSWORD"));
     }
 
@@ -97,20 +88,13 @@ public class LoginStepDef extends BasePage {
     }
 
     @When("the user enters the six digit security code from their phone")
-    public void theUserEntersTheSixDigitSecurityCodeFromTheirPhone() {
-        waitForPageLoad("Check your phone");
+    public void theExistingUserEntersTheSixDigitSecurityCodeFromTheirPhone() {
         checkYourPhonePage.enterPhoneCodeAndContinue(System.getenv().get("TEST_USER_PHONE_CODE"));
     }
 
-    @When("the user enters the six digit security code from their phone to uplift to 2FA")
-    public void theUserEntersTheSixDigitSecurityCodeFromTheirPhoneToUplift() {
-        waitForPageLoad("You need to enter a security code");
-        checkYourPhonePage.enterPhoneCodeAndContinue(System.getenv().get("TEST_USER_PHONE_CODE"));
-    }
-
-    @When("the user requests the phone security code {int} times")
-    @When("the user requests the phone security code a further {int} times")
-    public void theUserRequestsThePhoneSecurityCodeTimes(int timesCodeIncorrect) {
+    @When("the user requests the phone otp code {int} times")
+    @When("the user requests the phone otp code a further {int} times")
+    public void theUserRequestsThePhoneOtpCodeTimes(int timesCodeIncorrect) {
         crossPageFlows.requestPhoneSecurityCodeResendNumberOfTimes(timesCodeIncorrect);
     }
 
@@ -233,11 +217,6 @@ public class LoginStepDef extends BasePage {
     @When("the user agrees to the updated terms and conditions")
     public void theUserAgreesToTheUpdatedTermsAndConditions() {
         termsAndConditionsPage.pressAgreeAndContinueButton();
-    }
-
-    @Then("the user is signed in to their One Login")
-    public void theUserIsSignedInToTheirOneLogin() {
-        waitForPageLoad("Example - GOV.UK - User Info");
     }
 
     @When("the user enters incorrect password")

@@ -9,7 +9,7 @@ public class RpStubStepDef extends BasePage {
     RpStubPage rpStubPage = new RpStubPage();
 
     @When("the user comes from the stub relying party with options: {string}")
-    public void theUserVisitsTheStubRelyingParty(String options) {
+    public void theExistingUserVisitsTheStubRelyingParty(String options) {
         rpStubPage.goToRpStub();
         rpStubPage.selectRpOptionsByIdAndContinue(options);
         setAnalyticsCookieTo(false);
