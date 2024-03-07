@@ -48,20 +48,22 @@ function updateAccountRecoveryBlock() {
       --no-paginate
   )"
 
-  ics="$(echo -n $up | jq -r '.Item.SubjectID.S')"
-  salt="$(echo -n $up | jq -r '.Item.salt.B' | base64 -d)"
-  digest="$(echo -n "$2$ics$salt" | openssl dgst -sha256 -binary | base64 | tr '/+' '_-' | tr -d '=')"
-  pwid="urn:fdc:gov.uk:2022:$digest"
+  if [ -n "$up" ]; then
+    ics="$(echo -n "$up" | jq -r '.Item.SubjectID.S')"
+    salt="$(echo -n "$up" | jq -r '.Item.salt.B' | base64 -d)"
+    digest="$(echo -n "$2$ics$salt" | openssl dgst -sha256 -binary | base64 | tr '/+' '_-' | tr -d '=')"
+    pwid="urn:fdc:gov.uk:2022:$digest"
 
-  echo "resetting account block for: $1 internalCommonSubjectId: $pwid"
+    echo "resetting account block for: $1 internalCommonSubjectId: $pwid"
 
-  aws dynamodb update-item \
-    --table-name "${ENVIRONMENT_NAME}-account-modifiers" \
-    --key "{\"InternalCommonSubjectIdentifier\": {\"S\": \"$pwid\"}}" \
-    --update-expression "SET #AR = :var" \
-    --expression-attribute-names "{ \"#AR\": \"AccountRecovery\" }" \
-    --expression-attribute-values "{ \":var\": { \"M\": { \"Blocked\": { \"BOOL\": false}, \"Created\": {\"S\": \"1970-01-01T00:00:00.000000\"}, \"Updated\": {\"S\": \"1970-01-01T00:00:00.000000\"} } } }" \
-    --region "${AWS_REGION}"
+    aws dynamodb update-item \
+      --table-name "${ENVIRONMENT_NAME}-account-modifiers" \
+      --key "{\"InternalCommonSubjectIdentifier\": {\"S\": \"$pwid\"}}" \
+      --update-expression "SET #AR = :var" \
+      --expression-attribute-names "{ \"#AR\": \"AccountRecovery\" }" \
+      --expression-attribute-values "{ \":var\": { \"M\": { \"Blocked\": { \"BOOL\": false}, \"Created\": {\"S\": \"1970-01-01T00:00:00.000000\"}, \"Updated\": {\"S\": \"1970-01-01T00:00:00.000000\"} } } }" \
+      --region "${AWS_REGION}"
+  fi
 }
 
 function createOrUpdateInterventionsUser() {
@@ -75,21 +77,23 @@ function createOrUpdateInterventionsUser() {
       --no-paginate
   )"
 
-  sector="identity.${ENVIRONMENT_NAME}.account.gov.uk"
-  ics="$(echo -n $up | jq -r '.Item.SubjectID.S')"
-  salt="$(echo -n $up | jq -r '.Item.salt.B' | base64 -d)"
-  digest="$(echo -n "$sector$ics$salt" | openssl dgst -sha256 -binary | base64 | tr '/+' '_-' | tr -d '=')"
-  pwid="urn:fdc:gov.uk:2022:$digest"
+  if [ -n "$up" ]; then
+    sector="identity.${ENVIRONMENT_NAME}.account.gov.uk"
+    ics="$(echo -n "$up" | jq -r '.Item.SubjectID.S')"
+    salt="$(echo -n "$up" | jq -r '.Item.salt.B' | base64 -d)"
+    digest="$(echo -n "$sector$ics$salt" | openssl dgst -sha256 -binary | base64 | tr '/+' '_-' | tr -d '=')"
+    pwid="urn:fdc:gov.uk:2022:$digest"
 
-  echo "resetting interventions block for: $1 sector: $sector internalCommonSubjectId: $pwid"
+    echo "resetting interventions block for: $1 sector: $sector internalCommonSubjectId: $pwid"
 
-  aws dynamodb update-item \
-    --table-name "${ENVIRONMENT_NAME}-stub-account-interventions" \
-    --key "{\"InternalPairwiseId\": {\"S\": \"$pwid\"}}" \
-    --update-expression "SET #BLOCKED = :blocked, #SUSPENDED = :suspended, #RESETPASSWORD = :resetpassword, #REPROVEIDENTITY = :reproveidentity, #EQUIVALENTPLAINEMAILADDRESS = :equivalentplainemailaddress" \
-    --expression-attribute-names "{ \"#BLOCKED\": \"Blocked\", \"#SUSPENDED\": \"Suspended\", \"#RESETPASSWORD\": \"ResetPassword\", \"#REPROVEIDENTITY\": \"ReproveIdentity\", \"#EQUIVALENTPLAINEMAILADDRESS\": \"EquivalentPlainEmailAddress\" }" \
-    --expression-attribute-values "{ \":blocked\":{\"BOOL\": $2}, \":suspended\":{\"BOOL\": $3}, \":resetpassword\":{\"BOOL\": $4}, \":reproveidentity\":{\"BOOL\": false}, \":equivalentplainemailaddress\":{\"S\": \"$1\"} }" \
-    --region "${AWS_REGION}"
+    aws dynamodb update-item \
+      --table-name "${ENVIRONMENT_NAME}-stub-account-interventions" \
+      --key "{\"InternalPairwiseId\": {\"S\": \"$pwid\"}}" \
+      --update-expression "SET #BLOCKED = :blocked, #SUSPENDED = :suspended, #RESETPASSWORD = :resetpassword, #REPROVEIDENTITY = :reproveidentity, #EQUIVALENTPLAINEMAILADDRESS = :equivalentplainemailaddress" \
+      --expression-attribute-names "{ \"#BLOCKED\": \"Blocked\", \"#SUSPENDED\": \"Suspended\", \"#RESETPASSWORD\": \"ResetPassword\", \"#REPROVEIDENTITY\": \"ReproveIdentity\", \"#EQUIVALENTPLAINEMAILADDRESS\": \"EquivalentPlainEmailAddress\" }" \
+      --expression-attribute-values "{ \":blocked\":{\"BOOL\": $2}, \":suspended\":{\"BOOL\": $3}, \":resetpassword\":{\"BOOL\": $4}, \":reproveidentity\":{\"BOOL\": false}, \":equivalentplainemailaddress\":{\"S\": \"$1\"} }" \
+      --region "${AWS_REGION}"
+  fi
 }
 
 function removeMfaMethods() {
@@ -171,5 +175,37 @@ function createSuspendedAccountInterventionsBlock() {
 
 function createResetPasswordInterventionsBlock() {
   echo "Creating reset password account intervention for user $1..."
-  createOrUpdateInterventionsUser $1 false false true
+  createOrUpdateInterventionsUser $1 false true true
+}
+
+function removeAccountInterventionBlocks() {
+  echo "Removing blocked, suspended, reset password account interventions for user $1..."
+  createOrUpdateInterventionsUser $1 false false false
+}
+
+function deleteIntervention() {
+  up="$(
+    aws dynamodb get-item \
+      --table-name "${ENVIRONMENT_NAME}-user-profile" \
+      --key "{\"Email\": {\"S\": \"$1\"}}" \
+      --projection-expression "#E, #ST, #S, #PS, #LS" \
+      --expression-attribute-names "{\"#E\": \"Email\", \"#ST\": \"salt\", \"#S\": \"SubjectID\", \"#PS\": \"PublicSubjectID\", \"#LS\": \"LegacySubjectId\"}" \
+      --region "${AWS_REGION}" \
+      --no-paginate
+  )"
+
+  if [ -n "$up" ]; then
+    sector="identity.${ENVIRONMENT_NAME}.account.gov.uk"
+    ics="$(echo -n "$up" | jq -r '.Item.SubjectID.S')"
+    salt="$(echo -n "$up" | jq -r '.Item.salt.B' | base64 -d)"
+    digest="$(echo -n "$sector$ics$salt" | openssl dgst -sha256 -binary | base64 | tr '/+' '_-' | tr -d '=')"
+    pwid="urn:fdc:gov.uk:2022:$digest"
+
+    echo "deleting interventions block for: $1 sector: $sector internalCommonSubjectId: $pwid"
+
+    aws dynamodb delete-item \
+      --table-name "${ENVIRONMENT_NAME}-stub-account-interventions" \
+      --key "{\"InternalPairwiseId\": {\"S\": \"$pwid\"}}" \
+      --region "${AWS_REGION}"
+  fi
 }
