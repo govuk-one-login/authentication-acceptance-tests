@@ -63,7 +63,7 @@ Feature: Login Journey
     When the user enters their password
     Then the user is returned to the service
     When the user comes from the stub relying party with options: "default"
-    Then the user is taken to the "You need to enter a security code" page
+    Then the user is taken to the "Enter a security code to continue" page
     When the user enters the six digit security code from their phone
     Then the user is returned to the service
     And the user logs out
