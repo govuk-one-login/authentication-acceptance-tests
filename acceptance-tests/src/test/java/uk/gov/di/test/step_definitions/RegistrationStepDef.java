@@ -13,6 +13,7 @@ import uk.gov.di.test.pages.EnterYourEmailAddressPage;
 import uk.gov.di.test.pages.EnterYourMobilePhoneNumberPage;
 import uk.gov.di.test.pages.NoGovUkOneLoginFoundPage;
 import uk.gov.di.test.pages.RpStubPage;
+import uk.gov.di.test.rp.MicroRP;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -31,6 +32,13 @@ public class RegistrationStepDef extends BasePage {
     ChooseHowToGetSecurityCodesPage chooseHowToGetSecurityCodesPage =
             new ChooseHowToGetSecurityCodesPage();
     NoGovUkOneLoginFoundPage noGovUkOneLoginFoundPage = new NoGovUkOneLoginFoundPage();
+
+    MicroRP rp =
+            new MicroRP(
+                            System.getenv("RP_CLIENT_ID"),
+                            System.getenv("OP_URL"),
+                            System.getenv("RP_SIGNING_KEY"))
+                    .start();
 
     @When("the user selects create an account")
     public void theUserSelectsCreateAnAccount() throws InterruptedException {
