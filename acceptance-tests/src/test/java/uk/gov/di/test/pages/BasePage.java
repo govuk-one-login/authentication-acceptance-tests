@@ -13,6 +13,7 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import uk.gov.di.test.rp.MicroRP;
 import uk.gov.di.test.utils.AuthAppStub;
 import uk.gov.di.test.utils.AuthenticationJourneyPages;
 
@@ -55,6 +56,13 @@ public class BasePage {
     protected static final Duration DEFAULT_PAGE_LOAD_WAIT_TIME = Duration.of(20, SECONDS);
     protected static WebDriver driver;
     public By authAppCodeField = By.id("code");
+
+    protected static final MicroRP rp =
+            new MicroRP(
+                            System.getenv("RP_CLIENT_ID"),
+                            System.getenv("OP_URL"),
+                            System.getenv("RP_SIGNING_KEY"))
+                    .start();
 
     protected void setupWebdriver() throws MalformedURLException {
         if (driver == null) {
