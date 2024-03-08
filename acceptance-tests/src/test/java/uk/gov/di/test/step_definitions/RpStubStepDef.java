@@ -13,9 +13,9 @@ public class RpStubStepDef extends BasePage {
 
     MicroRP rp =
             new MicroRP(
-                            System.getenv("CLIENT_ID"),
+                            System.getenv("RP_CLIENT_ID"),
                             System.getenv("OP_URL"),
-                            System.getenv("PRIVATE_KEY"))
+                            System.getenv("RP_SIGNING_KEY"))
                     .start();
 
     @When("the user comes from the stub relying party with options: {string}")
