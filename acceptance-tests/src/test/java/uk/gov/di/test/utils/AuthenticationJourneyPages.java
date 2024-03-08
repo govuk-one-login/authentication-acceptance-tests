@@ -9,7 +9,7 @@ public enum AuthenticationJourneyPages {
     CHECK_YOUR_PHONE("/check-your-phone", "Check your phone"),
     ACCOUNT_CREATED("/account-created", "You’ve created your GOV.UK One Login"),
     ENTER_PASSWORD("/enter-password", "Enter your password"),
-    ENTER_CODE_UPLIFT("/enter-code", "You need to enter a security code"),
+    ENTER_CODE_UPLIFT("/enter-code", "Enter a security code to continue"),
     ENTER_EMAIL_EXISTING_USER(
             "/enter-email", "Enter your email address to sign in to your GOV.UK One Login"),
     RESEND_SECURITY_CODE("/resend-code", "Get security code");
