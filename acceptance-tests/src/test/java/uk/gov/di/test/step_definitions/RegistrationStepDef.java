@@ -13,9 +13,11 @@ import uk.gov.di.test.pages.EnterYourEmailAddressPage;
 import uk.gov.di.test.pages.EnterYourMobilePhoneNumberPage;
 import uk.gov.di.test.pages.NoGovUkOneLoginFoundPage;
 import uk.gov.di.test.pages.RpStubPage;
+import uk.gov.di.test.rp.MicroRP;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static uk.gov.di.test.rp.MicroRP.JourneyType.MED_CONFIDENCE;
 import static uk.gov.di.test.utils.Constants.*;
 
 public class RegistrationStepDef extends BasePage {
@@ -30,6 +32,13 @@ public class RegistrationStepDef extends BasePage {
     ChooseHowToGetSecurityCodesPage chooseHowToGetSecurityCodesPage =
             new ChooseHowToGetSecurityCodesPage();
     NoGovUkOneLoginFoundPage noGovUkOneLoginFoundPage = new NoGovUkOneLoginFoundPage();
+
+    MicroRP rp =
+            new MicroRP(
+                            System.getenv("RP_CLIENT_ID"),
+                            System.getenv("OP_URL"),
+                            System.getenv("RP_SIGNING_KEY"))
+                    .start();
 
     @When("the user selects create an account")
     public void theUserSelectsCreateAnAccount() throws InterruptedException {
@@ -88,7 +97,7 @@ public class RegistrationStepDef extends BasePage {
 
     @When("the user clicks logout")
     public void theUserClicksLogout() {
-        findAndClickButtonByText("Log out");
+        driver.get(System.getenv("OP_URL") + "logout");
     }
 
     @When("the user enters their mobile phone number using an international dialling code")
@@ -153,8 +162,7 @@ public class RegistrationStepDef extends BasePage {
     @Given(
             "a user has selected text message as their auth method and has moved on to the next page")
     public void aUserHasSelectedAnAuthMethodAndHasMovedOnToTheNextPage() {
-        rpStubPage.goToRpStub();
-        rpStubPage.selectRpOptionsByIdAndContinue("");
+        driver.get(rp.startJourneyUrl(MED_CONFIDENCE));
         waitForPageLoad("Create a GOV.UK One Login or sign in");
         createOrSignInPage.clickCreateAGovUkOneLoginButton();
         waitForPageLoad("Enter your email address");
@@ -173,8 +181,7 @@ public class RegistrationStepDef extends BasePage {
 
     @Given("a user has selected auth app as their auth method and has moved on to the next page")
     public void aUserHasSelectedAuthAppAsTheirAuthMethodAndHasMovedOnToTheNextPage() {
-        rpStubPage.goToRpStub();
-        rpStubPage.selectRpOptionsByIdAndContinue("");
+        driver.get(rp.startJourneyUrl(MED_CONFIDENCE));
         waitForPageLoad("Create a GOV.UK One Login or sign in");
         createOrSignInPage.clickCreateAGovUkOneLoginButton();
         waitForPageLoad("Enter your email address");

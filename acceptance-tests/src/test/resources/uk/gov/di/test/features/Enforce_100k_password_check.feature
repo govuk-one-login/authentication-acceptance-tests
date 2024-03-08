@@ -16,7 +16,7 @@ Feature: Enforce 100k password check
     When the user enters valid new password and correctly retypes it
     Then the user is taken to the "Example - GOV.UK - User Info" page
     When the user clicks logout
-    Then the user is taken to the "Signed out" page
+    Then the user is taken to the "You have signed out - GOV.UK One Login" page
 
   Scenario: An auth app user is forced to reset their top 100k password
     Given the user starts a medium confidence journey
@@ -32,4 +32,4 @@ Feature: Enforce 100k password check
     When the user enters valid new password and correctly retypes it
     Then the user is taken to the "Example - GOV.UK - User Info" page
     When the user clicks logout
-    Then the user is taken to the "Signed out" page
+    Then the user is taken to the "You have signed out - GOV.UK One Login" page

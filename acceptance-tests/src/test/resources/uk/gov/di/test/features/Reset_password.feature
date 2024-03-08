@@ -19,7 +19,7 @@ Feature: Reset password
     When the user enters valid new password and correctly retypes it
     Then the user is taken to the "Example - GOV.UK - User Info" page
     When the user clicks logout
-    Then the user is taken to the "Signed out" page
+    Then the user is taken to the "You have signed out - GOV.UK One Login" page
 
   Scenario: An auth app user can successfully reset their password
     Given the user starts a medium confidence journey
@@ -39,7 +39,7 @@ Feature: Reset password
     When the user enters valid new password and correctly retypes it
     Then the user is taken to the "Example - GOV.UK - User Info" page
     When the user clicks logout
-    Then the user is taken to the "Signed out" page
+    Then the user is taken to the "You have signed out - GOV.UK One Login" page
 
   # ENTER INCORRECT EMAIL OTP TOO MANY TIMES DURING PASSWORD RESET
   Scenario: A user is blocked when they enter an incorrect email OTP more than 5 times during a password reset.
