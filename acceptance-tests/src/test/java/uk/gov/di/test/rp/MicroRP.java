@@ -83,7 +83,16 @@ public class MicroRP {
     private String callback(Request request, Response response) throws Exception {
         var tokenResponse = makeTokenRequest(request.queryParams("code"));
         var userInfoResponse = makeUserInfoRequest(tokenResponse.get("access_token"));
-        return gson.toJson(userInfoResponse);
+
+        return """
+        <html>
+            <head><title>Example - GOV.UK - User Info</title></title>
+            <body>
+                <span>%s</span>
+            </body>
+        </html>
+        """
+                .formatted(gson.toJson(userInfoResponse));
     }
 
     private Map<String, String> makeTokenRequest(String authCode) throws Exception {
