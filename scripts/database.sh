@@ -48,13 +48,15 @@ function updateAccountRecoveryBlock() {
       --no-paginate
   )"
 
+  echo "updateAccountRecoveryBlock: $up"
   if [ -n "$up" ]; then
     ics="$(echo -n "$up" | jq -r '.Item.SubjectID.S')"
     salt="$(echo -n "$up" | jq -r '.Item.salt.B' | base64 -d)"
     digest="$(echo -n "$2$ics$salt" | openssl dgst -sha256 -binary | base64 | tr '/+' '_-' | tr -d '=')"
     pwid="urn:fdc:gov.uk:2022:$digest"
 
-    echo "resetting account block for: $1 internalCommonSubjectId: $pwid"
+    saltlog="$(echo -n "$up" | jq -r '.Item.salt.B')"
+    echo "resetting account block for: $1 internalCommonSubjectId: $pwid saltlog: $saltlog"
 
     aws dynamodb update-item \
       --table-name "${ENVIRONMENT_NAME}-account-modifiers" \
@@ -77,6 +79,7 @@ function createOrUpdateInterventionsUser() {
       --no-paginate
   )"
 
+  echo "createOrUpdateInterventionsUser: $up"
   if [ -n "$up" ]; then
     sector="identity.${ENVIRONMENT_NAME}.account.gov.uk"
     ics="$(echo -n "$up" | jq -r '.Item.SubjectID.S')"
@@ -84,7 +87,8 @@ function createOrUpdateInterventionsUser() {
     digest="$(echo -n "$sector$ics$salt" | openssl dgst -sha256 -binary | base64 | tr '/+' '_-' | tr -d '=')"
     pwid="urn:fdc:gov.uk:2022:$digest"
 
-    echo "resetting interventions block for: $1 sector: $sector internalCommonSubjectId: $pwid"
+    saltlog="$(echo -n "$up" | jq -r '.Item.salt.B')"
+    echo "resetting interventions block for: $1 sector: $sector internalCommonSubjectId: $pwid saltlog: $saltlog"
 
     aws dynamodb update-item \
       --table-name "${ENVIRONMENT_NAME}-stub-account-interventions" \
@@ -194,6 +198,7 @@ function deleteIntervention() {
       --no-paginate
   )"
 
+  echo "deleteIntervention: $up"
   if [ -n "$up" ]; then
     sector="identity.${ENVIRONMENT_NAME}.account.gov.uk"
     ics="$(echo -n "$up" | jq -r '.Item.SubjectID.S')"
@@ -201,7 +206,8 @@ function deleteIntervention() {
     digest="$(echo -n "$sector$ics$salt" | openssl dgst -sha256 -binary | base64 | tr '/+' '_-' | tr -d '=')"
     pwid="urn:fdc:gov.uk:2022:$digest"
 
-    echo "deleting interventions block for: $1 sector: $sector internalCommonSubjectId: $pwid"
+    saltlog="$(echo -n "$up" | jq -r '.Item.salt.B')"
+    echo "deleting interventions block for: $1 sector: $sector internalCommonSubjectId: $pwid salt: $salt"
 
     aws dynamodb delete-item \
       --table-name "${ENVIRONMENT_NAME}-stub-account-interventions" \
