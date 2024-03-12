@@ -63,7 +63,8 @@ public class LoginStepDef extends BasePage {
     }
 
     @When("the user selects sign in")
-    public void theUserSelectsSignIn() {
+    public void theUserSelectsSignIn() throws InterruptedException {
+        Thread.sleep(2000);
         createOrSignInPage.clickSignInButton();
     }
 

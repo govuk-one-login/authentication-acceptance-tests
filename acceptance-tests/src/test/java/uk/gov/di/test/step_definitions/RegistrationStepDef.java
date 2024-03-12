@@ -32,7 +32,8 @@ public class RegistrationStepDef extends BasePage {
     NoGovUkOneLoginFoundPage noGovUkOneLoginFoundPage = new NoGovUkOneLoginFoundPage();
 
     @When("the user selects create an account")
-    public void theUserSelectsCreateAnAccount() {
+    public void theUserSelectsCreateAnAccount() throws InterruptedException {
+        Thread.sleep(2000);
         createOrSignInPage.clickCreateAGovUkOneLoginButton();
     }
 
