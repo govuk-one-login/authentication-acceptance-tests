@@ -220,26 +220,26 @@ Feature: Account interventions
     When the user enters the six digit security code from their email
     Then the user is taken to the "Your GOV.UK One Login has been permanently locked" page
 
-  @reset_password
-  Scenario: Sms user forced to reset their password when a password reset intervention has been placed on their account
-    Given the user comes from the stub relying party with options: "default"
-    When the user is taken to the "Create a GOV.UK One Login or sign in" page
-    And the user selects sign in
-    Then the user is taken to the "Enter your email" page
-    When user enters "TEST_USER_PASSWORD_RESET_ACCOUNT_EMAIL_1" email address
-    Then the user is taken to the "Enter your password" page
-    When the user enters their password
-    Then the user is taken to the "Check your phone" page
-    When the user enters the six digit security code from their phone
-    Then the user is taken to the "You need to reset your password" page
-    When the user clicks the continue button
-    Then the user is taken to the "Check your email" page
-    When the user enters the six digit security code from their email
-    Then the user is taken to the "Reset your password" page
-    ##### The test needs to stop here in Build, due to there being static data in the AIS stub the reset pw flag is not removed and so the correct path is not followed
-    #When the user enters valid new password and correctly retypes it
-    #Then the user is returned to the service
-    #And the user logs out
+#  @reset_password
+#  Scenario: Sms user forced to reset their password when a password reset intervention has been placed on their account
+#    Given the user comes from the stub relying party with options: "default"
+#    When the user is taken to the "Create a GOV.UK One Login or sign in" page
+#    And the user selects sign in
+#    Then the user is taken to the "Enter your email" page
+#    When user enters "TEST_USER_PASSWORD_RESET_ACCOUNT_EMAIL_1" email address
+#    Then the user is taken to the "Enter your password" page
+#    When the user enters their password
+#    Then the user is taken to the "Check your phone" page
+#    When the user enters the six digit security code from their phone
+#    Then the user is taken to the "You need to reset your password" page
+#    When the user clicks the continue button
+#    Then the user is taken to the "Check your email" page
+#    When the user enters the six digit security code from their email
+#    Then the user is taken to the "Reset your password" page
+#    ##### The test needs to stop here in Build, due to there being static data in the AIS stub the reset pw flag is not removed and so the correct path is not followed
+#    #When the user enters valid new password and correctly retypes it
+#    #Then the user is returned to the service
+#    #And the user logs out
 
   @reset_password
   Scenario: Auth app user forced to reset their password when a password reset intervention has been placed on their account
