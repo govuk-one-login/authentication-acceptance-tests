@@ -3,7 +3,7 @@ Feature: Account interventions
 
   @suspended
   Scenario: Sms user cannot log in when they have a temporarily suspended account
-    Given the user comes from the stub relying party with options: "default"
+    Given the user starts a medium confidence journey
     When the user is taken to the "Create a GOV.UK One Login or sign in" page
     And the user selects sign in
     Then the user is taken to the "Enter your email" page
@@ -16,7 +16,7 @@ Feature: Account interventions
 
   @suspended
   Scenario: Auth app user cannot log in when they have a temporarily suspended account
-    Given the user comes from the stub relying party with options: "default"
+    Given the user starts a medium confidence journey
     When the user is taken to the "Create a GOV.UK One Login or sign in" page
     And the user selects sign in
     Then the user is taken to the "Enter your email" page
@@ -29,7 +29,7 @@ Feature: Account interventions
 
   @suspended
   Scenario: Sms user with outdated terms and conditions cannot log in when they have a temporarily suspended account
-    Given the user comes from the stub relying party with options: "default"
+    Given the user starts a medium confidence journey
     When the user is taken to the "Create a GOV.UK One Login or sign in" page
     And the user selects sign in
     Then the user is taken to the "Enter your email" page
@@ -44,7 +44,7 @@ Feature: Account interventions
 
   @suspended
   Scenario: Sms user cannot change their password when they have a temporarily suspended account
-    Given the user comes from the stub relying party with options: "2fa-on"
+    Given the user starts a medium confidence journey
     When the user is taken to the "Create a GOV.UK One Login or sign in" page
     And the user selects sign in
     Then the user is taken to the "Enter your email" page
@@ -59,7 +59,7 @@ Feature: Account interventions
 
   @suspended
   Scenario: Auth app user with a current password on the top 100k unacceptable password list cannot change their password when they have a temporarily suspended account
-    Given the user comes from the stub relying party with options: "2fa-on"
+    Given the user starts a medium confidence journey
     When the user is taken to the "Create a GOV.UK One Login or sign in" page
     And the user selects sign in
     Then the user is taken to the "Enter your email" page
@@ -74,7 +74,7 @@ Feature: Account interventions
 
   @suspended
   Scenario: Sms user cannot change the way they get security codes when they have a temporarily suspended account
-    Given the user comes from the stub relying party with options: "2fa-on"
+    Given the user starts a medium confidence journey
     When the user is taken to the "Create a GOV.UK One Login or sign in" page
     And the user selects sign in
     Then the user is taken to the "Enter your email" page
@@ -90,7 +90,7 @@ Feature: Account interventions
 
   @suspended
   Scenario: Auth app user cannot change the way they get security codes when they have a temporarily suspended account
-    Given the user comes from the stub relying party with options: "2fa-on"
+    Given the user starts a medium confidence journey
     When the user is taken to the "Create a GOV.UK One Login or sign in" page
     And the user selects sign in
     Then the user is taken to the "Enter your email" page
@@ -106,7 +106,7 @@ Feature: Account interventions
 
   @locked
   Scenario: Sms user cannot log in when they have a permanently locked account
-    Given the user comes from the stub relying party with options: "default"
+    Given the user starts a medium confidence journey
     When the user is taken to the "Create a GOV.UK One Login or sign in" page
     And the user selects sign in
     Then the user is taken to the "Enter your email" page
@@ -119,7 +119,7 @@ Feature: Account interventions
 
   @locked
   Scenario: Auth app user cannot log in when they have a permanently locked account
-    Given the user comes from the stub relying party with options: "default"
+    Given the user starts a medium confidence journey
     When the user is taken to the "Create a GOV.UK One Login or sign in" page
     And the user selects sign in
     Then the user is taken to the "Enter your email" page
@@ -132,7 +132,7 @@ Feature: Account interventions
 
   @locked
   Scenario: Auth app user with outdated terms and conditions cannot log in when they have a permanently locked account
-    Given the user comes from the stub relying party with options: "default"
+    Given the user starts a medium confidence journey
     When the user is taken to the "Create a GOV.UK One Login or sign in" page
     And the user selects sign in
     Then the user is taken to the "Enter your email" page
@@ -147,7 +147,7 @@ Feature: Account interventions
 
   @locked
   Scenario: Auth app user cannot create a new account using the email address of a permanently locked address
-    Given the user comes from the stub relying party with options: "2fa-on"
+    Given the user starts a medium confidence journey
     When the user is taken to the "Create a GOV.UK One Login or sign in" page
     And the user selects create an account
     Then the user is taken to the "Enter your email address" page
@@ -160,7 +160,7 @@ Feature: Account interventions
 
   @locked
   Scenario: Sms user cannot change their password when they have a permanently locked account
-    Given the user comes from the stub relying party with options: "2fa-on"
+    Given the user starts a medium confidence journey
     When the user is taken to the "Create a GOV.UK One Login or sign in" page
     And the user selects sign in
     Then the user is taken to the "Enter your email" page
@@ -175,7 +175,7 @@ Feature: Account interventions
 
   @locked
   Scenario: Sms user with a current password on the top 100k unacceptable password list cannot change their password when they have a permanently locked account
-    Given the user comes from the stub relying party with options: "2fa-on"
+    Given the user starts a medium confidence journey
     When the user is taken to the "Create a GOV.UK One Login or sign in" page
     And the user selects sign in
     Then the user is taken to the "Enter your email" page
@@ -190,7 +190,7 @@ Feature: Account interventions
 
   @locked
   Scenario: Sms user cannot change the way they get security codes when they have a permanently locked account
-    Given the user comes from the stub relying party with options: "2fa-on"
+    Given the user starts a medium confidence journey
     When the user is taken to the "Create a GOV.UK One Login or sign in" page
     And the user selects sign in
     Then the user is taken to the "Enter your email" page
@@ -206,7 +206,7 @@ Feature: Account interventions
 
   @locked
   Scenario: Auth app user cannot change the way they get security codes when they have a permanently locked account
-    Given the user comes from the stub relying party with options: "2fa-on"
+    Given the user starts a medium confidence journey
     When the user is taken to the "Create a GOV.UK One Login or sign in" page
     And the user selects sign in
     Then the user is taken to the "Enter your email" page
@@ -243,7 +243,7 @@ Feature: Account interventions
 
   @reset_password
   Scenario: Auth app user forced to reset their password when a password reset intervention has been placed on their account
-    Given the user comes from the stub relying party with options: "default"
+    Given the user starts a medium confidence journey
     When the user is taken to the "Create a GOV.UK One Login or sign in" page
     And the user selects sign in
     Then the user is taken to the "Enter your email" page
@@ -264,7 +264,7 @@ Feature: Account interventions
 
   @reset_password
   Scenario: Auth app user with a password reset intervention on their account is able to use the I have forgotten my password link
-    Given the user comes from the stub relying party with options: "default"
+    Given the user starts a medium confidence journey
     When the user is taken to the "Create a GOV.UK One Login or sign in" page
     And the user selects sign in
     Then the user is taken to the "Enter your email" page
@@ -284,7 +284,7 @@ Feature: Account interventions
 
   @reset_password
   Scenario: Sms user is forced to reset their password when they have a password reset intervention on their account and their existing password is on top 100k password list
-    Given the user comes from the stub relying party with options: "default"
+    Given the user starts a medium confidence journey
     When the user is taken to the "Create a GOV.UK One Login or sign in" page
     And the user selects sign in
     Then the user is taken to the "Enter your email" page
@@ -303,7 +303,7 @@ Feature: Account interventions
 
   @reset_password
   Scenario: Auth app user with outdated terms and conditions cannot log in when they have a password reset intervention on their account
-    Given the user comes from the stub relying party with options: "default"
+    Given the user starts a medium confidence journey
     When the user is taken to the "Create a GOV.UK One Login or sign in" page
     And the user selects sign in
     Then the user is taken to the "Enter your email" page
@@ -326,7 +326,7 @@ Feature: Account interventions
 
   @reset_password
   Scenario: Auth app user cannot change the way they get security codes when they have a password reset intervention on their account
-    Given the user comes from the stub relying party with options: "2fa-on"
+    Given the user starts a medium confidence journey
     When the user is taken to the "Create a GOV.UK One Login or sign in" page
     And the user selects sign in
     Then the user is taken to the "Enter your email" page
@@ -350,7 +350,7 @@ Feature: Account interventions
 
   @locked @suspended @reset_password
   Scenario: Auth app user can log in when their One Login account intervention has been removed
-    Given the user comes from the stub relying party with options: "2fa-on"
+    Given the user starts a medium confidence journey
     When the user is taken to the "Create a GOV.UK One Login or sign in" page
     And the user selects sign in
     Then the user is taken to the "Enter your email" page
