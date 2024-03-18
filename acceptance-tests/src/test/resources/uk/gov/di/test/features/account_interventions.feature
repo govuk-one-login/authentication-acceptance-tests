@@ -220,7 +220,7 @@ Feature: Account interventions
     When the user enters the six digit security code from their email
     Then the user is taken to the "Your GOV.UK One Login has been permanently locked" page
 
-#  @reset_password
+#  @reset_password # commented out due to an unidentified data issue that causes failure in th pipeline. Runs fine locally.
 #  Scenario: Sms user forced to reset their password when a password reset intervention has been placed on their account
 #    Given the user comes from the stub relying party with options: "default"
 #    When the user is taken to the "Create a GOV.UK One Login or sign in" page
@@ -236,10 +236,10 @@ Feature: Account interventions
 #    Then the user is taken to the "Check your email" page
 #    When the user enters the six digit security code from their email
 #    Then the user is taken to the "Reset your password" page
-#    ##### The test needs to stop here in Build, due to there being static data in the AIS stub the reset pw flag is not removed and so the correct path is not followed
-#    #When the user enters valid new password and correctly retypes it
-#    #Then the user is returned to the service
-#    #And the user logs out
+#    The test needs to stop here in Build, due to there being static data in the AIS stub the reset pw flag is not removed and so the correct path is not followed
+#    When the user enters valid new password and correctly retypes it
+#    Then the user is returned to the service
+#    And the user logs out
 
   @reset_password
   Scenario: Auth app user forced to reset their password when a password reset intervention has been placed on their account
@@ -257,10 +257,9 @@ Feature: Account interventions
     Then the user is taken to the "Check your email" page
     When the user enters the six digit security code from their email
     Then the user is taken to the "Reset your password" page
-    ##### The test needs to stop here in Build, due to there being static data in the AIS stub the reset pw flag is not removed and so the correct path is not followed
-    #When the user enters valid new password and correctly retypes it
-    #Then the user is returned to the service
-    #And the user logs out
+    When the user enters valid new password and correctly retypes it
+    Then the user is returned to the service
+    And the user logs out
 
   @reset_password
   Scenario: Auth app user with a password reset intervention on their account is able to use the I have forgotten my password link
@@ -276,11 +275,9 @@ Feature: Account interventions
     Then the user is taken to the "Enter a security code from your authenticator app" page
     When the user enters the security code from the auth app
     Then the user is taken to the "Reset your password" page
-    ##### The test needs to stop here in Build, due to there being static data in the AIS stub the reset pw flag is not removed and so the correct path is not followed
-    #When the user enters valid new password and correctly retypes it
-    #Then the user is returned to the service
-    #And the user logs out
-
+    When the user enters valid new password and correctly retypes it
+    Then the user is returned to the service
+    And the user logs out
 
   @reset_password
   Scenario: Sms user is forced to reset their password when they have a password reset intervention on their account and their existing password is on top 100k password list
@@ -296,10 +293,9 @@ Feature: Account interventions
     Then the user is taken to the "Check your phone" page
     When the user enters the six digit security code from their phone
     Then the user is taken to the "Reset your password" page
-    ##### The test needs to stop here in Build, due to there being static data in the AIS stub the reset pw flag is not removed and so the correct path is not followed
-    #When the user enters valid new password and correctly retypes it
-    #Then the user is returned to the service
-    #And the user logs out
+    When the user enters valid new password and correctly retypes it
+    Then the user is returned to the service
+    And the user logs out
 
   @reset_password
   Scenario: Auth app user with outdated terms and conditions cannot log in when they have a password reset intervention on their account
@@ -319,10 +315,9 @@ Feature: Account interventions
     Then the user is taken to the "Check your email" page
     When the user enters the six digit security code from their email
     Then the user is taken to the "Reset your password" page
-    ##### The test needs to stop here in Build, due to there being static data in the AIS stub the reset pw flag is not removed and so the correct path is not followed
-    #When the user enters valid new password and correctly retypes it
-    #Then the user is returned to the service
-    #And the user logs out
+    When the user enters valid new password and correctly retypes it
+    Then the user is returned to the service
+    And the user logs out
 
   @reset_password
   Scenario: Auth app user cannot change the way they get security codes when they have a password reset intervention on their account
@@ -343,10 +338,9 @@ Feature: Account interventions
     Then the user is taken to the "Check your email" page
     When the user enters the six digit security code from their email
     Then the user is taken to the "Reset your password" page
-    ##### The test needs to stop here in Build, due to there being static data in the AIS stub the reset pw flag is not removed and so the correct path is not followed
-    #When the user enters valid new password and correctly retypes it
-    #Then the user is returned to the service
-    #And the user logs out
+    When the user enters valid new password and correctly retypes it
+    Then the user is returned to the service
+    And the user logs out
 
   @locked @suspended @reset_password
   Scenario: Auth app user can log in when their One Login account intervention has been removed
