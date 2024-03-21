@@ -18,10 +18,23 @@ public class Hooks extends BasePage {
         driver.manage().deleteAllCookies();
     }
 
+    @Before
+    public void setUpScenario(Scenario scenario) {
+        BasePage.scenario = scenario;
+    }
+
     @AfterStep
     public void checkAccessibility() {
         AxeStepDef.thereAreNoAccessibilityViolations();
     }
+
+    //    @AfterStep
+    //    public void takeScreenshot(Scenario scenario) {
+    //        final byte[] screenshot = ((TakesScreenshot)
+    // driver).getScreenshotAs(OutputType.BYTES);
+    //        scenario.attach(screenshot, "image/png", "Step screenshot");
+    //
+    //    }
 
     @After
     public void takeScreenshotOnFailure(Scenario scenario) {

@@ -7,12 +7,15 @@ import org.junit.jupiter.api.Assertions;
 import uk.gov.di.test.pages.BasePage;
 import uk.gov.di.test.pages.CheckYourEmailPage;
 import uk.gov.di.test.pages.CheckYourPhonePage;
+import uk.gov.di.test.pages.ChooseHowToGetSecurityCodesPage;
 import uk.gov.di.test.pages.CreateOrSignInPage;
 import uk.gov.di.test.pages.EnterThe6DigitSecurityCodeShownInYourAuthenticatorAppPage;
 import uk.gov.di.test.pages.EnterYourEmailAddressPage;
 import uk.gov.di.test.pages.EnterYourEmailAddressToSignInPage;
+import uk.gov.di.test.pages.EnterYourMobilePhoneNumberPage;
 import uk.gov.di.test.pages.EnterYourPasswordPage;
 import uk.gov.di.test.pages.ResetYourPasswordPage;
+import uk.gov.di.test.pages.RpStubPage;
 import uk.gov.di.test.pages.SetUpAnAuthenticatorAppPage;
 import uk.gov.di.test.pages.TermsAndConditionsPage;
 import uk.gov.di.test.pages.YouAskedToResendTheSecurityCodeTooManyTimesPage;
@@ -28,7 +31,6 @@ import static uk.gov.di.test.utils.Constants.NEW_VALID_PASSWORD;
 import static uk.gov.di.test.utils.Constants.TOP_100K_PASSWORD;
 
 public class LoginStepDef extends BasePage {
-
     private String authAppSecretKey;
     public ResetYourPasswordPage resetYourPasswordPage = new ResetYourPasswordPage();
     public CheckYourEmailPage checkYourEmailPage = new CheckYourEmailPage();
@@ -51,6 +53,12 @@ public class LoginStepDef extends BasePage {
     public EnterThe6DigitSecurityCodeShownInYourAuthenticatorAppPage
             enterThe6DigitSecurityCodeShownInYourAuthenticatorAppPage =
                     new EnterThe6DigitSecurityCodeShownInYourAuthenticatorAppPage();
+    public ChooseHowToGetSecurityCodesPage chooseHowToGetSecurityCodesPage =
+            new ChooseHowToGetSecurityCodesPage();
+    public EnterYourMobilePhoneNumberPage enterYourMobilePhoneNumberPage =
+            new EnterYourMobilePhoneNumberPage();
+
+    RpStubPage rpStubPage = new RpStubPage();
 
     @When("the user enters their password which is on the top 100k password list")
     public void theUserEntersTheirPasswordWhichIsOnTheTop100kPasswordList() {
@@ -95,7 +103,7 @@ public class LoginStepDef extends BasePage {
 
     @When("the user requests the phone otp code {int} times")
     @When("the user requests the phone otp code a further {int} times")
-    public void theUserRequestsThePhoneOtpCodeTimes(int timesCodeIncorrect) {
+    public void theUserRequestsThePhoneOtpCodeTimes(Integer timesCodeIncorrect) {
         crossPageFlows.requestPhoneSecurityCodeResendNumberOfTimes(timesCodeIncorrect);
     }
 
@@ -226,6 +234,7 @@ public class LoginStepDef extends BasePage {
     }
 
     @When("the user enters an incorrect password a further {int} times")
+    @When("the user enters an incorrect password {int} times")
     public void theUserEntersAnIncorrectPasswordAFurtherXTimes(Integer attemptCount) {
         enterYourPasswordPage.enterIncorrectPasswordNumberOfTimes(attemptCount);
     }
@@ -251,4 +260,303 @@ public class LoginStepDef extends BasePage {
         enterThe6DigitSecurityCodeShownInYourAuthenticatorAppPage
                 .enterIncorrectAuthAppCodeNumberOfTimes(attemptCount);
     }
+
+    //    @When(
+    //            "the user {string} with a lockout for wrong email security codes reattempts to
+    // change their password during the lockout period")
+    //    @When(
+    //            "the user {string} with a lockout for requesting too many email security codes
+    // reattempts to change their password during the lockout period")
+    //    public void
+    // theUserWithWrongEmailCodeBlockReattemptsToChangeTheirPasswordDuringLockoutPeriod(
+    //            String emailAddress) {
+    //        rpStubPage.goToRpStub();
+    //        rpStubPage.selectRpOptionsByIdAndContinue("default");
+    //        setAnalyticsCookieTo(false);
+    //        createOrSignInPage.clickSignInButton();
+    //        enterYourEmailAddressToSignInPage.enterEmailAddressAndContinue(
+    //                System.getenv().get(emailAddress));
+    //        enterYourPasswordPage.clickForgottenPasswordLink();
+    //    }
+    //
+    //    @When(
+    //            "the user {string} with a lockout for wrong sms security codes reattempts to
+    // change their password during the lockout period")
+    //    @When(
+    //            "the user {string} with a lockout for requesting too many sms security codes
+    // reattempts to change their password during the lockout period")
+    //    public void
+    // theUserWithWrongSMSCodeBlockReattemptsToChangeTheirPasswordDuringLockoutPeriod(
+    //            String emailAddress) {
+    //        rpStubPage.goToRpStub();
+    //        rpStubPage.selectRpOptionsByIdAndContinue("default");
+    //        setAnalyticsCookieTo(false);
+    //        createOrSignInPage.clickSignInButton();
+    //        enterYourEmailAddressToSignInPage.enterEmailAddressAndContinue(
+    //                System.getenv().get(emailAddress));
+    //        enterYourPasswordPage.clickForgottenPasswordLink();
+    //
+    // checkYourEmailPage.enterEmailCodeAndContinue(System.getenv().get("TEST_USER_EMAIL_CODE"));
+    //    }
+    //
+    //    @When(
+    //            "the user {string} with a lockout for too many incorrect auth app codes reattempts
+    // to change their password during the lockout period")
+    //    public void
+    // theUserWithWrongAuthAppCodeBlockReattemptsToChangeTheirPasswordDuringLockoutPeriod(
+    //            String emailAddress) {
+    //        rpStubPage.goToRpStub();
+    //        rpStubPage.selectRpOptionsByIdAndContinue("default");
+    //        setAnalyticsCookieTo(false);
+    //        createOrSignInPage.clickSignInButton();
+    //        enterYourEmailAddressToSignInPage.enterEmailAddressAndContinue(
+    //                System.getenv().get(emailAddress));
+    //        enterYourPasswordPage.clickForgottenPasswordLink();
+    //
+    // checkYourEmailPage.enterEmailCodeAndContinue(System.getenv().get("TEST_USER_EMAIL_CODE"));
+    //        enterThe6DigitSecurityCodeShownInYourAuthenticatorAppPage
+    //                .enterCorrectAuthAppCodeAndContinue(
+    //                        System.getenv().get("ACCOUNT_RECOVERY_USER_AUTH_APP_SECRET"));
+    //    }
+    //
+    //    @Then("the 2hr lockout screen for too many wrong security codes is displayed")
+    //    public void theLockoutScreenForWrongSecurityCodesIsDisplayed() {
+    //        waitForPageLoad("You entered the wrong security code too many times");
+    //        String text =
+    //                driver.findElement(By.cssSelector("#main-content
+    // .govuk-grid-column-two-thirds"))
+    //                        .getText();
+    //        assertTrue(text.contains("You will not be able to sign in for 2 hours"));
+    //        takeScreenshot(scenario);
+    //    }
+    //
+    //    @Then("the 15min lockout screen for too many wrong security codes is displayed")
+    //    public void the15minLockoutScreenForWrongSecurityCodesIsDisplayed() {
+    //        waitForPageLoad("You entered the wrong security code too many times");
+    //        String text =
+    //                driver.findElement(By.cssSelector("#main-content
+    // .govuk-grid-column-two-thirds"))
+    //                        .getText();
+    //        assertTrue(text.contains("You need to wait 15 minutes"));
+    //        takeScreenshot(scenario);
+    //    }
+    //
+    //    @Then("the 15min cannot sign in lockout screen for wrong security codes is displayed")
+    //    public void the15minCannotSignInLockoutScreenIsDisplayed() {
+    //        waitForPageLoad("You cannot get a new security code at the moment");
+    //        String text =
+    //                driver.findElement(By.cssSelector("#main-content
+    // .govuk-grid-column-two-thirds"))
+    //                        .getText();
+    //        assertTrue(
+    //                text.contains(
+    //                        "This is because you entered the wrong security code too many
+    // times"));
+    //        assertTrue(text.contains("15 minutes"));
+    //        takeScreenshot(scenario);
+    //    }
+    //
+    //    @Then("the 2hr cannot sign in lockout screen for wrong security codes is displayed")
+    //    public void theCannotSignInLockoutScreenIsDisplayed() {
+    //        waitForPageLoad("You cannot sign in at the moment");
+    //        String text =
+    //                driver.findElement(By.cssSelector("#main-content
+    // .govuk-grid-column-two-thirds"))
+    //                        .getText();
+    //        assertTrue(
+    //                text.contains(
+    //                        "This is because you entered the wrong security code too many
+    // times"));
+    //        assertTrue(text.contains("2 hours"));
+    //        takeScreenshot(scenario);
+    //    }
+    //
+    //    @Then("the 2hr lockout screen for requesting too many security code resends is displayed")
+    //    public void theLockoutScreenForRequestingTooManySecurityCodesIsDisplayed() {
+    //        waitForPageLoad("You asked to resend the security code too many times");
+    //        String text =
+    //                driver.findElement(By.cssSelector("#main-content
+    // .govuk-grid-column-two-thirds"))
+    //                        .getText();
+    //        assertTrue(text.contains("You will not be able to continue for 2 hours"));
+    //        takeScreenshot(scenario);
+    //    }
+    //
+    //    @Then(
+    //            "the 2hr lockout screen for requesting too many security code resends during sign
+    // in is displayed")
+    //    public void theLockoutScreenForRequestingTooManySecurityCodesDuringSignInIsDisplayed() {
+    //        waitForPageLoad("You asked to resend the security code too many times");
+    //        String text =
+    //                driver.findElement(By.cssSelector("#main-content
+    // .govuk-grid-column-two-thirds"))
+    //                        .getText();
+    //        assertTrue(text.contains("You will not be able to sign in for 2 hours"));
+    //        takeScreenshot(scenario);
+    //    }
+    //
+    //    @Then(
+    //            "the 2hr cannot sign in lockout screen for requesting too many security code
+    // resends is displayed")
+    //    public void
+    // theCannotSignInLockoutScreenForRequestingTooManySecurityCodeResendsIsDisplayed() {
+    //        waitForPageLoad("You cannot sign in at the moment");
+    //        String text =
+    //                driver.findElement(By.cssSelector("#main-content
+    // .govuk-grid-column-two-thirds"))
+    //                        .getText();
+    //        assertTrue(
+    //                text.contains(
+    //                        "This is because you asked to resend the security code too many
+    // times"));
+    //        assertTrue(text.contains("2 hours"));
+    //        takeScreenshot(scenario);
+    //    }
+    //
+    //    @When(
+    //            "the user {string} with a lockout for requesting too many email security codes
+    // attempts to change the way they get security codes during the lockout period")
+    //    @When(
+    //            "the user {string} with a lockout for too many incorrect email security codes
+    // attempts to change the way they get security codes during the lockout period")
+    //    public void
+    //
+    // theUserWithALockoutForRequestingTooManyEmailSecurityCodesAttemptsToChangeHowTheyGetSecurityCodes(
+    //                    String emailAddress) {
+    //        rpStubPage.goToRpStub();
+    //        rpStubPage.selectRpOptionsByIdAndContinue("default");
+    //        setAnalyticsCookieTo(false);
+    //        createOrSignInPage.clickSignInButton();
+    //        enterYourEmailAddressToSignInPage.enterEmailAddressAndContinue(
+    //                System.getenv().get(emailAddress));
+    //
+    // enterYourPasswordPage.enterPasswordAndContinue(System.getenv().get("TEST_USER_PASSWORD"));
+    //        checkYourPhonePage.clickProblemsWithTheCodeLink();
+    //        selectLinkByText("change how you get security codes");
+    //    }
+    //
+    //    @When(
+    //            "the user {string} with a lockout for requesting too many sms security codes
+    // attempts to change the way they get security codes during the lockout period")
+    //    @When(
+    //            "the user {string} with a lockout for too many incorrect sms security codes
+    // attempts to change the way they get security codes during the lockout period")
+    //    public void
+    //
+    // theUserWithALockoutForRequestingTooManySmsSecurityCodesAttemptsToChangeHowTheyGetSecurityCodes(
+    //                    String emailAddress) {
+    //        rpStubPage.goToRpStub();
+    //        rpStubPage.selectRpOptionsByIdAndContinue("default");
+    //        setAnalyticsCookieTo(false);
+    //        createOrSignInPage.clickSignInButton();
+    //        enterYourEmailAddressToSignInPage.enterEmailAddressAndContinue(
+    //                System.getenv().get(emailAddress));
+    //
+    // enterYourPasswordPage.enterPasswordAndContinue(System.getenv().get("TEST_USER_PASSWORD"));
+    //        checkYourPhonePage.clickProblemsWithTheCodeLink();
+    //        selectLinkByText("change how you get security codes");
+    //
+    // checkYourEmailPage.enterEmailCodeAndContinue(System.getenv().get("TEST_USER_EMAIL_CODE"));
+    //        chooseHowToGetSecurityCodesPage.selectAuthMethodAndContinue("text message");
+    //        enterYourMobilePhoneNumberPage.enterUkPhoneNumberAndContinue("07803507860");
+    //    }
+    //
+    //    @Then(
+    //            "the 2hr cannot create a GOV.UK One Login lockout screen for requesting too many
+    // security code resends is displayed")
+    //    public void
+    //
+    // theCannotCreateAccountLockoutScreenForRequestingTooManySecurityCodeResendsIsDisplayed() {
+    //        waitForPageLoad("You cannot create a GOV.UK One Login at the moment");
+    //        String text =
+    //                driver.findElement(By.cssSelector("#main-content
+    // .govuk-grid-column-two-thirds"))
+    //                        .getText();
+    //        assertTrue(
+    //                text.contains(
+    //                        "This is because you asked to resend the security code too many
+    // times"));
+    //        assertTrue(text.contains("2 hours"));
+    //        takeScreenshot(scenario);
+    //    }
+    //
+    //    @Then("no lockout is triggered and the user remains on the {string} page")
+    //    public void noLockoutIsTriggered(String pageTitle) {
+    //        assertTrue(driver.getTitle().contains(pageTitle));
+    //        takeScreenshot(scenario);
+    //    }
+    //
+    //    @Then("the 2hr lockout screen for too many incorrect passwords is displayed")
+    //    public void the2hrLockoutScreenForTooManyIncorrectPasswordsIsDisplayed() {
+    //        waitForPageLoad("You entered the wrong password too many times");
+    //        String text =
+    //                driver.findElement(By.cssSelector("#main-content
+    // .govuk-grid-column-two-thirds"))
+    //                        .getText();
+    //        assertTrue(text.contains("2 hours"));
+    //        assertTrue(text.contains("wrong password"));
+    //        takeScreenshot(scenario);
+    //    }
+    //
+    //    @When(
+    //            "the user {string} with a lockout for too many incorrect passwords attempts to
+    // sign in during the lockout period")
+    //    public void
+    // theUserWithALockoutForTooManyIncorrectPasswordsAttemptsToSignInDuringLockoutPeriod(
+    //            String emailAddress) {
+    //        rpStubPage.goToRpStub();
+    //        rpStubPage.selectRpOptionsByIdAndContinue("default");
+    //        setAnalyticsCookieTo(false);
+    //        createOrSignInPage.clickSignInButton();
+    //        enterYourEmailAddressToSignInPage.enterEmailAddressAndContinue(
+    //                System.getenv().get(emailAddress));
+    //    }
+    //
+    //    @Then("the 2hr cannot sign in lockout screen for wrong password is displayed")
+    //    public void the2hrCannotSignInScreenForTooManyIncorrectPasswordsIsDisplayed() {
+    //        waitForPageLoad("You cannot sign in at the moment");
+    //        String text =
+    //                driver.findElement(By.cssSelector("#main-content
+    // .govuk-grid-column-two-thirds"))
+    //                        .getText();
+    //        assertTrue(text.contains("2 hours"));
+    //        assertTrue(text.contains("wrong password"));
+    //        takeScreenshot(scenario);
+    //    }
+    //
+    //    @When(
+    //            "the user {string} with a lockout for too many incorrect sms security codes
+    // attempts to sign in during the lockout period")
+    //    @When(
+    //            "the user {string} with a lockout for requesting too many sms security code
+    // resends attempts to sign in during the lockout period")
+    //    public void
+    // theUserWithALockoutForTooManyIncorrectSmsCodesAttemptsToSignInDuringLockoutPeriod(
+    //            String emailAddress) {
+    //        rpStubPage.goToRpStub();
+    //        rpStubPage.selectRpOptionsByIdAndContinue("default");
+    //        setAnalyticsCookieTo(false);
+    //        createOrSignInPage.clickSignInButton();
+    //        enterYourEmailAddressToSignInPage.enterEmailAddressAndContinue(
+    //                System.getenv().get(emailAddress));
+    //
+    // enterYourPasswordPage.enterPasswordAndContinue(System.getenv().get("TEST_USER_PASSWORD"));
+    //    }
+    //
+    //    @When(
+    //            "the user {string} with a lockout for too many incorrect auth app codes reattempts
+    // to sign in during the lockout period")
+    //    public void
+    //
+    // theUserWithALockoutForTooManyIncorrectAuthAppCodesAttemptsToSignInDuringLockoutPeriod(
+    //                    String emailAddress) {
+    //        rpStubPage.goToRpStub();
+    //        rpStubPage.selectRpOptionsByIdAndContinue("default");
+    //        setAnalyticsCookieTo(false);
+    //        createOrSignInPage.clickSignInButton();
+    //        enterYourEmailAddressToSignInPage.enterEmailAddressAndContinue(
+    //                System.getenv().get(emailAddress));
+    //
+    // enterYourPasswordPage.enterPasswordAndContinue(System.getenv().get("TEST_USER_PASSWORD"));
+    //    }
 }
