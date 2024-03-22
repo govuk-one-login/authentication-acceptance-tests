@@ -12,6 +12,7 @@ Feature: Create account
     When the user enters an incorrect email OTP 10 times
     Then no lockout is triggered and the user remains on the "Check your email" page
 
+  @BUG-2605
   # REQUEST TOO MANY EMAIL CODES DURING CREATE ACCOUNT - 2445
   Scenario: A user is blocked when they request their email OTP code 6 times during create account.
     Given the user comes from the stub relying party with options: "default"
@@ -21,10 +22,8 @@ Feature: Create account
     When user enters "CREATE_REQUEST_EMAIL_CODE_LOCKOUT" email address
     Then the user is taken to the "Check your email" page
     When the user requests the email OTP code be sent again a further 5 times
-    #Then the 2hr lockout screen for requesting too many security code resends is displayed
     Then the 2hr You asked to resend the security code too many times screen is displayed
     When the user "CREATE_REQUEST_EMAIL_CODE_LOCKOUT" with a lockout for requesting too many email security codes attempts to create account during the lockout period
-    #Then the 2hr cannot create a GOV.UK One Login lockout screen for requesting too many security code resends is displayed
     Then the 2hr You cannot create a GOV.UK One Login at the moment screen for requesting too many security code resends is displayed
 
   # ENTER INCORRECT SMS SECURITY CODE TOO MANY TIMES DURING CREATE ACCOUNT - REG
@@ -44,12 +43,12 @@ Feature: Create account
     When the user enters their mobile phone number
     Then the user is taken to the "Check your phone" page
     When the user enters an incorrect phone security code 6 times
-    #Then the 15min lockout screen for too many wrong security codes is displayed
     Then the 15min You entered the wrong security code too many times screen is displayed
     When the user "CREATE_INCORRECT_SMS_CODE_LOCKOUT" with a lockout for too many incorrect sms security codes attempts to create account during the lockout period
-    Then the 15min You cannot get a new security code at the moment screen is displayed
-    #Then the 15min cannot sign in lockout screen for wrong security codes is displayed
+    #Then the 15min You cannot get a new security code at the moment screen is displayed
+    Then the 15min You entered the wrong security code too many times screen is displayed
 
+  @BUG-2606
   # REQUEST SMS CODE TOO MANY TIMES DURING ACCOUNT RECOVERY - 2377
   Scenario: A user is blocked when they request too many sms security codes during create account.
     Given the user comes from the stub relying party with options: "default"
@@ -67,10 +66,8 @@ Feature: Create account
     When the user enters their mobile phone number
     Then the user is taken to the "Check your phone" page
     When the user requests the phone otp code a further 5 times
-    #Then the 2hr lockout screen for requesting too many security code resends is displayed
     Then the 2hr You asked to resend the security code too many times screen is displayed
     When the user "CREATE_REQUEST_SMS_CODE_LOCKOUT" with a lockout for requesting too many sms security codes attempts to create account during the lockout period
-    #Then the 2hr cannot create a GOV.UK One Login lockout screen for requesting too many security code resends is displayed
     Then the 2hr You cannot create a GOV.UK One Login at the moment screen for requesting too many security code resends is displayed
 
 

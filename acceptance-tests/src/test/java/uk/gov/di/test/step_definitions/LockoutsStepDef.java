@@ -14,7 +14,9 @@ import uk.gov.di.test.pages.EnterYourEmailAddressPage;
 import uk.gov.di.test.pages.EnterYourEmailAddressToSignInPage;
 import uk.gov.di.test.pages.EnterYourMobilePhoneNumberPage;
 import uk.gov.di.test.pages.EnterYourPasswordPage;
+import uk.gov.di.test.pages.FinishCreatingYourAccountPage;
 import uk.gov.di.test.pages.RpStubPage;
+import uk.gov.di.test.pages.YouHaveAGOVUKOneLoginPage;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -35,6 +37,9 @@ public class LockoutsStepDef extends BasePage {
             new EnterYourMobilePhoneNumberPage();
     public CreateYourPasswordPage createYourPasswordPage = new CreateYourPasswordPage();
     RpStubPage rpStubPage = new RpStubPage();
+    public FinishCreatingYourAccountPage finishCreatingYourAccountPage =
+            new FinishCreatingYourAccountPage();
+    public YouHaveAGOVUKOneLoginPage youHaveAGOVUKOneLoginPage = new YouHaveAGOVUKOneLoginPage();
 
     @When(
             "the user {string} with a lockout for wrong email security codes reattempts to change their password during the lockout period")
@@ -188,9 +193,12 @@ public class LockoutsStepDef extends BasePage {
         setAnalyticsCookieTo(false);
         createOrSignInPage.clickCreateAGovUkOneLoginButton();
         enterYourEmailAddressPage.enterEmailAddressAndContinue(System.getenv().get(emailAddress));
-        checkYourEmailPage.enterEmailCodeAndContinue(System.getenv().get("TEST_USER_EMAIL_CODE"));
-        createYourPasswordPage.enterBothPasswordsAndContinue("new-password1", "new-password1");
-        chooseHowToGetSecurityCodesPage.selectAuthMethodAndContinue("text message");
+        youHaveAGOVUKOneLoginPage.enterPasswordAndContinue(
+                System.getenv().get("TEST_USER_PASSWORD"));
+        finishCreatingYourAccountPage.selectAuthMethodAndContinue("text message");
+        // checkYourEmailPage.enterEmailCodeAndContinue(System.getenv().get("TEST_USER_EMAIL_CODE"));
+        // createYourPasswordPage.enterBothPasswordsAndContinue("new-password1", "new-password1");
+        // chooseHowToGetSecurityCodesPage.selectAuthMethodAndContinue("text message");
         enterYourMobilePhoneNumberPage.enterUkPhoneNumberAndContinue(
                 System.getenv().get("TEST_USER_PHONE_NUMBER"));
     }
