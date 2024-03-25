@@ -63,6 +63,7 @@ public class CrossPageFlows extends BasePage {
     public void successfulSignIn(String userType, String userEmailAddress) {
         rpStubPage.goToRpStub();
         rpStubPage.selectRpOptionsByIdAndContinue("");
+        setAnalyticsCookieTo(false);
         waitForPageLoad("Create a GOV.UK One Login or sign in");
         createOrSignInPage.clickSignInButton();
         waitForPageLoad("Enter your email address to sign in");
