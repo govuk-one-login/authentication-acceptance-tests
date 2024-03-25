@@ -12,8 +12,13 @@ public class CheckYourEmailPage extends BasePage {
         clearFieldAndEnter(emailCodeField, emailCode);
     }
 
-    public void enterEmailCodeAndContinue(String code) {
-        enterEmailCode(code);
+    public void enterCorrectEmailCodeAndContinue() {
+        enterEmailCode(System.getenv().get("TEST_USER_EMAIL_CODE"));
+        findAndClickContinue();
+    }
+
+    public void enterIncorrectOTPCodeAndContinue() {
+        enterEmailCode(INCORRECT_EMAIL_OTP_CODE);
         findAndClickContinue();
     }
 
@@ -29,7 +34,7 @@ public class CheckYourEmailPage extends BasePage {
     public void enterIncorrectEmailOTPNumberOfTimes(Integer numberOfTimes) {
         for (int index = 0; index < numberOfTimes; index++) {
             waitForPage();
-            enterEmailCodeAndContinue(INCORRECT_EMAIL_OTP_CODE);
+            enterIncorrectOTPCodeAndContinue();
             System.out.println("Incorrect code entry count: " + (index + 1));
         }
     }

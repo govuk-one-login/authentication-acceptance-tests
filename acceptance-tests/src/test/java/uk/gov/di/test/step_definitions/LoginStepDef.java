@@ -7,11 +7,14 @@ import org.junit.jupiter.api.Assertions;
 import uk.gov.di.test.pages.BasePage;
 import uk.gov.di.test.pages.CheckYourEmailPage;
 import uk.gov.di.test.pages.CheckYourPhonePage;
+import uk.gov.di.test.pages.ChooseHowToGetSecurityCodesPage;
 import uk.gov.di.test.pages.CreateOrSignInPage;
 import uk.gov.di.test.pages.EnterThe6DigitSecurityCodeShownInYourAuthenticatorAppPage;
 import uk.gov.di.test.pages.EnterYourEmailAddressPage;
 import uk.gov.di.test.pages.EnterYourEmailAddressToSignInPage;
+import uk.gov.di.test.pages.EnterYourMobilePhoneNumberPage;
 import uk.gov.di.test.pages.EnterYourPasswordPage;
+import uk.gov.di.test.pages.ReenterYourSignInDetailsToContinuePage;
 import uk.gov.di.test.pages.ResetYourPasswordPage;
 import uk.gov.di.test.pages.SetUpAnAuthenticatorAppPage;
 import uk.gov.di.test.pages.TermsAndConditionsPage;
@@ -46,11 +49,16 @@ public class LoginStepDef extends BasePage {
     public EnterYourEmailAddressPage enterYourEmailAddressPage = new EnterYourEmailAddressPage();
     public SetUpAnAuthenticatorAppPage setUpAnAuthenticatorAppPage =
             new SetUpAnAuthenticatorAppPage();
-    public CrossPageFlows crossPageFlows = new CrossPageFlows();
-
+    public ReenterYourSignInDetailsToContinuePage reenterYourSignInDetailsToContinuePage =
+            new ReenterYourSignInDetailsToContinuePage();
     public EnterThe6DigitSecurityCodeShownInYourAuthenticatorAppPage
             enterThe6DigitSecurityCodeShownInYourAuthenticatorAppPage =
                     new EnterThe6DigitSecurityCodeShownInYourAuthenticatorAppPage();
+    public CrossPageFlows crossPageFlows = new CrossPageFlows();
+    public ChooseHowToGetSecurityCodesPage chooseHowToGetSecurityCodesPage =
+            new ChooseHowToGetSecurityCodesPage();
+    public EnterYourMobilePhoneNumberPage enterYourMobilePhoneNumberPage =
+            new EnterYourMobilePhoneNumberPage();
 
     @When("the user enters their password which is on the top 100k password list")
     public void theUserEntersTheirPasswordWhichIsOnTheTop100kPasswordList() {
@@ -73,11 +81,18 @@ public class LoginStepDef extends BasePage {
         enterYourEmailAddressToSignInPage.enterEmailAddressAndContinue(System.getenv().get(email));
     }
 
+    @And("user enters the same email address {string} for reauth as they used for login")
+    public void userEntersSameEmailAddressForReauth(String email) {
+        reenterYourSignInDetailsToContinuePage.enterEmailAddressAndContinue(
+                System.getenv().get(email));
+    }
+
     @When("user enters invalid email address")
     public void userEntersInvalidEmailAddress() {
         enterYourEmailAddressToSignInPage.enterEmailAddressAndContinue(INVALID_EMAIL);
     }
 
+    @When("the user enters the correct password")
     @When("the user enters their password")
     public void theUserEntersTheirPassword() {
         enterYourPasswordPage.enterPasswordAndContinue(System.getenv().get("TEST_USER_PASSWORD"));
@@ -90,12 +105,12 @@ public class LoginStepDef extends BasePage {
 
     @When("the user enters the six digit security code from their phone")
     public void theExistingUserEntersTheSixDigitSecurityCodeFromTheirPhone() {
-        checkYourPhonePage.enterPhoneCodeAndContinue(System.getenv().get("TEST_USER_PHONE_CODE"));
+        checkYourPhonePage.enterCorrectPhoneCodeAndContinue();
     }
 
     @When("the user requests the phone otp code {int} times")
     @When("the user requests the phone otp code a further {int} times")
-    public void theUserRequestsThePhoneOtpCodeTimes(int timesCodeIncorrect) {
+    public void theUserRequestsThePhoneOtpCodeTimes(Integer timesCodeIncorrect) {
         crossPageFlows.requestPhoneSecurityCodeResendNumberOfTimes(timesCodeIncorrect);
     }
 
@@ -220,17 +235,33 @@ public class LoginStepDef extends BasePage {
         termsAndConditionsPage.pressAgreeAndContinueButton();
     }
 
+    @When("the user enters a different email address for reauth than they logged in with")
+    public void theUserEntersADifferentEmailAddressThanTheyLoggedInWith() {
+        reenterYourSignInDetailsToContinuePage.enterWrongEmailAddressNumberOfTimes(1);
+    }
+
+    @When("the user enters a different email address for reauth a further {int} times")
+    public void theUserEntersDifferentEmailAddressXTimes(Integer attemptCount) {
+        reenterYourSignInDetailsToContinuePage.enterWrongEmailAddressNumberOfTimes(attemptCount);
+    }
+
     @When("the user enters incorrect password")
     public void theUserEntersIncorrectPassword() {
         enterYourPasswordPage.enterIncorrectPasswordNumberOfTimes(1);
     }
 
+    @And("the user enters an incorrect password {int} times")
     @When("the user enters an incorrect password a further {int} times")
     public void theUserEntersAnIncorrectPasswordAFurtherXTimes(Integer attemptCount) {
         enterYourPasswordPage.enterIncorrectPasswordNumberOfTimes(attemptCount);
     }
 
-    @And("the user enters an incorrect phone security code {int} times")
+    @And("the user enters an incorrect phone security code")
+    public void theUserEntersAnIncorrectPhoneSecurityCode() {
+        checkYourPhonePage.enterIncorrectPhoneSecurityCodeNumberOfTimes(1);
+    }
+
+    @When("the user enters an incorrect phone security code {int} times")
     public void theUserEntersAnIncorrectPhoneSecurityCode(Integer attemptCount) {
         checkYourPhonePage.enterIncorrectPhoneSecurityCodeNumberOfTimes(attemptCount);
     }
@@ -238,6 +269,12 @@ public class LoginStepDef extends BasePage {
     @When("the user enters an incorrect phone security code a further {int} times")
     public void theUserEntersAnIncorrectPhoneSecurityCodeAFurtherXTimes(Integer attemptCount) {
         checkYourPhonePage.enterIncorrectPhoneSecurityCodeNumberOfTimes(attemptCount);
+    }
+
+    @And("the user enters an incorrect auth app security code")
+    public void theUserEntersAnIncorrectAuthAppSecurityCode() {
+        enterThe6DigitSecurityCodeShownInYourAuthenticatorAppPage
+                .enterIncorrectAuthAppCodeNumberOfTimes(1);
     }
 
     @And("the user enters an incorrect auth app security code {int} times")
@@ -250,5 +287,20 @@ public class LoginStepDef extends BasePage {
     public void theUserEntersIncorrectAuthAppCodeAFurtherXTimes(Integer attemptCount) {
         enterThe6DigitSecurityCodeShownInYourAuthenticatorAppPage
                 .enterIncorrectAuthAppCodeNumberOfTimes(attemptCount);
+    }
+
+    @Then("the sms user changes how they get security codes")
+    public void theSmsUserCanChangeHowTheyGetSecurityCodes() {
+        crossPageFlows.smsUserChangeHowGetSecurityCodesToAuthApp();
+    }
+
+    @Then("the auth app user changes how they get security codes")
+    public void theAuthAppUserCanChangeHowTheyGetSecurityCodes() {
+        crossPageFlows.authAppUserChangeHowGetSecurityCodesToSms();
+    }
+
+    @When("the sms user changes their password during reauthentication")
+    public void theUserChangesTheirPasswordDuringReauth() {
+        crossPageFlows.smsUserChangesPassword();
     }
 }
