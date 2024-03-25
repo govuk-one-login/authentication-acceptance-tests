@@ -302,14 +302,5 @@ public class LoginStepDef extends BasePage {
     @When("the sms user changes their password during reauthentication")
     public void theUserChangesTheirPasswordDuringReauth() {
         crossPageFlows.smsUserChangesPassword();
-
-        //        enterYourPasswordPage.clickForgottenPasswordLink();
-        //        waitForPageLoad("Check your email");
-        //        checkYourEmailPage.enterCorrectEmailCodeAndContinue();
-        //        waitForPageLoad("Check your phone");
-        //        checkYourPhonePage.enterCorrectPhoneCodeAndContinue();
-        //        waitForPageLoad("Reset your password");
-        //        resetYourPasswordPage.enterPasswordResetDetailsAndContinue(
-        //                NEW_VALID_PASSWORD, NEW_VALID_PASSWORD);
     }
 }
