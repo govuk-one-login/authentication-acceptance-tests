@@ -1,15 +1,12 @@
 package uk.gov.di.test.step_definitions;
 
 import io.cucumber.java.en.And;
-import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import uk.gov.di.test.pages.BasePage;
 import uk.gov.di.test.pages.CreateOrSignInPage;
-import uk.gov.di.test.pages.RpStubPage;
-import uk.gov.di.test.pages.UserInformationPage;
 
 import java.util.List;
 
@@ -18,9 +15,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class CommonStepDef extends BasePage {
     public CreateOrSignInPage createOrSignInPage = new CreateOrSignInPage();
-    public RpStubPage rpStubPage = new RpStubPage();
-    public UserInformationPage userInformationPage = new UserInformationPage();
-    public CrossPageFlows crossPageFlows = new CrossPageFlows();
 
     @Then("the user is taken to the {string} page")
     public void theUserIsTakenToThePage(String pageTitle) {
@@ -63,7 +57,6 @@ public class CommonStepDef extends BasePage {
     }
 
     @Then("the user is returned to the service")
-    @Then("the user is successfully reauthenticated and returned to the service")
     public void theUserIsReturnedToTheService() {
         waitForPageLoad("Example - GOV.UK - User Info");
     }
@@ -93,16 +86,5 @@ public class CommonStepDef extends BasePage {
     @When("the user clicks the Back link")
     public void theNewUserClicksTheApplicationBackButton() {
         pressBack();
-    }
-
-    @Given("the {string} user {string} is already signed in to their One Login account")
-    public void theUserAlreadySignedIn(String userType, String emailAddress) {
-        crossPageFlows.successfulSignIn(userType, emailAddress);
-    }
-
-    @When("the RP requires the user to reauthenticate")
-    public void theRPRequiresTheUserToReauthenticate() {
-        String idToken = userInformationPage.getIdToken();
-        rpStubPage.reauthRequired(idToken);
     }
 }

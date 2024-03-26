@@ -44,7 +44,7 @@ public class RegistrationStepDef extends BasePage {
 
     @When("the user enters the six digit security code from their email")
     public void theUserEntersTheSixDigitSecurityCodeFromTheirEmail() {
-        checkYourEmailPage.enterCorrectEmailCodeAndContinue();
+        checkYourEmailPage.enterEmailCodeAndContinue(System.getenv().get("TEST_USER_EMAIL_CODE"));
     }
 
     @And("the user creates a password")
@@ -161,7 +161,7 @@ public class RegistrationStepDef extends BasePage {
         enterYourEmailAddressPage.enterEmailAddressAndContinue(
                 System.getenv().get("TEST_USER_STATE_PRESERVATION_EMAIL1"));
         waitForPageLoad("Check your email");
-        checkYourEmailPage.enterCorrectEmailCodeAndContinue();
+        checkYourEmailPage.enterEmailCodeAndContinue(System.getenv().get("TEST_USER_EMAIL_CODE"));
         waitForPageLoad("Create your password");
         createYourPasswordPage.enterBothPasswordsAndContinue("new-password1", "new-password1");
         waitForPageLoad("Choose how to get security codes");
@@ -181,7 +181,7 @@ public class RegistrationStepDef extends BasePage {
         enterYourEmailAddressPage.enterEmailAddressAndContinue(
                 System.getenv().get("TEST_USER_STATE_PRESERVATION_EMAIL2"));
         waitForPageLoad("Check your email");
-        checkYourEmailPage.enterCorrectEmailCodeAndContinue();
+        checkYourEmailPage.enterEmailCodeAndContinue(System.getenv().get("TEST_USER_EMAIL_CODE"));
         waitForPageLoad("Create your password");
         createYourPasswordPage.enterBothPasswordsAndContinue("new-password1", "new-password1");
         waitForPageLoad("Choose how to get security codes");
