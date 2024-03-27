@@ -70,8 +70,7 @@ public class CommonStepDef extends BasePage {
 
     @And("the user logs out")
     public void theUserLogsOut() {
-        findAndClickButtonByText("Log out");
-        waitForPageLoad("Signed out");
+        driver.get(System.getenv("OP_URL") + "logout");
     }
 
     @Then("the user is shown an error message")

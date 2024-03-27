@@ -3,7 +3,7 @@ Feature: Registration Journey
   New user walks through a registration journey
 
   Scenario: User selects sign in without having an account
-    Given the user comes from the stub relying party with options: "default"
+    Given the user starts a medium confidence journey
     Then the user is taken to the "Create a GOV.UK One Login or sign in" page
     When the user selects sign in
     Then the user is taken to the "Enter your email address to sign in to your GOV.UK One Login" page
@@ -27,7 +27,7 @@ Feature: Registration Journey
 #    Then the new user is taken to the sign in to a service page
 
   Scenario: User is taken to Check your email page from No GOV.UK One Login found page when Create selected
-    Given the user comes from the stub relying party with options: "default"
+    Given the user starts a medium confidence journey
     Then the user is taken to the "Create a GOV.UK One Login or sign in" page
     When the user selects sign in
     Then the user is taken to the "Enter your email address to sign in to your GOV.UK One Login" page
@@ -37,7 +37,7 @@ Feature: Registration Journey
     Then the user is taken to the "Check your email" page
 
   Scenario: User registration unsuccessful with invalid email, six digit code and password
-    Given the user comes from the stub relying party with options: "default"
+    Given the user starts a medium confidence journey
     Then the user is taken to the "Create a GOV.UK One Login or sign in" page
     When the user selects create an account
     Then the user is taken to the "Enter your email address" page
@@ -58,7 +58,7 @@ Feature: Registration Journey
     Then the user is shown an error message
 
   Scenario: User successfully registers using sms
-    Given the user comes from the stub relying party with options: "default"
+    Given the user starts a medium confidence journey
     Then the user is taken to the "Create a GOV.UK One Login or sign in" page
     When the user selects create an account
     Then the user is taken to the "Enter your email address" page

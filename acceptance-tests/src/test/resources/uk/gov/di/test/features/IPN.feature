@@ -3,7 +3,7 @@ Feature: International Phone Numbers
 
 
   Scenario: User cannot register using an invalid UK mobile phone number
-    Given the user comes from the stub relying party with options: "default"
+    Given the user starts a medium confidence journey
     Then the user is taken to the "Create a GOV.UK One Login or sign in" page
     When the user selects create an account
     Then the user is taken to the "Enter your email" page
@@ -25,7 +25,7 @@ Feature: International Phone Numbers
     Then the "Enter a UK mobile phone number using only numbers or the + symbol" error message is displayed
 
   Scenario: User can successfully complete registration using an international phone number
-    Given the user comes from the stub relying party with options: "default"
+    Given the user starts a medium confidence journey
     Then the user is taken to the "Create a GOV.UK One Login or sign in" page
     When the user selects create an account
     Then the user is taken to the "Enter your email" page
@@ -54,7 +54,7 @@ Feature: International Phone Numbers
     And the user logs out
 
 #  Scenario: User with an international phone number reports that they did not receive their security code
-#    Given the user comes from the stub relying party with options: "default"
+#    Given the user starts a medium confidence journey
 #    Then the user is taken to the "Create a GOV.UK One Login or sign in" page
 #    When the user clicks on the support link
 #    Then the user is taken to the Contact us page in a new tab
@@ -67,7 +67,7 @@ Feature: International Phone Numbers
 #
 #
 #  Scenario: User with an international phone number reports that their security code did not work
-#    Given the user comes from the stub relying party with options: "default"
+#    Given the user starts a medium confidence journey
 #    Then the user is taken to the "Create a GOV.UK One Login or sign in" page
 #    When the user clicks on the support link
 #    Then the user is taken to the Contact us page in a new tab

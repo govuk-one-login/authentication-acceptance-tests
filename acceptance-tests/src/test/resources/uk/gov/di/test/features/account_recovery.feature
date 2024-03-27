@@ -2,7 +2,7 @@
 Feature: Account recovery
 
   Scenario: An sms user can change how they get security codes and log in with new method
-    When the user comes from the stub relying party with options: "default"
+    Given the user starts a medium confidence journey
     Then the user is taken to the "Create a GOV.UK One Login or sign in" page
     When the user selects sign in
     Then the user is taken to the "Enter your email" page
@@ -24,7 +24,7 @@ Feature: Account recovery
     Then the user is returned to the service
     And the user logs out
 
-    When the user comes from the stub relying party with options: "default"
+    When the user starts a medium confidence journey
     Then the user is taken to the "Create a GOV.UK One Login or sign in" page
     When the user selects sign in
     Then the user is taken to the "Enter your email" page
@@ -38,7 +38,7 @@ Feature: Account recovery
 
 
   Scenario: An auth app user can change how they get security codes and log in with new method
-    When the user comes from the stub relying party with options: "default"
+    Given the user starts a medium confidence journey
     Then the user is taken to the "Create a GOV.UK One Login or sign in" page
     When the user selects sign in
     Then the user is taken to the "Enter your email" page
@@ -61,7 +61,7 @@ Feature: Account recovery
     Then the user is returned to the service
     And the user logs out
 
-    When the user comes from the stub relying party with options: "default"
+    When the user starts a medium confidence journey
     Then the user is taken to the "Create a GOV.UK One Login or sign in" page
     When the user selects sign in
     Then the user is taken to the "Enter your email" page
@@ -75,7 +75,7 @@ Feature: Account recovery
 
 
   Scenario: A user with sms authentication is blocked when they request their email OTP code 6 times (including the initial send on entry to screen) during a change of auth method.
-    Given the user comes from the stub relying party with options: "default"
+    Given the user starts a medium confidence journey
     Then the user is taken to the "Create a GOV.UK One Login or sign in" page
     When the user selects sign in
     Then the user is taken to the "Enter your email" page
@@ -90,7 +90,7 @@ Feature: Account recovery
     #NOTE: The 5th resend request is the 6th sending of the email code as one is sent on initial entry to the Check Your Email page
     Then the user is taken to the "You asked to resend the security code too many times" page
 
-    When the user comes from the stub relying party with options: "default"
+    When the user starts a medium confidence journey
     Then the user is taken to the "Create a GOV.UK One Login or sign in" page
     When the user selects sign in
     Then the user is taken to the "Enter your email" page
@@ -104,7 +104,7 @@ Feature: Account recovery
 
 
   Scenario: A user with auth app authentication is blocked when they enter an incorrect email OTP 6 times during a change of auth method.
-    Given the user comes from the stub relying party with options: "default"
+    Given the user starts a medium confidence journey
     Then the user is taken to the "Create a GOV.UK One Login or sign in" page
     When the user selects sign in
     Then the user is taken to the "Enter your email" page
@@ -118,7 +118,7 @@ Feature: Account recovery
     When the user enters an incorrect email OTP 6 times
     Then the user is taken to the "You entered the wrong security code too many times" page
 
-    When the user comes from the stub relying party with options: "default"
+    When the user starts a medium confidence journey
     Then the user is taken to the "Create a GOV.UK One Login or sign in" page
     When the user selects sign in
     Then the user is taken to the "Enter your email" page

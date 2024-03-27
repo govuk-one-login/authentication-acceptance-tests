@@ -4,6 +4,8 @@ import io.cucumber.java.en.When;
 import uk.gov.di.test.pages.BasePage;
 import uk.gov.di.test.pages.RpStubPage;
 
+import static uk.gov.di.test.rp.MicroRP.JourneyType.*;
+
 public class RpStubStepDef extends BasePage {
 
     RpStubPage rpStubPage = new RpStubPage();
@@ -12,6 +14,18 @@ public class RpStubStepDef extends BasePage {
     public void theExistingUserVisitsTheStubRelyingParty(String options) {
         rpStubPage.goToRpStub();
         rpStubPage.selectRpOptionsByIdAndContinue(options);
+        setAnalyticsCookieTo(false);
+    }
+
+    @When("the user starts a low confidence journey")
+    public void theUserStartsALowConfidenceJourney() {
+        driver.get(rp.startJourneyUrl(LOW_CONFIDENCE));
+        setAnalyticsCookieTo(false);
+    }
+
+    @When("the user starts a medium confidence journey")
+    public void theUserStartsAMediumConfidenceJourney() {
+        driver.get(rp.startJourneyUrl(MED_CONFIDENCE));
         setAnalyticsCookieTo(false);
     }
 }
