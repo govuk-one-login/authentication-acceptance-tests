@@ -64,6 +64,7 @@ public class CrossPageFlows extends BasePage {
         rpStubPage.goToRpStub();
         rpStubPage.selectRpOptionsByIdAndContinue("");
         setAnalyticsCookieTo(false);
+        // The smoke tests check for this title. If it is changed you will also need to update the smoke tests.
         waitForPageLoad("Create your GOV.UK One Login or sign in");
         createOrSignInPage.clickSignInButton();
         waitForPageLoad("Enter your email address to sign in");
