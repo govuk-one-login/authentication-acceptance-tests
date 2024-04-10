@@ -121,7 +121,8 @@ public class LoginStepDef extends BasePage {
 
     @Then("the user is taken to the Identity Provider Welsh Login Page")
     public void theUserIsTakenToTheIdentityProviderWelshLoginPage() {
-        assertEquals("Creu GOV.UK One Login neu fewngofnodi - GOV.UK One Login", driver.getTitle());
+        assertEquals(
+                "Creu eich GOV.UK One Login neu fewngofnodi - GOV.UK One Login", driver.getTitle());
     }
 
     @Then("the user is taken to the Welsh enter your email page")

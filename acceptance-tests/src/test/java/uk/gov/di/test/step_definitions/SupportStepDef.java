@@ -37,7 +37,7 @@ public class SupportStepDef extends BasePage {
         switchToTabWithTitleContaining("Cysylltu â ni - GOV.UK One Login");
         assertEquals("Cyfrif GOV.UK: rhoi gwybod am broblem neu roi adborth", getPageHeading());
         closeActiveTab();
-        switchToTabWithTitleContaining("Creu GOV.UK One Login neu fewngofnodi");
+        switchToTabWithTitleContaining("Creu eich GOV.UK One Login neu fewngofnodi");
     }
 
     @When("the user selects radio button {string}")

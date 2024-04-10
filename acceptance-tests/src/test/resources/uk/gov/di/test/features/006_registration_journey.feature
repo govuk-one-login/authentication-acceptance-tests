@@ -4,7 +4,7 @@ Feature: Registration Journey
 
   Scenario: User selects sign in without having an account
     Given the user comes from the stub relying party with options: "default"
-    Then the user is taken to the "Create a GOV.UK One Login or sign in" page
+    Then the user is taken to the "Create your GOV.UK One Login or sign in" page
     When the user selects sign in
     Then the user is taken to the "Enter your email address to sign in to your GOV.UK One Login" page
     When user enters "TEST_USER_EMAIL" email address
@@ -28,7 +28,7 @@ Feature: Registration Journey
 
   Scenario: User is taken to Check your email page from No GOV.UK One Login found page when Create selected
     Given the user comes from the stub relying party with options: "default"
-    Then the user is taken to the "Create a GOV.UK One Login or sign in" page
+    Then the user is taken to the "Create your GOV.UK One Login or sign in" page
     When the user selects sign in
     Then the user is taken to the "Enter your email address to sign in to your GOV.UK One Login" page
     When user enters "TEST_USER_EMAIL" email address
@@ -38,7 +38,7 @@ Feature: Registration Journey
 
   Scenario: User registration unsuccessful with invalid email, six digit code and password
     Given the user comes from the stub relying party with options: "default"
-    Then the user is taken to the "Create a GOV.UK One Login or sign in" page
+    Then the user is taken to the "Create your GOV.UK One Login or sign in" page
     When the user selects create an account
     Then the user is taken to the "Enter your email address" page
     When user enters invalid email address
@@ -59,7 +59,7 @@ Feature: Registration Journey
 
   Scenario: User successfully registers using sms
     Given the user comes from the stub relying party with options: "default"
-    Then the user is taken to the "Create a GOV.UK One Login or sign in" page
+    Then the user is taken to the "Create your GOV.UK One Login or sign in" page
     When the user selects create an account
     Then the user is taken to the "Enter your email address" page
     When user enters "TEST_USER_EMAIL" email address

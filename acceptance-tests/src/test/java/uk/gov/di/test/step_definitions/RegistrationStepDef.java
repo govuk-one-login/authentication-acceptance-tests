@@ -155,7 +155,7 @@ public class RegistrationStepDef extends BasePage {
     public void aUserHasSelectedAnAuthMethodAndHasMovedOnToTheNextPage() {
         rpStubPage.goToRpStub();
         rpStubPage.selectRpOptionsByIdAndContinue("");
-        waitForPageLoad("Create a GOV.UK One Login or sign in");
+        waitForPageLoad("Create your GOV.UK One Login or sign in");
         createOrSignInPage.clickCreateAGovUkOneLoginButton();
         waitForPageLoad("Enter your email address");
         enterYourEmailAddressPage.enterEmailAddressAndContinue(
@@ -175,7 +175,7 @@ public class RegistrationStepDef extends BasePage {
     public void aUserHasSelectedAuthAppAsTheirAuthMethodAndHasMovedOnToTheNextPage() {
         rpStubPage.goToRpStub();
         rpStubPage.selectRpOptionsByIdAndContinue("");
-        waitForPageLoad("Create a GOV.UK One Login or sign in");
+        waitForPageLoad("Create your GOV.UK One Login or sign in");
         createOrSignInPage.clickCreateAGovUkOneLoginButton();
         waitForPageLoad("Enter your email address");
         enterYourEmailAddressPage.enterEmailAddressAndContinue(
