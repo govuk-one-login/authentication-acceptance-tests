@@ -3,7 +3,7 @@ Feature: Reset password
 
   Scenario: An sms user can successfully reset their password
     Given the user comes from the stub relying party with options: "default"
-    Then the user is taken to the "Create a GOV.UK One Login or sign in" page
+    Then the user is taken to the "Create your GOV.UK One Login or sign in" page
     When the user selects sign in
     Then the user is taken to the "Enter your email" page
     When user enters "RESET_PW_USER_EMAIL" email address
@@ -23,7 +23,7 @@ Feature: Reset password
 
   Scenario: An auth app user can successfully reset their password
     Given the user comes from the stub relying party with options: "default"
-    Then the user is taken to the "Create a GOV.UK One Login or sign in" page
+    Then the user is taken to the "Create your GOV.UK One Login or sign in" page
     When the user selects sign in
     Then the user is taken to the "Enter your email" page
     When user enters "RESET_PW_USER_EMAIL_2" email address
@@ -44,7 +44,7 @@ Feature: Reset password
   # ENTER INCORRECT EMAIL OTP TOO MANY TIMES DURING PASSWORD RESET
   Scenario: A user is blocked when they enter an incorrect email OTP more than 5 times during a password reset.
     Given the user comes from the stub relying party with options: "default"
-    Then the user is taken to the "Create a GOV.UK One Login or sign in" page
+    Then the user is taken to the "Create your GOV.UK One Login or sign in" page
     When the user selects sign in
     Then the user is taken to the "Enter your email" page
     When user enters "INCORRECT_EMAIL_OTP_FOR_PW_RESET_EMAIL" email address
@@ -57,7 +57,7 @@ Feature: Reset password
   # REQUEST EMAIL OTP TOO MANY TIMES DURING PASSWORD RESET
   Scenario: A user is blocked when they request an email OTP more than 5 times during a password reset.
     Given the user comes from the stub relying party with options: "default"
-    Then the user is taken to the "Create a GOV.UK One Login or sign in" page
+    Then the user is taken to the "Create your GOV.UK One Login or sign in" page
     When the user selects sign in
     Then the user is taken to the "Enter your email" page
     When user enters "TOO_MANY_EMAIL_OTP_REQUESTS_FOR_PW_RESET_EMAIL" email address
@@ -70,7 +70,7 @@ Feature: Reset password
   # ENTER INCORRECT SMS CODE TOO MANY TIMES DURING PASSWORD RESET
   Scenario: A user is blocked when they enter an incorrect sms security code more than 5 times during a password reset.
     Given the user comes from the stub relying party with options: "default"
-    Then the user is taken to the "Create a GOV.UK One Login or sign in" page
+    Then the user is taken to the "Create your GOV.UK One Login or sign in" page
     When the user selects sign in
     Then the user is taken to the "Enter your email" page
     When user enters "PASSWORD_RESET_SMS_USER_1" email address
@@ -85,7 +85,7 @@ Feature: Reset password
   # REQUEST SMS CODE TOO MANY TIMES DURING PASSWORD RESET
   Scenario: A user is blocked when they request an sms code more than 5 times during a password reset.
     Given the user comes from the stub relying party with options: "default"
-    Then the user is taken to the "Create a GOV.UK One Login or sign in" page
+    Then the user is taken to the "Create your GOV.UK One Login or sign in" page
     When the user selects sign in
     Then the user is taken to the "Enter your email" page
     When user enters "PASSWORD_RESET_SMS_USER_2" email address
@@ -100,7 +100,7 @@ Feature: Reset password
   # ENTER INCORRECT AUTH APP CODE TOO MANY TIMES DURING PASSWORD RESET
   Scenario: A user is blocked when they enter an incorrect auth app security code more than 5 times during a password reset.
     Given the user comes from the stub relying party with options: "default"
-    Then the user is taken to the "Create a GOV.UK One Login or sign in" page
+    Then the user is taken to the "Create your GOV.UK One Login or sign in" page
     When the user selects sign in
     Then the user is taken to the "Enter your email" page
     When user enters "PASSWORD_RESET_AUTH_APP_USER_1" email address

@@ -4,7 +4,7 @@ Feature: Enforce 100k password check
 
   Scenario: An sms user is forced to reset their top 100k password
     Given the user comes from the stub relying party with options: "default"
-    Then the user is taken to the "Create a GOV.UK One Login or sign in" page
+    Then the user is taken to the "Create your GOV.UK One Login or sign in" page
     When the user selects sign in
     Then the user is taken to the "Enter your email" page
     When user enters "REQ_RESET_PW_USER_EMAIL" email address
@@ -20,7 +20,7 @@ Feature: Enforce 100k password check
 
   Scenario: An auth app user is forced to reset their top 100k password
     Given the user comes from the stub relying party with options: "default"
-    Then the user is taken to the "Create a GOV.UK One Login or sign in" page
+    Then the user is taken to the "Create your GOV.UK One Login or sign in" page
     When the user selects sign in
     Then the user is taken to the "Enter your email" page
     When user enters "REQ_RESET_PW_USER_EMAIL_2" email address

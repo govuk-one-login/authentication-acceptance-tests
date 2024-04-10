@@ -4,7 +4,7 @@ Feature: Login Journey
 
   Scenario: Existing user requests phone OTP code 5 times
     Given the user comes from the stub relying party with options: "default"
-    Then the user is taken to the "Create a GOV.UK One Login or sign in" page
+    Then the user is taken to the "Create your GOV.UK One Login or sign in" page
     When the user selects sign in
     Then the user is taken to the "Enter your email" page
     When user enters "RESEND_CODE_TEST_USER_EMAIL" email address
@@ -18,7 +18,7 @@ Feature: Login Journey
 
   Scenario: Existing user tries to create an account with the same email address
     Given the user comes from the stub relying party with options: "default"
-    Then the user is taken to the "Create a GOV.UK One Login or sign in" page
+    Then the user is taken to the "Create your GOV.UK One Login or sign in" page
     When the user selects create an account
     Then the user is taken to the "Enter your email address" page
     When user enters "TEST_USER_2_EMAIL" email address
@@ -26,7 +26,7 @@ Feature: Login Journey
 
   Scenario: Existing user is correctly prompted to login using sms
     Given the user comes from the stub relying party with options: "default"
-    Then the user is taken to the "Create a GOV.UK One Login or sign in" page
+    Then the user is taken to the "Create your GOV.UK One Login or sign in" page
     When the user selects sign in
     Then the user is taken to the "Enter your email" page
     When user enters "TEST_USER_2_EMAIL" email address
@@ -39,7 +39,7 @@ Feature: Login Journey
 
   Scenario: Existing user switches content to Welsh
     Given the user comes from the stub relying party with options: "default"
-    Then the user is taken to the "Create a GOV.UK One Login or sign in" page
+    Then the user is taken to the "Create your GOV.UK One Login or sign in" page
     And the user switches to "Welsh" language
     Then the user is taken to the Identity Provider Welsh Login Page
     When the user selects sign in
@@ -51,11 +51,11 @@ Feature: Login Journey
     When the user clicks link "Yn ôl"
     Then the user is taken to the Identity Provider Welsh Login Page
     When the user switches to "English" language
-    Then the user is taken to the "Create a GOV.UK One Login or sign in" page
+    Then the user is taken to the "Create your GOV.UK One Login or sign in" page
 
   Scenario: Existing user logs in without 2FA then uplift with 2FA
     Given the user comes from the stub relying party with options: "2fa-off"
-    Then the user is taken to the "Create a GOV.UK One Login or sign in" page
+    Then the user is taken to the "Create your GOV.UK One Login or sign in" page
     When the user selects sign in
     Then the user is taken to the "Enter your email" page
     When user enters "TEST_USER_2_EMAIL" email address
