@@ -14,6 +14,8 @@ import uk.gov.di.test.pages.ResetYourPasswordPage;
 import uk.gov.di.test.pages.RpStubPage;
 import uk.gov.di.test.pages.SetUpAnAuthenticatorAppPage;
 
+import java.net.MalformedURLException;
+
 import static uk.gov.di.test.utils.Constants.NEW_VALID_PASSWORD;
 
 public class CrossPageFlows extends BasePage {
@@ -36,7 +38,8 @@ public class CrossPageFlows extends BasePage {
             new EnterYourMobilePhoneNumberPage();
     public ResetYourPasswordPage resetYourPasswordPage = new ResetYourPasswordPage();
 
-    public void requestPhoneSecurityCodeResendNumberOfTimes(Integer numberOfTimes) {
+    public void requestPhoneSecurityCodeResendNumberOfTimes(Integer numberOfTimes)
+            throws MalformedURLException {
         for (int i = 0; i < numberOfTimes; i++) {
             checkYourPhonePage.clickProblemsWithTheCodeLink();
             checkYourPhonePage.clickSendTheCodeAgainLink();
@@ -45,7 +48,8 @@ public class CrossPageFlows extends BasePage {
         }
     }
 
-    public void requestEmailOTPCodeResendNumberOfTimes(Integer numberOfTimes) {
+    public void requestEmailOTPCodeResendNumberOfTimes(Integer numberOfTimes)
+            throws MalformedURLException {
         for (int index = 0; index < numberOfTimes; index++) {
             checkYourEmailPage.waitForPage();
             checkYourEmailPage.requestResendOfEmailOTPCode();
@@ -60,7 +64,8 @@ public class CrossPageFlows extends BasePage {
         }
     }
 
-    public void successfulSignIn(String userType, String userEmailAddress) {
+    public void successfulSignIn(String userType, String userEmailAddress)
+            throws MalformedURLException {
         rpStubPage.goToRpStub();
         rpStubPage.selectRpOptionsByIdAndContinue("");
         setAnalyticsCookieTo(false);
@@ -85,7 +90,7 @@ public class CrossPageFlows extends BasePage {
         waitForPageLoad("Example - GOV.UK - User Info");
     }
 
-    public void smsUserChangeHowGetSecurityCodesToAuthApp() {
+    public void smsUserChangeHowGetSecurityCodesToAuthApp() throws MalformedURLException {
         String authAppSecretKey;
         selectLinkByText("Problems with the code?");
         selectLinkByText("change how you get security codes");
@@ -101,7 +106,7 @@ public class CrossPageFlows extends BasePage {
         findAndClickContinue();
     }
 
-    public void authAppUserChangeHowGetSecurityCodesToSms() {
+    public void authAppUserChangeHowGetSecurityCodesToSms() throws MalformedURLException {
         selectLinkByText("I do not have access to the authenticator app");
         selectLinkByText("change how you get security codes");
         waitForPageLoad("Check your email");
@@ -117,7 +122,7 @@ public class CrossPageFlows extends BasePage {
         findAndClickContinue();
     }
 
-    public void smsUserChangesPassword() {
+    public void smsUserChangesPassword() throws MalformedURLException {
         enterYourPasswordPage.clickForgottenPasswordLink();
         waitForPageLoad("Check your email");
         checkYourEmailPage.enterCorrectEmailCodeAndContinue();

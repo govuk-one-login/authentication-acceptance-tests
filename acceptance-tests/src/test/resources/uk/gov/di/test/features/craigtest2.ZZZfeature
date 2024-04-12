@@ -1,0 +1,6 @@
+@craigtest
+Feature: ssdf
+  sdfssdd
+
+  Scenario: Scenario2
+    Given the user comes from the stub relying party with options: "default"

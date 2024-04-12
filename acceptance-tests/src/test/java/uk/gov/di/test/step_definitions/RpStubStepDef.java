@@ -4,14 +4,18 @@ import io.cucumber.java.en.When;
 import uk.gov.di.test.pages.BasePage;
 import uk.gov.di.test.pages.RpStubPage;
 
+import java.net.MalformedURLException;
+
 public class RpStubStepDef extends BasePage {
 
     RpStubPage rpStubPage = new RpStubPage();
 
     @When("the user comes from the stub relying party with options: {string}")
-    public void theExistingUserVisitsTheStubRelyingParty(String options) {
+    public void theExistingUserVisitsTheStubRelyingParty(String options)
+            throws MalformedURLException, InterruptedException {
         rpStubPage.goToRpStub();
         rpStubPage.selectRpOptionsByIdAndContinue(options);
         setAnalyticsCookieTo(false);
+        Thread.sleep(10000);
     }
 }

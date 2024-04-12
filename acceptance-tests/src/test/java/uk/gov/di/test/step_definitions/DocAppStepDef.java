@@ -6,6 +6,9 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import uk.gov.di.test.pages.BasePage;
 import uk.gov.di.test.pages.DocAppPage;
+import uk.gov.di.test.utils.Driver;
+
+import java.net.MalformedURLException;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -22,27 +25,28 @@ public class DocAppStepDef extends BasePage {
     public void theDocAppServicesAreRunning() {}
 
     @When("the user visits the doc app relying party")
-    public void theUserVisitsTheDocAppRelyingParty() {
-        driver.get(DOC_APP_URL.toString());
+    public void theUserVisitsTheDocAppRelyingParty() throws MalformedURLException {
+        Driver.get().get(DOC_APP_URL.toString());
     }
 
     @And("the user sends a valid json payload")
-    public void theUserSendsAValidJsonPayload() {
+    public void theUserSendsAValidJsonPayload() throws MalformedURLException {
         jsonPayLoad = "{\"test\" : \"example\"}";
         docAppPage.enterPayLoad(jsonPayLoad);
         docAppPage.clickSubmitButton();
     }
 
     @Then("the user is taken to the user information page")
-    public void theUserIsTakenToTheUserInformationPage() {
+    public void theUserIsTakenToTheUserInformationPage() throws MalformedURLException {
         waitForPageLoad("Example - GOV.UK - User Info");
-        assertTrue(driver.getCurrentUrl().contains("/oidc/authorization-code/callback?code="));
+        assertTrue(
+                Driver.get().getCurrentUrl().contains("/oidc/authorization-code/callback?code="));
         assertTrue(docAppPage.docAppCredentialsDisplayed());
         assertTrue(docAppPage.idTokenDisplayed());
     }
 
     @When("the user clicks the My Account link")
-    public void theUserClicksTheMyAccountLink() {
+    public void theUserClicksTheMyAccountLink() throws MalformedURLException {
         docAppPage.accountLinkClick();
     }
 }

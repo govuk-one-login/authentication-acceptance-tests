@@ -1,6 +1,9 @@
 package uk.gov.di.test.pages;
 
 import org.openqa.selenium.By;
+import uk.gov.di.test.utils.Driver;
+
+import java.net.MalformedURLException;
 
 public class DocAppPage extends BasePage {
 
@@ -14,27 +17,27 @@ public class DocAppPage extends BasePage {
 
     By idToken = By.id("user-info-phone-number");
 
-    public void continueButtonClick() {
-        driver.findElement(continueButton).click();
+    public void continueButtonClick() throws MalformedURLException {
+        Driver.get().findElement(continueButton).click();
     }
 
-    public void accountLinkClick() {
-        driver.findElement(myAccountLink).click();
+    public void accountLinkClick() throws MalformedURLException {
+        Driver.get().findElement(myAccountLink).click();
     }
 
-    public void enterPayLoad(String jsonPayLoad) {
-        driver.findElement(payloadInputField).sendKeys(jsonPayLoad);
+    public void enterPayLoad(String jsonPayLoad) throws MalformedURLException {
+        Driver.get().findElement(payloadInputField).sendKeys(jsonPayLoad);
     }
 
-    public void clickSubmitButton() {
-        driver.findElement(submitButton).click();
+    public void clickSubmitButton() throws MalformedURLException {
+        Driver.get().findElement(submitButton).click();
     }
 
-    public Boolean docAppCredentialsDisplayed() {
-        return driver.findElement(docAppCredentials).isDisplayed();
+    public Boolean docAppCredentialsDisplayed() throws MalformedURLException {
+        return Driver.get().findElement(docAppCredentials).isDisplayed();
     }
 
-    public Boolean idTokenDisplayed() {
-        return driver.findElement(idToken).isDisplayed();
+    public Boolean idTokenDisplayed() throws MalformedURLException {
+        return Driver.get().findElement(idToken).isDisplayed();
     }
 }
