@@ -8,7 +8,6 @@ import uk.gov.di.test.pages.FooterPage;
 import uk.gov.di.test.pages.SupportPage;
 import uk.gov.di.test.utils.Driver;
 
-import java.net.MalformedURLException;
 import java.util.ArrayList;
 
 import static org.junit.Assert.assertTrue;
@@ -20,22 +19,22 @@ public class SupportStepDef extends BasePage {
     FooterPage footer = new FooterPage();
 
     @When("the user clicks on the support link")
-    public void theUserClicksOnTheSupportLink() throws MalformedURLException {
+    public void theUserClicksOnTheSupportLink() {
         supportPage.clickSupportLink();
     }
 
     @When("the user selects the Welsh support link in the footer")
-    public void theUserSelectsTheWelshSupportLink() throws MalformedURLException {
+    public void theUserSelectsTheWelshSupportLink() {
         footer.selectWelshSupportLink();
     }
 
     @Then("the user is taken to the Contact us page in a new tab")
-    public void theUserIsTakenToTheContactUsPageInANewTab() throws MalformedURLException {
+    public void theUserIsTakenToTheContactUsPageInANewTab() {
         supportPage.checkForNewTabAndGoToIt("Contact us - GOV.UK One Login");
     }
 
     @Then("the contact us page is displayed in Welsh")
-    public void theContactUsPageIsDisplayedInWelsh() throws MalformedURLException {
+    public void theContactUsPageIsDisplayedInWelsh() {
         switchToTabWithTitleContaining("Cysylltu â ni - GOV.UK One Login");
         assertEquals("Cyfrif GOV.UK: rhoi gwybod am broblem neu roi adborth", getPageHeading());
         closeActiveTab();
@@ -43,28 +42,27 @@ public class SupportStepDef extends BasePage {
     }
 
     @When("the user selects radio button {string}")
-    public void theUserSelectsRadioButtonAndProceeds(String option) throws MalformedURLException {
+    public void theUserSelectsRadioButtonAndProceeds(String option) {
         supportPage.selectRadioButtonAndProceed(option);
     }
 
     @And("the user enters more details")
-    public void theUserEntersMoreDetails() throws MalformedURLException {
+    public void theUserEntersMoreDetails() {
         supportPage.enterMoreDetails("More detail text");
     }
 
     @And("the user selects {string} for email reply")
-    public void theUserSelectsYesNoForEmailReply(String yesNo) throws MalformedURLException {
+    public void theUserSelectsYesNoForEmailReply(String yesNo) {
         supportPage.canWeReplyViaEmail(yesNo);
     }
 
     @And("the user submits their message")
-    public void theUserSubmitsTheirMessage() throws MalformedURLException {
+    public void theUserSubmitsTheirMessage() {
         supportPage.pressSendMessage();
     }
 
     @Then("the user receives confirmation that their message has been submitted")
-    public void theUserReceivesConfirmationThatTheirMessageHasBeenSent()
-            throws MalformedURLException {
+    public void theUserReceivesConfirmationThatTheirMessageHasBeenSent() {
         assertTrue(supportPage.isSuccessMessageDisplayed());
         closeActiveTab();
         ArrayList<String> tabs = new ArrayList<String>(Driver.get().getWindowHandles());

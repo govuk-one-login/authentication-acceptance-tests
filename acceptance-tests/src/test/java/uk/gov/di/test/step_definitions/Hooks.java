@@ -9,12 +9,10 @@ import org.openqa.selenium.WebDriver;
 import uk.gov.di.test.pages.BasePage;
 import uk.gov.di.test.utils.Driver;
 
-import java.net.MalformedURLException;
-
 public class Hooks extends BasePage {
 
     @Before
-    public void setupWebdriver() throws MalformedURLException {
+    public void setupWebdriver() {
         // super.setupWebdriver();
         // driver.manage().deleteAllCookies();
     }
@@ -25,7 +23,7 @@ public class Hooks extends BasePage {
     // }
 
     @After
-    public void takeScreenshotOnFailure(Scenario scenario) throws MalformedURLException {
+    public void takeScreenshotOnFailure(Scenario scenario) {
         if (scenario.isFailed()) {
 
             WebDriver driver = Driver.get();

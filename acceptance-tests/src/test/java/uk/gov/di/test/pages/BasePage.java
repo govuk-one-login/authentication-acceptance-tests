@@ -11,7 +11,6 @@ import uk.gov.di.test.utils.AuthAppStub;
 import uk.gov.di.test.utils.AuthenticationJourneyPages;
 import uk.gov.di.test.utils.Driver;
 
-import java.net.MalformedURLException;
 import java.net.URI;
 import java.time.Duration;
 import java.util.ArrayList;
@@ -24,89 +23,88 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class BasePage {
     // protected WebDriver driver;
-    // public BasePage() throws MalformedURLException {
-    //    this.driver = Driver.get();
+    // public BasePage() {
+    //  this.driver = Driver.get();
     // }
 
-    //    protected static final String CHROME_BROWSER = "chrome";
-    //    protected static final String FIREFOX_BROWSER = "firefox";
-    //    protected static final String SELENIUM_URL =
-    //            System.getenv().getOrDefault("SELENIUM_URL", "http://localhost:4445/wd/hub");
+    //  protected static final String CHROME_BROWSER = "chrome";
+    //  protected static final String FIREFOX_BROWSER = "firefox";
+    //  protected static final String SELENIUM_URL =
+    //      System.getenv().getOrDefault("SELENIUM_URL", "http://localhost:4445/wd/hub");
 
-    //    protected static final String IDP_URL =
-    //            System.getenv()
-    //                    .getOrDefault(
-    //                            "IDP_URL",
-    //                            "https://front.build.auth.ida.digital.cabinet-office.gov.uk/");
+    //  protected static final String IDP_URL =
+    //      System.getenv()
+    //          .getOrDefault(
+    //              "IDP_URL",
+    //              "https://front.build.auth.ida.digital.cabinet-office.gov.uk/");
     protected static final String RP_URL =
             System.getenv()
                     .getOrDefault(
                             "RP_URL",
                             "https://acceptance-test-rp-build.build.stubs.account.gov.uk/");
 
-    //    protected static final Boolean SELENIUM_LOCAL =
-    //            Boolean.parseBoolean(System.getenv().getOrDefault("SELENIUM_LOCAL", "false"));
-    //    protected static final Boolean SELENIUM_HEADLESS =
-    //            Boolean.parseBoolean(System.getenv().getOrDefault("SELENIUM_HEADLESS", "false"));
-    //    protected static final String SELENIUM_BROWSER =
-    //            System.getenv().getOrDefault("SELENIUM_BROWSER", FIREFOX_BROWSER);
+    //  protected static final Boolean SELENIUM_LOCAL =
+    //      Boolean.parseBoolean(System.getenv().getOrDefault("SELENIUM_LOCAL", "false"));
+    //  protected static final Boolean SELENIUM_HEADLESS =
+    //      Boolean.parseBoolean(System.getenv().getOrDefault("SELENIUM_HEADLESS", "false"));
+    //  protected static final String SELENIUM_BROWSER =
+    //      System.getenv().getOrDefault("SELENIUM_BROWSER", FIREFOX_BROWSER);
     protected static final Duration DEFAULT_PAGE_LOAD_WAIT_TIME = Duration.of(20, SECONDS);
     // protected static WebDriver driver;
     public By authAppCodeField = By.id("code");
 
-    //    protected void setupWebdriver() throws MalformedURLException {
-    //        if (driver == null) {
-    //            switch (SELENIUM_BROWSER) {
-    //                case CHROME_BROWSER:
-    //                    ChromeOptions chromeOptions = new ChromeOptions();
-    //                    chromeOptions.setHeadless(SELENIUM_HEADLESS);
-    //                    chromeOptions.addArguments("--remote-allow-origins=*");
-    //                    chromeOptions.addArguments("--disable-gpu");
-    //                    chromeOptions.addArguments("--disable-extensions");
-    //                    chromeOptions.addArguments("--no-sandbox");
-    //                    chromeOptions.addArguments("--disable-dev-shm-usage");
-    //                    if (SELENIUM_LOCAL) {
-    //                        System.setProperty("webdriver.chrome.whitelistedIps", "");
-    //                        driver = new ChromeDriver(chromeOptions);
-    //                    } else {
-    //                        driver = new RemoteWebDriver(new URL(SELENIUM_URL), chromeOptions);
-    //                    }
-    //                    break;
-    //                default:
-    //                    FirefoxOptions firefoxOptions = new FirefoxOptions();
-    //                    firefoxOptions.setHeadless(SELENIUM_HEADLESS);
-    //                    firefoxOptions.setPageLoadTimeout(Duration.of(30, SECONDS));
-    //                    firefoxOptions.setImplicitWaitTimeout(Duration.of(30, SECONDS));
-    //                    if (SELENIUM_LOCAL) {
-    //                        driver = new FirefoxDriver(firefoxOptions);
-    //                    } else {
-    //                        driver = new RemoteWebDriver(new URL(SELENIUM_URL), firefoxOptions);
-    //                    }
-    //            }
-    //        }
+    //  protected void setupWebdriver() {
+    //    if (driver == null) {
+    //      switch (SELENIUM_BROWSER) {
+    //        case CHROME_BROWSER:
+    //          ChromeOptions chromeOptions = new ChromeOptions();
+    //          chromeOptions.setHeadless(SELENIUM_HEADLESS);
+    //          chromeOptions.addArguments("--remote-allow-origins=*");
+    //          chromeOptions.addArguments("--disable-gpu");
+    //          chromeOptions.addArguments("--disable-extensions");
+    //          chromeOptions.addArguments("--no-sandbox");
+    //          chromeOptions.addArguments("--disable-dev-shm-usage");
+    //          if (SELENIUM_LOCAL) {
+    //            System.setProperty("webdriver.chrome.whitelistedIps", "");
+    //            driver = new ChromeDriver(chromeOptions);
+    //          } else {
+    //            driver = new RemoteWebDriver(new URL(SELENIUM_URL), chromeOptions);
+    //          }
+    //          break;
+    //        default:
+    //          FirefoxOptions firefoxOptions = new FirefoxOptions();
+    //          firefoxOptions.setHeadless(SELENIUM_HEADLESS);
+    //          firefoxOptions.setPageLoadTimeout(Duration.of(30, SECONDS));
+    //          firefoxOptions.setImplicitWaitTimeout(Duration.of(30, SECONDS));
+    //          if (SELENIUM_LOCAL) {
+    //            driver = new FirefoxDriver(firefoxOptions);
+    //          } else {
+    //            driver = new RemoteWebDriver(new URL(SELENIUM_URL), firefoxOptions);
+    //          }
+    //      }
     //    }
+    //  }
 
-    //    protected void closeWebdriver() {
-    //        if (driver != null) {
-    //            driver.quit();
-    //            driver = null;
-    //        }
+    //  protected void closeWebdriver() {
+    //    if (driver != null) {
+    //      driver.quit();
+    //      driver = null;
     //    }
+    //  }
 
-    protected void waitForPageLoad(String titleContains) throws MalformedURLException {
+    protected void waitForPageLoad(String titleContains) {
         new WebDriverWait(Driver.get(), DEFAULT_PAGE_LOAD_WAIT_TIME)
                 .until(ExpectedConditions.titleContains(titleContains));
         waitForReadyStateComplete();
     }
 
-    protected void waitForPageLoadThenValidate(AuthenticationJourneyPages page)
-            throws MalformedURLException {
+    protected void waitForPageLoadThenValidate(AuthenticationJourneyPages page) {
         waitForPageLoad(page.getShortTitle());
         assertEquals(page.getRoute(), URI.create(Driver.get().getCurrentUrl()).getPath());
         assertEquals(page.getFullTitle(), Driver.get().getTitle());
     }
 
-    protected void findAndClickContinue() throws MalformedURLException {
+    protected void findAndClickContinue() {
         waitForReadyStateComplete();
         WebElement continueButton =
                 Driver.get()
@@ -114,7 +112,7 @@ public class BasePage {
         continueButton.click();
     }
 
-    protected void findAndClickContinueWelsh() throws MalformedURLException {
+    protected void findAndClickContinueWelsh() {
         waitForReadyStateComplete();
         WebElement continueButton =
                 Driver.get()
@@ -122,7 +120,7 @@ public class BasePage {
         continueButton.click();
     }
 
-    protected void findAndClickButtonByText(String buttonText) throws MalformedURLException {
+    protected void findAndClickButtonByText(String buttonText) {
         waitForReadyStateComplete();
         WebElement button =
                 Driver.get()
@@ -134,7 +132,7 @@ public class BasePage {
         button.click();
     }
 
-    public void switchDefaultTimeout(String status) throws MalformedURLException {
+    public void switchDefaultTimeout(String status) {
         switch (status.toLowerCase()) {
             case "on":
                 Driver.get().manage().timeouts().implicitlyWait(DEFAULT_PAGE_LOAD_WAIT_TIME);
@@ -145,7 +143,7 @@ public class BasePage {
         }
     }
 
-    protected boolean isLinkTextDisplayedImmediately(String linkText) throws MalformedURLException {
+    protected boolean isLinkTextDisplayedImmediately(String linkText) {
         switchDefaultTimeout("off");
         List elements =
                 Driver.get()
@@ -159,7 +157,7 @@ public class BasePage {
         }
     }
 
-    public void waitForThisErrorMessage(String expectedMessage) throws MalformedURLException {
+    public void waitForThisErrorMessage(String expectedMessage) {
         new WebDriverWait(Driver.get(), DEFAULT_PAGE_LOAD_WAIT_TIME)
                 .until(
                         ExpectedConditions.visibilityOf(
@@ -171,7 +169,7 @@ public class BasePage {
                                                                 + "']"))));
     }
 
-    public void waitForThisText(String expectedText) throws MalformedURLException {
+    public void waitForThisText(String expectedText) {
         new WebDriverWait(Driver.get(), DEFAULT_PAGE_LOAD_WAIT_TIME)
                 .until(
                         ExpectedConditions.visibilityOf(
@@ -183,41 +181,40 @@ public class BasePage {
                                                                 + "')]"))));
     }
 
-    protected void pressBack() throws MalformedURLException {
+    protected void pressBack() {
         Driver.get().findElement(By.xpath("//a[text()[normalize-space() = 'Back']]")).click();
     }
 
-    protected void selectLinkByText(String linkText) throws MalformedURLException {
+    protected void selectLinkByText(String linkText) {
         Driver.get()
                 .findElement(By.xpath("//*[text()[normalize-space() = '" + linkText + "']]"))
                 .click();
     }
 
-    protected void clearFieldAndEnter(By ele, String text) throws MalformedURLException {
+    protected void clearFieldAndEnter(By ele, String text) {
         Driver.get().findElement(ele).clear();
         Driver.get().findElement(ele).sendKeys(text);
     }
 
-    public Boolean isErrorSummaryDisplayed() throws MalformedURLException {
+    public Boolean isErrorSummaryDisplayed() {
         return Driver.get().findElement(By.className("govuk-error-summary")).isDisplayed();
     }
 
-    public String getPageHeading() throws MalformedURLException {
+    public String getPageHeading() {
         return Driver.get().findElement(By.cssSelector("h1")).getText().trim();
     }
 
-    public void checkForNewTabAndGoToIt(String newTabTitle) throws MalformedURLException {
+    public void checkForNewTabAndGoToIt(String newTabTitle) {
         switchToTabByIndex(1);
         waitForPageLoad(newTabTitle);
     }
 
-    public void switchToTabByIndex(Integer idx) throws MalformedURLException {
+    public void switchToTabByIndex(Integer idx) {
         ArrayList<String> tabs = new ArrayList<String>(Driver.get().getWindowHandles());
         Driver.get().switchTo().window(tabs.get(idx));
     }
 
-    public void switchToTabWithTitleContaining(String titleToSwitchTo)
-            throws MalformedURLException {
+    public void switchToTabWithTitleContaining(String titleToSwitchTo) {
         Set<String> allTabs = Driver.get().getWindowHandles();
         for (String tab : allTabs) {
             String title = Driver.get().switchTo().window(tab).getTitle();
@@ -227,34 +224,33 @@ public class BasePage {
         }
     }
 
-    protected void closeActiveTab() throws MalformedURLException {
+    protected void closeActiveTab() {
         Driver.get().close();
     }
 
-    public void enterCorrectAuthAppCodeAndContinue(String authAppSecretKey)
-            throws MalformedURLException {
+    public void enterCorrectAuthAppCodeAndContinue(String authAppSecretKey) {
         String authAppCode = AuthAppStub.getAuthAppCode(authAppSecretKey);
         clearFieldAndEnter(authAppCodeField, authAppCode);
         findAndClickContinue();
     }
 
-    public void setAnalyticsCookieTo(Boolean state) throws MalformedURLException {
+    public void setAnalyticsCookieTo(Boolean state) {
         Driver.get()
                 .manage()
                 .addCookie(new Cookie("cookies_preferences_set", "{\"analytics\":" + state + "}"));
     }
 
-    public void waitUntilElementClickable(By by) throws MalformedURLException {
+    public void waitUntilElementClickable(By by) {
         new WebDriverWait(Driver.get(), DEFAULT_PAGE_LOAD_WAIT_TIME)
                 .until(ExpectedConditions.elementToBeClickable(Driver.get().findElement(by)));
     }
 
-    public void waitUntilElementClickable(WebElement element) throws MalformedURLException {
+    public void waitUntilElementClickable(WebElement element) {
         new WebDriverWait(Driver.get(), DEFAULT_PAGE_LOAD_WAIT_TIME)
                 .until(ExpectedConditions.elementToBeClickable(element));
     }
 
-    public void waitForReadyStateComplete() throws MalformedURLException {
+    public void waitForReadyStateComplete() {
         new WebDriverWait(Driver.get(), DEFAULT_PAGE_LOAD_WAIT_TIME)
                 .until(
                         (ExpectedCondition<Boolean>)

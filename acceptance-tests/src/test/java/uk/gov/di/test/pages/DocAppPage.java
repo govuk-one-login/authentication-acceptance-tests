@@ -3,8 +3,6 @@ package uk.gov.di.test.pages;
 import org.openqa.selenium.By;
 import uk.gov.di.test.utils.Driver;
 
-import java.net.MalformedURLException;
-
 public class DocAppPage extends BasePage {
 
     By myAccountLink = By.cssSelector("#navigation > li > a");
@@ -17,27 +15,27 @@ public class DocAppPage extends BasePage {
 
     By idToken = By.id("user-info-phone-number");
 
-    public void continueButtonClick() throws MalformedURLException {
+    public void continueButtonClick() {
         Driver.get().findElement(continueButton).click();
     }
 
-    public void accountLinkClick() throws MalformedURLException {
+    public void accountLinkClick() {
         Driver.get().findElement(myAccountLink).click();
     }
 
-    public void enterPayLoad(String jsonPayLoad) throws MalformedURLException {
+    public void enterPayLoad(String jsonPayLoad) {
         Driver.get().findElement(payloadInputField).sendKeys(jsonPayLoad);
     }
 
-    public void clickSubmitButton() throws MalformedURLException {
+    public void clickSubmitButton() {
         Driver.get().findElement(submitButton).click();
     }
 
-    public Boolean docAppCredentialsDisplayed() throws MalformedURLException {
+    public Boolean docAppCredentialsDisplayed() {
         return Driver.get().findElement(docAppCredentials).isDisplayed();
     }
 
-    public Boolean idTokenDisplayed() throws MalformedURLException {
+    public Boolean idTokenDisplayed() {
         return Driver.get().findElement(idToken).isDisplayed();
     }
 }

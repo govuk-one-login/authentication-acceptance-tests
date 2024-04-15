@@ -40,127 +40,121 @@ public class RegistrationStepDef extends BasePage {
     }
 
     @When("the user chooses to create an account")
-    public void theUserChoosesToCreateAnAccount() throws MalformedURLException {
+    public void theUserChoosesToCreateAnAccount() {
         noGovUkOneLoginFoundPage.clickCreateGovUkOneLoginButton();
     }
 
     @When("the user enters the six digit security code from their email")
-    public void theUserEntersTheSixDigitSecurityCodeFromTheirEmail() throws MalformedURLException {
+    public void theUserEntersTheSixDigitSecurityCodeFromTheirEmail() {
         checkYourEmailPage.enterCorrectEmailCodeAndContinue();
     }
 
     @And("the user creates a password")
-    public void theUserCreatesAPassword() throws MalformedURLException {
+    public void theUserCreatesAPassword() {
         String passwordVal = System.getenv().get("TEST_USER_PASSWORD");
         createYourPasswordPage.enterBothPasswordsAndContinue(passwordVal, passwordVal);
     }
 
     @And("the user creates and enters an invalid password")
-    public void theUserCreatesAndEntersAnInvalidPassword() throws MalformedURLException {
+    public void theUserCreatesAndEntersAnInvalidPassword() {
         createYourPasswordPage.enterBothPasswordsAndContinue(INVALID_PASSWORD, INVALID_PASSWORD);
     }
 
     @And("the user creates and enters a weak password")
-    public void theUserCreatesAndEntersAWeakPassword() throws MalformedURLException {
+    public void theUserCreatesAndEntersAWeakPassword() {
         createYourPasswordPage.enterBothPasswordsAndContinue(WEAK_PASSWORD, WEAK_PASSWORD);
     }
 
     @And("the user creates and enters short digit only password")
-    public void theUserCreatesAndEntersShortDigitOnlyPassword() throws MalformedURLException {
+    public void theUserCreatesAndEntersShortDigitOnlyPassword() {
         createYourPasswordPage.enterBothPasswordsAndContinue(
                 SHORT_DIGIT_PASSWORD, SHORT_DIGIT_PASSWORD);
     }
 
     @And("the user creates and enters a sequence of numbers password")
-    public void theUserCreatesAndEntersASequenceOfNumbersPassword() throws MalformedURLException {
+    public void theUserCreatesAndEntersASequenceOfNumbersPassword() {
         createYourPasswordPage.enterBothPasswordsAndContinue(
                 SEQUENCE_NUMBER_PASSWORD, SEQUENCE_NUMBER_PASSWORD);
     }
 
     @When("the user chooses {string} to get security codes")
-    public void theUserChoosesHowToGetSecurityCodes(String mfaMethod) throws MalformedURLException {
+    public void theUserChoosesHowToGetSecurityCodes(String mfaMethod) {
         chooseHowToGetSecurityCodesPage.selectAuthMethodAndContinue(mfaMethod);
     }
 
     @When("the user enters their mobile phone number")
-    public void theUserEntersTheirMobilePhoneNumber() throws MalformedURLException {
+    public void theUserEntersTheirMobilePhoneNumber() {
         enterYourMobilePhoneNumberPage.enterUkPhoneNumberAndContinue(
                 System.getenv().get("TEST_USER_PHONE_NUMBER"));
     }
 
     @When("the user clicks logout")
-    public void theUserClicksLogout() throws MalformedURLException {
+    public void theUserClicksLogout() {
         findAndClickButtonByText("Log out");
     }
 
     @When("the user enters their mobile phone number using an international dialling code")
-    public void theUserEntersTheirMobilePhoneNumberUsingAnInternationalDiallingCode()
-            throws MalformedURLException {
+    public void theUserEntersTheirMobilePhoneNumberUsingAnInternationalDiallingCode() {
         enterYourMobilePhoneNumberPage.enterUkPhoneNumberAndContinue(
                 System.getenv().get("TEST_USER_INTERNATIONAL_PHONE_NUMBER"));
     }
 
     @When("the user submits a blank UK phone number")
-    public void theUserSubmitsABlankUKPhoneNumber() throws MalformedURLException {
+    public void theUserSubmitsABlankUKPhoneNumber() {
         enterYourMobilePhoneNumberPage.enterUkPhoneNumberAndContinue("");
     }
 
     @When("the user submits an international phone number in the UK phone number field")
-    public void theUserSubmitsAnInternationalPhoneNumberInTheUKPhoneNumberField()
-            throws MalformedURLException {
+    public void theUserSubmitsAnInternationalPhoneNumberInTheUKPhoneNumberField() {
         enterYourMobilePhoneNumberPage.enterUkPhoneNumberAndContinue("+61412123123");
     }
 
     @When("the user submits an incorrectly formatted UK phone number")
-    public void theUserSubmitsAnIncorrectlyFormattedUKPhoneNumber() throws MalformedURLException {
+    public void theUserSubmitsAnIncorrectlyFormattedUKPhoneNumber() {
         enterYourMobilePhoneNumberPage.enterUkPhoneNumberAndContinue("070000000000000");
     }
 
     @When("the user submits a UK phone number containing non-digit characters")
-    public void theUserSubmitsAUKPhoneNumberContainingNonDigitCharacters()
-            throws MalformedURLException {
+    public void theUserSubmitsAUKPhoneNumberContainingNonDigitCharacters() {
         enterYourMobilePhoneNumberPage.enterUkPhoneNumberAndContinue("0780312*a45");
     }
 
     @When("the user ticks I do not have a UK mobile number")
-    public void theUserTicksIDoNotHaveAUKMobileNumber() throws MalformedURLException {
+    public void theUserTicksIDoNotHaveAUKMobileNumber() {
         enterYourMobilePhoneNumberPage.tickIDoNotHaveUkMobileNumber();
     }
 
     @Then("the International mobile number field is displayed")
-    public void theInternationalMobileNumberFieldIsDisplayed() throws MalformedURLException {
+    public void theInternationalMobileNumberFieldIsDisplayed() {
         assertTrue(enterYourMobilePhoneNumberPage.isInternationalMobileNumberFieldDisplayed());
     }
 
     @When("the user submits a blank international mobile phone number")
-    public void theUserSubmitsABlankInternationalMobilePhoneNumber() throws MalformedURLException {
+    public void theUserSubmitsABlankInternationalMobilePhoneNumber() {
         enterYourMobilePhoneNumberPage.enterInternationalMobilePhoneNumberAndContinue("");
     }
 
     @When("the user submits an incorrectly formatted international mobile phone number")
-    public void theUserSubmitsAnIncorrectlyFormattedInternationalMobilePhoneNumber()
-            throws MalformedURLException {
+    public void theUserSubmitsAnIncorrectlyFormattedInternationalMobilePhoneNumber() {
         enterYourMobilePhoneNumberPage.enterInternationalMobilePhoneNumberAndContinue(
                 "+123456789123456789123456");
     }
 
     @When("the user submits an international mobile phone number containing non-digit characters")
-    public void theUserSubmitsAnInternationalMobilePhoneNumberContainingNonDigitCharacters()
-            throws MalformedURLException {
+    public void theUserSubmitsAnInternationalMobilePhoneNumberContainingNonDigitCharacters() {
         enterYourMobilePhoneNumberPage.enterInternationalMobilePhoneNumberAndContinue(
                 "/3383838383");
     }
 
     @When("the user enters a valid international mobile phone number")
-    public void theUserEntersAValidInternationalMobilePhoneNumber() throws MalformedURLException {
+    public void theUserEntersAValidInternationalMobilePhoneNumber() {
         enterYourMobilePhoneNumberPage.enterInternationalMobilePhoneNumberAndContinue(
                 "+61412123123");
     }
 
     @Given(
             "a user has selected text message as their auth method and has moved on to the next page")
-    public void aUserHasSelectedAnAuthMethodAndHasMovedOnToTheNextPage()
-            throws MalformedURLException {
+    public void aUserHasSelectedAnAuthMethodAndHasMovedOnToTheNextPage() {
         rpStubPage.goToRpStub();
         rpStubPage.selectRpOptionsByIdAndContinue("");
         waitForPageLoad("Create your GOV.UK One Login or sign in");
@@ -180,8 +174,7 @@ public class RegistrationStepDef extends BasePage {
     }
 
     @Given("a user has selected auth app as their auth method and has moved on to the next page")
-    public void aUserHasSelectedAuthAppAsTheirAuthMethodAndHasMovedOnToTheNextPage()
-            throws MalformedURLException {
+    public void aUserHasSelectedAuthAppAsTheirAuthMethodAndHasMovedOnToTheNextPage() {
         rpStubPage.goToRpStub();
         rpStubPage.selectRpOptionsByIdAndContinue("");
         waitForPageLoad("Create your GOV.UK One Login or sign in");
@@ -201,15 +194,13 @@ public class RegistrationStepDef extends BasePage {
     }
 
     @And("their previously chosen text message auth method remains selected")
-    public void theirPreviouslySelectedTextMessageAuthMethodRemainsSelected()
-            throws MalformedURLException {
+    public void theirPreviouslySelectedTextMessageAuthMethodRemainsSelected() {
         waitForPageLoad("Choose how to get security codes");
         assertTrue(chooseHowToGetSecurityCodesPage.getTextMessageRadioButtonStatus());
     }
 
     @And("their previously chosen auth app auth method remains selected")
-    public void theirPreviouslySelectedAuthAppAuthMethodRemainsSelected()
-            throws MalformedURLException {
+    public void theirPreviouslySelectedAuthAppAuthMethodRemainsSelected() {
         waitForPageLoad("Choose how to get security codes");
         assertTrue(chooseHowToGetSecurityCodesPage.getAuthAppRadioButtonStatus());
     }

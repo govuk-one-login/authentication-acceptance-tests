@@ -7,7 +7,6 @@ import org.json.JSONObject;
 import uk.gov.di.test.pages.BasePage;
 import uk.gov.di.test.utils.Driver;
 
-import java.net.MalformedURLException;
 import java.net.URL;
 
 import static org.junit.Assert.assertEquals;
@@ -19,7 +18,7 @@ public class AxeStepDef extends BasePage {
             Boolean.parseBoolean(System.getenv().getOrDefault("ACCESSIBILITY_CHECKS", "false"));
 
     @And("there are no accessibility violations")
-    public static void thereAreNoAccessibilityViolations() throws MalformedURLException {
+    public static void thereAreNoAccessibilityViolations() {
         //        System.out.println(ACCESSIBILITY_CHECKS);
         if (ACCESSIBILITY_CHECKS) {
             System.out.println("Page in test = " + Driver.get().getTitle());

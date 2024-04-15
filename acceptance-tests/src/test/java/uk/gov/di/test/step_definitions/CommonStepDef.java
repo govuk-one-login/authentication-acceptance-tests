@@ -12,7 +12,6 @@ import uk.gov.di.test.pages.RpStubPage;
 import uk.gov.di.test.pages.UserInformationPage;
 import uk.gov.di.test.utils.Driver;
 
-import java.net.MalformedURLException;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -25,65 +24,64 @@ public class CommonStepDef extends BasePage {
     public CrossPageFlows crossPageFlows = new CrossPageFlows();
 
     @Then("the user is taken to the {string} page")
-    public void theUserIsTakenToThePage(String pageTitle) throws MalformedURLException {
+    public void theUserIsTakenToThePage(String pageTitle) {
         waitForPageLoad(pageTitle);
     }
 
     @Then("the {string} error message is displayed")
-    public void theErrorMessageIsDisplayed(String expectedErrorMessage)
-            throws MalformedURLException {
+    public void theErrorMessageIsDisplayed(String expectedErrorMessage) {
         waitForThisErrorMessage(expectedErrorMessage);
     }
 
     @When("the user switches to Welsh language")
-    public void theUserSwitchesToWelshLanguage() throws MalformedURLException {
+    public void theUserSwitchesToWelshLanguage() {
         createOrSignInPage.switchLanguageTo("Welsh");
     }
 
     @When("the user selects link {string}")
-    public void theUserSelectsLink(String linkText) throws MalformedURLException {
+    public void theUserSelectsLink(String linkText) {
         selectLinkByText(linkText);
     }
 
     @When("the user selects {string} link")
-    public void theUserSelectsProblemsWithTheCode(String text) throws MalformedURLException {
+    public void theUserSelectsProblemsWithTheCode(String text) {
         selectLinkByText(text);
     }
 
     @Then("the link {string} is not available")
-    public void theLinkIsNotAvailable(String linkText) throws MalformedURLException {
+    public void theLinkIsNotAvailable(String linkText) {
         assertFalse(isLinkTextDisplayedImmediately(linkText));
     }
 
     @Then("the link {string} is available")
-    public void theLinkIsAvailable(String linkText) throws MalformedURLException {
+    public void theLinkIsAvailable(String linkText) {
         assertTrue(isLinkTextDisplayedImmediately(linkText));
     }
 
     @When("the user clicks the continue button")
-    public void theUserClicksTheContinueButton() throws MalformedURLException {
+    public void theUserClicksTheContinueButton() {
         findAndClickContinue();
     }
 
     @Then("the user is returned to the service")
     @Then("the user is successfully reauthenticated and returned to the service")
-    public void theUserIsReturnedToTheService() throws MalformedURLException {
+    public void theUserIsReturnedToTheService() {
         waitForPageLoad("Example - GOV.UK - User Info");
     }
 
     @And("the user logs out")
-    public void theUserLogsOut() throws MalformedURLException {
+    public void theUserLogsOut() {
         findAndClickButtonByText("Log out");
         waitForPageLoad("Signed out");
     }
 
     @Then("the user is shown an error message")
-    public void theUserIsShownAnErrorMessageOnTheEnterEmailPage() throws MalformedURLException {
+    public void theUserIsShownAnErrorMessageOnTheEnterEmailPage() {
         assertTrue(isErrorSummaryDisplayed());
     }
 
     @Then("the user is not shown any error messages")
-    public void theNewUserIsNotShownAnErrorMessage() throws MalformedURLException {
+    public void theNewUserIsNotShownAnErrorMessage() {
         switchDefaultTimeout("off");
         List<WebElement> errorFields = Driver.get().findElements(By.id("code-error"));
         switchDefaultTimeout("on");
@@ -94,18 +92,17 @@ public class CommonStepDef extends BasePage {
     }
 
     @When("the user clicks the Back link")
-    public void theNewUserClicksTheApplicationBackButton() throws MalformedURLException {
+    public void theNewUserClicksTheApplicationBackButton() {
         pressBack();
     }
 
     @Given("the {string} user {string} is already signed in to their One Login account")
-    public void theUserAlreadySignedIn(String userType, String emailAddress)
-            throws MalformedURLException {
+    public void theUserAlreadySignedIn(String userType, String emailAddress) {
         crossPageFlows.successfulSignIn(userType, emailAddress);
     }
 
     @When("the RP requires the user to reauthenticate")
-    public void theRPRequiresTheUserToReauthenticate() throws MalformedURLException {
+    public void theRPRequiresTheUserToReauthenticate() {
         String idToken = userInformationPage.getIdToken();
         rpStubPage.reauthRequired(idToken);
     }

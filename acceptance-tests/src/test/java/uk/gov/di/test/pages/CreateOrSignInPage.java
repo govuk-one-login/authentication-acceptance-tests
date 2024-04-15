@@ -3,8 +3,6 @@ package uk.gov.di.test.pages;
 import org.openqa.selenium.By;
 import uk.gov.di.test.utils.Driver;
 
-import java.net.MalformedURLException;
-
 public class CreateOrSignInPage extends BasePage {
 
     By signInButton = By.id("sign-in-button");
@@ -12,15 +10,15 @@ public class CreateOrSignInPage extends BasePage {
     By linkToSwitchToWelsh = By.xpath("//a[@href='?lng=cy']");
     By linkToSwitchToEnglish = By.xpath("//a[@href='?lng=en']");
 
-    public void clickCreateAGovUkOneLoginButton() throws MalformedURLException {
+    public void clickCreateAGovUkOneLoginButton() {
         Driver.get().findElement(createAGovUkOneLogin).click();
     }
 
-    public void clickSignInButton() throws MalformedURLException {
+    public void clickSignInButton() {
         Driver.get().findElement(signInButton).click();
     }
 
-    public void switchLanguageTo(String lang) throws MalformedURLException {
+    public void switchLanguageTo(String lang) {
         switch (lang.toLowerCase()) {
             case "welsh":
                 Driver.get().findElement(linkToSwitchToWelsh).click();

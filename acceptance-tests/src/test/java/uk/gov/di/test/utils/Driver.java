@@ -40,7 +40,7 @@ public class Driver {
         return driverPool.get();
     }
 
-    public static WebDriver get() throws MalformedURLException {
+    public static WebDriver get() {
 
         if (driverPool.get() == null)
             synchronized (Driver.class) {
@@ -61,8 +61,12 @@ public class Driver {
                             System.setProperty("webdriver.chrome.whitelistedIps", "");
                             driverPool.set(new ChromeDriver(chromeOptions));
                         } else {
-                            driverPool.set(
-                                    new RemoteWebDriver(new URL(SELENIUM_URL), chromeOptions));
+                            try {
+                                driverPool.set(
+                                        new RemoteWebDriver(new URL(SELENIUM_URL), chromeOptions));
+                            } catch (MalformedURLException e) {
+                                throw new RuntimeException(e);
+                            }
                         }
                         // driverPool.get().manage().window().maximize();
                         break;

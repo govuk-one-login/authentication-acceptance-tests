@@ -8,8 +8,6 @@ import uk.gov.di.test.pages.BasePage;
 import uk.gov.di.test.pages.DocAppPage;
 import uk.gov.di.test.utils.Driver;
 
-import java.net.MalformedURLException;
-
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class DocAppStepDef extends BasePage {
@@ -25,19 +23,19 @@ public class DocAppStepDef extends BasePage {
     public void theDocAppServicesAreRunning() {}
 
     @When("the user visits the doc app relying party")
-    public void theUserVisitsTheDocAppRelyingParty() throws MalformedURLException {
+    public void theUserVisitsTheDocAppRelyingParty() {
         Driver.get().get(DOC_APP_URL.toString());
     }
 
     @And("the user sends a valid json payload")
-    public void theUserSendsAValidJsonPayload() throws MalformedURLException {
+    public void theUserSendsAValidJsonPayload() {
         jsonPayLoad = "{\"test\" : \"example\"}";
         docAppPage.enterPayLoad(jsonPayLoad);
         docAppPage.clickSubmitButton();
     }
 
     @Then("the user is taken to the user information page")
-    public void theUserIsTakenToTheUserInformationPage() throws MalformedURLException {
+    public void theUserIsTakenToTheUserInformationPage() {
         waitForPageLoad("Example - GOV.UK - User Info");
         assertTrue(
                 Driver.get().getCurrentUrl().contains("/oidc/authorization-code/callback?code="));
@@ -46,7 +44,7 @@ public class DocAppStepDef extends BasePage {
     }
 
     @When("the user clicks the My Account link")
-    public void theUserClicksTheMyAccountLink() throws MalformedURLException {
+    public void theUserClicksTheMyAccountLink() {
         docAppPage.accountLinkClick();
     }
 }

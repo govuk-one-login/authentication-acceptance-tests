@@ -1,10 +1,8 @@
 package uk.gov.di.test.pages;
 
-import java.net.MalformedURLException;
-
 public class FooterPage extends BasePage {
 
-    public void selectWelshSupportLink() throws MalformedURLException {
+    public void selectWelshSupportLink() {
         selectLinkByText("Cefnogaeth (agor mewn tab newydd)");
     }
 }
