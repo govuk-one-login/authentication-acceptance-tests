@@ -8,7 +8,7 @@ Feature: Registration Journey
     When the user selects sign in
     Then the user is taken to the "Enter your email address to sign in to your GOV.UK One Login" page
     When user enters "TEST_USER_EMAIL" email address
-    Then the user is taken to the "No GOV.UK One Login found" page
+    Then the user is taken to the "You do not have a GOV.UK One Login" page
     When the user clicks link "Try another email address"
     Then the user is taken to the "Enter your email address to sign in to your GOV.UK One Login" page
 
@@ -26,13 +26,13 @@ Feature: Registration Journey
 #    When the new user clicks the sign in to a service button
 #    Then the new user is taken to the sign in to a service page
 
-  Scenario: User is taken to Check your email page from No GOV.UK One Login found page when Create selected
+  Scenario: User is taken to Check your email page from You do not have a GOV.UK One Login page when Create selected
     Given the user comes from the stub relying party with options: "default"
     Then the user is taken to the "Create your GOV.UK One Login or sign in" page
     When the user selects sign in
     Then the user is taken to the "Enter your email address to sign in to your GOV.UK One Login" page
     When user enters "TEST_USER_EMAIL" email address
-    Then the user is taken to the "No GOV.UK One Login found" page
+    Then the user is taken to the "You do not have a GOV.UK One Login" page
     When the user chooses to create an account
     Then the user is taken to the "Check your email" page
 
