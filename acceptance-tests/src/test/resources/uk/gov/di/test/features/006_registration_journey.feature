@@ -8,7 +8,7 @@ Feature: Registration Journey
     When the user selects sign in
     Then the user is taken to the "Enter your email address to sign in to your GOV.UK One Login" page
     When user enters "TEST_USER_EMAIL" email address
-    Then the user is taken to the "No GOV.UK One Login found" page
+    Then the user is taken to the "You do not have a GOV.UK One Login" page
     When the user clicks link "Try another email address"
     Then the user is taken to the "Enter your email address to sign in to your GOV.UK One Login" page
 
@@ -32,7 +32,7 @@ Feature: Registration Journey
     When the user selects sign in
     Then the user is taken to the "Enter your email address to sign in to your GOV.UK One Login" page
     When user enters "TEST_USER_EMAIL" email address
-    Then the user is taken to the "No GOV.UK One Login found" page
+    Then the user is taken to the "You do not have a GOV.UK One Login" page
     When the user chooses to create an account
     Then the user is taken to the "Check your email" page
 
