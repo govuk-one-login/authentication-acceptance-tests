@@ -3,6 +3,8 @@ package uk.gov.di.test.utils;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
 import java.net.MalformedURLException;
@@ -15,7 +17,6 @@ public class Driver {
 
     private Driver() {}
 
-    protected static final String CHROME_BROWSER = "chrome";
     protected static final String FIREFOX_BROWSER = "firefox";
     protected static final String SELENIUM_URL =
             System.getenv().getOrDefault("SELENIUM_URL", "http://localhost:4445/wd/hub");
@@ -25,7 +26,6 @@ public class Driver {
             Boolean.parseBoolean(System.getenv().getOrDefault("SELENIUM_HEADLESS", "false"));
     protected static final String SELENIUM_BROWSER =
             System.getenv().getOrDefault("SELENIUM_BROWSER", FIREFOX_BROWSER);
-    protected static final Duration DEFAULT_PAGE_LOAD_WAIT_TIME = Duration.of(20, SECONDS);
     protected static WebDriver driver;
 
     private static InheritableThreadLocal<WebDriver> driverPool = new InheritableThreadLocal<>();
@@ -44,10 +44,6 @@ public class Driver {
 
         if (driverPool.get() == null)
             synchronized (Driver.class) {
-
-                // String browser = ConfigurationReader.getBrowser();
-                // System.setProperty("webdriver.http.factory", "jdk-http-client");
-
                 switch (SELENIUM_BROWSER) {
                     case "chrome":
                         ChromeOptions chromeOptions = new ChromeOptions();
@@ -68,51 +64,25 @@ public class Driver {
                                 throw new RuntimeException(e);
                             }
                         }
-                        // driverPool.get().manage().window().maximize();
                         break;
-                        //                case "chrome-headless":
-                        //                    ChromeOptions chromeOptions = new ChromeOptions();
-                        //                    chromeOptions.addArguments("--headless=new");
-                        //                    if (ConfigurationReader.noChromeSandbox()) {
-                        //                        // no-sandbox is needed for chrome-headless when
-                        // running in a container due to restricted syscalls
-                        //                        chromeOptions.addArguments("--no-sandbox");
-                        //                    }
-                        //                    //
-                        // chromeOptions.addArguments("--remote-allow-origins=*");
-                        //                    driverPool.set(new ChromeDriver(chromeOptions));
-                        //                    break;
-                        //                case "firefox":
-                        //                    driverPool.set(new FirefoxDriver());
-                        //                    break;
-                        //                case "firefox-headless":
-                        //                    FirefoxOptions firefoxOptions = new FirefoxOptions();
-                        //                    firefoxOptions.addArguments("--headless");
-                        //                    driverPool.set(new FirefoxDriver(firefoxOptions));
-                        //                    break;
-                        //                case "ie":
-                        //                    if
-                        // (!System.getProperty("os.name").toLowerCase().contains("windows"))
-                        //                        throw new WebDriverException("Your OS doesn't
-                        // support Internet Explorer");
-                        //                    driverPool.set(new InternetExplorerDriver());
-                        //                    break;
-                        //
-                        //                case "edge":
-                        //                    if
-                        // (!System.getProperty("os.name").toLowerCase().contains("windows"))
-                        //                        throw new WebDriverException("Your OS doesn't
-                        // support Edge");
-                        //                    driverPool.set(new EdgeDriver());
-                        //                    break;
-                        //
-                        //                case "safari":
-                        //                    if
-                        // (!System.getProperty("os.name").toLowerCase().contains("mac"))
-                        //                        throw new WebDriverException("Your OS doesn't
-                        // support Safari");
-                        //                    driverPool.set(new SafariDriver());
-                        //                    break;
+
+                    case "firefox":
+                        FirefoxOptions firefoxOptions = new FirefoxOptions();
+                        firefoxOptions.setHeadless(SELENIUM_HEADLESS);
+                        firefoxOptions.setPageLoadTimeout(Duration.of(30, SECONDS));
+                        firefoxOptions.setImplicitWaitTimeout(Duration.of(30, SECONDS));
+                        if (SELENIUM_LOCAL) {
+                            driverPool.set(new FirefoxDriver(firefoxOptions));
+                        } else {
+                            try {
+                                driverPool.set(
+                                        new RemoteWebDriver(new URL(SELENIUM_URL), firefoxOptions));
+                            } catch (MalformedURLException e) {
+                                throw new RuntimeException(e);
+                            }
+                            break;
+                        }
+                        driverPool.get().manage().window().maximize();
                 }
             }
         return driverPool.get();
