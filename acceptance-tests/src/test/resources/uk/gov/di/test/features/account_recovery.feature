@@ -73,6 +73,7 @@ Feature: Account recovery
     Then the user is returned to the service
     And the user logs out
 
+  # All tests below can be removed when Lockout tests are enabled
 
   Scenario: A user with sms authentication is blocked when they request their email OTP code 6 times (including the initial send on entry to screen) during a change of auth method.
     Given the user comes from the stub relying party with options: "default"

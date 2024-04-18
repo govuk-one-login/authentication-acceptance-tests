@@ -1,8 +1,11 @@
 package uk.gov.di.test.pages;
 
+import io.cucumber.java.Scenario;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Cookie;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -54,6 +57,7 @@ public class BasePage {
             System.getenv().getOrDefault("SELENIUM_BROWSER", FIREFOX_BROWSER);
     protected static final Duration DEFAULT_PAGE_LOAD_WAIT_TIME = Duration.of(20, SECONDS);
     protected static WebDriver driver;
+    protected static Scenario scenario;
     public By authAppCodeField = By.id("code");
 
     protected void setupWebdriver() throws MalformedURLException {
@@ -244,5 +248,10 @@ public class BasePage {
                                         ((JavascriptExecutor) wd)
                                                 .executeScript("return document.readyState")
                                                 .equals("complete"));
+    }
+
+    public void takeScreenshot(Scenario scenario) {
+        final byte[] screenshot = ((TakesScreenshot) driver).getScreenshotAs(OutputType.BYTES);
+        scenario.attach(screenshot, "image/png", "Step screenshot");
     }
 }

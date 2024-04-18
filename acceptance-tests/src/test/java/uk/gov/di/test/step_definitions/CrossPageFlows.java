@@ -5,6 +5,7 @@ import uk.gov.di.test.pages.CheckYourEmailPage;
 import uk.gov.di.test.pages.CheckYourPhonePage;
 import uk.gov.di.test.pages.ChooseHowToGetSecurityCodesPage;
 import uk.gov.di.test.pages.CreateOrSignInPage;
+import uk.gov.di.test.pages.CreateYourPasswordPage;
 import uk.gov.di.test.pages.EnterThe6DigitSecurityCodeShownInYourAuthenticatorAppPage;
 import uk.gov.di.test.pages.EnterYourEmailAddressToSignInPage;
 import uk.gov.di.test.pages.EnterYourMobilePhoneNumberPage;
@@ -13,6 +14,7 @@ import uk.gov.di.test.pages.GetSecurityCodePage;
 import uk.gov.di.test.pages.ResetYourPasswordPage;
 import uk.gov.di.test.pages.RpStubPage;
 import uk.gov.di.test.pages.SetUpAnAuthenticatorAppPage;
+import uk.gov.di.test.pages.UserInformationPage;
 
 import static uk.gov.di.test.utils.Constants.NEW_VALID_PASSWORD;
 
@@ -35,6 +37,8 @@ public class CrossPageFlows extends BasePage {
     public EnterYourMobilePhoneNumberPage enterYourMobilePhoneNumberPage =
             new EnterYourMobilePhoneNumberPage();
     public ResetYourPasswordPage resetYourPasswordPage = new ResetYourPasswordPage();
+    public CreateYourPasswordPage createYourPasswordPage = new CreateYourPasswordPage();
+    public UserInformationPage userInformationPage = new UserInformationPage();
 
     public void requestPhoneSecurityCodeResendNumberOfTimes(Integer numberOfTimes) {
         for (int i = 0; i < numberOfTimes; i++) {
@@ -42,6 +46,12 @@ public class CrossPageFlows extends BasePage {
             checkYourPhonePage.clickSendTheCodeAgainLink();
             waitForPageLoad("Get security code");
             getSecurityCodePage.pressGetSecurityCodeButton();
+            System.out.println(
+                    "Code request count: "
+                            + (i + 1)
+                            + " ("
+                            + (i + 2)
+                            + " including code sent on initial entry to the Check Your Phone page)");
         }
     }
 
@@ -126,5 +136,22 @@ public class CrossPageFlows extends BasePage {
         waitForPageLoad("Reset your password");
         resetYourPasswordPage.enterPasswordResetDetailsAndContinue(
                 NEW_VALID_PASSWORD, NEW_VALID_PASSWORD);
+    }
+
+    public void completeAccountCreationAfterNewEmailCode() {
+        getSecurityCodePage.waitForPage();
+        getSecurityCodePage.pressGetSecurityCodeButton();
+        waitForPageLoad("Check your email");
+        checkYourEmailPage.enterCorrectEmailCodeAndContinue();
+        String pw = System.getenv().get("TEST_USER_PASSWORD");
+        createYourPasswordPage.enterBothPasswordsAndContinue(pw, pw);
+        chooseHowToGetSecurityCodesPage.selectAuthMethodAndContinue("text message");
+        enterYourMobilePhoneNumberPage.enterUkPhoneNumberAndContinue(
+                System.getenv().get("TEST_USER_PHONE_NUMBER"));
+        checkYourPhonePage.enterCorrectPhoneCodeAndContinue();
+        waitForPageLoad("You’ve created your GOV.UK One Login");
+        findAndClickContinue();
+        waitForPageLoad("User Info");
+        userInformationPage.logoutOfAccount();
     }
 }
