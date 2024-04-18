@@ -16,7 +16,6 @@ import uk.gov.di.test.pages.EnterYourMobilePhoneNumberPage;
 import uk.gov.di.test.pages.EnterYourPasswordPage;
 import uk.gov.di.test.pages.ReenterYourSignInDetailsToContinuePage;
 import uk.gov.di.test.pages.ResetYourPasswordPage;
-import uk.gov.di.test.pages.RpStubPage;
 import uk.gov.di.test.pages.SetUpAnAuthenticatorAppPage;
 import uk.gov.di.test.pages.TermsAndConditionsPage;
 import uk.gov.di.test.pages.YouAskedToResendTheSecurityCodeTooManyTimesPage;
@@ -32,6 +31,7 @@ import static uk.gov.di.test.utils.Constants.NEW_VALID_PASSWORD;
 import static uk.gov.di.test.utils.Constants.TOP_100K_PASSWORD;
 
 public class LoginStepDef extends BasePage {
+
     private String authAppSecretKey;
     public ResetYourPasswordPage resetYourPasswordPage = new ResetYourPasswordPage();
     public CheckYourEmailPage checkYourEmailPage = new CheckYourEmailPage();
@@ -59,8 +59,6 @@ public class LoginStepDef extends BasePage {
             new ChooseHowToGetSecurityCodesPage();
     public EnterYourMobilePhoneNumberPage enterYourMobilePhoneNumberPage =
             new EnterYourMobilePhoneNumberPage();
-
-    RpStubPage rpStubPage = new RpStubPage();
 
     @When("the user enters their password which is on the top 100k password list")
     public void theUserEntersTheirPasswordWhichIsOnTheTop100kPasswordList() {
@@ -253,9 +251,8 @@ public class LoginStepDef extends BasePage {
         enterYourPasswordPage.enterIncorrectPasswordNumberOfTimes(1);
     }
 
-    // @And("the user enters an incorrect password {int} times")
+    @And("the user enters an incorrect password {int} times")
     @When("the user enters an incorrect password a further {int} times")
-    @When("the user enters an incorrect password {int} times")
     public void theUserEntersAnIncorrectPasswordAFurtherXTimes(Integer attemptCount) {
         enterYourPasswordPage.enterIncorrectPasswordNumberOfTimes(attemptCount);
     }
