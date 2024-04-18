@@ -18,11 +18,6 @@ public class Hooks extends BasePage {
         driver.manage().deleteAllCookies();
     }
 
-    @Before
-    public void setUpScenario(Scenario scenario) {
-        BasePage.scenario = scenario;
-    }
-
     @AfterStep
     public void checkAccessibility() {
         AxeStepDef.thereAreNoAccessibilityViolations();

@@ -41,8 +41,6 @@ Feature: Reset password
     When the user clicks logout
     Then the user is taken to the "Signed out" page
 
-# All tests below can be removed when Lockout feature files are enabled
-
   # ENTER INCORRECT EMAIL OTP TOO MANY TIMES DURING PASSWORD RESET
   Scenario: A user is blocked when they enter an incorrect email OTP more than 5 times during a password reset.
     Given the user comes from the stub relying party with options: "default"
