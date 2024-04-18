@@ -5,6 +5,7 @@ import org.openqa.selenium.By;
 public class EnterThe6DigitSecurityCodeShownInYourAuthenticatorAppPage extends BasePage {
     By authAppCodeField = By.id("code");
 
+
     public void enterIncorrectAuthAppCodeAndContinue() {
         clearFieldAndEnter(authAppCodeField, "123456");
         findAndClickContinue();
