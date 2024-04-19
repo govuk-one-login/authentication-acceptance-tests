@@ -41,7 +41,7 @@ Feature: Create account
     Then the 2hr You asked to resend the security code too many times screen is displayed
     When the user "CREATE_REQUEST_EMAIL_CODE_LOCKOUT" with a lockout for requesting too many email security codes attempts to create account during the lockout period
     Then the 2hr You cannot create a GOV.UK One Login at the moment screen for requesting too many security code resends is displayed
-  @me
+
   # ENTER INCORRECT SMS SECURITY CODE TOO MANY TIMES DURING CREATE ACCOUNT - REG
   Scenario: A user is blocked when they enter an incorrect sms security code more than 5 times during create account.
     Given the user comes from the stub relying party with options: "default"
