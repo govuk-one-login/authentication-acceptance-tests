@@ -2,6 +2,8 @@
 Feature: Login Journey
   Existing user walks through a login journey
 
+  # The first test below can be removed when Lockout tests are enabled
+
   Scenario: Existing user requests phone OTP code 5 times
     Given the user comes from the stub relying party with options: "default"
     Then the user is taken to the "Create your GOV.UK One Login or sign in" page
