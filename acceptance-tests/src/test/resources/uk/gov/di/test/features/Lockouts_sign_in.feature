@@ -1,5 +1,5 @@
 @lockouts @lockout_sign_in
-Feature: Sign in
+Feature: Sign in lockouts
 
   # ENTER INCORRECT PASSWORD TOO MANY TIMES DURING SIGN IN - 2060
   Scenario: A user is blocked when they enter too many incorrect passwords during sign in.
