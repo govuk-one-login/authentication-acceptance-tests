@@ -55,7 +55,7 @@ public class BasePage {
             Boolean.parseBoolean(System.getenv().getOrDefault("SELENIUM_HEADLESS", "false"));
     protected static final String SELENIUM_BROWSER =
             System.getenv().getOrDefault("SELENIUM_BROWSER", FIREFOX_BROWSER);
-    protected static final Duration DEFAULT_PAGE_LOAD_WAIT_TIME = Duration.of(20, SECONDS);
+    protected static final Duration DEFAULT_PAGE_LOAD_WAIT_TIME = Duration.of(5, SECONDS);
     protected static WebDriver driver;
     protected static Scenario scenario;
     public By authAppCodeField = By.id("code");
