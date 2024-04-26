@@ -1,5 +1,5 @@
 @lockouts @lockout_acc_rec
-Feature: Account recovery
+Feature: Account recovery lockouts
 
   # ENTER INCORRECT EMAIL OTP TOO MANY TIMES DURING ACCOUNT RECOVERY - 2081 - PASS
   Scenario: A user is blocked when they enter an incorrect email OTP code 6 times during a change of auth method.

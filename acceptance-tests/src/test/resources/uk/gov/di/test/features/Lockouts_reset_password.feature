@@ -1,5 +1,5 @@
 @lockouts @lockout_reset_pw
-Feature: Reset password
+Feature: Reset password lockouts
 
   # ENTER INCORRECT EMAIL OTP TOO MANY TIMES DURING PASSWORD RESET - 2071
   Scenario: A user is blocked when they enter an incorrect email OTP more than 5 times during a password reset.
