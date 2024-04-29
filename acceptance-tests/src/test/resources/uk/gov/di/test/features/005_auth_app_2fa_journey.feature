@@ -40,7 +40,7 @@ Feature: Authentication App Journeys
     Then the user is taken to the "Create your GOV.UK One Login or sign in" page
     When the user selects sign in
     Then the user is taken to the "Enter your email" page
-    When user enters "TEST_USER_AUTH_APP_EMAIL" email address
+    When user enters "TEST_USER_AUTH_APP_EMAIL_2" email address
     Then the user is taken to the "Enter your password" page
     When the user enters their password
     Then the user is returned to the service
@@ -51,9 +51,9 @@ Feature: Authentication App Journeys
     Then the user is taken to the "Create your GOV.UK One Login or sign in" page
     When the user selects sign in
     Then the user is taken to the "Enter your email" page
-    When user enters "TEST_USER_AUTH_APP_EMAIL" email address
+    When user enters "TEST_USER_AUTH_APP_EMAIL_3" email address
     Then the user is taken to the "Enter your password" page
     When the user enters their password
     Then the user is returned to the service
-    When the user comes from the stub relying party with options: "default"
+    When the user comes from the stub relying party with options: "2fa-on"
     Then the user is taken to the "Enter a security code to continue" page
