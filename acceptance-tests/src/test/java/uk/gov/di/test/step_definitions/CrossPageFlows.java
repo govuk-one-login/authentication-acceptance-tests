@@ -16,6 +16,7 @@ import uk.gov.di.test.pages.RpStubPage;
 import uk.gov.di.test.pages.SetUpAnAuthenticatorAppPage;
 import uk.gov.di.test.pages.UserInformationPage;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static uk.gov.di.test.utils.Constants.NEW_VALID_PASSWORD;
 
@@ -209,7 +210,7 @@ public class CrossPageFlows extends BasePage {
                 authAppSecretKey = System.getenv().get("ACCOUNT_RECOVERY_USER_AUTH_APP_SECRET");
                 setUpAnAuthenticatorAppPage.iCannotScanQrCodeClick();
                 authAppSecretKey = setUpAnAuthenticatorAppPage.getSecretFieldText();
-                assertTrue(setUpAnAuthenticatorAppPage.getSecretFieldText().length() == 32);
+                assertEquals(32, setUpAnAuthenticatorAppPage.getSecretFieldText().length());
 
                 if (authAppSecretKey == null) {
                     authAppSecretKey = System.getenv().get("ACCOUNT_RECOVERY_USER_AUTH_APP_SECRET");
