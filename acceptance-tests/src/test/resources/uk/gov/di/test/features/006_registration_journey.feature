@@ -43,7 +43,7 @@ Feature: Registration Journey
     Then the user is taken to the "Enter your email address" page
     When user enters invalid email address
     Then the user is shown an error message
-    When user enters "TEST_USER_EMAIL" email address
+    When user enters "TEST_USER_EMAIL_2" email address
     Then the user is taken to the "Check your email" page
     When the user enters the six digit security code from their email
     Then the user is taken to the "Create your password" page
@@ -62,7 +62,7 @@ Feature: Registration Journey
     Then the user is taken to the "Create your GOV.UK One Login or sign in" page
     When the user selects create an account
     Then the user is taken to the "Enter your email address" page
-    When user enters "TEST_USER_EMAIL" email address
+    When user enters "TEST_USER_EMAIL_3" email address
     Then the user is taken to the "Check your email" page
     When the user enters the six digit security code from their email
     Then the user is taken to the "Create your password" page
