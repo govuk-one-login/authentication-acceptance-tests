@@ -384,6 +384,7 @@ function resetTestUsers() {
   deleteUser $CREATE_INCORRECT_AUTH_APP_CODE_LOCKOUT
   deleteUser $TEST_USER_EMAIL_2
   deleteUser $TEST_USER_EMAIL_3
+  deleteUser $TEST_USER_EMAIL_4
 
   updateTermsAndConditions $TERMS_AND_CONDITIONS_TEST_USER_EMAIL "1.0"
   updateTermsAndConditions $TEMPORARILY_SUSPENDED_ACCOUNT_EMAIL_4 "1.0"
