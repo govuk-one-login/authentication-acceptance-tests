@@ -105,4 +105,21 @@ public class CommonStepDef extends BasePage {
         String idToken = userInformationPage.getIdToken();
         rpStubPage.reauthRequired(idToken);
     }
+
+    @Given("the user {string} is partial registered up to choose how to get security codes page")
+    public void theUserPartialRegisteredUpToChooseHowToGetSecurityCodesPage(String emailAddress) {
+        crossPageFlows.createPartialRegisteredUpToChooseHowToGetSecurityCodesPage(emailAddress);
+    }
+
+    @When(
+            "the user {string} attempts to resign in after partial registered and select forgotten password link")
+    public void theUserAttemptsToResignInAfterPartialRegisteredAndSelectForgottenPasswordLink(
+            String emailAddress) {
+        crossPageFlows.selectForgottenPasswordLinkAndCompletePasswordChange(emailAddress);
+    }
+
+    @When("the user chooses {string} to get security codes and progress to set it up")
+    public void theUserToGetSecurityCodesAndProgressToSetItUp(String userType) throws Exception {
+        crossPageFlows.setUpAuthenticationBy(userType);
+    }
 }
