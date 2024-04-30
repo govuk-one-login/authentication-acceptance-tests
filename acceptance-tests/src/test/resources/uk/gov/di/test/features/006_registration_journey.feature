@@ -81,3 +81,16 @@ Feature: Registration Journey
     When the user clicks the continue button
     Then the user is returned to the service
     And the user logs out
+
+
+  @partialRegUser
+  Scenario: Partial registered user is able to complete registration when they restart journey and select forgotten password for sms user
+    Given the user "TEST_USER_EMAIL_4" is partial registered up to choose how to get security codes page
+    Then the user is taken to the "Choose how to get security codes" page
+    When the user "TEST_USER_EMAIL_4" attempts to resign in after partial registered and select forgotten password link
+    Then the user is taken to the "Finish creating your GOV.UK One Login" page
+    When the user chooses "Text message" to get security codes and progress to set it up
+    Then the user is taken to the "You’ve created your GOV.UK One Login" page
+    When the user clicks the continue button
+    Then the user is returned to the service
+    And the user logs out

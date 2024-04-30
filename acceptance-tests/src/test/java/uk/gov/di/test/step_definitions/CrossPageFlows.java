@@ -16,9 +16,11 @@ import uk.gov.di.test.pages.RpStubPage;
 import uk.gov.di.test.pages.SetUpAnAuthenticatorAppPage;
 import uk.gov.di.test.pages.UserInformationPage;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static uk.gov.di.test.utils.Constants.NEW_VALID_PASSWORD;
 
 public class CrossPageFlows extends BasePage {
+    private String authAppSecretKey;
     public CreateOrSignInPage createOrSignInPage = new CreateOrSignInPage();
     public RpStubPage rpStubPage = new RpStubPage();
     public EnterYourEmailAddressToSignInPage enterYourEmailAddressToSignInPage =
@@ -153,5 +155,70 @@ public class CrossPageFlows extends BasePage {
         findAndClickContinue();
         waitForPageLoad("User Info");
         userInformationPage.logoutOfAccount();
+    }
+
+    public void createPartialRegisteredUpToChooseHowToGetSecurityCodesPage(
+            String userEmailAddress) {
+        rpStubPage.goToRpStub();
+        rpStubPage.selectRpOptionsByIdAndContinue("");
+        setAnalyticsCookieTo(false);
+        waitForPageLoad("Create your GOV.UK One Login or sign in");
+        createOrSignInPage.clickCreateAGovUkOneLoginButton();
+        enterYourEmailAddressToSignInPage.enterEmailAddressAndContinue(
+                System.getenv().get(userEmailAddress));
+        waitForPageLoad("Check your email");
+        checkYourEmailPage.enterCorrectEmailCodeAndContinue();
+        waitForPageLoad("Create your password");
+        String passwordVal = System.getenv().get("TEST_USER_PASSWORD");
+        createYourPasswordPage.enterBothPasswordsAndContinue(passwordVal, passwordVal);
+    }
+
+    public void selectForgottenPasswordLinkAndCompletePasswordChange(String userEmailAddress) {
+        rpStubPage.goToRpStub();
+        rpStubPage.selectRpOptionsByIdAndContinue("");
+        setAnalyticsCookieTo(false);
+        waitForPageLoad("Create your GOV.UK One Login or sign in");
+        createOrSignInPage.clickSignInButton();
+        waitForPageLoad("Enter your email address to sign in");
+        enterYourEmailAddressToSignInPage.enterEmailAddressAndContinue(
+                System.getenv().get(userEmailAddress));
+        waitForPageLoad("Enter your password");
+        enterYourPasswordPage.clickForgottenPasswordLink();
+        waitForPageLoad("Check your email");
+        checkYourEmailPage.enterCorrectEmailCodeAndContinue();
+        waitForPageLoad("Reset your password");
+        resetYourPasswordPage.enterPasswordResetDetailsAndContinue(
+                NEW_VALID_PASSWORD, NEW_VALID_PASSWORD);
+    }
+
+    public void setUpAuthenticationBy(String userType) throws Exception {
+        switch (userType.toLowerCase()) {
+            case "text message":
+                chooseHowToGetSecurityCodesPage.selectAuthMethodAndContinue("text message");
+                waitForPageLoad("Enter your mobile phone number");
+                enterYourMobilePhoneNumberPage.enterUkPhoneNumberAndContinue(
+                        System.getenv().get("TEST_USER_PHONE_NUMBER"));
+                waitForPageLoad("Check your phone");
+                checkYourPhonePage.enterCorrectPhoneCodeAndContinue();
+                break;
+
+            case "auth app":
+                chooseHowToGetSecurityCodesPage.selectAuthMethodAndContinue("auth app");
+                waitForPageLoad("Set up an authenticator app");
+
+                authAppSecretKey = System.getenv().get("ACCOUNT_RECOVERY_USER_AUTH_APP_SECRET");
+                setUpAnAuthenticatorAppPage.iCannotScanQrCodeClick();
+                authAppSecretKey = setUpAnAuthenticatorAppPage.getSecretFieldText();
+                assertTrue(setUpAnAuthenticatorAppPage.getSecretFieldText().length() == 32);
+
+                if (authAppSecretKey == null) {
+                    authAppSecretKey = System.getenv().get("ACCOUNT_RECOVERY_USER_AUTH_APP_SECRET");
+                }
+                setUpAnAuthenticatorAppPage.enterCorrectAuthAppCodeAndContinue(authAppSecretKey);
+                break;
+
+            default:
+                throw new Exception("Wrong security codes text");
+        }
     }
 }
