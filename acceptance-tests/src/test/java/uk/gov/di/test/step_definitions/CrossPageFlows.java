@@ -171,6 +171,7 @@ public class CrossPageFlows extends BasePage {
         waitForPageLoad("Create your password");
         String passwordVal = System.getenv().get("TEST_USER_PASSWORD");
         createYourPasswordPage.enterBothPasswordsAndContinue(passwordVal, passwordVal);
+        waitForPageLoad("Choose how to get security codes");
     }
 
     public void selectForgottenPasswordLinkAndCompletePasswordChange(String userEmailAddress) {
