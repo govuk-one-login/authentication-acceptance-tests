@@ -80,10 +80,13 @@ public class Driver {
                             } catch (MalformedURLException e) {
                                 throw new RuntimeException(e);
                             }
-                            break;
                         }
-                        driverPool.get().manage().window().maximize();
+                        break;
+
+                        // driverPool.get().manage().window().maximize();
                 }
+                // driverPool.get().manage().window().maximize();
+                driverPool.get().manage().deleteAllCookies();
             }
         return driverPool.get();
     }

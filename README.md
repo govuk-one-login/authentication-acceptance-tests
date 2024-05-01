@@ -101,3 +101,10 @@ If new configuration environment variables or seed test data has been added reme
 Local report:
 
 Report is generated automatically - target/cucumber-report/index.html
+
+## Fail fast
+
+A fail fast mechanism has been added and can be toggled by setting the FAIL_FAST_ENABLED option to true or false as required.
+For local runs this variable lives in the .env file.
+For a pipeline run this variable can be set/changed in AWS Param Store as required. The default is 'false'.
+When tests have been skipped due to the fail fast mechanism being triggered they will show up as PendingExceptions.

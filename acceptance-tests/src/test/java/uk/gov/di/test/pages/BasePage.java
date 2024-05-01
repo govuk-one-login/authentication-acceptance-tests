@@ -1,8 +1,10 @@
 package uk.gov.di.test.pages;
 
+import io.cucumber.java.Scenario;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Cookie;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -28,6 +30,10 @@ public class BasePage {
                             "RP_URL",
                             "https://acceptance-test-rp-build.build.stubs.account.gov.uk/");
     protected static final Duration DEFAULT_PAGE_LOAD_WAIT_TIME = Duration.of(20, SECONDS);
+
+    protected static WebDriver driver;
+    protected static Scenario scenario;
+
     public By authAppCodeField = By.id("code");
 
     protected void waitForPageLoad(String titleContains) {
@@ -196,5 +202,14 @@ public class BasePage {
                                         ((JavascriptExecutor) wd)
                                                 .executeScript("return document.readyState")
                                                 .equals("complete"));
+    }
+
+    public void takeScreenshot(Scenario scenario) {
+
+        // WebDriver driver = (WebDriver) Driver.getInstance();
+
+        //        final byte[] screenshot = ((TakesScreenshot)
+        // driver).getScreenshotAs(OutputType.BYTES);
+        //        scenario.attach(screenshot, "image/png", "Step screenshot");
     }
 }
