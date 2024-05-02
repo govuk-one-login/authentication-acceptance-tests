@@ -4,6 +4,8 @@ import io.cucumber.java.Scenario;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Cookie;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedCondition;
@@ -204,12 +206,9 @@ public class BasePage {
                                                 .equals("complete"));
     }
 
-    public void takeScreenshot(Scenario scenario) {
-
-        // WebDriver driver = (WebDriver) Driver.getInstance();
-
-        //        final byte[] screenshot = ((TakesScreenshot)
-        // driver).getScreenshotAs(OutputType.BYTES);
-        //        scenario.attach(screenshot, "image/png", "Step screenshot");
+    public void takeScreenshot(WebDriver driver, Scenario scenario) {
+        TakesScreenshot ts = (TakesScreenshot) driver;
+        final byte[] screenshot = ts.getScreenshotAs(OutputType.BYTES);
+        scenario.attach(screenshot, "image/png", "Step screenshot");
     }
 }

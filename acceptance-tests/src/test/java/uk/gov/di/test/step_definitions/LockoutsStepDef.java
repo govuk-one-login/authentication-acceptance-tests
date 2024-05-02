@@ -203,7 +203,7 @@ public class LockoutsStepDef extends BasePage {
     public void theLockoutScreenForWrongSecurityCodesIsDisplayed() {
         waitForPageLoad("You entered the wrong security code too many times");
         assertTrue(getLockoutScreenText().contains("2 hours"));
-        takeScreenshot(scenario);
+        takeScreenshot(Driver.get(), scenario);
     }
 
     // YOU ENTERED WRONG SECURITY CODES
@@ -214,13 +214,14 @@ public class LockoutsStepDef extends BasePage {
                 Driver.get()
                         .findElement(By.xpath("//*[contains(text(), '15 minutes')]"))
                         .isDisplayed());
-        takeScreenshot(scenario);
+
+        takeScreenshot(Driver.get(), scenario);
     }
 
     @Then("the non blocking You entered the wrong security code too many times page is displayed")
     public void theNonBlockingYouEnteredTheWrongSecurityCodeTooManyTimesPageIsDisplayed() {
         waitForPageLoad("You entered the wrong security code too many times");
-        takeScreenshot(scenario);
+        takeScreenshot(Driver.get(), scenario);
     }
 
     // YOU CANNOT GET A NEW SECURITY CODE
@@ -235,7 +236,7 @@ public class LockoutsStepDef extends BasePage {
                 Driver.get()
                         .findElement(By.xpath("//*[contains(text(), '15 minutes')]"))
                         .isDisplayed());
-        takeScreenshot(scenario);
+        takeScreenshot(Driver.get(), scenario);
     }
 
     // YOU ASKED TO RESEND SECURITY CODES
@@ -243,7 +244,7 @@ public class LockoutsStepDef extends BasePage {
     public void theLockoutScreenForRequestingTooManySecurityCodesIsDisplayed() {
         waitForPageLoad("You asked to resend the security code too many times");
         assertTrue(getLockoutScreenText().contains("2 hours"));
-        takeScreenshot(scenario);
+        takeScreenshot(Driver.get(), scenario);
     }
 
     // CANNOT CREATE
@@ -254,7 +255,7 @@ public class LockoutsStepDef extends BasePage {
         waitForPageLoad("You cannot create a GOV.UK One Login at the moment");
         assertTrue(getLockoutScreenText().contains("resend the security code"));
         assertTrue(getLockoutScreenText().contains("2 hours"));
-        takeScreenshot(scenario);
+        takeScreenshot(Driver.get(), scenario);
     }
 
     // CANNOT SIGN IN
@@ -263,7 +264,7 @@ public class LockoutsStepDef extends BasePage {
         waitForPageLoad("You cannot sign in at the moment");
         assertTrue(getLockoutScreenText().contains("wrong password"));
         assertTrue(getLockoutScreenText().contains("2 hours"));
-        takeScreenshot(scenario);
+        takeScreenshot(Driver.get(), scenario);
     }
 
     @Then(
@@ -272,7 +273,7 @@ public class LockoutsStepDef extends BasePage {
         waitForPageLoad("You cannot sign in at the moment");
         assertTrue(getLockoutScreenText().contains("resend the security code"));
         assertTrue(getLockoutScreenText().contains("2 hours"));
-        takeScreenshot(scenario);
+        takeScreenshot(Driver.get(), scenario);
     }
 
     @Then("the 2hr You cannot sign in at the moment screen for wrong security codes is displayed")
@@ -280,13 +281,13 @@ public class LockoutsStepDef extends BasePage {
         waitForPageLoad("You cannot sign in at the moment");
         assertTrue(getLockoutScreenText().contains("wrong security code"));
         assertTrue(getLockoutScreenText().contains("2 hours"));
-        takeScreenshot(scenario);
+        takeScreenshot(Driver.get(), scenario);
     }
 
     @Then("no lockout is triggered and the user remains on the {string} page")
     public void noLockoutIsTriggered(String pageTitle) {
         assertTrue(Driver.get().getTitle().contains(pageTitle));
-        takeScreenshot(scenario);
+        takeScreenshot(Driver.get(), scenario);
     }
 
     @Then("the 2hr You entered the wrong password too many times screen is displayed")
@@ -294,7 +295,7 @@ public class LockoutsStepDef extends BasePage {
         waitForPageLoad("You entered the wrong password too many times");
         assertTrue(getLockoutScreenText().contains("2 hours"));
         assertTrue(getLockoutScreenText().contains("wrong password"));
-        takeScreenshot(scenario);
+        takeScreenshot(Driver.get(), scenario);
     }
 
     public String getLockoutScreenText() {
