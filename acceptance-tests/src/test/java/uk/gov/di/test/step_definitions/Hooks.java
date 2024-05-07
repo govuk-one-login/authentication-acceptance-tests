@@ -11,6 +11,9 @@ import org.openqa.selenium.WebDriver;
 import uk.gov.di.test.pages.BasePage;
 import uk.gov.di.test.utils.Driver;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
 public class Hooks extends BasePage {
 
     private static int failureCount = 0;
@@ -48,7 +51,12 @@ public class Hooks extends BasePage {
             WebDriver driver = Driver.get();
 
             final byte[] screenshot = ((TakesScreenshot) driver).getScreenshotAs(OutputType.BYTES);
-            scenario.attach(screenshot, "image/png", "Failure screenshot");
+            scenario.attach(
+                    screenshot,
+                    "image/png",
+                    "Failure screenshot - "
+                            + new SimpleDateFormat("dd/MM/yyyy HH:mm:ss")
+                                    .format(Calendar.getInstance().getTime()));
 
             if (FAIL_FAST_ENABLED) {
                 failureCount++;
