@@ -42,3 +42,4 @@ if [ "${LOCAL}" == "1" ]; then
 fi
 
 resetTestUsers
+resetAccountIntervention
