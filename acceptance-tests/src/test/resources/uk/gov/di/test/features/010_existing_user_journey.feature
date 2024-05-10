@@ -10,12 +10,13 @@ Feature: Login Journey
     When user enters "TEST_USER_2_EMAIL" email address
     Then the user is taken to the "You have a GOV.UK One Login" page
 
+  @craig
   Scenario: Existing user is correctly prompted to login using sms
-    Given the user comes from the stub relying party with options: "default"
+    Given the user "MADE_UP_EMAIL" comes from the stub relying party with options: "default"
     Then the user is taken to the "Create your GOV.UK One Login or sign in" page
     When the user selects sign in
     Then the user is taken to the "Enter your email" page
-    When user enters "TEST_USER_2_EMAIL" email address
+    When user enters "MADE_UP_EMAIL" email address
     Then the user is taken to the "Enter your password" page
     When the user enters their password
     Then the user is taken to the "Check your phone" page

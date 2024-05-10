@@ -25,7 +25,14 @@ dependencies {
                        "org.seleniumhq.selenium:selenium-java:${dependencyVersions.selenium_java_version}",
                        "org.junit.jupiter:junit-jupiter-api:${dependencyVersions.junit_version}",
                        "commons-codec:commons-codec:1.15","io.github.cdimascio:java-dotenv:5.2.2",
-                       "commons-codec:commons-codec:1.15"
+                       "commons-codec:commons-codec:1.15",
+
+    implementation(platform("software.amazon.awssdk:bom:2.21.1"))
+    implementation("software.amazon.awssdk:dynamodb")
+    implementation("software.amazon.awssdk:sso")
+    implementation("software.amazon.awssdk:ssooidc")
+    implementation group: 'org.bouncycastle', name: 'bcprov-jdk18on', version: '1.78.1'
+
 
     testImplementation group: 'com.deque', name: 'axe-selenium', version:"${dependencyVersions.axe_version}"
     testImplementation group: 'org.json', name: 'json', version:"${dependencyVersions.json_version}"
