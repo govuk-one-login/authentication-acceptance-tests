@@ -2,10 +2,6 @@
 
 function reAuthentication() {
 
-#  # Have to delete existing account interventions here as any update to the user in user-profile resets the
-#  # PublicSubjectID and SubjectID fields which are used to generate the pairwise id for the intervention, which then
-#  # breaks the link between the user and any existing intervention in the stub table, and leaves an orphaned intervention
-
   createSMSUser \
     $TEST_USER_REAUTH_SMS_1 \
     $TEST_USER_PASSWORD \
