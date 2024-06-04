@@ -25,4 +25,9 @@ public class EnterYourMobilePhoneNumberPage extends BasePage {
         clearFieldAndEnter(ukPhoneNumberField, phoneNumber);
         findAndClickContinue();
     }
+
+    public void enterValidUkPhoneNumberAndContinue() {
+        String validUkPhoneNumber = System.getenv("TEST_USER_PHONE_NUMBER");
+        enterUkPhoneNumberAndContinue(validUkPhoneNumber);
+    }
 }
