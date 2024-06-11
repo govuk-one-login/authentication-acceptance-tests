@@ -13,4 +13,12 @@ public final class Constants {
     public static final String NEW_VALID_PASSWORD = "new-password1";
     public static final String INCORRECT_EMAIL_OTP_CODE = "123456";
     public static final String INCORRECT_PHONE_CODE = "123456";
+    public static final String INTERNATIONAL_MOBILE_PHONE_NUMBER_INCORRECT_FORMAT =
+            "+123456789123456789123456";
+    public static final String INTERNATIONAL_MOBILE_PHONE_NUMBER_NON_DIGIT_CHARS = "/3383838383";
+    public static final String INTERNATIONAL_MOBILE_PHONE_NUMBER_VALID = "+61412123123";
+    public static final String UK_MOBILE_PHONE_NUMBER_WITH_INTERNATIONAL_DIALING_CODE =
+            "+447914123456";
+    public static final String UK_MOBILE_PHONE_NUMBER_INCORRECT_FORMAT = "070000000000000";
+    public static final String UK_MOBILE_PHONE_NUMBER_NON_DIGIT_CHARS = "0780312*a45";
 }

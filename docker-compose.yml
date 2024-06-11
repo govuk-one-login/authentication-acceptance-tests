@@ -3,12 +3,16 @@ version: '3.8'
 services:
   selenium-firefox:
     image: selenium/standalone-firefox@sha256:02bd079b1e53a2abc4923fe84262df5a9e9de020d29f7c6552e4e7f663599e4d
+    #USE THESE VALUES IF YOU HAVE A MAC M1/M2/M3 (ARM) chip
+    #image: seleniarm/standalone-firefox:latest
     ports:
       - 4444:4444
     networks:
       - op-net
   selenium-chrome:
     image: selenium/standalone-chrome@sha256:36784cc22ea01886ac226146be343afe7d984d9fc69436e52c2c0f8fd0dc0f55
+    #USE THESE VALUES IF YOU HAVE A MAC M1/M2/M3 (ARM) chip
+    #image: seleniarm/standalone-chromium:latest
     ports:
       - 4445:4444
     networks:

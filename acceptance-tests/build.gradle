@@ -31,7 +31,6 @@ dependencies {
 
     testImplementation group: 'com.deque', name: 'axe-selenium', version:"${dependencyVersions.axe_version}"
     testImplementation group: 'org.json', name: 'json', version:"${dependencyVersions.json_version}"
-    //testImplementation group: 'io.cucumber', name: 'cucumber-junit-platform-engine', version: '7.16.1'
 
     testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:${dependencyVersions.junit_version}"
 }
@@ -67,7 +66,7 @@ task cucumber() {
         javaexec {
             main = "io.cucumber.core.cli.Main"
             classpath = configurations.cucumberRuntime + sourceSets.main.output + sourceSets.test.output
-            args = ['--plugin', 'html:target/cucumber-report/index.html', '--plugin', 'pretty', '--glue', 'uk.gov.di.test.step_definitions', 'src/test/resources', '--threads', 10]
+            args = ['--plugin', 'html:target/cucumber-report/index.html', '--plugin', 'pretty', '--glue', 'uk.gov.di.test.step_definitions', 'src/test/resources', '--threads', 1]
         }
     }
 }

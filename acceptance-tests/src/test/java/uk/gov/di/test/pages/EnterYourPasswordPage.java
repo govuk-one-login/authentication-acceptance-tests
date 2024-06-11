@@ -28,4 +28,9 @@ public class EnterYourPasswordPage extends BasePage {
             System.out.println("Incorrect password entry count: " + (index + 1));
         }
     }
+
+    public void enterCorrectPasswordAndContinue() {
+        String correctPassword = System.getenv().get("TEST_USER_PASSWORD");
+        enterPasswordAndContinue(correctPassword);
+    }
 }

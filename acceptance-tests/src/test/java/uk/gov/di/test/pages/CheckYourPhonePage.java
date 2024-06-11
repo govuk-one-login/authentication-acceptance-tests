@@ -9,6 +9,8 @@ public class CheckYourPhonePage extends BasePage {
     By phoneCodeField = By.id("code");
     By problemsWithTheCodeLink = By.xpath("//*[contains(text(), 'Problems with the code?')]");
     By sendTheCodeAgainLink = By.xpath("//*[contains(text(), 'send the code again')]");
+    By changeHowYouGetSecurityCodesLink =
+            By.xpath("//*[contains(text(), 'change how you get security codes')]");
 
     public void enterPhoneCode(String code) {
         clearFieldAndEnter(phoneCodeField, code);
@@ -26,6 +28,15 @@ public class CheckYourPhonePage extends BasePage {
 
     public void clickProblemsWithTheCodeLink() {
         Driver.get().findElement(problemsWithTheCodeLink).click();
+    }
+
+    public void clickChangeHowYouGetSecurityCodesLink() {
+        Driver.get().findElement(changeHowYouGetSecurityCodesLink).click();
+    }
+
+    public void changeHowToGetSecurityCodes() {
+        clickProblemsWithTheCodeLink();
+        clickChangeHowYouGetSecurityCodesLink();
     }
 
     public void clickSendTheCodeAgainLink() {
