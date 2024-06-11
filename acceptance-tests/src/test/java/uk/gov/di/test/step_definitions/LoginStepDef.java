@@ -7,16 +7,13 @@ import org.junit.jupiter.api.Assertions;
 import uk.gov.di.test.pages.BasePage;
 import uk.gov.di.test.pages.CheckYourEmailPage;
 import uk.gov.di.test.pages.CheckYourPhonePage;
-import uk.gov.di.test.pages.ChooseHowToGetSecurityCodesPage;
 import uk.gov.di.test.pages.CreateOrSignInPage;
 import uk.gov.di.test.pages.EnterThe6DigitSecurityCodeShownInYourAuthenticatorAppPage;
 import uk.gov.di.test.pages.EnterYourEmailAddressPage;
 import uk.gov.di.test.pages.EnterYourEmailAddressToSignInPage;
-import uk.gov.di.test.pages.EnterYourMobilePhoneNumberPage;
 import uk.gov.di.test.pages.EnterYourPasswordPage;
 import uk.gov.di.test.pages.ReenterYourSignInDetailsToContinuePage;
 import uk.gov.di.test.pages.ResetYourPasswordPage;
-import uk.gov.di.test.pages.RpStubPage;
 import uk.gov.di.test.pages.SetUpAnAuthenticatorAppPage;
 import uk.gov.di.test.pages.TermsAndConditionsPage;
 import uk.gov.di.test.pages.YouAskedToResendTheSecurityCodeTooManyTimesPage;
@@ -55,12 +52,6 @@ public class LoginStepDef extends BasePage {
             enterThe6DigitSecurityCodeShownInYourAuthenticatorAppPage =
                     new EnterThe6DigitSecurityCodeShownInYourAuthenticatorAppPage();
     public CrossPageFlows crossPageFlows = new CrossPageFlows();
-    public ChooseHowToGetSecurityCodesPage chooseHowToGetSecurityCodesPage =
-            new ChooseHowToGetSecurityCodesPage();
-    public EnterYourMobilePhoneNumberPage enterYourMobilePhoneNumberPage =
-            new EnterYourMobilePhoneNumberPage();
-
-    RpStubPage rpStubPage = new RpStubPage();
 
     @When("the user enters their password which is on the top 100k password list")
     public void theUserEntersTheirPasswordWhichIsOnTheTop100kPasswordList() {
@@ -73,8 +64,7 @@ public class LoginStepDef extends BasePage {
     }
 
     @When("the user selects sign in")
-    public void theUserSelectsSignIn() throws InterruptedException {
-        Thread.sleep(2000);
+    public void theUserSelectsSignIn() {
         createOrSignInPage.clickSignInButton();
     }
 
@@ -97,7 +87,7 @@ public class LoginStepDef extends BasePage {
     @When("the user enters the correct password")
     @When("the user enters their password")
     public void theUserEntersTheirPassword() {
-        enterYourPasswordPage.enterPasswordAndContinue(System.getenv().get("TEST_USER_PASSWORD"));
+        enterYourPasswordPage.enterCorrectPasswordAndContinue();
     }
 
     @When("the user enters their new password")
@@ -253,7 +243,6 @@ public class LoginStepDef extends BasePage {
         enterYourPasswordPage.enterIncorrectPasswordNumberOfTimes(1);
     }
 
-    // @And("the user enters an incorrect password {int} times")
     @When("the user enters an incorrect password a further {int} times")
     @When("the user enters an incorrect password {int} times")
     public void theUserEntersAnIncorrectPasswordAFurtherXTimes(Integer attemptCount) {

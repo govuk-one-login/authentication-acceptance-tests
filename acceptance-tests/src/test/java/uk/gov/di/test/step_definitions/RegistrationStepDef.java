@@ -16,7 +16,16 @@ import uk.gov.di.test.pages.RpStubPage;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static uk.gov.di.test.utils.Constants.*;
+import static uk.gov.di.test.utils.Constants.INTERNATIONAL_MOBILE_PHONE_NUMBER_INCORRECT_FORMAT;
+import static uk.gov.di.test.utils.Constants.INTERNATIONAL_MOBILE_PHONE_NUMBER_NON_DIGIT_CHARS;
+import static uk.gov.di.test.utils.Constants.INTERNATIONAL_MOBILE_PHONE_NUMBER_VALID;
+import static uk.gov.di.test.utils.Constants.INVALID_PASSWORD;
+import static uk.gov.di.test.utils.Constants.SEQUENCE_NUMBER_PASSWORD;
+import static uk.gov.di.test.utils.Constants.SHORT_DIGIT_PASSWORD;
+import static uk.gov.di.test.utils.Constants.UK_MOBILE_PHONE_NUMBER_INCORRECT_FORMAT;
+import static uk.gov.di.test.utils.Constants.UK_MOBILE_PHONE_NUMBER_NON_DIGIT_CHARS;
+import static uk.gov.di.test.utils.Constants.UK_MOBILE_PHONE_NUMBER_WITH_INTERNATIONAL_DIALING_CODE;
+import static uk.gov.di.test.utils.Constants.WEAK_PASSWORD;
 
 public class RegistrationStepDef extends BasePage {
 
@@ -32,8 +41,7 @@ public class RegistrationStepDef extends BasePage {
     NoGovUkOneLoginFoundPage noGovUkOneLoginFoundPage = new NoGovUkOneLoginFoundPage();
 
     @When("the user selects create an account")
-    public void theUserSelectsCreateAnAccount() throws InterruptedException {
-        Thread.sleep(2000);
+    public void theUserSelectsCreateAnAccount() {
         createOrSignInPage.clickCreateAGovUkOneLoginButton();
     }
 
@@ -82,8 +90,7 @@ public class RegistrationStepDef extends BasePage {
 
     @When("the user enters their mobile phone number")
     public void theUserEntersTheirMobilePhoneNumber() {
-        enterYourMobilePhoneNumberPage.enterUkPhoneNumberAndContinue(
-                System.getenv().get("TEST_USER_PHONE_NUMBER"));
+        enterYourMobilePhoneNumberPage.enterValidUkPhoneNumberAndContinue();
     }
 
     @When("the user clicks logout")
@@ -94,7 +101,7 @@ public class RegistrationStepDef extends BasePage {
     @When("the user enters their mobile phone number using an international dialling code")
     public void theUserEntersTheirMobilePhoneNumberUsingAnInternationalDiallingCode() {
         enterYourMobilePhoneNumberPage.enterUkPhoneNumberAndContinue(
-                System.getenv().get("TEST_USER_INTERNATIONAL_PHONE_NUMBER"));
+                UK_MOBILE_PHONE_NUMBER_WITH_INTERNATIONAL_DIALING_CODE);
     }
 
     @When("the user submits a blank UK phone number")
@@ -104,17 +111,20 @@ public class RegistrationStepDef extends BasePage {
 
     @When("the user submits an international phone number in the UK phone number field")
     public void theUserSubmitsAnInternationalPhoneNumberInTheUKPhoneNumberField() {
-        enterYourMobilePhoneNumberPage.enterUkPhoneNumberAndContinue("+61412123123");
+        enterYourMobilePhoneNumberPage.enterUkPhoneNumberAndContinue(
+                INTERNATIONAL_MOBILE_PHONE_NUMBER_VALID);
     }
 
     @When("the user submits an incorrectly formatted UK phone number")
     public void theUserSubmitsAnIncorrectlyFormattedUKPhoneNumber() {
-        enterYourMobilePhoneNumberPage.enterUkPhoneNumberAndContinue("070000000000000");
+        enterYourMobilePhoneNumberPage.enterUkPhoneNumberAndContinue(
+                UK_MOBILE_PHONE_NUMBER_INCORRECT_FORMAT);
     }
 
     @When("the user submits a UK phone number containing non-digit characters")
     public void theUserSubmitsAUKPhoneNumberContainingNonDigitCharacters() {
-        enterYourMobilePhoneNumberPage.enterUkPhoneNumberAndContinue("0780312*a45");
+        enterYourMobilePhoneNumberPage.enterUkPhoneNumberAndContinue(
+                UK_MOBILE_PHONE_NUMBER_NON_DIGIT_CHARS);
     }
 
     @When("the user ticks I do not have a UK mobile number")
@@ -135,35 +145,36 @@ public class RegistrationStepDef extends BasePage {
     @When("the user submits an incorrectly formatted international mobile phone number")
     public void theUserSubmitsAnIncorrectlyFormattedInternationalMobilePhoneNumber() {
         enterYourMobilePhoneNumberPage.enterInternationalMobilePhoneNumberAndContinue(
-                "+123456789123456789123456");
+                INTERNATIONAL_MOBILE_PHONE_NUMBER_INCORRECT_FORMAT);
     }
 
     @When("the user submits an international mobile phone number containing non-digit characters")
     public void theUserSubmitsAnInternationalMobilePhoneNumberContainingNonDigitCharacters() {
         enterYourMobilePhoneNumberPage.enterInternationalMobilePhoneNumberAndContinue(
-                "/3383838383");
+                INTERNATIONAL_MOBILE_PHONE_NUMBER_NON_DIGIT_CHARS);
     }
 
     @When("the user enters a valid international mobile phone number")
     public void theUserEntersAValidInternationalMobilePhoneNumber() {
         enterYourMobilePhoneNumberPage.enterInternationalMobilePhoneNumberAndContinue(
-                "+61412123123");
+                INTERNATIONAL_MOBILE_PHONE_NUMBER_VALID);
     }
 
     @Given(
             "a user has selected text message as their auth method and has moved on to the next page")
     public void aUserHasSelectedAnAuthMethodAndHasMovedOnToTheNextPage() {
+        String emailAddress = System.getenv().get("TEST_USER_STATE_PRESERVATION_EMAIL1");
+        String password = System.getenv().get("TEST_USER_PASSWORD");
         rpStubPage.goToRpStub();
         rpStubPage.selectRpOptionsByIdAndContinue("");
         waitForPageLoad("Create your GOV.UK One Login or sign in");
         createOrSignInPage.clickCreateAGovUkOneLoginButton();
         waitForPageLoad("Enter your email address");
-        enterYourEmailAddressPage.enterEmailAddressAndContinue(
-                System.getenv().get("TEST_USER_STATE_PRESERVATION_EMAIL1"));
+        enterYourEmailAddressPage.enterEmailAddressAndContinue(emailAddress);
         waitForPageLoad("Check your email");
         checkYourEmailPage.enterCorrectEmailCodeAndContinue();
         waitForPageLoad("Create your password");
-        createYourPasswordPage.enterBothPasswordsAndContinue("new-password1", "new-password1");
+        createYourPasswordPage.enterBothPasswordsAndContinue(password, password);
         waitForPageLoad("Choose how to get security codes");
         assertFalse(chooseHowToGetSecurityCodesPage.getTextMessageRadioButtonStatus());
         assertFalse(chooseHowToGetSecurityCodesPage.getAuthAppRadioButtonStatus());
@@ -173,17 +184,18 @@ public class RegistrationStepDef extends BasePage {
 
     @Given("a user has selected auth app as their auth method and has moved on to the next page")
     public void aUserHasSelectedAuthAppAsTheirAuthMethodAndHasMovedOnToTheNextPage() {
+        String emailAddress = System.getenv().get("TEST_USER_STATE_PRESERVATION_EMAIL2");
+        String password = System.getenv().get("TEST_USER_PASSWORD");
         rpStubPage.goToRpStub();
         rpStubPage.selectRpOptionsByIdAndContinue("");
         waitForPageLoad("Create your GOV.UK One Login or sign in");
         createOrSignInPage.clickCreateAGovUkOneLoginButton();
         waitForPageLoad("Enter your email address");
-        enterYourEmailAddressPage.enterEmailAddressAndContinue(
-                System.getenv().get("TEST_USER_STATE_PRESERVATION_EMAIL2"));
+        enterYourEmailAddressPage.enterEmailAddressAndContinue(emailAddress);
         waitForPageLoad("Check your email");
         checkYourEmailPage.enterCorrectEmailCodeAndContinue();
         waitForPageLoad("Create your password");
-        createYourPasswordPage.enterBothPasswordsAndContinue("new-password1", "new-password1");
+        createYourPasswordPage.enterBothPasswordsAndContinue(password, password);
         waitForPageLoad("Choose how to get security codes");
         assertFalse(chooseHowToGetSecurityCodesPage.getTextMessageRadioButtonStatus());
         assertFalse(chooseHowToGetSecurityCodesPage.getAuthAppRadioButtonStatus());

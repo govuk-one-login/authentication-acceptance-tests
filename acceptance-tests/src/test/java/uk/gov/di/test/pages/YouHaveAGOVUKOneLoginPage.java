@@ -14,4 +14,9 @@ public class YouHaveAGOVUKOneLoginPage extends BasePage {
         enterPassword(pw);
         findAndClickContinue();
     }
+
+    public void enterCorrectPasswordAndContinue() {
+        String correctPassword = System.getenv("TEST_USER_PASSWORD");
+        enterPasswordAndContinue(correctPassword);
+    }
 }
