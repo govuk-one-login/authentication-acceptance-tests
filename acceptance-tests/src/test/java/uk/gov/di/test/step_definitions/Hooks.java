@@ -21,16 +21,9 @@ public class Hooks extends BasePage {
     protected static final Boolean FAIL_FAST_ENABLED =
             Boolean.parseBoolean(System.getenv().getOrDefault("FAIL_FAST_ENABLED", "false"));
 
-    //    @Before(order = 2)
-    //    public void setupWebdriver() throws MalformedURLException {
-    //        if (failureCount == 0) {
-    //            super.setupWebdriver();
-    //            Driver.get().manage().deleteAllCookies();
-    //        }
-    //    }
-
     @Before(order = 1)
     public void setUpScenario(Scenario scenario) {
+        Driver.get().manage().deleteAllCookies();
         BasePage.scenario = scenario;
         if (FAIL_FAST_ENABLED) {
             if (failureCount > 0) {
@@ -61,7 +54,7 @@ public class Hooks extends BasePage {
             if (FAIL_FAST_ENABLED) {
                 failureCount++;
             }
+            Driver.closeDriver();
         }
-        Driver.closeDriver();
     }
 }
