@@ -1,5 +1,7 @@
 package uk.gov.di.test.step_definitions;
 
+import io.cucumber.java.en.And;
+import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import uk.gov.di.test.pages.BasePage;
@@ -13,10 +15,13 @@ import uk.gov.di.test.pages.EnterYourMobilePhoneNumberPage;
 import uk.gov.di.test.pages.EnterYourPasswordPage;
 import uk.gov.di.test.pages.FinishCreatingYourAccountPage;
 import uk.gov.di.test.pages.LockoutPage;
+import uk.gov.di.test.pages.ResetYourPasswordPage;
 import uk.gov.di.test.pages.RpStubPage;
+import uk.gov.di.test.pages.UserInformationPage;
 import uk.gov.di.test.pages.YouHaveAGOVUKOneLoginPage;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static uk.gov.di.test.utils.Constants.NEW_VALID_PASSWORD;
 
 public class LockoutsStepDef extends BasePage {
     public CheckYourEmailPage checkYourEmailPage = new CheckYourEmailPage();
@@ -36,6 +41,8 @@ public class LockoutsStepDef extends BasePage {
     public YouHaveAGOVUKOneLoginPage youHaveAGOVUKOneLoginPage = new YouHaveAGOVUKOneLoginPage();
     public CrossPageFlows crossPageFlows = new CrossPageFlows();
     public LockoutPage lockoutPage = new LockoutPage();
+    public ResetYourPasswordPage resetYourPasswordPage = new ResetYourPasswordPage();
+    public UserInformationPage userInformationPage = new UserInformationPage();
 
     @When(
             "the user {string} with a lockout for wrong email security codes reattempts to change their password during the lockout period")
@@ -287,5 +294,52 @@ public class LockoutsStepDef extends BasePage {
     public void theUserIsAbleToCompleteAccountCreation() {
         waitForPageLoad("Get security code");
         crossPageFlows.completeAccountCreationAfterNewEmailCode();
+    }
+
+    @Given("the user {string} is on the blocked page for entering too many incorrect passwords")
+    public void theUserIsOnBlockedPageForEnteringTooManyIncorrectPasswords(String emailAddress) {
+        rpStubPage.goToRpStub();
+        rpStubPage.selectRpOptionsByIdAndContinue("");
+        setAnalyticsCookieTo(false);
+        waitForPageLoad("Create your GOV.UK One Login or sign in");
+        createOrSignInPage.clickSignInButton();
+        waitForPageLoad("Enter your email address to sign in");
+        enterYourEmailAddressToSignInPage.enterEmailAddressAndContinue(
+                System.getenv().get(emailAddress));
+        waitForPageLoad("Enter your password");
+        enterYourPasswordPage.enterIncorrectPasswordNumberOfTimes(6);
+        waitForPageLoad("You entered the wrong password too many times");
+    }
+
+    @Then("the user resets their password")
+    public void theUserResetsTheirPassword() {
+        selectLinkByText("reset your password");
+        waitForPageLoad("Check your email");
+        checkYourEmailPage.enterCorrectEmailCodeAndContinue();
+        waitForPageLoad("Check your phone");
+        checkYourPhonePage.enterCorrectPhoneCodeAndContinue();
+        waitForPageLoad("Reset your password");
+        resetYourPasswordPage.enterPasswordResetDetailsAndContinue(
+                NEW_VALID_PASSWORD, NEW_VALID_PASSWORD);
+        waitForPageLoad("Example - GOV.UK - User Info");
+        userInformationPage.logoutOfAccount();
+    }
+
+    @And("the block is lifted and the user {string} can login")
+    public void theBlockIsLiftedAndTheUserCanLogin(String emailAddress) {
+        rpStubPage.goToRpStub();
+        rpStubPage.selectRpOptionsByIdAndContinue("");
+        setAnalyticsCookieTo(false);
+        waitForPageLoad("Create your GOV.UK One Login or sign in");
+        createOrSignInPage.clickSignInButton();
+        waitForPageLoad("Enter your email address to sign in");
+        enterYourEmailAddressToSignInPage.enterEmailAddressAndContinue(
+                System.getenv().get(emailAddress));
+        waitForPageLoad("Enter your password");
+        enterYourPasswordPage.enterNewPasswordAndContinue();
+        waitForPageLoad("Check your phone");
+        checkYourPhonePage.enterCorrectPhoneCodeAndContinue();
+        waitForPageLoad("Example - GOV.UK - User Info");
+        userInformationPage.logoutOfAccount();
     }
 }
