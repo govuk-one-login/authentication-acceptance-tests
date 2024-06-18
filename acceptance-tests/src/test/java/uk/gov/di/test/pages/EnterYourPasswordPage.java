@@ -2,6 +2,8 @@ package uk.gov.di.test.pages;
 
 import org.openqa.selenium.By;
 
+import static uk.gov.di.test.utils.Constants.NEW_VALID_PASSWORD;
+
 public class EnterYourPasswordPage extends BasePage {
 
     By passwordField = By.id("password");
@@ -31,5 +33,9 @@ public class EnterYourPasswordPage extends BasePage {
     public void enterCorrectPasswordAndContinue() {
         String correctPassword = System.getenv().get("TEST_USER_PASSWORD");
         enterPasswordAndContinue(correctPassword);
+    }
+
+    public void enterNewPasswordAndContinue() {
+        enterPasswordAndContinue(NEW_VALID_PASSWORD);
     }
 }

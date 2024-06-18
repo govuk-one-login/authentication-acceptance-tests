@@ -14,6 +14,12 @@ Feature: Sign in lockouts
     When the user "SIGN_IN_INCORRECT_PASSWORD_LOCKOUT" with a lockout for too many incorrect passwords attempts to sign in during the lockout period
     Then the 2hr You cannot sign in at the moment screen for wrong password is displayed
 
+  # USER BLOCKED FOR TOO MANY INCORRECT PASSWORDS CAN RESET THEIR PASSWORD AND BLOCK IS LIFTED
+  Scenario: When a user is blocked due to entering too many incorrect passwords during sign in they can reset their password.
+    Given the user "SIGN_IN_INCORRECT_PASSWORD_LOCKOUT_RESET_PW" is on the blocked page for entering too many incorrect passwords
+    When the user resets their password
+    Then the block is lifted and the user "SIGN_IN_INCORRECT_PASSWORD_LOCKOUT_RESET_PW" can login
+
   # ENTER INCORRECT SMS SECURITY CODE TOO MANY TIMES DURING SIGN IN - 2064
   Scenario: A user is blocked when they enter too many incorrect sms codes during sign in.
     Given the user comes from the stub relying party with options: "default"
