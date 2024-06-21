@@ -71,4 +71,4 @@ function reAuthentication() {
 
   updateMfaAuthApp $TEST_USER_REAUTH_AUTH_APP_3 $ACCOUNT_RECOVERY_USER_AUTH_APP_SECRET
 
-    }
+}
