@@ -1,4 +1,4 @@
-@Existing
+@Existing @build @staging
 Feature: Login Journey
   Existing user walks through a login journey
 

@@ -1,4 +1,4 @@
-@AccountInterventions
+@AccountInterventions @build
 Feature: Account interventions
 
   @suspended

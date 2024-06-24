@@ -110,11 +110,11 @@ else
   get_env_vars_from_SSM
 fi
 
-#if [ $LOCAL == "1" ]; then
-#  ./reset-test-data.sh -l $ENVIRONMENT
-#else
-#  ./reset-test-data.sh -r $ENVIRONMENT
-#fi
+if [ $LOCAL == "1" ]; then
+  ./reset-test-data.sh -l $ENVIRONMENT
+else
+  ./reset-test-data.sh -r $ENVIRONMENT
+fi
 
 ./gradlew cucumber
 

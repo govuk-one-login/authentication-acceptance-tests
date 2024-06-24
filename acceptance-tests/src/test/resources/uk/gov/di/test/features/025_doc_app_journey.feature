@@ -1,4 +1,4 @@
-@Doc
+@Doc @build
 Feature: Doc app journey
   User can perform a Doc app journey
 
