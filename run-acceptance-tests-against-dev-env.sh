@@ -2,7 +2,7 @@
 
 set -eu
 
-envvalue=("sandpit" "authdev1" "authdev2")
+envvalue=("sandpit" "authdev1" "authdev2" "dev")
 
 select word in "${envvalue[@]}"; do
   if [[ -z "$word" ]]; then

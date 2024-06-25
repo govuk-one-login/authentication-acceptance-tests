@@ -39,7 +39,7 @@ if [ "${LOCAL}" == "1" ]; then
   if [ "${ENVIRONMENT}" == "staging" ]; then
     export AWS_PROFILE="di-auth-staging-admin"
   else
-    if [ "${ENVIRONMENT}" == "authdev1" ] || [ "${ENVIRONMENT}" == "authdev2" ]; then
+    if [ "${ENVIRONMENT}" == "authdev1" ] || [ "${ENVIRONMENT}" == "authdev2" ] || [ "${ENVIRONMENT}" == "dev" ]; then
         export AWS_PROFILE="di-auth-development-admin"
     else
         export AWS_PROFILE="gds-di-development-admin"
