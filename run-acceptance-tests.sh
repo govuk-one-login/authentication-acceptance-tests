@@ -100,20 +100,11 @@ echo -e "Running di-authentication-acceptance-tests..."
 start_docker_services selenium-firefox selenium-chrome
 
 export_selenium_config
+
 if [ $LOCAL == "1" ]; then
   # shellcheck source=/dev/null
   set -o allexport && source .env && set +o allexport
-  if [ "${ENVIRONMENT}" == "staging" ]; then
-    export AWS_PROFILE="di-auth-staging-admin"
-  else
-    if [ "${ENVIRONMENT}" == "dev" ]; then
-        export AWS_PROFILE="di-auth-development-admin"
-    else
-        export AWS_PROFILE="gds-di-development-admin"
-    fi
-  fi
-  # shellcheck source=./scripts/export_aws_creds.sh
-  source "${DIR}/scripts/export_aws_creds.sh"
+else
   get_env_vars_from_SSM
 fi
 
