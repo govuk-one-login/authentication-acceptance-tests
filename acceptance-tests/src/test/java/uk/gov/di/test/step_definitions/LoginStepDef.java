@@ -296,4 +296,14 @@ public class LoginStepDef extends BasePage {
     public void theUserChangesTheirPasswordDuringReauth() {
         crossPageFlows.smsUserChangesPassword();
     }
+
+    @And("the {string} user {string} is able to sign back in without being blocked")
+    public void theUserIsAbleToSignBackInWithoutBeingBlocked(String userType, String emailAddress) {
+        crossPageFlows.successfulSignIn(userType, emailAddress);
+    }
+
+    @And("the {string} user {string} is able to reauthenticate without being blocked")
+    public void theUserIsAbleToReauthWithoutBeingBlocked(String userType, String emailAddress) {
+        crossPageFlows.successfulReauth(userType, emailAddress);
+    }
 }
