@@ -42,8 +42,8 @@ public class CrossPageFlows extends BasePage {
     public ResetYourPasswordPage resetYourPasswordPage = new ResetYourPasswordPage();
     public CreateYourPasswordPage createYourPasswordPage = new CreateYourPasswordPage();
     public UserInformationPage userInformationPage = new UserInformationPage();
-    public ReenterYourSignInDetailsToContinuePage reenterYourSignInDetailsToContinuePage = new ReenterYourSignInDetailsToContinuePage();
-
+    public ReenterYourSignInDetailsToContinuePage reenterYourSignInDetailsToContinuePage =
+            new ReenterYourSignInDetailsToContinuePage();
 
     public void requestPhoneSecurityCodeResendNumberOfTimes(Integer numberOfTimes) {
         for (int i = 0; i < numberOfTimes; i++) {
@@ -101,16 +101,16 @@ public class CrossPageFlows extends BasePage {
     }
 
     public void successfulReauth(String userType, String userEmailAddress) {
-        //assumes that the signed in page is currently displayed
+        // assumes that the signed in page is currently displayed
         waitForPageLoad("Example - GOV.UK - User Info");
         String idToken = userInformationPage.getIdToken();
         rpStubPage.reauthRequired(idToken);
         waitForPageLoad("");
-        //enter original email address
+        // enter original email address
         reenterYourSignInDetailsToContinuePage.enterEmailAddressAndContinue(userEmailAddress);
-        //enter correct password
+        // enter correct password
         enterYourPasswordPage.enterCorrectPasswordAndContinue();
-        //enter correct otp
+        // enter correct otp
         if (userType.equalsIgnoreCase("sms")) {
             // sms steps
             waitForPageLoad("Check your phone");

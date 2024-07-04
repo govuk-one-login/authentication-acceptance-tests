@@ -19,6 +19,6 @@ public class RpStubStepDef extends BasePage {
     @Then("the user is logged out")
     public void theUserIsLoggedOut() {
         waitForThisText("Request Object");
-        //assert that correct error code is displayed in the RP
+        // assert that correct error code is displayed in the RP
     }
 }
