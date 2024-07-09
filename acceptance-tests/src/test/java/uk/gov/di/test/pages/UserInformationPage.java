@@ -1,6 +1,7 @@
 package uk.gov.di.test.pages;
 
 import org.openqa.selenium.By;
+import uk.gov.di.test.utils.Driver;
 
 public class UserInformationPage extends BasePage {
 
@@ -8,10 +9,10 @@ public class UserInformationPage extends BasePage {
     By logoutButton = By.name("logout");
 
     public String getIdToken() {
-        return driver.findElement(idTokenField).getText();
+        return Driver.get().findElement(idTokenField).getText();
     }
 
     public void logoutOfAccount() {
-        driver.findElement(logoutButton).click();
+        Driver.get().findElement(logoutButton).click();
     }
 }

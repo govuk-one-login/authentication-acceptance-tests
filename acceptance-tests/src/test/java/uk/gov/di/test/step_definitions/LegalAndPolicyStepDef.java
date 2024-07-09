@@ -5,6 +5,7 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import org.openqa.selenium.By;
 import uk.gov.di.test.pages.BasePage;
+import uk.gov.di.test.utils.Driver;
 import uk.gov.di.test.utils.SupportingPages;
 
 import java.net.URI;
@@ -18,7 +19,7 @@ public class LegalAndPolicyStepDef extends BasePage {
 
     @And("the user clicks link {string}")
     public void theUserClicksLink(String linkText) {
-        driver.findElement(By.partialLinkText(linkText)).click();
+        Driver.get().findElement(By.partialLinkText(linkText)).click();
     }
 
     @Then("the user is taken to the accessibility statement page")
@@ -43,20 +44,20 @@ public class LegalAndPolicyStepDef extends BasePage {
 
     private void waitForPageLoadThenValidate(SupportingPages page) {
         waitForPageLoad(page.getShortTitle());
-        assertEquals(page.getRoute(), URI.create(driver.getCurrentUrl()).getPath());
+        assertEquals(page.getRoute(), URI.create(Driver.get().getCurrentUrl()).getPath());
     }
 
     private void checkPageLoadInTabAndClose(SupportingPages page) {
-        String currentWindowHandle = driver.getWindowHandle();
-        driver.getWindowHandles().stream()
+        String currentWindowHandle = Driver.get().getWindowHandle();
+        Driver.get().getWindowHandles().stream()
                 .filter(h -> !h.equals(currentWindowHandle))
                 .findFirst()
-                .map(w -> driver.switchTo().window(w))
+                .map(w -> Driver.get().switchTo().window(w))
                 .ifPresent(
                         d -> {
                             waitForPageLoadThenValidate(page);
                             d.close();
                         });
-        driver.switchTo().window(currentWindowHandle);
+        Driver.get().switchTo().window(currentWindowHandle);
     }
 }

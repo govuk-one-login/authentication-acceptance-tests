@@ -1,4 +1,4 @@
-@AuthApp2FA
+@AuthApp2FA @build @staging
 Feature: Authentication App Journeys
   New user creates an account and logs in using an auth app
 

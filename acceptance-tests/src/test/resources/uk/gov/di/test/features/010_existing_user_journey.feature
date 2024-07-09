@@ -1,4 +1,4 @@
-@Existing
+@Existing @build @staging
 Feature: Login Journey
   Existing user walks through a login journey
 
@@ -15,7 +15,7 @@ Feature: Login Journey
     Then the user is taken to the "Create your GOV.UK One Login or sign in" page
     When the user selects sign in
     Then the user is taken to the "Enter your email" page
-    When user enters "TEST_USER_2_EMAIL" email address
+    When user enters "TEST_USER_4_EMAIL" email address
     Then the user is taken to the "Enter your password" page
     When the user enters their password
     Then the user is taken to the "Check your phone" page
@@ -30,7 +30,7 @@ Feature: Login Journey
     Then the user is taken to the Identity Provider Welsh Login Page
     When the user selects sign in
     Then the user is taken to the Welsh enter your email page
-    When user enters "TEST_USER_2_EMAIL" email address in Welsh
+    When user enters "TEST_USER_5_EMAIL" email address in Welsh
     Then the user is prompted for their password in Welsh
     When the user clicks link "Yn ôl"
     Then the user is taken to the Welsh enter your email page
@@ -44,7 +44,7 @@ Feature: Login Journey
     Then the user is taken to the "Create your GOV.UK One Login or sign in" page
     When the user selects sign in
     Then the user is taken to the "Enter your email" page
-    When user enters "TEST_USER_2_EMAIL" email address
+    When user enters "TEST_USER_6_EMAIL" email address
     Then the user is taken to the "Enter your password" page
     When the user enters their password
     Then the user is returned to the service

@@ -1,4 +1,4 @@
-@LegalAndPolicy
+@LegalAndPolicy @build @staging
 Feature: Legal and policy pages
   User clicks on the legal and policy pages
 

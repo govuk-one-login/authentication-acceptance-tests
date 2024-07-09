@@ -19,6 +19,7 @@ import uk.gov.di.test.pages.ResetYourPasswordPage;
 import uk.gov.di.test.pages.RpStubPage;
 import uk.gov.di.test.pages.UserInformationPage;
 import uk.gov.di.test.pages.YouHaveAGOVUKOneLoginPage;
+import uk.gov.di.test.utils.Driver;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static uk.gov.di.test.utils.Constants.NEW_VALID_PASSWORD;
@@ -200,7 +201,6 @@ public class LockoutsStepDef extends BasePage {
     public void theLockoutScreenForWrongSecurityCodesIsDisplayed() {
         waitForPageLoad("You entered the wrong security code too many times");
         assertTrue(lockoutPage.getLockoutScreenText().contains("2 hours"));
-        takeScreenshot(scenario);
     }
 
     // YOU ENTERED WRONG SECURITY CODES
@@ -208,13 +208,11 @@ public class LockoutsStepDef extends BasePage {
     public void the15minLockoutScreenForWrongSecurityCodesIsDisplayed() {
         waitForPageLoad("You entered the wrong security code too many times");
         assertTrue(lockoutPage.getLockoutScreenText().contains("15 minutes"));
-        takeScreenshot(scenario);
     }
 
     @Then("the non blocking You entered the wrong security code too many times page is displayed")
     public void theNonBlockingYouEnteredTheWrongSecurityCodeTooManyTimesPageIsDisplayed() {
         waitForPageLoad("You entered the wrong security code too many times");
-        takeScreenshot(scenario);
     }
 
     // YOU CANNOT GET A NEW SECURITY CODE
@@ -223,7 +221,6 @@ public class LockoutsStepDef extends BasePage {
         waitForPageLoad("You cannot get a new security code at the moment");
         assertTrue(lockoutPage.getLockoutScreenText().contains("wrong security code"));
         assertTrue(lockoutPage.getLockoutScreenText().contains("15 minutes"));
-        takeScreenshot(scenario);
     }
 
     // YOU ASKED TO RESEND SECURITY CODES
@@ -231,7 +228,6 @@ public class LockoutsStepDef extends BasePage {
     public void theLockoutScreenForRequestingTooManySecurityCodesIsDisplayed() {
         waitForPageLoad("You asked to resend the security code too many times");
         assertTrue(lockoutPage.getLockoutScreenText().contains("2 hours"));
-        takeScreenshot(scenario);
     }
 
     // CANNOT CREATE
@@ -242,7 +238,6 @@ public class LockoutsStepDef extends BasePage {
         waitForPageLoad("You cannot create a GOV.UK One Login at the moment");
         assertTrue(lockoutPage.getLockoutScreenText().contains("resend the security code"));
         assertTrue(lockoutPage.getLockoutScreenText().contains("2 hours"));
-        takeScreenshot(scenario);
     }
 
     // CANNOT SIGN IN
@@ -251,7 +246,6 @@ public class LockoutsStepDef extends BasePage {
         waitForPageLoad("You cannot sign in at the moment");
         assertTrue(lockoutPage.getLockoutScreenText().contains("wrong password"));
         assertTrue(lockoutPage.getLockoutScreenText().contains("2 hours"));
-        takeScreenshot(scenario);
     }
 
     @Then(
@@ -260,7 +254,6 @@ public class LockoutsStepDef extends BasePage {
         waitForPageLoad("You cannot sign in at the moment");
         assertTrue(lockoutPage.getLockoutScreenText().contains("resend the security code"));
         assertTrue(lockoutPage.getLockoutScreenText().contains("2 hours"));
-        takeScreenshot(scenario);
     }
 
     @Then("the 2hr You cannot sign in at the moment screen for wrong security codes is displayed")
@@ -268,13 +261,11 @@ public class LockoutsStepDef extends BasePage {
         waitForPageLoad("You cannot sign in at the moment");
         assertTrue(lockoutPage.getLockoutScreenText().contains("wrong security code"));
         assertTrue(lockoutPage.getLockoutScreenText().contains("2 hours"));
-        takeScreenshot(scenario);
     }
 
     @Then("no lockout is triggered and the user remains on the {string} page")
     public void noLockoutIsTriggered(String pageTitle) {
-        assertTrue(driver.getTitle().contains(pageTitle));
-        takeScreenshot(scenario);
+        assertTrue(Driver.get().getTitle().contains(pageTitle));
     }
 
     @Then("the 2hr You entered the wrong password too many times screen is displayed")
@@ -282,7 +273,6 @@ public class LockoutsStepDef extends BasePage {
         waitForPageLoad("You entered the wrong password too many times");
         assertTrue(lockoutPage.getLockoutScreenText().contains("2 hours"));
         assertTrue(lockoutPage.getLockoutScreenText().contains("wrong password"));
-        takeScreenshot(scenario);
     }
 
     @When("the user selects to get a new code")

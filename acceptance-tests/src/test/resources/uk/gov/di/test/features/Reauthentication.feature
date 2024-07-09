@@ -1,4 +1,4 @@
-@Reauth
+@Reauth @build @staging
 Feature: Reauthentication of user
 
   @happy

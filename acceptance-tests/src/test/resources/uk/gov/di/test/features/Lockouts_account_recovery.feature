@@ -1,4 +1,4 @@
-@lockouts @lockout_acc_rec
+@lockouts @lockout_acc_rec @build @staging
 Feature: Account recovery lockouts
 
   # ENTER INCORRECT EMAIL OTP TOO MANY TIMES DURING ACCOUNT RECOVERY - 2081 - PASS
@@ -59,7 +59,6 @@ Feature: Account recovery lockouts
     When the user enters an incorrect phone security code 6 times
     Then the 15min You entered the wrong security code too many times screen is displayed
     When the user "ACCOUNT_RECOVERY_INCORRECT_SMS_CODE" with a lockout for too many incorrect sms security codes attempts to change the way they get security codes during the lockout period
-    #Then the 15min You cannot get a new security code at the moment screen is displayed
     Then the 15min You entered the wrong security code too many times screen is displayed
 
   # REQUEST SMS CODE TOO MANY TIMES DURING ACCOUNT RECOVERY - 2380
