@@ -25,6 +25,7 @@ public class Driver {
             System.getenv().getOrDefault("SELENIUM_BROWSER", FIREFOX_BROWSER);
     protected static WebDriver driver;
     private static InheritableThreadLocal<WebDriver> driverPool = new InheritableThreadLocal<>();
+
     public static WebDriver getDriver() {
         return driverPool.get();
     }
