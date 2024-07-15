@@ -32,6 +32,7 @@ public class BasePage {
                             "https://acceptance-test-rp-build.build.stubs.account.gov.uk/");
 
     protected static final Duration DEFAULT_PAGE_LOAD_WAIT_TIME = Duration.ofSeconds(20);
+    protected static final Duration NO_PAGE_LOAD_WAIT_TIME = Duration.ofSeconds(0);
 
     protected static WebDriver driver;
     protected static Scenario scenario;
@@ -84,7 +85,7 @@ public class BasePage {
                 Driver.get().manage().timeouts().implicitlyWait(DEFAULT_PAGE_LOAD_WAIT_TIME);
                 break;
             case "off":
-                Driver.get().manage().timeouts().implicitlyWait(0, TimeUnit.SECONDS);
+                Driver.get().manage().timeouts().implicitlyWait(NO_PAGE_LOAD_WAIT_TIME);
                 break;
             default:
                 throw new RuntimeException("Invalid status: " + status);
