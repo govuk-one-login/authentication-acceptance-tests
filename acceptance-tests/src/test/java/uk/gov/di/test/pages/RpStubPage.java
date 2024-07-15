@@ -13,7 +13,7 @@ public class RpStubPage extends BasePage {
 
     public void selectRpOptionsByIdAndContinue(String opts) {
         if (!opts.isEmpty() && !opts.equalsIgnoreCase("default")) {
-            String ids[] = opts.split(",");
+            String[] ids = opts.split(",");
             for (String id : ids) {
                 Driver.get().findElement(By.id(id)).click();
             }

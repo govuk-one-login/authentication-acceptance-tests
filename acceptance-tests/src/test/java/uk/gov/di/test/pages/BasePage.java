@@ -22,7 +22,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
-import static java.time.temporal.ChronoUnit.SECONDS;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class BasePage {
@@ -31,7 +30,8 @@ public class BasePage {
                     .getOrDefault(
                             "RP_URL",
                             "https://acceptance-test-rp-build.build.stubs.account.gov.uk/");
-    protected static final Duration DEFAULT_PAGE_LOAD_WAIT_TIME = Duration.of(20, SECONDS);
+
+    protected static final Duration DEFAULT_PAGE_LOAD_WAIT_TIME = Duration.ofSeconds(20);
 
     protected static WebDriver driver;
     protected static Scenario scenario;
@@ -86,6 +86,8 @@ public class BasePage {
             case "off":
                 Driver.get().manage().timeouts().implicitlyWait(0, TimeUnit.SECONDS);
                 break;
+            default:
+                throw new RuntimeException("Invalid status: " + status);
         }
     }
 
@@ -95,7 +97,7 @@ public class BasePage {
                 Driver.get()
                         .findElements(
                                 By.xpath("//*[text()[normalize-space() = '" + linkText + "']]"));
-        switchDefaultTimeout("off");
+        switchDefaultTimeout("on");
         if (elements.size() > 0) {
             return true;
         } else {

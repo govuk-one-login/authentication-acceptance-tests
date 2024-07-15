@@ -20,7 +20,9 @@ public class DocAppStepDef extends BasePage {
                             "DOC_APP_URL", "https://doc-app-rp-build.build.stubs.account.gov.uk/");
 
     @Given("the doc app services are running")
-    public void theDocAppServicesAreRunning() {}
+    public void theDocAppServicesAreRunning() {
+        // deliberately empty
+    }
 
     @When("the user visits the doc app relying party")
     public void theUserVisitsTheDocAppRelyingParty() {

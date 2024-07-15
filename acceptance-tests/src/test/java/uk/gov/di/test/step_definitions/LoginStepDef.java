@@ -172,8 +172,8 @@ public class LoginStepDef extends BasePage {
     @And("confirmation that the user will get security codes via {string} is displayed")
     public void confirmationThatTheUserWillGetSecurityCodesViaIsDisplayed(
             String authenticationType) {
-
-        switch (authenticationType.toLowerCase()) {
+        String method = authenticationType.toLowerCase();
+        switch (method) {
             case "text message":
                 // Check the last four digits of the phone number appear in the page message
                 String phoneNumber = System.getenv().get("TEST_USER_PHONE_NUMBER");
@@ -189,6 +189,8 @@ public class LoginStepDef extends BasePage {
                                 .getSecurityCodeMessageText()
                                 .contains("authenticator app"));
                 break;
+            default:
+                throw new RuntimeException("Invalid method type: " + method);
         }
 
         findAndClickContinue();

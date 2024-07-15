@@ -73,8 +73,11 @@ public class Driver {
                             }
                         }
                         break;
+                    default:
+                        throw new RuntimeException("Invalid driver: " + SELENIUM_BROWSER);
                 }
                 driverPool.get().manage().deleteAllCookies();
+                driverPool.get().manage().window().maximize();
             }
         return driverPool.get();
     }

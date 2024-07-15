@@ -15,7 +15,9 @@ import static org.junit.Assert.assertEquals;
 public class LegalAndPolicyStepDef extends BasePage {
 
     @Given("the services are running")
-    public void theServicesAreRunning() {}
+    public void theServicesAreRunning() {
+        // deliberately empty
+    }
 
     @And("the user clicks link {string}")
     public void theUserClicksLink(String linkText) {

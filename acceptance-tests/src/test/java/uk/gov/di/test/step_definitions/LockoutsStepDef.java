@@ -257,7 +257,7 @@ public class LockoutsStepDef extends BasePage {
     }
 
     @Then("the 2hr You cannot sign in at the moment screen for wrong security codes is displayed")
-    public void theCannotSignInLockoutScreenIsDisplayed() throws InterruptedException {
+    public void theCannotSignInLockoutScreenIsDisplayed() {
         waitForPageLoad("You cannot sign in at the moment");
         assertTrue(lockoutPage.getLockoutScreenText().contains("wrong security code"));
         assertTrue(lockoutPage.getLockoutScreenText().contains("2 hours"));

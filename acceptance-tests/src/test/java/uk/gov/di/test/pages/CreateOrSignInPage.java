@@ -18,14 +18,16 @@ public class CreateOrSignInPage extends BasePage {
         Driver.get().findElement(signInButton).click();
     }
 
-    public void switchLanguageTo(String lang) {
-        switch (lang.toLowerCase()) {
+    public void switchLanguageTo(String language) {
+        switch (language.toLowerCase()) {
             case "welsh":
                 Driver.get().findElement(linkToSwitchToWelsh).click();
                 break;
             case "english":
                 Driver.get().findElement(linkToSwitchToEnglish).click();
                 break;
+            default:
+                throw new RuntimeException("Invalid language: " + language);
         }
     }
 }

@@ -15,6 +15,8 @@ public class ChooseHowToGetSecurityCodesPage extends BasePage {
             case "auth app":
                 Driver.get().findElement(authAppRadioButton).click();
                 break;
+            default:
+                throw new RuntimeException("Invalid method type: " + method);
         }
         findAndClickContinue();
     }

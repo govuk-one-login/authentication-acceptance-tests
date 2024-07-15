@@ -120,7 +120,7 @@ public class CommonStepDef extends BasePage {
     }
 
     @When("the user chooses {string} to get security codes and progress to set it up")
-    public void theUserToGetSecurityCodesAndProgressToSetItUp(String userType) throws Exception {
+    public void theUserToGetSecurityCodesAndProgressToSetItUp(String userType) {
         crossPageFlows.setUpAuthenticationBy(userType);
     }
 }
