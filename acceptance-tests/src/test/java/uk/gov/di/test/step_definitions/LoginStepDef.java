@@ -18,6 +18,7 @@ import uk.gov.di.test.pages.SetUpAnAuthenticatorAppPage;
 import uk.gov.di.test.pages.TermsAndConditionsPage;
 import uk.gov.di.test.pages.YouAskedToResendTheSecurityCodeTooManyTimesPage;
 import uk.gov.di.test.pages.YouveChangedHowYouGetSecurityCodesPage;
+import uk.gov.di.test.utils.Driver;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -114,21 +115,22 @@ public class LoginStepDef extends BasePage {
     @Then("the user is taken to the Identity Provider Welsh Login Page")
     public void theUserIsTakenToTheIdentityProviderWelshLoginPage() {
         assertEquals(
-                "Creu eich GOV.UK One Login neu fewngofnodi - GOV.UK One Login", driver.getTitle());
+                "Creu eich GOV.UK One Login neu fewngofnodi - GOV.UK One Login",
+                Driver.get().getTitle());
     }
 
     @Then("the user is taken to the Welsh enter your email page")
     public void theUserIsTakenToTheWelshEnterYourEmailPage() {
         assertEquals(
                 "Rhowch eich cyfeiriad e-bost i fewngofnodi i’ch GOV.UK One Login - GOV.UK One Login",
-                driver.getTitle());
+                Driver.get().getTitle());
         Assertions.assertNotEquals("Continue", enterYourEmailAddressPage.continueButtonText());
         Assertions.assertNotEquals("Back", enterYourEmailAddressPage.backButtonText());
     }
 
     @Then("the user is prompted for their password in Welsh")
     public void theUserIsPromptedForTheirPasswordInWelsh() {
-        assertEquals("Rhowch eich cyfrinair - GOV.UK One Login", driver.getTitle());
+        assertEquals("Rhowch eich cyfrinair - GOV.UK One Login", Driver.get().getTitle());
     }
 
     @When("user enters {string} email address in Welsh")
@@ -170,8 +172,8 @@ public class LoginStepDef extends BasePage {
     @And("confirmation that the user will get security codes via {string} is displayed")
     public void confirmationThatTheUserWillGetSecurityCodesViaIsDisplayed(
             String authenticationType) {
-
-        switch (authenticationType.toLowerCase()) {
+        String method = authenticationType.toLowerCase();
+        switch (method) {
             case "text message":
                 // Check the last four digits of the phone number appear in the page message
                 String phoneNumber = System.getenv().get("TEST_USER_PHONE_NUMBER");
@@ -187,6 +189,8 @@ public class LoginStepDef extends BasePage {
                                 .getSecurityCodeMessageText()
                                 .contains("authenticator app"));
                 break;
+            default:
+                throw new RuntimeException("Invalid method type: " + method);
         }
 
         findAndClickContinue();

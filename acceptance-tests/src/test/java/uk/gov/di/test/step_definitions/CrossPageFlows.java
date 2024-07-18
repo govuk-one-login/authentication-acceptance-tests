@@ -192,7 +192,7 @@ public class CrossPageFlows extends BasePage {
                 NEW_VALID_PASSWORD, NEW_VALID_PASSWORD);
     }
 
-    public void setUpAuthenticationBy(String userType) throws Exception {
+    public void setUpAuthenticationBy(String userType) {
         switch (userType.toLowerCase()) {
             case "text message":
                 chooseHowToGetSecurityCodesPage.selectAuthMethodAndContinue("text message");
@@ -219,7 +219,7 @@ public class CrossPageFlows extends BasePage {
                 break;
 
             default:
-                throw new Exception("Wrong security codes text");
+                throw new RuntimeException("Invalid method type: " + userType);
         }
     }
 }

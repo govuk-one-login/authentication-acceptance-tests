@@ -1,4 +1,4 @@
-@ResetPassword @2fa
+@ResetPassword @build @staging
 Feature: Reset password
 
   Scenario: An sms user can successfully reset their password

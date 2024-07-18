@@ -5,6 +5,7 @@ import io.cucumber.java.en.And;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import uk.gov.di.test.pages.BasePage;
+import uk.gov.di.test.utils.Driver;
 
 import java.net.URL;
 
@@ -20,10 +21,10 @@ public class AxeStepDef extends BasePage {
     public static void thereAreNoAccessibilityViolations() {
         //        System.out.println(ACCESSIBILITY_CHECKS);
         if (ACCESSIBILITY_CHECKS) {
-            System.out.println("Page in test = " + driver.getTitle());
+            System.out.println("Page in test = " + Driver.get().getTitle());
 
             JSONObject responseJSON =
-                    new AXE.Builder(driver, scriptUrl)
+                    new AXE.Builder(Driver.get(), scriptUrl)
                             .options("{ runOnly: { type: 'tag', values: ['wcag2a','wcag21aa'] } }")
                             .analyze();
 

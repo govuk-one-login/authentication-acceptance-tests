@@ -1,6 +1,7 @@
 package uk.gov.di.test.pages;
 
 import org.openqa.selenium.By;
+import uk.gov.di.test.utils.Driver;
 
 import static uk.gov.di.test.utils.Constants.INCORRECT_PHONE_CODE;
 
@@ -26,11 +27,11 @@ public class CheckYourPhonePage extends BasePage {
     }
 
     public void clickProblemsWithTheCodeLink() {
-        driver.findElement(problemsWithTheCodeLink).click();
+        Driver.get().findElement(problemsWithTheCodeLink).click();
     }
 
     public void clickChangeHowYouGetSecurityCodesLink() {
-        driver.findElement(changeHowYouGetSecurityCodesLink).click();
+        Driver.get().findElement(changeHowYouGetSecurityCodesLink).click();
     }
 
     public void changeHowToGetSecurityCodes() {
@@ -39,7 +40,7 @@ public class CheckYourPhonePage extends BasePage {
     }
 
     public void clickSendTheCodeAgainLink() {
-        driver.findElement(sendTheCodeAgainLink).click();
+        Driver.get().findElement(sendTheCodeAgainLink).click();
     }
 
     public void enterIncorrectPhoneSecurityCodeNumberOfTimes(Integer numberOfTimes) {
