@@ -107,7 +107,8 @@ public class CrossPageFlows extends BasePage {
         rpStubPage.reauthRequired(idToken);
         waitForPageLoad("");
         // enter original email address
-        reenterYourSignInDetailsToContinuePage.enterEmailAddressAndContinue(userEmailAddress);
+        reenterYourSignInDetailsToContinuePage.enterEmailAddressAndContinue(
+                System.getenv().get(userEmailAddress));
         // enter correct password
         enterYourPasswordPage.enterCorrectPasswordAndContinue();
         // enter correct otp

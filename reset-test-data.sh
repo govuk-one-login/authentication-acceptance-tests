@@ -51,5 +51,5 @@ fi
 
 #resetTestUsers
 #resetAccountInterventions
-#reAuthentication
-2hrLockoutPeriod
+reAuthentication
+#2hrLockoutPeriod

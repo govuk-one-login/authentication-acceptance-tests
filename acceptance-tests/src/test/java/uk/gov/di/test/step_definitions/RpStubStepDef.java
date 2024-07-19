@@ -16,9 +16,10 @@ public class RpStubStepDef extends BasePage {
         setAnalyticsCookieTo(false);
     }
 
-    @Then("the user is logged out")
+    @Then("the user is forcibly logged out")
     public void theUserIsLoggedOut() {
-        waitForThisText("Request Object");
-        // assert that correct error code is displayed in the RP
+        waitForThisText("Error in Callback");
+        waitForThisText("Error: login_required");
+        waitForThisText("Error description: Login required");
     }
 }
