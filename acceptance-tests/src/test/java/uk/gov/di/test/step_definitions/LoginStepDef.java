@@ -18,6 +18,7 @@ import uk.gov.di.test.pages.SetUpAnAuthenticatorAppPage;
 import uk.gov.di.test.pages.TermsAndConditionsPage;
 import uk.gov.di.test.pages.YouAskedToResendTheSecurityCodeTooManyTimesPage;
 import uk.gov.di.test.pages.YouveChangedHowYouGetSecurityCodesPage;
+import uk.gov.di.test.utils.Driver;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -103,7 +104,12 @@ public class LoginStepDef extends BasePage {
     @When("the user requests the phone otp code {int} times")
     @When("the user requests the phone otp code a further {int} times")
     public void theUserRequestsThePhoneOtpCodeTimes(Integer timesCodeIncorrect) {
-        crossPageFlows.requestPhoneSecurityCodeResendNumberOfTimes(timesCodeIncorrect);
+        crossPageFlows.requestPhoneSecurityCodeResendNumberOfTimes(timesCodeIncorrect, false);
+    }
+
+    @When("the user requests the phone otp code a further {int} times during reauth")
+    public void theUserRequestsThePhoneOtpCodeTimesAtReauth(Integer timesCodeIncorrect) {
+        crossPageFlows.requestPhoneSecurityCodeResendNumberOfTimes(timesCodeIncorrect, true);
     }
 
     @When("the user clicks the get a new code link")
@@ -114,21 +120,22 @@ public class LoginStepDef extends BasePage {
     @Then("the user is taken to the Identity Provider Welsh Login Page")
     public void theUserIsTakenToTheIdentityProviderWelshLoginPage() {
         assertEquals(
-                "Creu eich GOV.UK One Login neu fewngofnodi - GOV.UK One Login", driver.getTitle());
+                "Creu eich GOV.UK One Login neu fewngofnodi - GOV.UK One Login",
+                Driver.get().getTitle());
     }
 
     @Then("the user is taken to the Welsh enter your email page")
     public void theUserIsTakenToTheWelshEnterYourEmailPage() {
         assertEquals(
                 "Rhowch eich cyfeiriad e-bost i fewngofnodi i’ch GOV.UK One Login - GOV.UK One Login",
-                driver.getTitle());
+                Driver.get().getTitle());
         Assertions.assertNotEquals("Continue", enterYourEmailAddressPage.continueButtonText());
         Assertions.assertNotEquals("Back", enterYourEmailAddressPage.backButtonText());
     }
 
     @Then("the user is prompted for their password in Welsh")
     public void theUserIsPromptedForTheirPasswordInWelsh() {
-        assertEquals("Rhowch eich cyfrinair - GOV.UK One Login", driver.getTitle());
+        assertEquals("Rhowch eich cyfrinair - GOV.UK One Login", Driver.get().getTitle());
     }
 
     @When("user enters {string} email address in Welsh")
@@ -170,8 +177,8 @@ public class LoginStepDef extends BasePage {
     @And("confirmation that the user will get security codes via {string} is displayed")
     public void confirmationThatTheUserWillGetSecurityCodesViaIsDisplayed(
             String authenticationType) {
-
-        switch (authenticationType.toLowerCase()) {
+        String method = authenticationType.toLowerCase();
+        switch (method) {
             case "text message":
                 // Check the last four digits of the phone number appear in the page message
                 String phoneNumber = System.getenv().get("TEST_USER_PHONE_NUMBER");
@@ -187,6 +194,8 @@ public class LoginStepDef extends BasePage {
                                 .getSecurityCodeMessageText()
                                 .contains("authenticator app"));
                 break;
+            default:
+                throw new RuntimeException("Invalid method type: " + method);
         }
 
         findAndClickContinue();
@@ -228,14 +237,21 @@ public class LoginStepDef extends BasePage {
         termsAndConditionsPage.pressAgreeAndContinueButton();
     }
 
-    @When("the user enters a different email address for reauth than they logged in with")
+    @When("the user enters an incorrect email address for reauth")
     public void theUserEntersADifferentEmailAddressThanTheyLoggedInWith() {
-        reenterYourSignInDetailsToContinuePage.enterWrongEmailAddressNumberOfTimes(1);
+        reenterYourSignInDetailsToContinuePage.enterSameIncorrectEmailAddressesNumberOfTimes(1);
     }
 
-    @When("the user enters a different email address for reauth a further {int} times")
+    @When("the user enters the same incorrect email address for reauth a further {int} times")
     public void theUserEntersDifferentEmailAddressXTimes(Integer attemptCount) {
-        reenterYourSignInDetailsToContinuePage.enterWrongEmailAddressNumberOfTimes(attemptCount);
+        reenterYourSignInDetailsToContinuePage.enterSameIncorrectEmailAddressesNumberOfTimes(
+                attemptCount);
+    }
+
+    @When("the user enters {int} different email addresses for reauth")
+    public void theUserEntersNDifferentEmailAddressesForReauth(Integer attemptCount) {
+        reenterYourSignInDetailsToContinuePage.enterDifferentIncorrectEmailAddressesNumberOfTimes(
+                attemptCount);
     }
 
     @When("the user enters incorrect password")
@@ -247,6 +263,11 @@ public class LoginStepDef extends BasePage {
     @When("the user enters an incorrect password {int} times")
     public void theUserEntersAnIncorrectPasswordAFurtherXTimes(Integer attemptCount) {
         enterYourPasswordPage.enterIncorrectPasswordNumberOfTimes(attemptCount);
+    }
+
+    @When("the user enters a blank password")
+    public void theUserEntersABlankPassword() {
+        enterYourPasswordPage.enterPasswordAndContinue("");
     }
 
     @And("the user enters an incorrect phone security code")
@@ -297,13 +318,23 @@ public class LoginStepDef extends BasePage {
         crossPageFlows.smsUserChangesPassword();
     }
 
-    @And("the {string} user {string} is able to successfully sign back in")
+    @And("the {string} user {string} is not blocked from signing back in")
     public void theUserIsAbleToSignBackInWithoutBeingBlocked(String userType, String emailAddress) {
         crossPageFlows.successfulSignIn(userType, emailAddress);
     }
 
-    @And("the {string} user {string} is able to successfully reauthenticate")
+    @And("the owner of the incorrect email address is not blocked from signing in")
+    public void theUserIsAbleToSignBackInWithoutBeingBlocked() {
+        crossPageFlows.successfulSignIn("sms", "TEST_USER_REAUTH_SMS_9");
+    }
+
+    @And("the {string} user {string} is not blocked from reauthenticating")
     public void theUserIsAbleToReauthWithoutBeingBlocked(String userType, String emailAddress) {
         crossPageFlows.successfulReauth(userType, emailAddress);
+    }
+
+    @And("the owner of the incorrect email address is not blocked from reauthenticating")
+    public void theUserIsAbleToReauthWithoutBeingBlocked() {
+        crossPageFlows.successfulReauth("sms", "TEST_USER_REAUTH_SMS_9");
     }
 }

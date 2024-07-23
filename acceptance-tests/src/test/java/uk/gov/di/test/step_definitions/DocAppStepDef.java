@@ -6,6 +6,7 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import uk.gov.di.test.pages.BasePage;
 import uk.gov.di.test.pages.DocAppPage;
+import uk.gov.di.test.utils.Driver;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -19,11 +20,13 @@ public class DocAppStepDef extends BasePage {
                             "DOC_APP_URL", "https://doc-app-rp-build.build.stubs.account.gov.uk/");
 
     @Given("the doc app services are running")
-    public void theDocAppServicesAreRunning() {}
+    public void theDocAppServicesAreRunning() {
+        // deliberately empty
+    }
 
     @When("the user visits the doc app relying party")
     public void theUserVisitsTheDocAppRelyingParty() {
-        driver.get(DOC_APP_URL.toString());
+        Driver.get().get(DOC_APP_URL.toString());
     }
 
     @And("the user sends a valid json payload")
@@ -36,7 +39,8 @@ public class DocAppStepDef extends BasePage {
     @Then("the user is taken to the user information page")
     public void theUserIsTakenToTheUserInformationPage() {
         waitForPageLoad("Example - GOV.UK - User Info");
-        assertTrue(driver.getCurrentUrl().contains("/oidc/authorization-code/callback?code="));
+        assertTrue(
+                Driver.get().getCurrentUrl().contains("/oidc/authorization-code/callback?code="));
         assertTrue(docAppPage.docAppCredentialsDisplayed());
         assertTrue(docAppPage.idTokenDisplayed());
     }

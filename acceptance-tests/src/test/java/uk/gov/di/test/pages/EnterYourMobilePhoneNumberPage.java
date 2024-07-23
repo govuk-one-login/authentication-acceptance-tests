@@ -1,6 +1,7 @@
 package uk.gov.di.test.pages;
 
 import org.openqa.selenium.By;
+import uk.gov.di.test.utils.Driver;
 
 public class EnterYourMobilePhoneNumberPage extends BasePage {
     By internationalPhoneNumberField = By.id("internationalPhoneNumber");
@@ -8,11 +9,11 @@ public class EnterYourMobilePhoneNumberPage extends BasePage {
     By ukPhoneNumberField = By.id("phoneNumber");
 
     public boolean isInternationalMobileNumberFieldDisplayed() {
-        return driver.findElement(internationalPhoneNumberField).isDisplayed();
+        return Driver.get().findElement(internationalPhoneNumberField).isDisplayed();
     }
 
     public void tickIDoNotHaveUkMobileNumber() {
-        driver.findElement(iDoNotHaveUkMobilePhoneNumberCheckbox).click();
+        Driver.get().findElement(iDoNotHaveUkMobilePhoneNumberCheckbox).click();
     }
 
     public void enterInternationalMobilePhoneNumberAndContinue(

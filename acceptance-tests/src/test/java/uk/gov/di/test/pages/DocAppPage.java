@@ -1,6 +1,7 @@
 package uk.gov.di.test.pages;
 
 import org.openqa.selenium.By;
+import uk.gov.di.test.utils.Driver;
 
 public class DocAppPage extends BasePage {
 
@@ -15,26 +16,26 @@ public class DocAppPage extends BasePage {
     By idToken = By.id("user-info-phone-number");
 
     public void continueButtonClick() {
-        driver.findElement(continueButton).click();
+        Driver.get().findElement(continueButton).click();
     }
 
     public void accountLinkClick() {
-        driver.findElement(myAccountLink).click();
+        Driver.get().findElement(myAccountLink).click();
     }
 
     public void enterPayLoad(String jsonPayLoad) {
-        driver.findElement(payloadInputField).sendKeys(jsonPayLoad);
+        Driver.get().findElement(payloadInputField).sendKeys(jsonPayLoad);
     }
 
     public void clickSubmitButton() {
-        driver.findElement(submitButton).click();
+        Driver.get().findElement(submitButton).click();
     }
 
     public Boolean docAppCredentialsDisplayed() {
-        return driver.findElement(docAppCredentials).isDisplayed();
+        return Driver.get().findElement(docAppCredentials).isDisplayed();
     }
 
     public Boolean idTokenDisplayed() {
-        return driver.findElement(idToken).isDisplayed();
+        return Driver.get().findElement(idToken).isDisplayed();
     }
 }

@@ -1,6 +1,7 @@
 package uk.gov.di.test.pages;
 
 import org.openqa.selenium.By;
+import uk.gov.di.test.utils.Driver;
 
 public class CreateOrSignInPage extends BasePage {
 
@@ -10,21 +11,23 @@ public class CreateOrSignInPage extends BasePage {
     By linkToSwitchToEnglish = By.xpath("//a[@href='?lng=en']");
 
     public void clickCreateAGovUkOneLoginButton() {
-        driver.findElement(createAGovUkOneLogin).click();
+        Driver.get().findElement(createAGovUkOneLogin).click();
     }
 
     public void clickSignInButton() {
-        driver.findElement(signInButton).click();
+        Driver.get().findElement(signInButton).click();
     }
 
-    public void switchLanguageTo(String lang) {
-        switch (lang.toLowerCase()) {
+    public void switchLanguageTo(String language) {
+        switch (language.toLowerCase()) {
             case "welsh":
-                driver.findElement(linkToSwitchToWelsh).click();
+                Driver.get().findElement(linkToSwitchToWelsh).click();
                 break;
             case "english":
-                driver.findElement(linkToSwitchToEnglish).click();
+                Driver.get().findElement(linkToSwitchToEnglish).click();
                 break;
+            default:
+                throw new RuntimeException("Invalid language: " + language);
         }
     }
 }

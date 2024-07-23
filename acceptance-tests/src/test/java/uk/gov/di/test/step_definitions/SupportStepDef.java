@@ -6,6 +6,7 @@ import io.cucumber.java.en.When;
 import uk.gov.di.test.pages.BasePage;
 import uk.gov.di.test.pages.FooterPage;
 import uk.gov.di.test.pages.SupportPage;
+import uk.gov.di.test.utils.Driver;
 
 import java.util.ArrayList;
 
@@ -64,7 +65,7 @@ public class SupportStepDef extends BasePage {
     public void theUserReceivesConfirmationThatTheirMessageHasBeenSent() {
         assertTrue(supportPage.isSuccessMessageDisplayed());
         closeActiveTab();
-        ArrayList<String> tabs = new ArrayList<String>(driver.getWindowHandles());
-        driver.switchTo().window(tabs.get(0)); // switch back to main tab
+        ArrayList<String> tabs = new ArrayList<String>(Driver.get().getWindowHandles());
+        Driver.get().switchTo().window(tabs.get(0)); // switch back to main tab
     }
 }

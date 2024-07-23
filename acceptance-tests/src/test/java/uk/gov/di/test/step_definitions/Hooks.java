@@ -7,9 +7,12 @@ import io.cucumber.java.PendingException;
 import io.cucumber.java.Scenario;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
+import org.openqa.selenium.WebDriver;
 import uk.gov.di.test.pages.BasePage;
+import uk.gov.di.test.utils.Driver;
 
-import java.net.MalformedURLException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 public class Hooks extends BasePage {
 
@@ -17,14 +20,6 @@ public class Hooks extends BasePage {
 
     protected static final Boolean FAIL_FAST_ENABLED =
             Boolean.parseBoolean(System.getenv().getOrDefault("FAIL_FAST_ENABLED", "false"));
-
-    @Before(order = 2)
-    public void setupWebdriver() throws MalformedURLException {
-        if (failureCount == 0) {
-            super.setupWebdriver();
-            driver.manage().deleteAllCookies();
-        }
-    }
 
     @Before(order = 1)
     public void setUpScenario(Scenario scenario) {
@@ -44,13 +39,21 @@ public class Hooks extends BasePage {
     @After
     public void takeScreenshotOnFailure(Scenario scenario) {
         if (scenario.isFailed()) {
-            final byte[] screenshot = ((TakesScreenshot) driver).getScreenshotAs(OutputType.BYTES);
-            scenario.attach(screenshot, "image/png", "Failure screenshot");
 
-            super.closeWebdriver();
+            WebDriver driver = Driver.get();
+
+            final byte[] screenshot = ((TakesScreenshot) driver).getScreenshotAs(OutputType.BYTES);
+            scenario.attach(
+                    screenshot,
+                    "image/png",
+                    "Failure screenshot - "
+                            + new SimpleDateFormat("dd/MM/yyyy HH:mm:ss")
+                                    .format(Calendar.getInstance().getTime()));
+
             if (FAIL_FAST_ENABLED) {
                 failureCount++;
             }
         }
+        Driver.closeDriver();
     }
 }

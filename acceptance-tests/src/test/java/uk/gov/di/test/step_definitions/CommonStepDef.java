@@ -10,6 +10,7 @@ import uk.gov.di.test.pages.BasePage;
 import uk.gov.di.test.pages.CreateOrSignInPage;
 import uk.gov.di.test.pages.RpStubPage;
 import uk.gov.di.test.pages.UserInformationPage;
+import uk.gov.di.test.utils.Driver;
 
 import java.util.List;
 
@@ -82,7 +83,7 @@ public class CommonStepDef extends BasePage {
     @Then("the user is not shown any error messages")
     public void theNewUserIsNotShownAnErrorMessage() {
         switchDefaultTimeout("off");
-        List<WebElement> errorFields = driver.findElements(By.id("code-error"));
+        List<WebElement> errorFields = Driver.get().findElements(By.id("code-error"));
         switchDefaultTimeout("on");
         if (!errorFields.isEmpty()) {
             System.out.println("setup-authenticator-app error: " + errorFields.get(0));
@@ -119,7 +120,7 @@ public class CommonStepDef extends BasePage {
     }
 
     @When("the user chooses {string} to get security codes and progress to set it up")
-    public void theUserToGetSecurityCodesAndProgressToSetItUp(String userType) throws Exception {
+    public void theUserToGetSecurityCodesAndProgressToSetItUp(String userType) {
         crossPageFlows.setUpAuthenticationBy(userType);
     }
 }

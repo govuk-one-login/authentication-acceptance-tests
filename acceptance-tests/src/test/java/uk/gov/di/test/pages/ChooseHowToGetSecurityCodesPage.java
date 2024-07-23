@@ -1,6 +1,7 @@
 package uk.gov.di.test.pages;
 
 import org.openqa.selenium.By;
+import uk.gov.di.test.utils.Driver;
 
 public class ChooseHowToGetSecurityCodesPage extends BasePage {
     By textMessageRadioButton = By.cssSelector("input[value='SMS']");
@@ -9,20 +10,22 @@ public class ChooseHowToGetSecurityCodesPage extends BasePage {
     public void selectAuthMethodAndContinue(String method) {
         switch (method.toLowerCase()) {
             case "text message":
-                driver.findElement(textMessageRadioButton).click();
+                Driver.get().findElement(textMessageRadioButton).click();
                 break;
             case "auth app":
-                driver.findElement(authAppRadioButton).click();
+                Driver.get().findElement(authAppRadioButton).click();
                 break;
+            default:
+                throw new RuntimeException("Invalid method type: " + method);
         }
         findAndClickContinue();
     }
 
     public Boolean getTextMessageRadioButtonStatus() {
-        return driver.findElement(textMessageRadioButton).isSelected();
+        return Driver.get().findElement(textMessageRadioButton).isSelected();
     }
 
     public Boolean getAuthAppRadioButtonStatus() {
-        return driver.findElement(authAppRadioButton).isSelected();
+        return Driver.get().findElement(authAppRadioButton).isSelected();
     }
 }

@@ -1,6 +1,7 @@
 package uk.gov.di.test.pages;
 
 import org.openqa.selenium.By;
+import uk.gov.di.test.utils.Driver;
 
 public class SupportPage extends BasePage {
 
@@ -9,16 +10,17 @@ public class SupportPage extends BasePage {
     By successMessage = By.cssSelector(".govuk-panel--confirmation");
 
     public void clickSupportLink() {
-        driver.findElement(supportLink).click();
+        Driver.get().findElement(supportLink).click();
     }
 
     public void selectSupportRadioButtonByLabelText(String option) {
-        driver.findElement(By.xpath("//div[label[contains(text(), '" + option + "')]]/input"))
+        Driver.get()
+                .findElement(By.xpath("//div[label[contains(text(), '" + option + "')]]/input"))
                 .click();
     }
 
     public void enterMoreDetails(String details) {
-        driver.findElement(moreDetailsField).sendKeys(details);
+        Driver.get().findElement(moreDetailsField).sendKeys(details);
     }
 
     public void canWeReplyViaEmail(String option) {
@@ -30,7 +32,7 @@ public class SupportPage extends BasePage {
     }
 
     public boolean isSuccessMessageDisplayed() {
-        return driver.findElement(successMessage).isDisplayed();
+        return Driver.get().findElement(successMessage).isDisplayed();
     }
 
     public void selectRadioButtonAndProceed(String radioButtonLabel) {

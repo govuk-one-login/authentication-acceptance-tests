@@ -45,11 +45,15 @@ public class CrossPageFlows extends BasePage {
     public ReenterYourSignInDetailsToContinuePage reenterYourSignInDetailsToContinuePage =
             new ReenterYourSignInDetailsToContinuePage();
 
-    public void requestPhoneSecurityCodeResendNumberOfTimes(Integer numberOfTimes) {
+    public void requestPhoneSecurityCodeResendNumberOfTimes(
+            Integer numberOfTimes, Boolean isReauth) {
         for (int i = 0; i < numberOfTimes; i++) {
             checkYourPhonePage.clickProblemsWithTheCodeLink();
             checkYourPhonePage.clickSendTheCodeAgainLink();
             waitForPageLoad("Get security code");
+            if (isReauth) {
+                waitForThisText("you will be signed out");
+            }
             getSecurityCodePage.pressGetSecurityCodeButton();
             System.out.println(
                     "Code request count: "
@@ -222,7 +226,7 @@ public class CrossPageFlows extends BasePage {
                 NEW_VALID_PASSWORD, NEW_VALID_PASSWORD);
     }
 
-    public void setUpAuthenticationBy(String userType) throws Exception {
+    public void setUpAuthenticationBy(String userType) {
         switch (userType.toLowerCase()) {
             case "text message":
                 chooseHowToGetSecurityCodesPage.selectAuthMethodAndContinue("text message");
@@ -249,7 +253,7 @@ public class CrossPageFlows extends BasePage {
                 break;
 
             default:
-                throw new Exception("Wrong security codes text");
+                throw new RuntimeException("Invalid method type: " + userType);
         }
     }
 }
