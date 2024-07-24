@@ -1,6 +1,7 @@
 package uk.gov.di.test.step_definitions;
 
 import io.cucumber.java.en.And;
+import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.junit.jupiter.api.Assertions;
@@ -14,8 +15,10 @@ import uk.gov.di.test.pages.EnterYourEmailAddressToSignInPage;
 import uk.gov.di.test.pages.EnterYourPasswordPage;
 import uk.gov.di.test.pages.ReenterYourSignInDetailsToContinuePage;
 import uk.gov.di.test.pages.ResetYourPasswordPage;
+import uk.gov.di.test.pages.RpStubPage;
 import uk.gov.di.test.pages.SetUpAnAuthenticatorAppPage;
 import uk.gov.di.test.pages.TermsAndConditionsPage;
+import uk.gov.di.test.pages.UserInformationPage;
 import uk.gov.di.test.pages.YouAskedToResendTheSecurityCodeTooManyTimesPage;
 import uk.gov.di.test.pages.YouveChangedHowYouGetSecurityCodesPage;
 import uk.gov.di.test.utils.Driver;
@@ -53,6 +56,8 @@ public class LoginStepDef extends BasePage {
             enterThe6DigitSecurityCodeShownInYourAuthenticatorAppPage =
                     new EnterThe6DigitSecurityCodeShownInYourAuthenticatorAppPage();
     public CrossPageFlows crossPageFlows = new CrossPageFlows();
+    public UserInformationPage userInformationPage = new UserInformationPage();
+    public RpStubPage rpStubPage = new RpStubPage();
 
     @When("the user enters their password which is on the top 100k password list")
     public void theUserEntersTheirPasswordWhichIsOnTheTop100kPasswordList() {
@@ -336,5 +341,23 @@ public class LoginStepDef extends BasePage {
     @And("the owner of the incorrect email address is not blocked from reauthenticating")
     public void theUserIsAbleToReauthWithoutBeingBlocked() {
         crossPageFlows.successfulReauth("sms", "TEST_USER_REAUTH_SMS_9");
+    }
+
+    @Given("Reauth is feature switched off")
+    public void reauthIsFeatureSwitchedOff() {
+        // deliberately blank
+    }
+
+    @When("a reauth is attempted from the RP")
+    public void aReauthIsAttemptedFromTheRP() {
+        crossPageFlows.successfulSignIn("sms", "TEST_USER_REAUTH_SMS_1");
+        waitForPageLoad("Example - GOV.UK - User Info");
+        String idToken = userInformationPage.getIdToken();
+        rpStubPage.reauthRequired(idToken);
+    }
+
+    @Then("the user is not taken to the Auth reauthentication page")
+    public void theUserIsNotTakenToTheReauthenticationPage() {
+        waitForPageLoad("Example - GOV.UK - User Info");
     }
 }
