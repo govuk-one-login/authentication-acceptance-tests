@@ -53,29 +53,28 @@ Feature: Reauthentication of user
     And the "sms" user "TEST_USER_REAUTH_SMS_3" is not blocked from signing back in
     And the "sms" user "TEST_USER_REAUTH_SMS_3" is not blocked from reauthenticating
 
-# NO LONGER REQUIRED AS WILL BE REPLACED WITH NEW PAGE IN MVP3
-#  @reauth-pw-reset
-#  Scenario: User can change their password during reauthenticates
-#    Given the "sms" user "TEST_USER_REAUTH_SMS_6" is already signed in to their One Login account
-#    And the RP requires the user to reauthenticate
-#    And user enters the same email address "TEST_USER_REAUTH_SMS_6" for reauth as they used for login
-#    And the user is taken to the "Enter your password" page
-#    When the sms user changes their password during reauthentication
-#    Then the user is successfully reauthenticated and returned to the service
-#    And the user logs out
+  @reauth-incorrect-sms-code @AUT-2788
+  Scenario: Sms user enters incorrect phone code during reauthentication
+    Given the "sms" user "TEST_USER_REAUTH_SMS_4" is already signed in to their One Login account
+    And the RP requires the user to reauthenticate
+    And user enters the same email address "TEST_USER_REAUTH_SMS_4" for reauth as they used for login
+    And the user enters the correct password
+    When the user enters an incorrect phone security code 6 times
+    Then the user is forcibly logged out
+    And the "sms" user "TEST_USER_REAUTH_SMS_4" is not blocked from signing back in
+    And the "sms" user "TEST_USER_REAUTH_SMS_4" is not blocked from reauthenticating
 
+  @reauth-incorrect-auth-app-code @AUT-2788
+  Scenario: Auth app user enters incorrect auth app code during reauthentication
+    Given the "auth app" user "TEST_USER_REAUTH_AUTH_APP_2" is already signed in to their One Login account
+    And the RP requires the user to reauthenticate
+    And user enters the same email address "TEST_USER_REAUTH_AUTH_APP_2" for reauth as they used for login
+    And the user enters the correct password
+    When the user enters an incorrect auth app security code 6 times
+    Then the user is forcibly logged out
+    And the "auth app" user "TEST_USER_REAUTH_AUTH_APP_2" is not blocked from signing back in
+    And the "auth app" user "TEST_USER_REAUTH_AUTH_APP_2" is not blocked from reauthenticating
 
-#  @reauth-incorrect-sms-code @AUT-2788
-#  Scenario: Sms user enters incorrect phone code during reauthentication
-#    Given the "sms" user "TEST_USER_REAUTH_SMS_4" is already signed in to their One Login account
-#    And the RP requires the user to reauthenticate
-#    And user enters the same email address "TEST_USER_REAUTH_SMS_4" for reauth as they used for login
-#    And the user enters the correct password
-#    When the user enters an incorrect phone security code 6 times
-#    Then the user is logged out
-#    And the "sms" user "TEST_USER_REAUTH_SMS_4" is able to successfully sign back in
-#    And the "sms" user "TEST_USER_REAUTH_SMS_4" is able to successfully reauthenticate
-#
 #  @reauth-request-too-many-sms-codes @AUT-3089
 #  Scenario: Sms user requests phone code resend during reauthentication
 #    Given the "sms" user "TEST_USER_REAUTH_SMS_5" is already signed in to their One Login account
@@ -86,40 +85,41 @@ Feature: Reauthentication of user
 #    Then the user is logged out
 #    And the "sms" user "TEST_USER_REAUTH_SMS_5" is able to successfully sign back in
 #    And the "sms" user "TEST_USER_REAUTH_SMS_5" is able to successfully reauthenticate
-#
-#  @reauth-incorrect-auth-app-code @AUT-2788
-#  Scenario: Auth app user enters incorrect auth app code during reauthentication
-#    Given the "auth app" user "TEST_USER_REAUTH_AUTH_APP_2" is already signed in to their One Login account
-#    And the RP requires the user to reauthenticate
-#    And user enters the same email address "TEST_USER_REAUTH_AUTH_APP_2" for reauth as they used for login
-#    And the user enters the correct password
-#    When the user enters an incorrect auth app security code 6 times
-#    Then the user is logged out
-#    And the "auth app" user "TEST_USER_REAUTH_AUTH_APP_2" is able to successfully sign back in
-#    And the "auth app" user "TEST_USER_REAUTH_AUTH_APP_2" is able to successfully reauthenticate
 
-# NO LONGER REQUIRED AS WILL BE REPLACED WITH NEW PAGE IN MVP3
-#  @reauth-change-security-code-method-to-auth-app
-#  Scenario: Sms user can change how they get security codes during reauthentication
-#    Given the "sms" user "TEST_USER_REAUTH_SMS_7" is already signed in to their One Login account
-#    And the RP requires the user to reauthenticate
-#    And user enters the same email address "TEST_USER_REAUTH_SMS_7" for reauth as they used for login
-#    And the user enters the correct password
-#    And the user is taken to the "Check your phone" page
-#    When the sms user changes how they get security codes
-#    Then the user is successfully reauthenticated and returned to the service
-#    And the user logs out
-#
-#  @reauth-change-security-code-method-to-sms
-#  Scenario: Auth app user can change how they get security codes during reauthentication
-#    Given the "auth app" user "TEST_USER_REAUTH_AUTH_APP_3" is already signed in to their One Login account
-#    And the RP requires the user to reauthenticate
-#    And user enters the same email address "TEST_USER_REAUTH_AUTH_APP_3" for reauth as they used for login
-#    And the user enters the correct password
-#    And the user is taken to the "Enter the 6 digit security code shown in your authenticator app" page
-#    When the auth app user changes how they get security codes
-#    Then the user is successfully reauthenticated and returned to the service
-#    And the user logs out
+  # WILL BE REPLACED WITH NEW PROCESS IN MVP3
+  @reauth-change-security-code-method-to-auth-app
+  Scenario: Sms user can change how they get security codes during reauthentication
+    Given the "sms" user "TEST_USER_REAUTH_SMS_7" is already signed in to their One Login account
+    And the RP requires the user to reauthenticate
+    And user enters the same email address "TEST_USER_REAUTH_SMS_7" for reauth as they used for login
+    And the user enters the correct password
+    And the user is taken to the "Check your phone" page
+    When the sms user changes how they get security codes
+    Then the user is successfully reauthenticated and returned to the service
+    And the user logs out
+
+  # WILL BE REPLACED WITH NEW PROCESS IN MVP3
+  @reauth-change-security-code-method-to-sms
+  Scenario: Auth app user can change how they get security codes during reauthentication
+    Given the "auth app" user "TEST_USER_REAUTH_AUTH_APP_3" is already signed in to their One Login account
+    And the RP requires the user to reauthenticate
+    And user enters the same email address "TEST_USER_REAUTH_AUTH_APP_3" for reauth as they used for login
+    And the user enters the correct password
+    And the user is taken to the "Enter the 6 digit security code shown in your authenticator app" page
+    When the auth app user changes how they get security codes
+    Then the user is successfully reauthenticated and returned to the service
+    And the user logs out
+
+  # WILL BE REPLACED WITH NEW PROCESS IN MVP3
+  @reauth-pw-reset
+  Scenario: User can change their password during reauthenticates
+    Given the "sms" user "TEST_USER_REAUTH_SMS_6" is already signed in to their One Login account
+    And the RP requires the user to reauthenticate
+    And user enters the same email address "TEST_USER_REAUTH_SMS_6" for reauth as they used for login
+    And the user is taken to the "Enter your password" page
+    When the sms user changes their password during reauthentication
+    Then the user is successfully reauthenticated and returned to the service
+    And the user logs out
 
 #  @reauth-disabled
 #  Scenario: Reauth functionality inaccessible when feature switched off
