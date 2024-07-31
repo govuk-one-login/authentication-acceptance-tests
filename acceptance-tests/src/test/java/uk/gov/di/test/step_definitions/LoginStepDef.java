@@ -300,4 +300,15 @@ public class LoginStepDef extends BasePage {
     public void theUserChangesTheirPasswordDuringReauth() {
         crossPageFlows.smsUserChangesPassword();
     }
+
+    @When("the user enters {string} email address, password and six digit SMS OTP")
+    public void theUserGoesThroughSmsSignInJourney(String email) {
+        theUserSelectsSignIn();
+        waitForPageLoad("Enter your email");
+        enterYourEmailAddressToSignInPage.enterEmailAddressAndContinue(System.getenv().get(email));
+        waitForPageLoad("Enter your password");
+        enterYourPasswordPage.enterCorrectPasswordAndContinue();
+        waitForPageLoad("Check your phone");
+        checkYourPhonePage.enterCorrectPhoneCodeAndContinue();
+    }
 }
