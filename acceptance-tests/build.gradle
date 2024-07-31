@@ -16,7 +16,8 @@ def dependencyVersions = [
         cucumber_version: '7.8.1',
         axe_version: '3.0',
         json_version: '20220320',
-        selenium_java_version: '4.5.0'
+        selenium_java_version: '4.5.0',
+        rest_assured: '5.5.0'
 ]
 
 dependencies {
@@ -31,6 +32,7 @@ dependencies {
 
     testImplementation group: 'com.deque', name: 'axe-selenium', version:"${dependencyVersions.axe_version}"
     testImplementation group: 'org.json', name: 'json', version:"${dependencyVersions.json_version}"
+    testImplementation "io.rest-assured:rest-assured:${dependencyVersions.rest_assured}"
 
     testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:${dependencyVersions.junit_version}"
 }
