@@ -75,16 +75,16 @@ Feature: Reauthentication of user
     And the "auth app" user "TEST_USER_REAUTH_AUTH_APP_2" is not blocked from signing back in
     And the "auth app" user "TEST_USER_REAUTH_AUTH_APP_2" is not blocked from reauthenticating
 
-#  @reauth-request-too-many-sms-codes @AUT-3089
-#  Scenario: Sms user requests phone code resend during reauthentication
-#    Given the "sms" user "TEST_USER_REAUTH_SMS_5" is already signed in to their One Login account
-#    And the RP requires the user to reauthenticate
-#    And user enters the same email address "TEST_USER_REAUTH_SMS_5" for reauth as they used for login
-#    And the user enters the correct password
-#    When the user requests the phone otp code a further 5 times during reauth
-#    Then the user is logged out
-#    And the "sms" user "TEST_USER_REAUTH_SMS_5" is able to successfully sign back in
-#    And the "sms" user "TEST_USER_REAUTH_SMS_5" is able to successfully reauthenticate
+  @reauth-request-too-many-sms-codes @AUT-3089
+  Scenario: Sms user requests phone code resend during reauthentication
+    Given the "sms" user "TEST_USER_REAUTH_SMS_5" is already signed in to their One Login account
+    And the RP requires the user to reauthenticate
+    And user enters the same email address "TEST_USER_REAUTH_SMS_5" for reauth as they used for login
+    And the user enters the correct password
+    When the user requests the phone otp code a further 5 times during reauth
+    Then the user is forcibly logged out
+    And the "sms" user "TEST_USER_REAUTH_SMS_5" is not blocked from signing back in
+    And the "sms" user "TEST_USER_REAUTH_SMS_5" is not blocked from reauthenticating
 
   # WILL BE REPLACED WITH NEW PROCESS IN MVP3
   @reauth-change-security-code-method-to-auth-app
