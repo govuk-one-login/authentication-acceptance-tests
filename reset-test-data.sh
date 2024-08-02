@@ -11,6 +11,7 @@ source ./scripts/reset-test-users.sh
 source ./scripts/reset-account-interventions.sh
 source ./scripts/re-authentication.sh
 source ./scripts/2hr-lockout-period.sh
+source ./scripts/reset-account-management.sh
 
 LOCAL=0
 while getopts "lr" opt; do
@@ -53,3 +54,4 @@ resetTestUsers
 resetAccountInterventions
 #reAuthentication
 2hrLockoutPeriod
+resetAccountManagement
