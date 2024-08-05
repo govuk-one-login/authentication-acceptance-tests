@@ -2,8 +2,8 @@ name: Build and Push Acceptance Tests to DEV
 
 env:
   AWS_REGION: eu-west-2
-  DEV_GHA_DEPLOYER_ROLE: arn:aws:iam::653994557586:role/dev-auth-deploy-pipeline-GitHubActionsRole-QrtGginNnjDD
-  DEV_ACCEPTANCE_ECR_REPO: acceptance-test-dev-testrunnerimagerepository-yh8assqv55do
+  DEV_GHA_DEPLOYER_ROLE: arn:aws:iam::058264536367:role/frontend-pipeline-GitHubActionsRole-SlWSoz8hOrQk
+  DEV_ACCEPTANCE_ECR_REPO: acceptance-tests-image-repository-testrunnerimagerepository-5rxesw9unf4q
 
 on:
   workflow_dispatch:
