@@ -2,8 +2,6 @@ name: Build and Push Tests Secure Pipeline
 
 env:
   AWS_REGION: eu-west-2
-  GHA_DEPLOYER_ROLE_NEW_BUILD: arn:aws:iam::058264536367:role/frontend-pipeline-GitHubActionsRole-SlWSoz8hOrQk
-  ACCEPTANCE_ECR_REPO_NEW_BUILD: acceptance-tests-image-repository-testrunnerimagerepository-5rxesw9unf4q
 
 on:
   push:
@@ -24,7 +22,7 @@ jobs:
       - name: Set up AWS credentials
         uses: aws-actions/configure-aws-credentials@v2
         with:
-          role-to-assume: ${{ env.GHA_DEPLOYER_ROLE_NEW_BUILD }}
+          role-to-assume: ${{ secrets.GHA_DEPLOYER_ROLE_NEW_BUILD }}
           aws-region: ${{ env.AWS_REGION }}
 
       - name: Login to Amazon ECR
@@ -34,7 +32,7 @@ jobs:
       - name: Build, tag, and push acceptance tests image to Amazon ECR
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          ECR_REPOSITORY: ${{ env.ACCEPTANCE_ECR_REPO_NEW_BUILD }}
+          ECR_REPOSITORY: ${{ secrets.ACCEPTANCE_ECR_REPO_NEW_BUILD }}
           IMAGE_TAG: latest
         run: |
           docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
