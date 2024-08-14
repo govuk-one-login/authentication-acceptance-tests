@@ -50,8 +50,8 @@ if [ "${LOCAL}" == "1" ]; then
   source "${DIR}/scripts/export_aws_creds.sh"
 fi
 
-resetTestUsers
-resetAccountInterventions
-#reAuthentication
-2hrLockoutPeriod
-resetAccountManagement
+#resetTestUsers
+#resetAccountInterventions
+reAuthentication
+#2hrLockoutPeriod
+#resetAccountManagement
