@@ -1,4 +1,4 @@
-@RegistrationJourney @build @staging
+@RegistrationJourney @build @staging @build-sp @staging-sp
 Feature: Registration Journey
   New user walks through a registration journey
 

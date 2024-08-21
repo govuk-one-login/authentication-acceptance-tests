@@ -2,6 +2,7 @@
 Feature: Login Journey
   Existing user walks through a login journey
 
+  @build-sp @staging-sp
   Scenario: Existing user tries to create an account with the same email address
     Given the user comes from the stub relying party with options: "default"
     Then the user is taken to the "Create your GOV.UK One Login or sign in" page
@@ -10,6 +11,7 @@ Feature: Login Journey
     When user enters "TEST_USER_2_EMAIL" email address
     Then the user is taken to the "You have a GOV.UK One Login" page
 
+  @build-sp @staging-sp
   Scenario: Existing user is correctly prompted to login using sms
     Given the user comes from the stub relying party with options: "default"
     Then the user is taken to the "Create your GOV.UK One Login or sign in" page
@@ -23,6 +25,7 @@ Feature: Login Journey
     Then the user is returned to the service
     And the user clicks logout
 
+  @build-sp @staging-sp
   Scenario: Existing user switches content to Welsh
     Given the user comes from the stub relying party with options: "default"
     Then the user is taken to the "Create your GOV.UK One Login or sign in" page
@@ -39,6 +42,7 @@ Feature: Login Journey
     When the user switches to "English" language
     Then the user is taken to the "Create your GOV.UK One Login or sign in" page
 
+  @build-sp-fail @staging-sp-fail
   Scenario: Existing user logs in without 2FA then uplift with 2FA
     Given the user comes from the stub relying party with options: "2fa-off"
     Then the user is taken to the "Create your GOV.UK One Login or sign in" page
@@ -48,6 +52,7 @@ Feature: Login Journey
     Then the user is taken to the "Enter your password" page
     When the user enters their password
     Then the user is returned to the service
+    When the user uplifts having already logged in
     When the user comes from the stub relying party with options: "default" and the user is taken to the "Enter a security code to continue" page
     Then the user is taken to the "Enter a security code to continue" page
     When the user enters the six digit security code from their phone

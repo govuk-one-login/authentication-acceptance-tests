@@ -5,12 +5,15 @@ import io.cucumber.java.en.When;
 import org.openqa.selenium.WebDriverException;
 import uk.gov.di.test.pages.BasePage;
 import uk.gov.di.test.pages.RpStubPage;
+import uk.gov.di.test.pages.StubOrchestrationPage;
+import uk.gov.di.test.pages.StubStartPage;
 import uk.gov.di.test.utils.RetryHelper;
 import uk.gov.di.test.utils.SessionContextExceptions;
 
 public class RpStubStepDef extends BasePage {
 
-    RpStubPage rpStubPage = new RpStubPage();
+    public StubStartPage rpStubPage =
+            USE_STUB_ORCH ? new StubOrchestrationPage() : new RpStubPage();
 
     private static final RetryHelper retryHelper = RetryHelper.getInstance();
     private static final Integer RETRY_LIMIT = 5;
@@ -61,5 +64,10 @@ public class RpStubStepDef extends BasePage {
         waitForThisText("Error in Callback");
         waitForThisText("Error: login_required");
         waitForThisText("Error description: Login required");
+    }
+
+    @When("the user uplifts having already logged in")
+    public void whenTheUserUpliftsHavingAlreadyLoggedIn() {
+        rpStubPage.uplift("");
     }
 }

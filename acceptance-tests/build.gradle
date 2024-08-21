@@ -73,6 +73,8 @@ task cucumber() {
                 '--plugin',
                 'html:target/cucumber-report/index.html',
                 '--plugin',
+                'json:target/cucumber-report/Cucumber.json',
+                '--plugin',
                 'pretty',
                 '--glue',
                 'uk.gov.di.test.step_definitions',

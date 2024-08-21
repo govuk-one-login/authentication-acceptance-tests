@@ -1,4 +1,4 @@
-@AuthApp2FA @build @staging
+@AuthApp2FA @build @staging @build-sp-fail
 Feature: Authentication App Journeys
   New user creates an account and logs in using an auth app
 
@@ -56,5 +56,6 @@ Feature: Authentication App Journeys
     Then the user is taken to the "Enter your password" page
     When the user enters their password
     Then the user is returned to the service
+#    When the user uplifts having already logged in
     When the user comes from the stub relying party with options: "2fa-on" and the user is taken to the "Enter a security code to continue" page
     Then the user is taken to the "Enter a security code to continue" page

@@ -15,6 +15,8 @@ import uk.gov.di.test.pages.ReenterYourSignInDetailsToContinuePage;
 import uk.gov.di.test.pages.ResetYourPasswordPage;
 import uk.gov.di.test.pages.RpStubPage;
 import uk.gov.di.test.pages.SetUpAnAuthenticatorAppPage;
+import uk.gov.di.test.pages.StubOrchestrationPage;
+import uk.gov.di.test.pages.StubStartPage;
 import uk.gov.di.test.pages.UserInformationPage;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -23,7 +25,8 @@ import static uk.gov.di.test.utils.Constants.NEW_VALID_PASSWORD;
 public class CrossPageFlows extends BasePage {
     private String authAppSecretKey;
     public CreateOrSignInPage createOrSignInPage = new CreateOrSignInPage();
-    public RpStubPage rpStubPage = new RpStubPage();
+    public StubStartPage rpStubPage =
+            USE_STUB_ORCH ? new StubOrchestrationPage() : new RpStubPage();
     public EnterYourEmailAddressToSignInPage enterYourEmailAddressToSignInPage =
             new EnterYourEmailAddressToSignInPage();
     public EnterYourPasswordPage enterYourPasswordPage = new EnterYourPasswordPage();
@@ -101,12 +104,12 @@ public class CrossPageFlows extends BasePage {
                     .enterCorrectAuthAppCodeAndContinue(
                             System.getenv().get("ACCOUNT_RECOVERY_USER_AUTH_APP_SECRET"));
         }
-        waitForPageLoad("Example - GOV.UK - User Info");
+        rpStubPage.waitForReturnToTheService();
     }
 
     public void successfulReauth(String userType, String userEmailAddress) {
         // assumes that the signed in page is currently displayed
-        waitForPageLoad("Example - GOV.UK - User Info");
+        rpStubPage.waitForReturnToTheService();
         String idToken = userInformationPage.getIdToken();
         rpStubPage.reauthRequired(idToken);
         waitForPageLoad("Enter your sign in details for GOV.UK One Login again");
@@ -127,8 +130,10 @@ public class CrossPageFlows extends BasePage {
                     .enterCorrectAuthAppCodeAndContinue(
                             System.getenv().get("ACCOUNT_RECOVERY_USER_AUTH_APP_SECRET"));
         }
-        waitForPageLoad("Example - GOV.UK - User Info");
-        userInformationPage.logoutOfAccount();
+        rpStubPage.waitForReturnToTheService();
+        if (rpStubPage.supportsLogout()) {
+            userInformationPage.logoutOfAccount();
+        }
     }
 
     public void smsUserChangeHowGetSecurityCodesToAuthApp() {
@@ -187,8 +192,10 @@ public class CrossPageFlows extends BasePage {
         checkYourPhonePage.enterCorrectPhoneCodeAndContinue();
         waitForPageLoad("You’ve created your GOV.UK One Login");
         findAndClickContinue();
-        waitForPageLoad("User Info");
-        userInformationPage.logoutOfAccount();
+        rpStubPage.waitForReturnToTheService();
+        if (rpStubPage.supportsLogout()) {
+            userInformationPage.logoutOfAccount();
+        }
     }
 
     public void createPartialRegisteredUpToChooseHowToGetSecurityCodesPage(

@@ -13,6 +13,8 @@ import uk.gov.di.test.pages.EnterYourEmailAddressPage;
 import uk.gov.di.test.pages.EnterYourMobilePhoneNumberPage;
 import uk.gov.di.test.pages.NoGovUkOneLoginFoundPage;
 import uk.gov.di.test.pages.RpStubPage;
+import uk.gov.di.test.pages.StubOrchestrationPage;
+import uk.gov.di.test.pages.StubStartPage;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -33,7 +35,8 @@ public class RegistrationStepDef extends BasePage {
             new EnterYourMobilePhoneNumberPage();
     EnterYourEmailAddressPage enterYourEmailAddressPage = new EnterYourEmailAddressPage();
     CreateOrSignInPage createOrSignInPage = new CreateOrSignInPage();
-    RpStubPage rpStubPage = new RpStubPage();
+    public StubStartPage rpStubPage =
+            USE_STUB_ORCH ? new StubOrchestrationPage() : new RpStubPage();
     CheckYourEmailPage checkYourEmailPage = new CheckYourEmailPage();
     CreateYourPasswordPage createYourPasswordPage = new CreateYourPasswordPage();
     ChooseHowToGetSecurityCodesPage chooseHowToGetSecurityCodesPage =
@@ -95,7 +98,9 @@ public class RegistrationStepDef extends BasePage {
 
     @When("the user clicks logout")
     public void theUserClicksLogout() {
-        findAndClickButtonByText("Log out");
+        if (!USE_STUB_ORCH) {
+            findAndClickButtonByText("Log out");
+        }
     }
 
     @When("the user enters their mobile phone number using an international dialling code")
