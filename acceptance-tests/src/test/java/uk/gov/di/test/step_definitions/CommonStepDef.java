@@ -9,6 +9,8 @@ import org.openqa.selenium.WebElement;
 import uk.gov.di.test.pages.BasePage;
 import uk.gov.di.test.pages.CreateOrSignInPage;
 import uk.gov.di.test.pages.RpStubPage;
+import uk.gov.di.test.pages.StubOrchestrationPage;
+import uk.gov.di.test.pages.StubStartPage;
 import uk.gov.di.test.pages.UserInformationPage;
 import uk.gov.di.test.utils.Driver;
 
@@ -19,15 +21,19 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class CommonStepDef extends BasePage {
     public CreateOrSignInPage createOrSignInPage = new CreateOrSignInPage();
-    public RpStubPage rpStubPage = new RpStubPage();
+    public StubStartPage rpStubPage =
+            USE_STUB_ORCH ? new StubOrchestrationPage() : new RpStubPage();
     public UserInformationPage userInformationPage = new UserInformationPage();
     public CrossPageFlows crossPageFlows = new CrossPageFlows();
 
     @Then("the user is taken to the {string} page")
     public void theUserIsTakenToThePage(String pageTitle) {
-        waitForPageLoad(pageTitle);
-        System.out.println(
-                "One Login session cookie: " + Driver.get().manage().getCookieNamed("gs"));
+
+        if (!(USE_STUB_ORCH && pageTitle.equals("Signed out"))) {
+            waitForPageLoad(pageTitle);
+            System.out.println(
+                    "One Login session cookie: " + Driver.get().manage().getCookieNamed("gs"));
+        }
     }
 
     @Then("the {string} error message is displayed")
@@ -68,13 +74,15 @@ public class CommonStepDef extends BasePage {
     @Then("the user is returned to the service")
     @Then("the user is successfully reauthenticated and returned to the service")
     public void theUserIsReturnedToTheService() {
-        waitForPageLoad("Example - GOV.UK - User Info");
+        rpStubPage.waitForReturnToTheService();
     }
 
     @And("the user logs out")
     public void theUserLogsOut() {
-        findAndClickButtonByText("Log out");
-        waitForPageLoad("Signed out");
+        if (!USE_STUB_ORCH) {
+            findAndClickButtonByText("Log out");
+            waitForPageLoad("Signed out");
+        }
     }
 
     @And("the users cookies are cleared")

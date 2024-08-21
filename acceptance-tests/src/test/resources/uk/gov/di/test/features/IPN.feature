@@ -1,4 +1,4 @@
-@IPN @build @staging
+@IPN @build @staging @build-sp
 Feature: International Phone Numbers
 
 

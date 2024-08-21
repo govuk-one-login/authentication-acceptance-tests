@@ -1,4 +1,4 @@
-@ResetPassword @build @staging
+@ResetPassword @build @staging @build-sp-fail
 Feature: Reset password
 
   Scenario: An sms user can successfully reset their password
@@ -17,7 +17,7 @@ Feature: Reset password
     When the user enters the six digit security code from their phone
     Then the user is taken to the "Reset your password" page
     When the user enters valid new password and correctly retypes it
-    Then the user is taken to the "Example - GOV.UK - User Info" page
+    Then the user is returned to the service
     When the user clicks logout
     Then the user is taken to the "Signed out" page
 
@@ -37,6 +37,6 @@ Feature: Reset password
     When the user enters the security code from the auth app
     Then the user is taken to the "Reset your password" page
     When the user enters valid new password and correctly retypes it
-    Then the user is taken to the "Example - GOV.UK - User Info" page
+    Then the user is returned to the service
     When the user clicks logout
     Then the user is taken to the "Signed out" page

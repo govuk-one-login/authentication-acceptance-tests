@@ -69,7 +69,7 @@ task cucumber() {
             main = "io.cucumber.core.cli.Main"
             classpath = configurations.cucumberRuntime + sourceSets.main.output + sourceSets.test.output
             def no_of_threads = System.getenv('PARALLEL_BROWSERS') ?: 1
-            args = ['--plugin', 'html:target/cucumber-report/index.html', '--plugin', 'pretty', '--glue', 'uk.gov.di.test.step_definitions', 'src/test/resources', '--threads', no_of_threads]
+            args = ['--plugin', 'html:target/cucumber-report/index.html', '--plugin', 'json:target/cucumber-report/Cucumber.json', '--plugin', 'pretty', '--glue', 'uk.gov.di.test.step_definitions', 'src/test/resources', '--threads', no_of_threads]
         }
     }
 }
