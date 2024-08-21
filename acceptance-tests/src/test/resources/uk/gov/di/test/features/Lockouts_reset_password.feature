@@ -1,4 +1,4 @@
-@lockouts @lockout_reset_pw @build @staging
+@lockouts @lockout_reset_pw @build @staging @build-sp
 Feature: Reset password lockouts
 
   # ENTER INCORRECT EMAIL OTP TOO MANY TIMES DURING PASSWORD RESET - 2071

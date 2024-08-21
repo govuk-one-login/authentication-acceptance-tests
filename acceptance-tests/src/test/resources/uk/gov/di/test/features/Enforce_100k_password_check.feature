@@ -1,4 +1,4 @@
-@EnforcePasswordReset @build @staging
+@EnforcePasswordReset @build @staging @build-sp
 Feature: Enforce 100k password check
   If an existing user has a current password that is in the list of top 100k passwords, they are forced to change their password
 
@@ -14,7 +14,7 @@ Feature: Enforce 100k password check
     When the user enters the six digit security code from their phone
     Then the user is taken to the "Reset your password" page
     When the user enters valid new password and correctly retypes it
-    Then the user is taken to the "Example - GOV.UK - User Info" page
+    Then the user is returned to the service
     When the user clicks logout
     Then the user is taken to the "Signed out" page
 
@@ -30,6 +30,6 @@ Feature: Enforce 100k password check
     When the user enters the security code from the auth app
     Then the user is taken to the "Reset your password" page
     When the user enters valid new password and correctly retypes it
-    Then the user is taken to the "Example - GOV.UK - User Info" page
+    Then the user is returned to the service
     When the user clicks logout
     Then the user is taken to the "Signed out" page

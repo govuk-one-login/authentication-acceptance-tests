@@ -1,4 +1,4 @@
-@lockouts @lockout_acc_rec @build @staging
+@lockouts @lockout_acc_rec @build @staging @build-sp-fail
 Feature: Account recovery lockouts
 
   # ENTER INCORRECT EMAIL OTP TOO MANY TIMES DURING ACCOUNT RECOVERY - 2081 - PASS

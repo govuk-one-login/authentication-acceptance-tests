@@ -30,6 +30,9 @@ public class BasePage {
                             "RP_URL",
                             "https://acceptance-test-rp-build.build.stubs.account.gov.uk/");
 
+    protected static final boolean USE_STUB_ORCH =
+            System.getenv().getOrDefault("USE_STUB_ORCH", "0").equals("1");
+
     protected static final Duration DEFAULT_PAGE_LOAD_WAIT_TIME = Duration.ofSeconds(20);
     protected static final Duration NO_PAGE_LOAD_WAIT_TIME = Duration.ofSeconds(0);
 

@@ -1,4 +1,4 @@
-@AccountInterventions @build
+@AccountInterventions @build @build-sp-fail
 Feature: Account interventions
 
   @suspended

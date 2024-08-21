@@ -17,6 +17,8 @@ import uk.gov.di.test.pages.FinishCreatingYourAccountPage;
 import uk.gov.di.test.pages.LockoutPage;
 import uk.gov.di.test.pages.ResetYourPasswordPage;
 import uk.gov.di.test.pages.RpStubPage;
+import uk.gov.di.test.pages.StubOrchestrationPage;
+import uk.gov.di.test.pages.StubStartPage;
 import uk.gov.di.test.pages.UserInformationPage;
 import uk.gov.di.test.pages.YouHaveAGOVUKOneLoginPage;
 import uk.gov.di.test.utils.Driver;
@@ -36,7 +38,6 @@ public class LockoutsStepDef extends BasePage {
             new ChooseHowToGetSecurityCodesPage();
     public EnterYourMobilePhoneNumberPage enterYourMobilePhoneNumberPage =
             new EnterYourMobilePhoneNumberPage();
-    RpStubPage rpStubPage = new RpStubPage();
     public FinishCreatingYourAccountPage finishCreatingYourAccountPage =
             new FinishCreatingYourAccountPage();
     public YouHaveAGOVUKOneLoginPage youHaveAGOVUKOneLoginPage = new YouHaveAGOVUKOneLoginPage();
@@ -44,6 +45,8 @@ public class LockoutsStepDef extends BasePage {
     public LockoutPage lockoutPage = new LockoutPage();
     public ResetYourPasswordPage resetYourPasswordPage = new ResetYourPasswordPage();
     public UserInformationPage userInformationPage = new UserInformationPage();
+    public StubStartPage rpStubPage =
+            USE_STUB_ORCH ? new StubOrchestrationPage() : new RpStubPage();
 
     @When(
             "the user {string} with a lockout for wrong email security codes reattempts to change their password during the lockout period")
@@ -311,7 +314,7 @@ public class LockoutsStepDef extends BasePage {
         waitForPageLoad("Reset your password");
         resetYourPasswordPage.enterPasswordResetDetailsAndContinue(
                 NEW_VALID_PASSWORD, NEW_VALID_PASSWORD);
-        waitForPageLoad("Example - GOV.UK - User Info");
+        rpStubPage.waitForReturnToTheService();
         userInformationPage.logoutOfAccount();
     }
 
@@ -329,7 +332,7 @@ public class LockoutsStepDef extends BasePage {
         enterYourPasswordPage.enterNewPasswordAndContinue();
         waitForPageLoad("Check your phone");
         checkYourPhonePage.enterCorrectPhoneCodeAndContinue();
-        waitForPageLoad("Example - GOV.UK - User Info");
+        rpStubPage.waitForReturnToTheService();
         userInformationPage.logoutOfAccount();
     }
 }
