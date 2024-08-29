@@ -104,7 +104,12 @@ public class LoginStepDef extends BasePage {
     @When("the user requests the phone otp code {int} times")
     @When("the user requests the phone otp code a further {int} times")
     public void theUserRequestsThePhoneOtpCodeTimes(Integer timesCodeIncorrect) {
-        crossPageFlows.requestPhoneSecurityCodeResendNumberOfTimes(timesCodeIncorrect);
+        crossPageFlows.requestPhoneSecurityCodeResendNumberOfTimes(timesCodeIncorrect, false);
+    }
+
+    @When("the user requests the phone otp code a further {int} times during reauth")
+    public void theUserRequestsThePhoneOtpCodeTimesAtReauth(Integer timesCodeIncorrect) {
+        crossPageFlows.requestPhoneSecurityCodeResendNumberOfTimes(timesCodeIncorrect, true);
     }
 
     @When("the user clicks the get a new code link")
@@ -232,14 +237,22 @@ public class LoginStepDef extends BasePage {
         termsAndConditionsPage.pressAgreeAndContinueButton();
     }
 
-    @When("the user enters a different email address for reauth than they logged in with")
+    @When("the user enters an incorrect email address at reauth that is known to One Login")
     public void theUserEntersADifferentEmailAddressThanTheyLoggedInWith() {
-        reenterYourSignInDetailsToContinuePage.enterWrongEmailAddressNumberOfTimes(1);
+        reenterYourSignInDetailsToContinuePage.enterSameIncorrectEmailAddressesNumberOfTimes(1);
     }
 
-    @When("the user enters a different email address for reauth a further {int} times")
+    @When("the user enters the same incorrect email address for reauth a further {int} times")
     public void theUserEntersDifferentEmailAddressXTimes(Integer attemptCount) {
-        reenterYourSignInDetailsToContinuePage.enterWrongEmailAddressNumberOfTimes(attemptCount);
+        reenterYourSignInDetailsToContinuePage.enterSameIncorrectEmailAddressesNumberOfTimes(
+                attemptCount);
+    }
+
+    @When(
+            "the user enters {int} different email addresses at reauth that are not known to One Login")
+    public void theUserEntersNDifferentEmailAddressesForReauth(Integer attemptCount) {
+        reenterYourSignInDetailsToContinuePage.enterDifferentIncorrectEmailAddressesNumberOfTimes(
+                attemptCount);
     }
 
     @When("the user enters incorrect password")
@@ -251,6 +264,11 @@ public class LoginStepDef extends BasePage {
     @When("the user enters an incorrect password {int} times")
     public void theUserEntersAnIncorrectPasswordAFurtherXTimes(Integer attemptCount) {
         enterYourPasswordPage.enterIncorrectPasswordNumberOfTimes(attemptCount);
+    }
+
+    @When("the user enters a blank password")
+    public void theUserEntersABlankPassword() {
+        enterYourPasswordPage.enterPasswordAndContinue("");
     }
 
     @And("the user enters an incorrect phone security code")
@@ -299,6 +317,26 @@ public class LoginStepDef extends BasePage {
     @When("the sms user changes their password during reauthentication")
     public void theUserChangesTheirPasswordDuringReauth() {
         crossPageFlows.smsUserChangesPassword();
+    }
+
+    @And("the {string} user {string} is not blocked from signing back in")
+    public void theUserIsAbleToSignBackInWithoutBeingBlocked(String userType, String emailAddress) {
+        crossPageFlows.successfulSignIn(userType, emailAddress);
+    }
+
+    @And("the owner of the incorrect email address is not blocked from signing in")
+    public void theUserIsAbleToSignBackInWithoutBeingBlocked() {
+        crossPageFlows.successfulSignIn("sms", "TEST_USER_REAUTH_SMS_9");
+    }
+
+    @And("the {string} user {string} is not blocked from reauthenticating")
+    public void theUserIsAbleToReauthWithoutBeingBlocked(String userType, String emailAddress) {
+        crossPageFlows.successfulReauth(userType, emailAddress);
+    }
+
+    @And("the owner of the incorrect email address is not blocked from reauthenticating")
+    public void theUserIsAbleToReauthWithoutBeingBlocked() {
+        crossPageFlows.successfulReauth("sms", "TEST_USER_REAUTH_SMS_9");
     }
 
     @When("the user enters {string} email address, password and six digit SMS OTP")

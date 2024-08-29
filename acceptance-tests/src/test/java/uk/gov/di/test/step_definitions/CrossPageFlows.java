@@ -11,6 +11,7 @@ import uk.gov.di.test.pages.EnterYourEmailAddressToSignInPage;
 import uk.gov.di.test.pages.EnterYourMobilePhoneNumberPage;
 import uk.gov.di.test.pages.EnterYourPasswordPage;
 import uk.gov.di.test.pages.GetSecurityCodePage;
+import uk.gov.di.test.pages.ReenterYourSignInDetailsToContinuePage;
 import uk.gov.di.test.pages.ResetYourPasswordPage;
 import uk.gov.di.test.pages.RpStubPage;
 import uk.gov.di.test.pages.SetUpAnAuthenticatorAppPage;
@@ -41,12 +42,18 @@ public class CrossPageFlows extends BasePage {
     public ResetYourPasswordPage resetYourPasswordPage = new ResetYourPasswordPage();
     public CreateYourPasswordPage createYourPasswordPage = new CreateYourPasswordPage();
     public UserInformationPage userInformationPage = new UserInformationPage();
+    public ReenterYourSignInDetailsToContinuePage reenterYourSignInDetailsToContinuePage =
+            new ReenterYourSignInDetailsToContinuePage();
 
-    public void requestPhoneSecurityCodeResendNumberOfTimes(Integer numberOfTimes) {
+    public void requestPhoneSecurityCodeResendNumberOfTimes(
+            Integer numberOfTimes, Boolean isReauth) {
         for (int i = 0; i < numberOfTimes; i++) {
             checkYourPhonePage.clickProblemsWithTheCodeLink();
             checkYourPhonePage.clickSendTheCodeAgainLink();
             waitForPageLoad("Get security code");
+            if (isReauth) {
+                waitForThisText("you will be signed out");
+            }
             getSecurityCodePage.pressGetSecurityCodeButton();
             System.out.println(
                     "Code request count: "
@@ -95,6 +102,33 @@ public class CrossPageFlows extends BasePage {
                             System.getenv().get("ACCOUNT_RECOVERY_USER_AUTH_APP_SECRET"));
         }
         waitForPageLoad("Example - GOV.UK - User Info");
+    }
+
+    public void successfulReauth(String userType, String userEmailAddress) {
+        // assumes that the signed in page is currently displayed
+        waitForPageLoad("Example - GOV.UK - User Info");
+        String idToken = userInformationPage.getIdToken();
+        rpStubPage.reauthRequired(idToken);
+        waitForPageLoad("Re-enter your sign-in details to continue");
+        // enter original email address
+        reenterYourSignInDetailsToContinuePage.enterEmailAddressAndContinue(
+                System.getenv().get(userEmailAddress));
+        // enter correct password
+        enterYourPasswordPage.enterCorrectPasswordAndContinue();
+        // enter correct otp
+        if (userType.equalsIgnoreCase("sms")) {
+            // sms steps
+            waitForPageLoad("Check your phone");
+            checkYourPhonePage.enterCorrectPhoneCodeAndContinue();
+        } else {
+            // auth app steps
+            waitForPageLoad("Enter the 6 digit security code shown in your authenticator app");
+            enterThe6DigitSecurityCodeShownInYourAuthenticatorAppPage
+                    .enterCorrectAuthAppCodeAndContinue(
+                            System.getenv().get("ACCOUNT_RECOVERY_USER_AUTH_APP_SECRET"));
+        }
+        waitForPageLoad("Example - GOV.UK - User Info");
+        userInformationPage.logoutOfAccount();
     }
 
     public void smsUserChangeHowGetSecurityCodesToAuthApp() {
