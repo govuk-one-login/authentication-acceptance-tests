@@ -2,6 +2,7 @@
 Feature: Account recovery
 
   Scenario: An sms user can change how they get security codes and log in with new method
+    * set up data for user "TEST_USER_ACCOUNT_RECOVERY_EMAIL_1"
     When the user comes from the stub relying party with options: "default"
     Then the user is taken to the "Create your GOV.UK One Login or sign in" page
     When the user selects sign in
@@ -38,6 +39,7 @@ Feature: Account recovery
 
 
   Scenario: An auth app user can change how they get security codes and log in with new method
+    * set up data for user "TEST_USER_ACCOUNT_RECOVERY_EMAIL_2"
     When the user comes from the stub relying party with options: "default"
     Then the user is taken to the "Create your GOV.UK One Login or sign in" page
     When the user selects sign in

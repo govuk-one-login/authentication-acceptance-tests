@@ -3,6 +3,7 @@ Feature: International Phone Numbers
 
 
   Scenario: User cannot register using an invalid UK mobile phone number
+    * set up data for user "IPN1_NEW_USER_EMAIL"
     Given the user comes from the stub relying party with options: "default"
     Then the user is taken to the "Create your GOV.UK One Login or sign in" page
     When the user selects create an account
@@ -25,6 +26,7 @@ Feature: International Phone Numbers
     Then the "Enter a UK mobile phone number using only numbers or the + symbol" error message is displayed
 
   Scenario: User can successfully complete registration using an international phone number
+    * set up data for user "IPN2_NEW_USER_EMAIL"
     Given the user comes from the stub relying party with options: "default"
     Then the user is taken to the "Create your GOV.UK One Login or sign in" page
     When the user selects create an account

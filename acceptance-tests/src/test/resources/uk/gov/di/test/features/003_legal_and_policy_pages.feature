@@ -16,6 +16,7 @@ Feature: Legal and policy pages
     Then the user is taken to the privacy notice page
 
   Scenario: User accepts updated terms and conditions
+    * set up data for user "TERMS_AND_CONDITIONS_TEST_USER_EMAIL"
     Given the user comes from the stub relying party with options: "default"
     Then the user is taken to the "Create your GOV.UK One Login or sign in" page
     When the user selects sign in

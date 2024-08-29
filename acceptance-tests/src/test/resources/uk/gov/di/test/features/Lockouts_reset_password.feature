@@ -3,6 +3,7 @@ Feature: Reset password lockouts
 
   # ENTER INCORRECT EMAIL OTP TOO MANY TIMES DURING PASSWORD RESET - 2071
   Scenario: A user is blocked when they enter an incorrect email OTP more than 5 times during a password reset.
+    * set up data for user "INCORRECT_EMAIL_OTP_FOR_PW_RESET_EMAIL"
     Given the user comes from the stub relying party with options: "default"
     Then the user is taken to the "Create your GOV.UK One Login or sign in" page
     When the user selects sign in
@@ -18,6 +19,7 @@ Feature: Reset password lockouts
 
   # REQUEST EMAIL OTP TOO MANY TIMES DURING PASSWORD RESET - 2381
   Scenario: A user is blocked when they request an email OTP more than 5 times during a password reset.
+    * set up data for user "TOO_MANY_EMAIL_OTP_REQUESTS_FOR_PW_RESET_EMAIL"
     Given the user comes from the stub relying party with options: "default"
     Then the user is taken to the "Create your GOV.UK One Login or sign in" page
     When the user selects sign in
@@ -33,6 +35,7 @@ Feature: Reset password lockouts
 
   # ENTER INCORRECT SMS CODE TOO MANY TIMES DURING PASSWORD RESET - 2070
   Scenario: A user is blocked when they enter an incorrect sms security code more than 5 times during a password reset.
+    * set up data for user "PASSWORD_RESET_SMS_USER_1"
     Given the user comes from the stub relying party with options: "default"
     Then the user is taken to the "Create your GOV.UK One Login or sign in" page
     When the user selects sign in
@@ -50,6 +53,7 @@ Feature: Reset password lockouts
 
   # REQUEST SMS CODE TOO MANY TIMES DURING PASSWORD RESET - 2379
   Scenario: A user is blocked when they request an sms code more than 5 times during a password reset.
+    * set up data for user "PASSWORD_RESET_SMS_USER_2"
     Given the user comes from the stub relying party with options: "default"
     Then the user is taken to the "Create your GOV.UK One Login or sign in" page
     When the user selects sign in
@@ -67,6 +71,7 @@ Feature: Reset password lockouts
 
   # ENTER INCORRECT AUTH APP CODE TOO MANY TIMES DURING PASSWORD RESET - 2072
   Scenario: A user is blocked when they enter an incorrect auth app security code more than 5 times during a password reset.
+    * set up data for user "PASSWORD_RESET_AUTH_APP_USER_1"
     Given the user comes from the stub relying party with options: "default"
     Then the user is taken to the "Create your GOV.UK One Login or sign in" page
     When the user selects sign in

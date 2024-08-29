@@ -3,6 +3,7 @@ Feature: Enforce 100k password check
   If an existing user has a current password that is in the list of top 100k passwords, they are forced to change their password
 
   Scenario: An sms user is forced to reset their top 100k password
+    * set up data for user "REQ_RESET_PW_USER_EMAIL"
     Given the user comes from the stub relying party with options: "default"
     Then the user is taken to the "Create your GOV.UK One Login or sign in" page
     When the user selects sign in
@@ -19,6 +20,7 @@ Feature: Enforce 100k password check
     Then the user is taken to the "Signed out" page
 
   Scenario: An auth app user is forced to reset their top 100k password
+    * set up data for user "REQ_RESET_PW_USER_EMAIL_2"
     Given the user comes from the stub relying party with options: "default"
     Then the user is taken to the "Create your GOV.UK One Login or sign in" page
     When the user selects sign in

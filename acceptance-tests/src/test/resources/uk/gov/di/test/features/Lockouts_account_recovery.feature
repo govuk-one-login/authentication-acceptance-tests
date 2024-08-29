@@ -3,6 +3,7 @@ Feature: Account recovery lockouts
 
   # ENTER INCORRECT EMAIL OTP TOO MANY TIMES DURING ACCOUNT RECOVERY - 2081 - PASS
   Scenario: A user is blocked when they enter an incorrect email OTP code 6 times during a change of auth method.
+    * set up data for user "ACCOUNT_RECOVERY_INCORRECT_EMAIL_CODE"
     Given the user comes from the stub relying party with options: "default"
     Then the user is taken to the "Create your GOV.UK One Login or sign in" page
     When the user selects sign in
@@ -21,6 +22,7 @@ Feature: Account recovery lockouts
 
   # REQUEST EMAIL OTP TOO MANY TIMES DURING ACCOUNT RECOVERY - 2382
   Scenario: A user with sms authentication is blocked when they request their email OTP code 6 times during a change of auth method.
+    * set up data for user "TEST_USER_ACCOUNT_RECOVERY_EMAIL_3"
     Given the user comes from the stub relying party with options: "default"
     Then the user is taken to the "Create your GOV.UK One Login or sign in" page
     When the user selects sign in
@@ -39,6 +41,7 @@ Feature: Account recovery lockouts
 
   # ENTER INCORRECT SMS SECURITY CODE TOO MANY TIMES DURING ACCOUNT RECOVERY - REG
   Scenario: A user is blocked when they enter too many incorrect sms codes during a change of auth method.
+    * set up data for user "ACCOUNT_RECOVERY_INCORRECT_SMS_CODE"
     Given the user comes from the stub relying party with options: "default"
     Then the user is taken to the "Create your GOV.UK One Login or sign in" page
     When the user selects sign in
@@ -63,6 +66,7 @@ Feature: Account recovery lockouts
 
   # REQUEST SMS CODE TOO MANY TIMES DURING ACCOUNT RECOVERY - 2380
   Scenario: A user is blocked when they request sms code more than 5 times during a change of auth method.
+    * set up data for user "ACCOUNT_RECOVERY_REQUEST_SMS_CODE_LOCKOUT"
     Given the user comes from the stub relying party with options: "default"
     Then the user is taken to the "Create your GOV.UK One Login or sign in" page
     When the user selects sign in
@@ -87,6 +91,7 @@ Feature: Account recovery lockouts
 
   # NO LIMIT ON ENTERING INCORRECT AUTH APP CODES DURING ACCOUNT RECOVERY - REG
   Scenario: A user is not blocked when they enter an incorrect auth app code during a change of auth method.
+    * set up data for user "ACCOUNT_RECOVERY_INCORRECT_AUTH_APP_CODE_NO_LIMIT"
     Given the user comes from the stub relying party with options: "default"
     Then the user is taken to the "Create your GOV.UK One Login or sign in" page
     When the user selects sign in

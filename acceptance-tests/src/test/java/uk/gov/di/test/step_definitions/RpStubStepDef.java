@@ -8,11 +8,24 @@ import uk.gov.di.test.pages.RpStubPage;
 public class RpStubStepDef extends BasePage {
 
     RpStubPage rpStubPage = new RpStubPage();
+    // Dynamo dynamo = new Dynamo();
+    // TestData testData = new TestData();
 
     @When("the user comes from the stub relying party with options: {string}")
     public void theExistingUserVisitsTheStubRelyingParty(String options) {
+        // testData.SetupUserData(userEmail);
+        // dynamo.createUpdateStandardSmsUser(userEmail);
+        // dynamo.createOrUpdateUser(userEmail);
         rpStubPage.goToRpStub();
         rpStubPage.selectRpOptionsByIdAndContinue(options);
+        setAnalyticsCookieTo(false);
+    }
+
+    @When("the user signs back in with their new account")
+    @When("the user is required to uplift")
+    public void theUserSignsBackInWithTheirNewAccount() {
+        rpStubPage.goToRpStub();
+        rpStubPage.selectRpOptionsByIdAndContinue("default");
         setAnalyticsCookieTo(false);
     }
 

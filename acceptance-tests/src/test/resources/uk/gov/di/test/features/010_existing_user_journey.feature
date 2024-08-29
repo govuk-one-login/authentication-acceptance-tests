@@ -3,6 +3,7 @@ Feature: Login Journey
   Existing user walks through a login journey
 
   Scenario: Existing user tries to create an account with the same email address
+    * set up data for user "TEST_USER_2_EMAIL"
     Given the user comes from the stub relying party with options: "default"
     Then the user is taken to the "Create your GOV.UK One Login or sign in" page
     When the user selects create an account
@@ -11,6 +12,7 @@ Feature: Login Journey
     Then the user is taken to the "You have a GOV.UK One Login" page
 
   Scenario: Existing user is correctly prompted to login using sms
+    * set up data for user "TEST_USER_4_EMAIL"
     Given the user comes from the stub relying party with options: "default"
     Then the user is taken to the "Create your GOV.UK One Login or sign in" page
     When the user selects sign in
@@ -24,6 +26,7 @@ Feature: Login Journey
     And the user logs out
 
   Scenario: Existing user switches content to Welsh
+    * set up data for user "TEST_USER_5_EMAIL"
     Given the user comes from the stub relying party with options: "default"
     Then the user is taken to the "Create your GOV.UK One Login or sign in" page
     And the user switches to "Welsh" language
@@ -40,6 +43,7 @@ Feature: Login Journey
     Then the user is taken to the "Create your GOV.UK One Login or sign in" page
 
   Scenario: Existing user logs in without 2FA then uplift with 2FA
+    * set up data for user "TEST_USER_6_EMAIL"
     Given the user comes from the stub relying party with options: "2fa-off"
     Then the user is taken to the "Create your GOV.UK One Login or sign in" page
     When the user selects sign in
@@ -48,7 +52,8 @@ Feature: Login Journey
     Then the user is taken to the "Enter your password" page
     When the user enters their password
     Then the user is returned to the service
-    When the user comes from the stub relying party with options: "default"
+    #When the user comes from the stub relying party with options: "default"
+    When the user is required to uplift
     Then the user is taken to the "Enter a security code to continue" page
     When the user enters the six digit security code from their phone
     Then the user is returned to the service

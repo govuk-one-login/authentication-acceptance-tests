@@ -2,6 +2,7 @@
 Feature: Reset password
 
   Scenario: An sms user can successfully reset their password
+    * set up data for user "RESET_PW_USER_EMAIL"
     Given the user comes from the stub relying party with options: "default"
     Then the user is taken to the "Create your GOV.UK One Login or sign in" page
     When the user selects sign in
@@ -22,6 +23,7 @@ Feature: Reset password
     Then the user is taken to the "Signed out" page
 
   Scenario: An auth app user can successfully reset their password
+    * set up data for user "RESET_PW_USER_EMAIL_2"
     Given the user comes from the stub relying party with options: "default"
     Then the user is taken to the "Create your GOV.UK One Login or sign in" page
     When the user selects sign in

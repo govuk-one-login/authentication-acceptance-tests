@@ -3,6 +3,7 @@ Feature: Registration Journey
   New user walks through a registration journey
 
   Scenario: User selects sign in without having an account
+    * set up data for user "TEST_USER_EMAIL"
     Given the user comes from the stub relying party with options: "default"
     Then the user is taken to the "Create your GOV.UK One Login or sign in" page
     When the user selects sign in
@@ -27,6 +28,7 @@ Feature: Registration Journey
 #    Then the new user is taken to the sign in to a service page
 
   Scenario: User is taken to Check your email page from You do not have a GOV.UK One Login page when Create selected
+    * set up data for user "TEST_USER_EMAIL"
     Given the user comes from the stub relying party with options: "default"
     Then the user is taken to the "Create your GOV.UK One Login or sign in" page
     When the user selects sign in
@@ -37,6 +39,7 @@ Feature: Registration Journey
     Then the user is taken to the "Check your email" page
 
   Scenario: User registration unsuccessful with invalid email, six digit code and password
+    * set up data for user "TEST_USER_EMAIL_2"
     Given the user comes from the stub relying party with options: "default"
     Then the user is taken to the "Create your GOV.UK One Login or sign in" page
     When the user selects create an account
@@ -58,6 +61,7 @@ Feature: Registration Journey
     Then the user is shown an error message
 
   Scenario: User successfully registers using sms
+    * set up data for user "TEST_USER_EMAIL_3"
     Given the user comes from the stub relying party with options: "default"
     Then the user is taken to the "Create your GOV.UK One Login or sign in" page
     When the user selects create an account
@@ -85,6 +89,7 @@ Feature: Registration Journey
 
   @partialRegUser
   Scenario: Partial registered user is able to complete registration when they restart journey and select forgotten password for sms user
+    * set up data for user "TEST_USER_EMAIL_4"
     Given the user "TEST_USER_EMAIL_4" is partial registered up to choose how to get security codes page
     When the user "TEST_USER_EMAIL_4" attempts to resign in after partial registered and select forgotten password link
     Then the user is taken to the "Finish creating your GOV.UK One Login" page

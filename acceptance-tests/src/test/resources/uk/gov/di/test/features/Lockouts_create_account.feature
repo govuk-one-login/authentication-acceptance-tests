@@ -3,6 +3,7 @@ Feature: Create account lockouts
 
   # ENTER INCORRECT EMAIL OTP TOO MANY TIMES DURING CREATE ACCOUNT - 2690
   Scenario: A user is not blocked when they enter an incorrect email OTP code more than 5 times during create account but must request a new code to continue.
+    * set up data for user "CREATE_INCORRECT_EMAIL_CODE_LOCKOUT"
     Given the user comes from the stub relying party with options: "default"
     Then the user is taken to the "Create your GOV.UK One Login or sign in" page
     When the user selects create an account
@@ -16,6 +17,7 @@ Feature: Create account lockouts
 
   # ENTER INCORRECT EMAIL OTP TOO MANY TIMES DURING CREATE ACCOUNT VIA ACCOUNT NOT FOUND SCREEN - 2690
   Scenario: A user is not blocked when they enter an incorrect email OTP code more than 5 times during create account via account not found page, but must request a new code to continue.
+    * set up data for user "CREATE_INCORRECT_EMAIL_CODE_LOCKOUT_1"
     Given the user comes from the stub relying party with options: "default"
     Then the user is taken to the "Create your GOV.UK One Login or sign in" page
     When the user selects sign in
@@ -31,6 +33,7 @@ Feature: Create account lockouts
 
   # REQUEST TOO MANY EMAIL CODES DURING CREATE ACCOUNT - 2445
   Scenario: A user is blocked when they request their email OTP code 6 times during create account.
+    * set up data for user "CREATE_REQUEST_EMAIL_CODE_LOCKOUT"
     Given the user comes from the stub relying party with options: "default"
     Then the user is taken to the "Create your GOV.UK One Login or sign in" page
     When the user selects create an account
@@ -44,6 +47,7 @@ Feature: Create account lockouts
 
   # ENTER INCORRECT SMS SECURITY CODE TOO MANY TIMES DURING CREATE ACCOUNT - REG
   Scenario: A user is blocked when they enter an incorrect sms security code more than 5 times during create account.
+    * set up data for user "CREATE_INCORRECT_SMS_CODE_LOCKOUT"
     Given the user comes from the stub relying party with options: "default"
     Then the user is taken to the "Create your GOV.UK One Login or sign in" page
     When the user selects create an account
@@ -65,6 +69,7 @@ Feature: Create account lockouts
 
   # REQUEST SMS CODE TOO MANY TIMES DURING ACCOUNT RECOVERY - 2377
   Scenario: A user is blocked when they request too many sms security codes during create account.
+    * set up data for user "CREATE_REQUEST_SMS_CODE_LOCKOUT"
     Given the user comes from the stub relying party with options: "default"
     Then the user is taken to the "Create your GOV.UK One Login or sign in" page
     When the user selects create an account
@@ -86,6 +91,7 @@ Feature: Create account lockouts
 
   # NO LIMIT ON ENTERING INCORRECT AUTH APP CODES DURING CREATE ACCOUNT - REG
   Scenario: A user is not blocked when they enter an incorrect auth app code during create account.
+    * set up data for user "CREATE_INCORRECT_AUTH_APP_CODE_LOCKOUT"
     Given the user comes from the stub relying party with options: "default"
     Then the user is taken to the "Create your GOV.UK One Login or sign in" page
     When the user selects create an account

@@ -12,6 +12,7 @@ source ./scripts/reset-account-interventions.sh
 source ./scripts/re-authentication.sh
 source ./scripts/2hr-lockout-period.sh
 source ./scripts/reset-account-management.sh
+source ./scripts/reset-account-recovery.sh
 
 LOCAL=0
 while getopts "lr" opt; do
@@ -50,8 +51,9 @@ if [ "${LOCAL}" == "1" ]; then
   source "${DIR}/scripts/export_aws_creds.sh"
 fi
 
-resetTestUsers
-resetAccountInterventions
+#resetTestUsers
+#resetAccountInterventions
 #reAuthentication
-2hrLockoutPeriod
-resetAccountManagement
+#2hrLockoutPeriod
+#resetAccountManagement
+#resetAccountRecovery
