@@ -2,9 +2,9 @@ name: Build and Push Acceptance Tests to DEV
 
 env:
   AWS_REGION: eu-west-2
-  DEV_GHA_DEPLOYER_ROLE: arn:aws:iam::975050272416:role/authdev1-frontend-pipeline-GitHubActionsRole-YQ67Wx0O0KER
-  DEV_ACCEPTANCE_ECR_REPO: authdev1-acceptance-test-image-repository-testrunnerimagerepository-hnixp5u7ymcj
-  CONTAINER_SIGN_KMS_KEY: arn:aws:kms:eu-west-2:975050272416:key/0609d203-a4c9-4587-9618-71d6df4bcf82
+  DEV_GHA_DEPLOYER_ROLE: arn:aws:iam::058264536367:role/frontend-pipeline-GitHubActionsRole-SlWSoz8hOrQk
+  DEV_ACCEPTANCE_ECR_REPO: acceptance-tests-image-repository-testrunnerimagerepository-5rxesw9unf4q
+  CONTAINER_SIGN_KMS_KEY: arn:aws:kms:eu-west-2:058264536367:key/397f3274-6034-4ebc-837f-4a913b293dce
 
 on:
   workflow_dispatch:
