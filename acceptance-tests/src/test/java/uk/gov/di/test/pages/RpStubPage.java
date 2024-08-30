@@ -18,6 +18,8 @@ public class RpStubPage extends BasePage {
                 Driver.get().findElement(By.id(id)).click();
             }
         }
+        System.out.println(
+                "One Login session cookie: " + Driver.get().manage().getCookieNamed("gs"));
         findAndClickContinue();
     }
 
