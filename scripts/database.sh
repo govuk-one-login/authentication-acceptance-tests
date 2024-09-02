@@ -1,5 +1,13 @@
 #!/usr/bin/env bash
 
+
+output=$(aws sts assume-role --role-arn $CROSSACCOUNT_ROLEARN --role-session-name "dynamo-db-access" --query 'Credentials.[SecretAccessKey,AccessKeyId,SessionToken]' --output text)
+
+export AWS_ACCESS_KEY_ID=$(echo $output | cut -f2 -d ' ')
+export AWS_SECRET_ACCESS_KEY=$(echo $output | cut -f1 -d ' ')
+export AWS_SESSION_TOKEN=$(echo $output | cut -f3 -d ' ')
+
+
 function deleteUser() {
   echo "Truncating test user data in user-profile: $1"
   aws dynamodb delete-item \
