@@ -26,6 +26,8 @@ public class CommonStepDef extends BasePage {
     @Then("the user is taken to the {string} page")
     public void theUserIsTakenToThePage(String pageTitle) {
         waitForPageLoad(pageTitle);
+        System.out.println(
+                "One Login session cookie: " + Driver.get().manage().getCookieNamed("gs"));
     }
 
     @Then("the {string} error message is displayed")
