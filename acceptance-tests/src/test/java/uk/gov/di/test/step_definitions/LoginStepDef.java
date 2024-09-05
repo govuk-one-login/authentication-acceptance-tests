@@ -248,8 +248,7 @@ public class LoginStepDef extends BasePage {
                 attemptCount);
     }
 
-    @When(
-            "the user enters {int} different email addresses at reauth that are not known to One Login")
+    @When("the user enters {int} different email addresses at reauth that are not known to One Login")
     public void theUserEntersNDifferentEmailAddressesForReauth(Integer attemptCount) {
         reenterYourSignInDetailsToContinuePage.enterDifferentIncorrectEmailAddressesNumberOfTimes(
                 attemptCount);

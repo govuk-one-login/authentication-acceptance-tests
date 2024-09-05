@@ -23,18 +23,18 @@ for ((i = 0; i < ${#envvalue[@]}; ++i)); do
 done
 
 
-DOCKER_BASE=docker-compose
+DOCKER_BASE=docker
 SSM_VARS_PATH="/acceptance-tests/$ENVIRONMENT"
 TESTDIR="/test"
 
 echo "Running in $ENVIRONMENT environment..."
 
 function start_docker_services() {
-  ${DOCKER_BASE} up --build -d --wait --no-deps --quiet-pull "$@"
+  ${DOCKER_BASE} compose up --build -d --wait --no-deps --quiet-pull "$@"
 }
 
 function stop_docker_services() {
-  ${DOCKER_BASE} down --rmi local --remove-orphans
+  ${DOCKER_BASE} compose down --rmi local --remove-orphans
 }
 
 function get_env_vars_from_SSM() {

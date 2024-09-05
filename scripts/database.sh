@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-
+alias base64='/usr/bin/base64'
 function deleteUser() {
   echo "Truncating test user data in user-profile: $1"
   aws dynamodb delete-item \
@@ -38,6 +38,7 @@ function resetPassword() {
 }
 
 function updateAccountRecoveryBlock() {
+
   up="$(
     aws dynamodb get-item \
       --table-name "${ENVIRONMENT_NAME}-user-profile" \
@@ -52,7 +53,7 @@ function updateAccountRecoveryBlock() {
   if [ -n "$up" ]; then
     ics="$(echo -n "$up" | jq -r '.Item.SubjectID.S')"
     salt="$(echo -n "$up" | jq -r '.Item.salt.B' | base64 -d)"
-    digest="$(echo -n "$2$ics$salt" | openssl dgst -sha256 -binary | base64 | tr '/+' '_-' | tr -d '=')"
+    digest="$(echo -n "$2$ics$salt" | openssl dgst -sha256 -binary | base64 | tr '/+' '_-' | tr -d '=' | tr -d '\r\n')"
     pwid="urn:fdc:gov.uk:2022:$digest"
 
     saltlog="$(echo -n "$up" | jq -r '.Item.salt.B')"
@@ -84,7 +85,7 @@ function createOrUpdateInterventionsUser() {
     sector="identity.${ENVIRONMENT_NAME}.account.gov.uk"
     ics="$(echo -n "$up" | jq -r '.Item.SubjectID.S')"
     salt="$(echo -n "$up" | jq -r '.Item.salt.B' | base64 -d)"
-    digest="$(echo -n "$sector$ics$salt" | openssl dgst -sha256 -binary | base64 | tr '/+' '_-' | tr -d '=')"
+    digest="$(echo -n "$sector$ics$salt" | openssl dgst -sha256 -binary | base64 | tr '/+' '_-' | tr -d '=' | tr -d '\r\n')"
     pwid="urn:fdc:gov.uk:2022:$digest"
 
     saltlog="$(echo -n "$up" | jq -r '.Item.salt.B')"
@@ -203,7 +204,7 @@ function deleteIntervention() {
     sector="identity.${ENVIRONMENT_NAME}.account.gov.uk"
     ics="$(echo -n "$up" | jq -r '.Item.SubjectID.S')"
     salt="$(echo -n "$up" | jq -r '.Item.salt.B' | base64 -d)"
-    digest="$(echo -n "$sector$ics$salt" | openssl dgst -sha256 -binary | base64 | tr '/+' '_-' | tr -d '=')"
+    digest="$(echo -n "$sector$ics$salt" | openssl dgst -sha256 -binary | base64 | tr '/+' '_-' | tr -d '=' | tr -d '\r\n')"
     pwid="urn:fdc:gov.uk:2022:$digest"
 
     saltlog="$(echo -n "$up" | jq -r '.Item.salt.B')"
