@@ -32,14 +32,6 @@ done
 
 echo "Running in $ENVIRONMENT environment..."
 
-function start_docker_services() {
-  ${DOCKER_BASE} up --build -d --wait --no-deps --quiet-pull "$@"
-}
-
-function stop_docker_services() {
-  ${DOCKER_BASE} down --rmi local --remove-orphans
-}
-
 function get_env_vars_from_SSM() {
 
   echo "Getting environment variables from SSM ... "
@@ -97,8 +89,6 @@ fi
 
 echo -e "Running di-authentication-acceptance-tests..."
 
-start_docker_services selenium-firefox selenium-chrome
-
 export_selenium_config
 if [ $LOCAL == "1" ]; then
   # shellcheck source=/dev/null
@@ -119,8 +109,6 @@ fi
 ./gradlew cucumber
 
 build_and_test_exit_code=$?
-
-stop_docker_services selenium-firefox selenium-chrome
 
 if [ ${build_and_test_exit_code} -ne 0 ]; then
   echo -e "acceptance-tests failed."

@@ -18,7 +18,7 @@ public class Driver {
     protected static final String SELENIUM_URL =
             System.getenv().getOrDefault("SELENIUM_URL", "http://localhost:4445/wd/hub");
     protected static final Boolean SELENIUM_LOCAL =
-            Boolean.parseBoolean(System.getenv().getOrDefault("SELENIUM_LOCAL", "false"));
+            Boolean.parseBoolean(System.getenv().getOrDefault("SELENIUM_LOCAL", "true"));
     protected static final Boolean SELENIUM_HEADLESS =
             Boolean.parseBoolean(System.getenv().getOrDefault("SELENIUM_HEADLESS", "false"));
     protected static final String SELENIUM_BROWSER =
