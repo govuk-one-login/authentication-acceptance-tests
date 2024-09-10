@@ -12,10 +12,10 @@ repositories {
 }
 
 def dependencyVersions = [
-        junit_version: '5.11.0',
-        cucumber_version: '7.18.1',
+        junit_version: '5.9.0',
+        cucumber_version: '7.8.1',
         axe_version: '3.0',
-        json_version: '20240303',
+        json_version: '20220320',
         selenium_java_version: '4.23.1',
         rest_assured: '5.5.0'
 ]
@@ -27,7 +27,8 @@ dependencies {
                        "io.cucumber:cucumber-junit:${dependencyVersions.cucumber_version}",
                        "org.seleniumhq.selenium:selenium-java:${dependencyVersions.selenium_java_version}",
                        "org.junit.jupiter:junit-jupiter-api:${dependencyVersions.junit_version}",
-                       "commons-codec:commons-codec:1.15","io.github.cdimascio:java-dotenv:5.2.2"
+                       "commons-codec:commons-codec:1.15","io.github.cdimascio:java-dotenv:5.2.2",
+                       "commons-codec:commons-codec:1.15"
 
     testImplementation group: 'com.deque', name: 'axe-selenium', version:"${dependencyVersions.axe_version}"
     testImplementation group: 'org.json', name: 'json', version:"${dependencyVersions.json_version}"
