@@ -4,7 +4,7 @@ set -eu
 
 DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1 && pwd)"
 
-ENVIRONMENT=${2:-local}
+export ENVIRONMENT=${2:-local}
 
 DOCKER_BASE=docker-compose
 SSM_VARS_PATH="/acceptance-tests/$ENVIRONMENT"
@@ -95,13 +95,15 @@ fi
 echo -e "Running di-authentication-acceptance-tests..."
 
 export_selenium_config
+
+export AWS_PROFILE="gds-di-development-admin"
+# shellcheck source=./scripts/export_aws_creds.sh
+source "${DIR}/scripts/export_aws_creds.sh"
+
 if [ $LOCAL == "1" ]; then
   # shellcheck source=/dev/null
   set -o allexport && source .env && set +o allexport
 else
-  export AWS_PROFILE="gds-di-development-admin"
-  # shellcheck source=./scripts/export_aws_creds.sh
-  source "${DIR}/scripts/export_aws_creds.sh"
   get_env_vars_from_SSM
 fi
 
@@ -111,7 +113,8 @@ fi
 #  ./reset-test-data.sh -r $ENVIRONMENT
 #fi
 
-./gradlew cucumber -PcucumberOptions="${CUCUMBER_OPTIONS}"
+
+./gradlew cucumber
 
 build_and_test_exit_code=$?
 

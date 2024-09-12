@@ -110,7 +110,7 @@ fi
 export TEST_USER_EMAIL_NAME=test-user
 export TEST_USER_EMAIL_DOMAIN=digital.cabinet-office.gov.uk
 
-./gradlew cucumber -Dcucumber.filter.tags="@yourTag"
+./gradlew cucumber
 
 build_and_test_exit_code=$?
 

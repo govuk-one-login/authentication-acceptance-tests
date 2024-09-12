@@ -43,4 +43,3 @@ else
   configured_region="$(aws configure get region --profile "${AWS_PROFILE}" 2>/dev/null || true)"
   export AWS_REGION="${configured_region:-eu-west-2}"
 fi
-unset AWS_PROFILE
