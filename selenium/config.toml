@@ -1,0 +1,10 @@
+[docker]
+# Configs have a mapping between the Docker image to use and the capabilities that need to be matched to
+# start a container with the given image.
+configs = [
+    "selenium/standalone-firefox:4.24.0-20240907", '{"browserName": "firefox", "se:recordVideo": "true", "se:timeZone": "Europe/London", "se:screenResolution": "1920x1080"}',
+    "selenium/standalone-chromium:128.0", '{"browserName": "chrome", "se:recordVideo": "true", "se:timeZone": "Europe/London", "se:screenResolution": "1920x1080"}'
+    # "selenium/standalone-edge:4.24.0-20240907", '{"browserName": "MicrosoftEdge"}'
+]
+host-config-keys = ["Dns", "DnsOptions", "DnsSearch", "ExtraHosts", "Binds"]
+url = "http://127.0.0.1:2375"

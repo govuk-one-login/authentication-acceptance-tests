@@ -12,3 +12,5 @@ bin/
 node_modules/
 target/
 .DS_Store
+failures.json
+assets/*

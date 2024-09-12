@@ -1,0 +1,39 @@
+services:
+  firefox: &node_config
+    image: selenium/node-firefox:4.24.0-20240907
+    platform: linux/x86_64
+    depends_on:
+      - selenium-hub
+    shm_size: 2g
+    environment: &node_env
+      SE_EVENT_BUS_HOST: selenium-hub
+      SE_EVENT_BUS_PUBLISH_PORT: 4442
+      SE_EVENT_BUS_SUBSCRIBE_PORT: 4443
+    networks:
+      grid:
+  chrome:
+    <<: *node_config
+    image: selenium/node-chrome:4.24.0-20240907
+  chrome_video: &video_config
+    image: selenium/video:ffmpeg-7.0.2-20240907
+    volumes:
+      - ./videos:/videos
+    depends_on:
+      - chrome
+    environment: &video_config_env
+      DISPLAY_CONTAINER_NAME: chrome
+      SE_NODE_GRID_URL: http://selenium-hub:4444
+      SE_VIDEO_FILE_NAME: auto
+  firefox_video:
+    <<: *video_config
+    environment:
+      <<: *video_config_env
+      DISPLAY_CONTAINER_NAME: firefox
+  selenium-hub:
+    image: selenium/hub:4.24.0-20240907
+    ports:
+      - 4442-4444:4442-4444
+    networks:
+      grid:
+networks:
+  grid:

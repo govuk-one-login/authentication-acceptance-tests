@@ -1,21 +1,51 @@
-version: '3.8'
-
 services:
-  selenium-firefox:
-    image: selenium/standalone-firefox@sha256:02bd079b1e53a2abc4923fe84262df5a9e9de020d29f7c6552e4e7f663599e4d
-    #USE THESE VALUES IF YOU HAVE A MAC M1/M2/M3 (ARM) chip
-    #image: seleniarm/standalone-firefox:latest
+  ftp_server:
+    image: delfer/alpine-ftp-server:latest
+    container_name: ftp_server
+    environment:
+      USERS: seluser|selenium.dev
+    volumes:
+      # Mount the local directory `/tmp/upload` to the FTP server's `/ftp/seluser` directory to check out the uploaded videos
+      - ./videos:/ftp/seluser
+    command:
+      - "/bin/sh"
+      - "-c"
+      - "/sbin/tini -- /bin/start_vsftpd.sh && tail -f /dev/null"
+
+    stop_grace_period: 30s
+
+  node-docker:
+    image: selenium/node-docker:4.24.0-20240907
+    volumes:
+      - ./assets:/opt/selenium/assets
+      - ./selenium/config.toml:/opt/selenium/docker.toml
+      - /var/run/docker.sock:/var/run/docker.sock
+    depends_on:
+      - selenium-hub
+    environment:
+      SE_EVENT_BUS_HOST: selenium-hub
+      SE_ENABLE_TRACING: false
+      SE_NODE_DOCKER_CONFIG_FILENAME: docker.toml
+      SE_NODE_SESSION_TIMEOUT: 700
+      SE_EVENT_BUS_PUBLISH_PORT: 4442
+      SE_EVENT_BUS_SUBSCRIBE_PORT: 4443
+      SE_VIDEO_FILE_NAME: auto
+      SE_VIDEO_UPLOAD_ENABLED: true
+      # Remote name and destination path to upload
+      SE_UPLOAD_DESTINATION_PREFIX: myftp://ftp/seluser
+      # All configs required for RCLONE to upload to remote name myftp
+      RCLONE_CONFIG_MYFTP_TYPE: ftp
+      RCLONE_CONFIG_MYFTP_HOST: ftp_server
+      RCLONE_CONFIG_MYFTP_PORT: 21
+      RCLONE_CONFIG_MYFTP_USER: seluser
+      # Password encrypted using command: rclone obscure <your_password>
+      RCLONE_CONFIG_MYFTP_PASS: KkK8RsUIba-MMTBUSnuYIdAKvcnFyLl2pdhQig
+      RCLONE_CONFIG_MYFTP_FTP_CONCURRENCY: 10
+
+  selenium-hub:
+    image: selenium/hub:4.24.0-20240907
+    container_name: selenium-hub
+    environment:
+      SE_ENABLE_TRACING: false
     ports:
-      - 4444:4444
-    networks:
-      - op-net
-  selenium-chrome:
-    image: selenium/standalone-chrome@sha256:36784cc22ea01886ac226146be343afe7d984d9fc69436e52c2c0f8fd0dc0f55
-    #USE THESE VALUES IF YOU HAVE A MAC M1/M2/M3 (ARM) chip
-    #image: seleniarm/standalone-chromium:latest
-    ports:
-      - 4445:4444
-    networks:
-      - op-net
-networks:
-  op-net:
+      - 4442-4444:4442-4444

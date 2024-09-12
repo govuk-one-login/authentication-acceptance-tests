@@ -12,6 +12,7 @@ repositories {
 }
 
 def dependencyVersions = [
+        aws_sdk_v2_version: "2.27.17",
         junit_version: '5.9.0',
         cucumber_version: '7.8.1',
         axe_version: '3.0',
@@ -22,6 +23,9 @@ def dependencyVersions = [
 
 dependencies {
     implementation group: 'org.apache.maven.plugins', name: 'maven-surefire-plugin', version: '3.2.5'
+
+    testImplementation "software.amazon.awssdk:dynamodb:${dependencyVersions.aws_sdk_v2_version}",
+                "software.amazon.awssdk:dynamodb-enhanced:${dependencyVersions.aws_sdk_v2_version}"
 
     testImplementation "io.cucumber:cucumber-java:${dependencyVersions.cucumber_version}",
                        "io.cucumber:cucumber-junit:${dependencyVersions.cucumber_version}",
@@ -64,12 +68,20 @@ tasks.withType(JavaCompile) {
 
 task cucumber() {
     dependsOn assemble, testClasses
+    def options = hasProperty('cucumberOptions') ? property("cucumberOptions") : ''
     doLast {
         javaexec {
             main = "io.cucumber.core.cli.Main"
             classpath = configurations.cucumberRuntime + sourceSets.main.output + sourceSets.test.output
             def no_of_threads = System.getenv('PARALLEL_BROWSERS') ?: 1
-            args = ['--plugin', 'html:target/cucumber-report/index.html', '--plugin', 'pretty', '--glue', 'uk.gov.di.test.step_definitions', 'src/test/resources', '--threads', no_of_threads]
+
+            args = [
+                    '--plugin', 'html:target/cucumber-report/index.html',
+                    '--plugin', 'pretty',
+                    '--glue', 'uk.gov.di.test.step_definitions', 'src/test/resources',
+                    '--threads', no_of_threads,
+                    options
+            ]
         }
     }
 }

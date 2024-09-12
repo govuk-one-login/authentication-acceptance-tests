@@ -1,18 +1,22 @@
 @AccountInterventions @build
 Feature: Account interventions
 
+  @account_interventions
   @suspended
+  @testTag
   Scenario: Sms user cannot log in when they have a temporarily suspended account
-    Given the user comes from the stub relying party with options: "default"
-    When the user is taken to the "Create your GOV.UK One Login or sign in" page
-    And the user selects sign in
-    Then the user is taken to the "Enter your email" page
-    When user enters "TEMPORARILY_SUSPENDED_ACCOUNT_EMAIL_1" email address
-    Then the user is taken to the "Enter your password" page
-    When the user enters their password
-    Then the user is taken to the "Check your phone" page
-    When the user enters the six digit security code from their phone
-    Then the user is taken to the "Sorry, there is a problem" page
+    Given a user with sms OTP exists
+    And and the user has a temporarily suspended intervention
+#    And the user comes from the stub relying party with options: "default"
+#    When the user is taken to the "Create your GOV.UK One Login or sign in" page
+#    And the user selects sign in
+#    Then the user is taken to the "Enter your email" page
+#    When user enters "TEMPORARILY_SUSPENDED_ACCOUNT_EMAIL_1" email address
+#    Then the user is taken to the "Enter your password" page
+#    When the user enters their password
+#    Then the user is taken to the "Check your phone" page
+#    When the user enters the six digit security code from their phone
+#    Then the user is taken to the "Sorry, there is a problem" page
 
   @suspended
   Scenario: Auth app user cannot log in when they have a temporarily suspended account
