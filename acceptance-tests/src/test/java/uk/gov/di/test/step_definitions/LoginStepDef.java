@@ -30,13 +30,16 @@ import static uk.gov.di.test.utils.Constants.NEW_VALID_PASSWORD;
 import static uk.gov.di.test.utils.Constants.TOP_100K_PASSWORD;
 
 public class LoginStepDef extends BasePage {
+    private final World world;
     private String authAppSecretKey;
+
+    public EnterYourPasswordPage enterYourPasswordPage;
     public ResetYourPasswordPage resetYourPasswordPage = new ResetYourPasswordPage();
+    public CrossPageFlows crossPageFlows;
     public CheckYourEmailPage checkYourEmailPage = new CheckYourEmailPage();
     public YouveChangedHowYouGetSecurityCodesPage youveChangedHowYouGetSecurityCodes =
             new YouveChangedHowYouGetSecurityCodesPage();
     public TermsAndConditionsPage termsAndConditionsPage = new TermsAndConditionsPage();
-    public EnterYourPasswordPage enterYourPasswordPage = new EnterYourPasswordPage();
     public CheckYourPhonePage checkYourPhonePage = new CheckYourPhonePage();
     public EnterYourEmailAddressToSignInPage enterYourEmailAddressToSignInPage =
             new EnterYourEmailAddressToSignInPage();
@@ -52,7 +55,12 @@ public class LoginStepDef extends BasePage {
     public EnterThe6DigitSecurityCodeShownInYourAuthenticatorAppPage
             enterThe6DigitSecurityCodeShownInYourAuthenticatorAppPage =
                     new EnterThe6DigitSecurityCodeShownInYourAuthenticatorAppPage();
-    public CrossPageFlows crossPageFlows = new CrossPageFlows();
+
+    public LoginStepDef(World world) {
+        this.world = world;
+        this.enterYourPasswordPage = new EnterYourPasswordPage(world);
+        this.crossPageFlows = new CrossPageFlows(world);
+    }
 
     @When("the user enters their password which is on the top 100k password list")
     public void theUserEntersTheirPasswordWhichIsOnTheTop100kPasswordList() {
@@ -72,6 +80,11 @@ public class LoginStepDef extends BasePage {
     @And("user enters {string} email address")
     public void userEntersEmailAddress(String email) {
         enterYourEmailAddressToSignInPage.enterEmailAddressAndContinue(System.getenv().get(email));
+    }
+
+    @And("the user enters their email address")
+    public void theUserEntersTheirEmailAddress() {
+        enterYourEmailAddressPage.enterEmailAddressAndContinue(world.userProfile.getEmail());
     }
 
     @And("user enters the same email address {string} for reauth as they used for login")
@@ -142,6 +155,12 @@ public class LoginStepDef extends BasePage {
     public void userEntersEmailAddressInWelsh(String email) {
         enterYourEmailAddressToSignInPage.enterEmailAddressAndContinueWelsh(
                 System.getenv().get(email));
+    }
+
+    @When("the user enters their email address in Welsh")
+    public void theUserEntersTheirEmailInWelsh() {
+        enterYourEmailAddressToSignInPage.enterEmailAddressAndContinueWelsh(
+                world.userProfile.getEmail());
     }
 
     @When("the user enters valid new password and correctly retypes it")

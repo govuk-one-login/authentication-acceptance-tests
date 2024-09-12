@@ -21,12 +21,14 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static uk.gov.di.test.utils.Constants.NEW_VALID_PASSWORD;
 
 public class CrossPageFlows extends BasePage {
+    private final World world;
     private String authAppSecretKey;
+
+    public EnterYourPasswordPage enterYourPasswordPage;
     public CreateOrSignInPage createOrSignInPage = new CreateOrSignInPage();
     public RpStubPage rpStubPage = new RpStubPage();
     public EnterYourEmailAddressToSignInPage enterYourEmailAddressToSignInPage =
             new EnterYourEmailAddressToSignInPage();
-    public EnterYourPasswordPage enterYourPasswordPage = new EnterYourPasswordPage();
     public CheckYourPhonePage checkYourPhonePage = new CheckYourPhonePage();
     public EnterThe6DigitSecurityCodeShownInYourAuthenticatorAppPage
             enterThe6DigitSecurityCodeShownInYourAuthenticatorAppPage =
@@ -44,6 +46,11 @@ public class CrossPageFlows extends BasePage {
     public UserInformationPage userInformationPage = new UserInformationPage();
     public ReenterYourSignInDetailsToContinuePage reenterYourSignInDetailsToContinuePage =
             new ReenterYourSignInDetailsToContinuePage();
+
+    public CrossPageFlows(World world) {
+        this.world = world;
+        this.enterYourPasswordPage = new EnterYourPasswordPage(world);
+    }
 
     public void requestPhoneSecurityCodeResendNumberOfTimes(
             Integer numberOfTimes, Boolean isReauth) {

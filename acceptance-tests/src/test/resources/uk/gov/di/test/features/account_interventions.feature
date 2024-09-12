@@ -1,11 +1,9 @@
 @AccountInterventions @build
 Feature: Account interventions
 
-  @account_interventions
   @suspended
-  @testTag
   Scenario: Sms user cannot log in when they have a temporarily suspended account
-    Given a user with sms OTP exists
+    Given a user with sms MFA exists
     And and the user has a temporarily suspended intervention
 #    And the user comes from the stub relying party with options: "default"
 #    When the user is taken to the "Create your GOV.UK One Login or sign in" page

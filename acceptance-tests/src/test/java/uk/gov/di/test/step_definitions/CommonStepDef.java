@@ -18,10 +18,17 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class CommonStepDef extends BasePage {
+    private final World world;
+
+    public CrossPageFlows crossPageFlows;
     public CreateOrSignInPage createOrSignInPage = new CreateOrSignInPage();
     public RpStubPage rpStubPage = new RpStubPage();
     public UserInformationPage userInformationPage = new UserInformationPage();
-    public CrossPageFlows crossPageFlows = new CrossPageFlows();
+
+    public CommonStepDef(World world) {
+        this.world = world;
+        this.crossPageFlows = new CrossPageFlows(world);
+    }
 
     @Then("the user is taken to the {string} page")
     public void theUserIsTakenToThePage(String pageTitle) {

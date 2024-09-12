@@ -25,8 +25,11 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static uk.gov.di.test.utils.Constants.NEW_VALID_PASSWORD;
 
 public class LockoutsStepDef extends BasePage {
+    private final World world;
+
+    public EnterYourPasswordPage enterYourPasswordPage;
+    public CrossPageFlows crossPageFlows;
     public CheckYourEmailPage checkYourEmailPage = new CheckYourEmailPage();
-    public EnterYourPasswordPage enterYourPasswordPage = new EnterYourPasswordPage();
     public CheckYourPhonePage checkYourPhonePage = new CheckYourPhonePage();
     public EnterYourEmailAddressToSignInPage enterYourEmailAddressToSignInPage =
             new EnterYourEmailAddressToSignInPage();
@@ -40,10 +43,15 @@ public class LockoutsStepDef extends BasePage {
     public FinishCreatingYourAccountPage finishCreatingYourAccountPage =
             new FinishCreatingYourAccountPage();
     public YouHaveAGOVUKOneLoginPage youHaveAGOVUKOneLoginPage = new YouHaveAGOVUKOneLoginPage();
-    public CrossPageFlows crossPageFlows = new CrossPageFlows();
     public LockoutPage lockoutPage = new LockoutPage();
     public ResetYourPasswordPage resetYourPasswordPage = new ResetYourPasswordPage();
     public UserInformationPage userInformationPage = new UserInformationPage();
+
+    public LockoutsStepDef(World world) {
+        this.world = world;
+        this.enterYourPasswordPage = new EnterYourPasswordPage(world);
+        this.crossPageFlows = new CrossPageFlows(world);
+    }
 
     @When(
             "the user {string} with a lockout for wrong email security codes reattempts to change their password during the lockout period")

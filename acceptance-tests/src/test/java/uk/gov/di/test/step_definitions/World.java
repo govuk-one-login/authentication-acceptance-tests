@@ -1,12 +1,12 @@
 package uk.gov.di.test.step_definitions;
 
-import uk.gov.di.test.model.TestUserCredentials;
-import uk.gov.di.test.model.TestUserInterventions;
-import uk.gov.di.test.model.TestUserProfile;
+import uk.gov.di.test.entity.UserCredentials;
+import uk.gov.di.test.entity.UserInterventions;
+import uk.gov.di.test.entity.UserProfile;
 
 public class World {
-    public TestUserProfile testUserProfile;
-    public TestUserCredentials testUserCredentials;
-    public TestUserInterventions testUserInterventions;
+    public UserProfile userProfile;
+    public UserCredentials userCredentials;
+    public UserInterventions userInterventions;
     public String password;
 }

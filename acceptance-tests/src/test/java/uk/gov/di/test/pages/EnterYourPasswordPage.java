@@ -1,14 +1,20 @@
 package uk.gov.di.test.pages;
 
 import org.openqa.selenium.By;
+import uk.gov.di.test.step_definitions.World;
 import uk.gov.di.test.utils.Driver;
 
 import static uk.gov.di.test.utils.Constants.NEW_VALID_PASSWORD;
 
 public class EnterYourPasswordPage extends BasePage {
+    private final World world;
 
     By passwordField = By.id("password");
     By forgottenPasswordLink = By.xpath("//a[@href='/reset-password-request']");
+
+    public EnterYourPasswordPage(World world) {
+        this.world = world;
+    }
 
     public void enterPassword(String pw) {
         clearFieldAndEnter(passwordField, pw);
@@ -32,8 +38,7 @@ public class EnterYourPasswordPage extends BasePage {
     }
 
     public void enterCorrectPasswordAndContinue() {
-        String correctPassword = System.getenv().get("TEST_USER_PASSWORD");
-        enterPasswordAndContinue(correctPassword);
+        enterPasswordAndContinue(world.password);
     }
 
     public void enterNewPasswordAndContinue() {

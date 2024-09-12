@@ -1,5 +1,6 @@
 package uk.gov.di.test.step_definitions;
 
+import io.cucumber.java.After;
 import io.cucumber.java.ParameterType;
 import io.cucumber.java.en.Given;
 import org.bouncycastle.crypto.generators.Argon2BytesGenerator;
@@ -11,23 +12,18 @@ import software.amazon.awssdk.enhanced.dynamodb.DynamoDbTable;
 import software.amazon.awssdk.enhanced.dynamodb.TableSchema;
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
-import uk.gov.di.test.model.MfaMethod;
-import uk.gov.di.test.model.TestUserCredentials;
-import uk.gov.di.test.model.TestUserProfile;
+import uk.gov.di.test.entity.*;
 
-import java.util.Base64;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
-public class UserCreationStepDef {
+public class UserLifecycleStepDef {
     private final World world;
 
     protected static final String ENVIRONMENT = System.getenv().get("ENVIRONMENT");
     protected static final String AWS_REGION = System.getenv().get("AWS_REGION");
 
     protected static final String TEST_USER_EMAIL_USER =
-            System.getenv().get("TEST_USER_EMAIL_NAME");
+            System.getenv().get("TEST_USER_EMAIL_USER");
     protected static final String TEST_USER_EMAIL_DOMAIN =
             System.getenv().get("TEST_USER_EMAIL_DOMAIN");
     protected static final String TEST_USER_PHONE_NUMBER =
@@ -43,32 +39,21 @@ public class UserCreationStepDef {
     private static final DynamoDbEnhancedClient DYNAMODB_CLIENT =
             DynamoDbEnhancedClient.builder().dynamoDbClient(standardClient).build();
 
-    private static final DynamoDbTable<TestUserProfile> userProfileTable =
+    private static final DynamoDbTable<UserProfile> userProfileTable =
             DYNAMODB_CLIENT.table(
-                    ENVIRONMENT + "-user-profile", TableSchema.fromBean(TestUserProfile.class));
+                    ENVIRONMENT + "-user-profile", TableSchema.fromBean(UserProfile.class));
 
-    private static final DynamoDbTable<TestUserCredentials> userCredentialsTable =
+    private static final DynamoDbTable<UserCredentials> userCredentialsTable =
             DYNAMODB_CLIENT.table(
-                    ENVIRONMENT + "-user-credentials",
-                    TableSchema.fromBean(TestUserCredentials.class));
+                    ENVIRONMENT + "-user-credentials", TableSchema.fromBean(UserCredentials.class));
 
-    //    private static final DynamoDbTable<TestUserInterventions> userInterventionsTable =
-    //            DYNAMODB_CLIENT.table(
-    //                    ENVIRONMENT + "-stub-account-interventions",
-    //                    TableSchema.fromBean(TestUserInterventions.class));
-
-    public UserCreationStepDef(World world) {
+    public UserLifecycleStepDef(World world) {
         this.world = world;
     }
 
     @ParameterType("sms|app")
-    public String otpType(String otpType) {
-        return otpType;
-    }
-
-    @ParameterType("temporarily suspended|permanently blocked|password reset")
-    public String intervention(String intervention) {
-        return intervention;
+    public String mfaMethodType(String mfaMethodType) {
+        return mfaMethodType;
     }
 
     private String generateEmail() {
@@ -80,17 +65,17 @@ public class UserCreationStepDef {
     }
 
     private void createUserProfile() {
-        if (world.testUserProfile != null) {
+        if (world.userProfile != null) {
             throw new RuntimeException("User profile already exists");
         }
         UUID sub = UUID.randomUUID();
         UUID psub = UUID.randomUUID();
-        TestUserProfile testUserProfile = new TestUserProfile();
+        UserProfile testUserProfile = new UserProfile();
         testUserProfile.setEmail(generateEmail());
-        testUserProfile.setPublicSubjectId(psub.toString());
-        testUserProfile.setSubjectId(sub.toString());
+        testUserProfile.setPublicSubjectID(psub.toString());
+        testUserProfile.setSubjectID(sub.toString());
         userProfileTable.putItem(testUserProfile);
-        world.testUserProfile = testUserProfile;
+        world.userProfile = testUserProfile;
     }
 
     private static String encodeArgon2Hash(byte[] hash, Argon2Parameters parameters)
@@ -126,7 +111,7 @@ public class UserCreationStepDef {
     }
 
     private void createUserCredentials() {
-        if (world.testUserCredentials != null) {
+        if (world.userCredentials != null) {
             throw new RuntimeException("User credentials already exists");
         }
         world.password = UUID.randomUUID().toString();
@@ -145,23 +130,23 @@ public class UserCreationStepDef {
         generator.generateBytes(world.password.toCharArray(), hash);
         String encodedPassword = encodeArgon2Hash(hash, parameters);
 
-        TestUserCredentials testUserCredentials = new TestUserCredentials();
-        testUserCredentials.setEmail(world.testUserProfile.getEmail());
+        UserCredentials testUserCredentials = new UserCredentials();
+        testUserCredentials.setEmail(world.userProfile.getEmail());
         testUserCredentials.setPassword(encodedPassword);
-        testUserCredentials.setSubjectId(world.testUserProfile.getSubjectId());
+        testUserCredentials.setSubjectID(world.userProfile.getSubjectID());
         userCredentialsTable.putItem(testUserCredentials);
-        world.testUserCredentials = testUserCredentials;
+        world.userCredentials = testUserCredentials;
 
-        world.testUserProfile.setSalt(Base64.getEncoder().encodeToString(salt));
+        world.userProfile.setSalt(Base64.getEncoder().encodeToString(salt).getBytes());
 
-        userProfileTable.updateItem(world.testUserProfile);
+        userProfileTable.updateItem(world.userProfile);
     }
 
     private void updateMfaSMS(String phoneNumber, Boolean phoneNumberVerified) {
-        world.testUserProfile.setAccountVerified(1);
-        world.testUserProfile.setPhoneNumber(phoneNumber);
-        world.testUserProfile.setPhoneNumberVerified(phoneNumberVerified ? 1 : 0);
-        userProfileTable.updateItem(world.testUserProfile);
+        world.userProfile.setAccountVerified(1);
+        world.userProfile.setPhoneNumber(phoneNumber);
+        world.userProfile.setPhoneNumberVerified(phoneNumberVerified);
+        userProfileTable.updateItem(world.userProfile);
     }
 
     private Map<String, String> buildTermsAndConditions(String version, String timestamp) {
@@ -172,33 +157,40 @@ public class UserCreationStepDef {
     }
 
     private void updateTermsAndConditionsVersion(String version) {
-        Map<String, String> termsAndConditions =
-                buildTermsAndConditions(version, "1970-01-01T00:00:00.000000");
-        world.testUserProfile.setTermsAndConditions(termsAndConditions);
-        userProfileTable.updateItem(world.testUserProfile);
+        TermsAndConditions termsAndConditions =
+                new TermsAndConditions(version, "1970-01-01T00:00:00.000000");
+        world.userProfile.setTermsAndConditions(termsAndConditions);
+        userProfileTable.updateItem(world.userProfile);
     }
 
-    private MfaMethod[] buildMfaMethods(String secret) {
-        MfaMethod[] mfaMethods = new MfaMethod[1];
-        mfaMethods[0] = new MfaMethod();
-        mfaMethods[0].setCredentialValue(secret);
-        mfaMethods[0].setEnabled(1);
-        mfaMethods[0].setMethodVerified(1);
-        mfaMethods[0].setMfaMethodType("AUTH_APP");
-        mfaMethods[0].setUpdated("1970-01-01T00:00:00.000000");
+    private List<MFAMethod> buildMfaMethods(String secret) {
+        List<MFAMethod> mfaMethods = new ArrayList<>();
+        mfaMethods.set(
+                0,
+                new MFAMethod()
+                        .withCredentialValue(secret)
+                        .withEnabled(true)
+                        .withMethodVerified(true)
+                        .withMfaMethodType("AUTH_APP")
+                        .withUpdated("1970-01-01T00:00:00.000000"));
         return mfaMethods;
     }
 
     private void updateMfaApp(String secret) {
-        world.testUserCredentials.setMfaMethods(buildMfaMethods(secret));
+        world.userCredentials.setMfaMethods(buildMfaMethods(secret));
     }
 
-    @Given("a user with {word} OTP exists")
-    public void aUserWithOtpExists(String otpType) {
+    @Given("a user exists")
+    public void aUserExists() {
         createUserProfile();
         createUserCredentials();
         updateTermsAndConditionsVersion(TEST_USER_LATEST_TERMS_AND_CONDITIONS_VERSION);
-        switch (otpType) {
+    }
+
+    @Given("a user with {mfaMethodType} MFA exists")
+    public void aUserWithOtpExists(String mfaMethodType) {
+        aUserExists();
+        switch (mfaMethodType) {
             case "sms":
                 updateMfaSMS(TEST_USER_PHONE_NUMBER, true);
                 break;
@@ -210,24 +202,13 @@ public class UserCreationStepDef {
         }
     }
 
-    //    private void updateUserIntervention(
-    //            Boolean blocked, Boolean suspended, Boolean resetPassword, Boolean
-    // reproveIdentity) {
-    //        String sector = String.format("identity.%s.account.gov.uk", ENVIRONMENT);
-    //        TestUserInterventions testUserInterventions = new TestUserInterventions();
-    //        testUserInterventions.setBlocked(blocked);
-    //        testUserInterventions.setSuspended(suspended);
-    //        testUserInterventions.setResetPassword(resetPassword);
-    //        testUserInterventions.setReproveIdentity(reproveIdentity);
-    //
-    // testUserInterventions.setEquivalentPlainEmailAddress(world.testUserProfile.getEmail());
-    //        userInterventionsTable.putItem(testUserInterventions);
-    //    }
-
-    @Given("and the user has a {intervention} intervention")
-    public void andHasAnIntervention(String intervention) {
-        if (world.testUserProfile == null || world.testUserCredentials == null) {
-            throw new RuntimeException("User profile or credentials do not exist");
+    @After
+    public void theUserIsDeleted() {
+        if (world.userProfile != null) {
+            userProfileTable.deleteItem(world.userProfile);
+        }
+        if (world.userCredentials != null) {
+            userCredentialsTable.deleteItem(world.userCredentials);
         }
     }
 }
