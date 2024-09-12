@@ -91,12 +91,12 @@ function createOrUpdateInterventionsUser() {
   echo "createOrUpdateInterventionsUser: $up"
   if [ -n "$up" ]; then
     sector="identity.${ENVIRONMENT_NAME}.account.gov.uk"
-    ics="$(echo -n "$up" | jq -r '.Item.SubjectID.S')"
-    salt="$(echo -n "$up" | jq -r '.Item.salt.B' | base64 -d)"
-    digest="$(echo -n "$sector$ics$salt" | openssl dgst -sha256 -binary | base64 | tr '/+' '_-' | tr -d '=')"
+    ics="$(echo -n "${up}" | jq -r '.Item.SubjectID.S')"
+    salt="$(echo -n "${up}" | jq -r '.Item.salt.B' | base64 -d)"
+    digest="$(echo -n "${sector}${ics}${salt}" | openssl dgst -sha256 -binary | base64 | tr '/+' '_-' | tr -d '=')"
     pwid="urn:fdc:gov.uk:2022:$digest"
 
-    saltlog="$(echo -n "$up" | jq -r '.Item.salt.B')"
+    saltlog="$(echo -n "${up}" | jq -r '.Item.salt.B')"
     echo "resetting interventions block for: $1 sector: $sector internalCommonSubjectId: $pwid saltlog: $saltlog"
 
     aws dynamodb update-item \
@@ -208,14 +208,14 @@ function deleteIntervention() {
   )"
 
   echo "deleteIntervention: $up"
-  if [ -n "$up" ]; then
+  if [ -n "${up}" ]; then
     sector="identity.${ENVIRONMENT_NAME}.account.gov.uk"
-    ics="$(echo -n "$up" | jq -r '.Item.SubjectID.S')"
-    salt="$(echo -n "$up" | jq -r '.Item.salt.B' | base64 -d)"
-    digest="$(echo -n "$sector$ics$salt" | openssl dgst -sha256 -binary | base64 | tr '/+' '_-' | tr -d '=')"
+    ics="$(echo -n "${up}" | jq -r '.Item.SubjectID.S')"
+    salt="$(echo -n "${up}" | jq -r '.Item.salt.B' | base64 -d)"
+    digest="$(echo -n "${sector}${ics}${salt}" | openssl dgst -sha256 -binary | base64 | tr '/+' '_-' | tr -d '=')"
     pwid="urn:fdc:gov.uk:2022:$digest"
 
-    saltlog="$(echo -n "$up" | jq -r '.Item.salt.B')"
+    saltlog="$(echo -n "${up}" | jq -r '.Item.salt.B')"
     echo "deleting interventions block for: $1 sector: $sector internalCommonSubjectId: $pwid salt: $salt"
 
     aws dynamodb delete-item \
