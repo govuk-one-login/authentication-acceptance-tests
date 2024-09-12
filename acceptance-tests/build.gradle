@@ -27,6 +27,8 @@ dependencies {
     testImplementation "software.amazon.awssdk:dynamodb:${dependencyVersions.aws_sdk_v2_version}",
                 "software.amazon.awssdk:dynamodb-enhanced:${dependencyVersions.aws_sdk_v2_version}"
 
+    testImplementation "org.bouncycastle:bcpkix-jdk18on:1.78.1"
+
     testImplementation "io.cucumber:cucumber-java:${dependencyVersions.cucumber_version}",
                        "io.cucumber:cucumber-junit:${dependencyVersions.cucumber_version}",
                        "org.seleniumhq.selenium:selenium-java:${dependencyVersions.selenium_java_version}",
