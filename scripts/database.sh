@@ -215,8 +215,8 @@ function deleteIntervention() {
     digest="$(echo -n "${sector}${ics}${salt}" | openssl dgst -sha256 -binary | base64 | tr '/+' '_-' | tr -d '=')"
     pwid="urn:fdc:gov.uk:2022:$digest"
 
-    saltlog="$(echo -n "${up}" | jq -r '.Item.salt.B')"
-    echo "deleting interventions block for: $1 sector: $sector internalCommonSubjectId: $pwid salt: $salt"
+    saltlog="$(echo -n "$up" | jq -r '.Item.salt.B')"
+    echo "deleting interventions block for: $1 sector: $sector internalCommonSubjectId: $pwid salt (base64'd): $(echo -n "${salt}" | base64)"
 
     aws dynamodb delete-item \
       --table-name "${ENVIRONMENT_NAME}-stub-account-interventions" \

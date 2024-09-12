@@ -10,9 +10,11 @@ DOCKER_BASE=docker-compose
 SSM_VARS_PATH="/acceptance-tests/$ENVIRONMENT"
 TESTDIR="/test"
 
+CUCUMBER_OPTIONS=""
+
 EXPORT_ENV=0
 LOCAL=0
-while getopts "lre" opt; do
+while getopts "lret:" opt; do
   case ${opt} in
   l)
     LOCAL=1
@@ -35,31 +37,31 @@ echo "Running in $ENVIRONMENT environment..."
 function get_env_vars_from_SSM() {
 
   echo "Getting environment variables from SSM ... "
-  if [ $EXPORT_ENV == "1" ]; then
+  if [ ${EXPORT_ENV} == "1" ]; then
     dt="$(date "+%Y%m%d-%H%M%S")"
-    envfile="$dt.env"
-    echo "Exporting environment variables from SSM to file $envfile ... "
+    envfile="${dt}.env"
+    echo "Exporting environment variables from SSM to file ${envfile} ... "
     {
       echo "#"
-      echo "# Acceptance test config exported from $SSM_VARS_PATH at $dt"
+      echo "# Acceptance test config exported from ${SSM_VARS_PATH} at ${dt}"
       echo "#"
       echo "# Rename to .env to use for testing"
       echo "#"
-    } >>$envfile
+    } >>"${envfile}"
   fi
 
-  VARS="$(aws ssm get-parameters-by-path --with-decryption --path $SSM_VARS_PATH | jq -r '.Parameters[] | @base64')"
-  for VAR in $VARS; do
-    VAR_NAME="$(echo ${VAR} | base64 -d | jq -r '.Name / "/" | .[3]')"
-    VAR_NAME_VALUE=$VAR_NAME="$(echo ${VAR} | base64 -d | jq -r '.Value')"
-    if [ $EXPORT_ENV == "1" ]; then
-      echo "$VAR_NAME_VALUE" >>$envfile
+  envars="$(aws ssm get-parameters-by-path --with-decryption --path $SSM_VARS_PATH |
+    jq -r '.Parameters[] | [(.Name|split("/")|last), .Value]|@tsv')"
+
+  while IFS=$'\t' read -r name value; do
+    export "${name}"="${value}"
+    if [ ${EXPORT_ENV} == "1" ]; then
+      echo "${name}=${value}" >>"${envfile}"
     fi
-    export "$VAR_NAME"="$(echo ${VAR} | base64 -d | jq -r '.Value')"
-  done
+  done <<<"${envars}"
   echo "Exported SSM parameters completed."
 
-  if [ $EXPORT_ENV == "1" ]; then
+  if [ ${EXPORT_ENV} == "1" ]; then
     exit 0
   fi
 }
@@ -106,7 +108,7 @@ else
   ./reset-test-data.sh -r $ENVIRONMENT
 fi
 
-./gradlew cucumber
+./gradlew cucumber -PcucumberOptions="${CUCUMBER_OPTIONS}"
 
 build_and_test_exit_code=$?
 
