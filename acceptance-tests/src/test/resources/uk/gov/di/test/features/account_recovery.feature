@@ -60,6 +60,7 @@ Feature: Account recovery
     Then the user is taken to the "You’ve changed how you get security codes" page
     And confirmation that the user will get security codes via "text message" is displayed
     Then the user is returned to the service
+    And the user logs out
 
     When the user comes from the stub relying party with options: "default"
     Then the user is taken to the "Create your GOV.UK One Login or sign in" page
