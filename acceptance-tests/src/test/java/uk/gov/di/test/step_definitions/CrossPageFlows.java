@@ -1,5 +1,6 @@
 package uk.gov.di.test.step_definitions;
 
+import uk.gov.di.test.controllers.UserLifecycleController;
 import uk.gov.di.test.pages.BasePage;
 import uk.gov.di.test.pages.CheckYourEmailPage;
 import uk.gov.di.test.pages.CheckYourPhonePage;
@@ -215,6 +216,21 @@ public class CrossPageFlows extends BasePage {
         waitForPageLoad("Choose how to get security codes");
     }
 
+    public void createPartialRegisteredUpToChooseHowToGetSecurityCodesPage() {
+        rpStubPage.goToRpStub();
+        rpStubPage.selectRpOptionsByIdAndContinue("");
+        setAnalyticsCookieTo(false);
+        waitForPageLoad("Create your GOV.UK One Login or sign in");
+        createOrSignInPage.clickCreateAGovUkOneLoginButton();
+        enterYourEmailAddressToSignInPage.enterEmailAddressAndContinue(world.getUserEmailAddress());
+        waitForPageLoad("Check your email");
+        checkYourEmailPage.enterCorrectEmailCodeAndContinue();
+        waitForPageLoad("Create your password");
+        String userPassword = world.getUserPassword();
+        createYourPasswordPage.enterBothPasswordsAndContinue(userPassword, userPassword);
+        waitForPageLoad("Choose how to get security codes");
+    }
+
     public void selectForgottenPasswordLinkAndCompletePasswordChange(String userEmailAddress) {
         rpStubPage.goToRpStub();
         rpStubPage.selectRpOptionsByIdAndContinue("");
@@ -231,6 +247,25 @@ public class CrossPageFlows extends BasePage {
         waitForPageLoad("Reset your password");
         resetYourPasswordPage.enterPasswordResetDetailsAndContinue(
                 NEW_VALID_PASSWORD, NEW_VALID_PASSWORD);
+    }
+
+    public void selectForgottenPasswordLinkAndCompletePasswordChange() {
+        rpStubPage.goToRpStub();
+        rpStubPage.selectRpOptionsByIdAndContinue("");
+        setAnalyticsCookieTo(false);
+        waitForPageLoad("Create your GOV.UK One Login or sign in");
+        createOrSignInPage.clickSignInButton();
+        waitForPageLoad("Enter your email address to sign in");
+        enterYourEmailAddressToSignInPage.enterEmailAddressAndContinue(world.getUserEmailAddress());
+        waitForPageLoad("Enter your password");
+        enterYourPasswordPage.clickForgottenPasswordLink();
+        waitForPageLoad("Check your email");
+        checkYourEmailPage.enterCorrectEmailCodeAndContinue();
+        waitForPageLoad("Reset your password");
+        String newPassword = UserLifecycleController.generateValidPassword();
+        resetYourPasswordPage.enterPasswordResetDetailsAndContinue(newPassword, newPassword);
+
+        world.userProfile.setPassword(newPassword);
     }
 
     public void setUpAuthenticationBy(String userType) {

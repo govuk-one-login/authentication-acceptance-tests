@@ -2,7 +2,6 @@
 Feature: Login Journey
   Existing user walks through a login journey
 
-  @testTag
   Scenario: Existing user tries to create an account with the same email address
     Given a user exists
     And the user comes from the stub relying party with options: "default"
@@ -13,6 +12,7 @@ Feature: Login Journey
     Then the user is taken to the "You have a GOV.UK One Login" page
 
     # TODO: phone code not working
+  @testTag
   Scenario: Existing user is correctly prompted to login using sms
     Given a user with sms MFA exists
     And the user comes from the stub relying party with options: "default"

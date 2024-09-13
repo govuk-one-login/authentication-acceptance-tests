@@ -1,10 +1,6 @@
 package uk.gov.di.test.entity;
 
-import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbAttribute;
-import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbBean;
-import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbConvertedBy;
-import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbPartitionKey;
-import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbSecondaryPartitionKey;
+import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.*;
 
 @DynamoDbBean
 public class UserProfile {
@@ -36,6 +32,9 @@ public class UserProfile {
     private byte[] salt;
     private int accountVerified;
     private int testUser;
+
+    // Unmapped, but makes life easier
+    private String password;
 
     public UserProfile() {}
 
@@ -220,5 +219,26 @@ public class UserProfile {
 
     public void setTestUser(int isTestUser) {
         this.testUser = isTestUser;
+    }
+
+    @DynamoDbIgnore
+    public String getPassword() {
+        return password;
+    }
+
+    public UserProfile withPassword(String password) {
+        this.password = password;
+        return this;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    @DynamoDbIgnore
+    public void setMfaToSms(String phoneNumber) {
+        this.accountVerified = 1;
+        this.phoneNumber = phoneNumber;
+        this.phoneNumberVerified = true;
     }
 }

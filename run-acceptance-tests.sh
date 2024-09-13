@@ -113,8 +113,9 @@ fi
 #  ./reset-test-data.sh -r $ENVIRONMENT
 #fi
 
+export TEST_EMAIL_COUNTER_START=100000
 export TEST_USER_EMAIL_USER="test-user"
-export TEST_USER_EMAIL_DOMAIN="example.local"
+export TEST_USER_EMAIL_DOMAIN="test.null.local"
 
 ./gradlew cucumber
 

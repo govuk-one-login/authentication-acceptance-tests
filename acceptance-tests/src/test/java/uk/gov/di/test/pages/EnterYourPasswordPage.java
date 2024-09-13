@@ -38,7 +38,7 @@ public class EnterYourPasswordPage extends BasePage {
     }
 
     public void enterCorrectPasswordAndContinue() {
-        enterPasswordAndContinue(world.password);
+        enterPasswordAndContinue(world.getUserPassword());
     }
 
     public void enterNewPasswordAndContinue() {

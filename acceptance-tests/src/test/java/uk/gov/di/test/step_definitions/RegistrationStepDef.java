@@ -28,6 +28,7 @@ import static uk.gov.di.test.utils.Constants.UK_MOBILE_PHONE_NUMBER_WITH_INTERNA
 import static uk.gov.di.test.utils.Constants.WEAK_PASSWORD;
 
 public class RegistrationStepDef extends BasePage {
+    private final World world;
 
     EnterYourMobilePhoneNumberPage enterYourMobilePhoneNumberPage =
             new EnterYourMobilePhoneNumberPage();
@@ -39,6 +40,10 @@ public class RegistrationStepDef extends BasePage {
     ChooseHowToGetSecurityCodesPage chooseHowToGetSecurityCodesPage =
             new ChooseHowToGetSecurityCodesPage();
     NoGovUkOneLoginFoundPage noGovUkOneLoginFoundPage = new NoGovUkOneLoginFoundPage();
+
+    public RegistrationStepDef(World world) {
+        this.world = world;
+    }
 
     @When("the user selects create an account")
     public void theUserSelectsCreateAnAccount() {
@@ -57,8 +62,8 @@ public class RegistrationStepDef extends BasePage {
 
     @And("the user creates a password")
     public void theUserCreatesAPassword() {
-        String passwordVal = System.getenv().get("TEST_USER_PASSWORD");
-        createYourPasswordPage.enterBothPasswordsAndContinue(passwordVal, passwordVal);
+        String userPassword = world.getUserPassword();
+        createYourPasswordPage.enterBothPasswordsAndContinue(userPassword, userPassword);
     }
 
     @And("the user creates and enters an invalid password")

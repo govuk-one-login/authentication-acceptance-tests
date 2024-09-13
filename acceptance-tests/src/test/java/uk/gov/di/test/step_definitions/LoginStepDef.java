@@ -82,9 +82,10 @@ public class LoginStepDef extends BasePage {
         enterYourEmailAddressToSignInPage.enterEmailAddressAndContinue(System.getenv().get(email));
     }
 
+    @And("user enters their email address")
     @And("the user enters their email address")
     public void theUserEntersTheirEmailAddress() {
-        enterYourEmailAddressPage.enterEmailAddressAndContinue(world.userProfile.getEmail());
+        enterYourEmailAddressPage.enterEmailAddressAndContinue(world.getUserEmailAddress());
     }
 
     @And("user enters the same email address {string} for reauth as they used for login")
@@ -93,6 +94,7 @@ public class LoginStepDef extends BasePage {
                 System.getenv().get(email));
     }
 
+    @When("the user enters an invalid email address")
     @When("user enters invalid email address")
     public void userEntersInvalidEmailAddress() {
         enterYourEmailAddressToSignInPage.enterEmailAddressAndContinue(INVALID_EMAIL);
@@ -160,7 +162,7 @@ public class LoginStepDef extends BasePage {
     @When("the user enters their email address in Welsh")
     public void theUserEntersTheirEmailInWelsh() {
         enterYourEmailAddressToSignInPage.enterEmailAddressAndContinueWelsh(
-                world.userProfile.getEmail());
+                world.getUserEmailAddress());
     }
 
     @When("the user enters valid new password and correctly retypes it")

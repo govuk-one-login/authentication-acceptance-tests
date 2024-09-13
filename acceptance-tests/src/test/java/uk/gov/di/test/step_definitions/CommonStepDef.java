@@ -126,11 +126,22 @@ public class CommonStepDef extends BasePage {
         crossPageFlows.createPartialRegisteredUpToChooseHowToGetSecurityCodesPage(emailAddress);
     }
 
+    @Given("the user is partially registered up to choose how to get security codes page")
+    public void theUserIsPartiallyRegisteredUpToChooseHowToGetSecurityCodesPage() {
+        crossPageFlows.createPartialRegisteredUpToChooseHowToGetSecurityCodesPage();
+    }
+
     @When(
             "the user {string} attempts to resign in after partial registered and select forgotten password link")
     public void theUserAttemptsToResignInAfterPartialRegisteredAndSelectForgottenPasswordLink(
             String emailAddress) {
         crossPageFlows.selectForgottenPasswordLinkAndCompletePasswordChange(emailAddress);
+    }
+
+    @When(
+            "the user attempts to re-sign-in after partial registration and selects forgotten password link")
+    public void theUserAttemptsToReSignInAfterPartialRegistrationAndSelectsForgottenPasswordLink() {
+        crossPageFlows.selectForgottenPasswordLinkAndCompletePasswordChange();
     }
 
     @When("the user chooses {string} to get security codes and progress to set it up")

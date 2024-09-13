@@ -27,6 +27,15 @@ public class TermsAndConditions {
         this.version = version;
     }
 
+    public void setVersion(Double version) {
+        this.version = String.valueOf(version);
+    }
+
+    public TermsAndConditions withVersion(Double version) {
+        this.setVersion(version);
+        return this;
+    }
+
     public String getTimestamp() {
         return timestamp;
     }
