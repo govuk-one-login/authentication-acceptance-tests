@@ -131,7 +131,9 @@ public class CrossPageFlows extends BasePage {
                             System.getenv().get("ACCOUNT_RECOVERY_USER_AUTH_APP_SECRET"));
         }
         rpStubPage.waitForReturnToTheService();
-        userInformationPage.logoutOfAccount();
+        if (rpStubPage.supportsLogout()) {
+            userInformationPage.logoutOfAccount();
+        }
     }
 
     public void smsUserChangeHowGetSecurityCodesToAuthApp() {
@@ -191,7 +193,9 @@ public class CrossPageFlows extends BasePage {
         waitForPageLoad("You’ve created your GOV.UK One Login");
         findAndClickContinue();
         rpStubPage.waitForReturnToTheService();
-        userInformationPage.logoutOfAccount();
+        if (rpStubPage.supportsLogout()) {
+            userInformationPage.logoutOfAccount();
+        }
     }
 
     public void createPartialRegisteredUpToChooseHowToGetSecurityCodesPage(

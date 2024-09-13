@@ -1,8 +1,7 @@
-@lockouts @lockout_reset_pw @build @staging
+@lockouts @lockout_reset_pw @build @staging @build-sp
 Feature: Reset password lockouts
 
   # ENTER INCORRECT EMAIL OTP TOO MANY TIMES DURING PASSWORD RESET - 2071
-  @build-sp
   Scenario: A user is blocked when they enter an incorrect email OTP more than 5 times during a password reset.
     Given the user comes from the stub relying party with options: "default"
     Then the user is taken to the "Create your GOV.UK One Login or sign in" page
@@ -18,7 +17,6 @@ Feature: Reset password lockouts
     Then the 2hr You cannot sign in at the moment screen for wrong security codes is displayed
 
   # REQUEST EMAIL OTP TOO MANY TIMES DURING PASSWORD RESET - 2381
-  @build-sp
   Scenario: A user is blocked when they request an email OTP more than 5 times during a password reset.
     Given the user comes from the stub relying party with options: "default"
     Then the user is taken to the "Create your GOV.UK One Login or sign in" page
@@ -34,7 +32,6 @@ Feature: Reset password lockouts
     Then the 2hr You cannot sign in at the moment screen for requesting too many security code resends is displayed
 
   # ENTER INCORRECT SMS CODE TOO MANY TIMES DURING PASSWORD RESET - 2070
-  @build-sp
   Scenario: A user is blocked when they enter an incorrect sms security code more than 5 times during a password reset.
     Given the user comes from the stub relying party with options: "default"
     Then the user is taken to the "Create your GOV.UK One Login or sign in" page
@@ -52,7 +49,6 @@ Feature: Reset password lockouts
     Then the 2hr You cannot sign in at the moment screen for wrong security codes is displayed
 
   # REQUEST SMS CODE TOO MANY TIMES DURING PASSWORD RESET - 2379
-  @build-sp
   Scenario: A user is blocked when they request an sms code more than 5 times during a password reset.
     Given the user comes from the stub relying party with options: "default"
     Then the user is taken to the "Create your GOV.UK One Login or sign in" page
@@ -70,7 +66,6 @@ Feature: Reset password lockouts
     Then the 2hr You cannot sign in at the moment screen for requesting too many security code resends is displayed
 
   # ENTER INCORRECT AUTH APP CODE TOO MANY TIMES DURING PASSWORD RESET - 2072
-  @build-sp-fail
   Scenario: A user is blocked when they enter an incorrect auth app security code more than 5 times during a password reset.
     Given the user comes from the stub relying party with options: "default"
     Then the user is taken to the "Create your GOV.UK One Login or sign in" page
