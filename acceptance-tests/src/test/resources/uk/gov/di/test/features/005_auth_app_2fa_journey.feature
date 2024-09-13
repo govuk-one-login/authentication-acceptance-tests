@@ -1,4 +1,4 @@
-@AuthApp2FA @build @staging
+@AuthApp2FA @build @staging @updated @working
 Feature: Authentication App Journeys
   New user creates an account and logs in using an auth app
 
@@ -8,7 +8,7 @@ Feature: Authentication App Journeys
     Then the user is taken to the "Create your GOV.UK One Login or sign in" page
     When the user selects create an account
     Then the user is taken to the "Enter your email" page
-    When user enters their email address
+    When the user enters their email address
     Then the user is taken to the "Check your email" page
     When the user enters the six digit security code from their email
     Then the user is taken to the "Create your password" page
@@ -29,7 +29,7 @@ Feature: Authentication App Journeys
     Then the user is taken to the "Create your GOV.UK One Login or sign in" page
     When the user selects sign in
     Then the user is taken to the "Enter your email" page
-    When user enters their email address
+    When the user enters their email address
     Then the user is taken to the "Enter your password" page
     When the user enters their password
     Then the user is taken to the "Enter the 6 digit security code shown in your authenticator app" page
@@ -43,7 +43,7 @@ Feature: Authentication App Journeys
     Then the user is taken to the "Create your GOV.UK One Login or sign in" page
     When the user selects sign in
     Then the user is taken to the "Enter your email" page
-    When user enters their email address
+    When the user enters their email address
     Then the user is taken to the "Enter your password" page
     When the user enters their password
     Then the user is returned to the service
@@ -55,7 +55,7 @@ Feature: Authentication App Journeys
     Then the user is taken to the "Create your GOV.UK One Login or sign in" page
     When the user selects sign in
     Then the user is taken to the "Enter your email" page
-    When user enters their email address
+    When the user enters their email address
     Then the user is taken to the "Enter your password" page
     When the user enters their password
     Then the user is returned to the service

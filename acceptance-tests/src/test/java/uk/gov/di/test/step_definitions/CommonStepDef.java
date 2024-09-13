@@ -121,11 +121,6 @@ public class CommonStepDef extends BasePage {
         rpStubPage.reauthRequired(idToken);
     }
 
-    @Given("the user {string} is partial registered up to choose how to get security codes page")
-    public void theUserPartialRegisteredUpToChooseHowToGetSecurityCodesPage(String emailAddress) {
-        crossPageFlows.createPartialRegisteredUpToChooseHowToGetSecurityCodesPage(emailAddress);
-    }
-
     @Given("the user is partially registered up to choose how to get security codes page")
     public void theUserIsPartiallyRegisteredUpToChooseHowToGetSecurityCodesPage() {
         crossPageFlows.createPartialRegisteredUpToChooseHowToGetSecurityCodesPage();

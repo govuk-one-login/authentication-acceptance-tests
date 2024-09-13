@@ -98,7 +98,7 @@ function createOrUpdateInterventionsUser() {
 
     saltlog="$(echo -n "${up}" | jq -r '.Item.salt.B')"
     echo "resetting interventions block for: $1 sector: $sector internalCommonSubjectId: $pwid saltlog: $saltlog"
-
+    
     aws dynamodb update-item \
       --table-name "${ENVIRONMENT_NAME}-stub-account-interventions" \
       --key "{\"InternalPairwiseId\": {\"S\": \"$pwid\"}}" \

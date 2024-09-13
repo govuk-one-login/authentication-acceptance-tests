@@ -1,28 +1,30 @@
-@AccountInterventions @build
+@AccountInterventions @build  @updated @working
 Feature: Account interventions
 
   @suspended
   Scenario: Sms user cannot log in when they have a temporarily suspended account
     Given a user with sms MFA exists
-    And and the user has a temporarily suspended intervention
-#    And the user comes from the stub relying party with options: "default"
-#    When the user is taken to the "Create your GOV.UK One Login or sign in" page
-#    And the user selects sign in
-#    Then the user is taken to the "Enter your email" page
-#    When user enters "TEMPORARILY_SUSPENDED_ACCOUNT_EMAIL_1" email address
-#    Then the user is taken to the "Enter your password" page
-#    When the user enters their password
-#    Then the user is taken to the "Check your phone" page
-#    When the user enters the six digit security code from their phone
-#    Then the user is taken to the "Sorry, there is a problem" page
-
-  @suspended
-  Scenario: Auth app user cannot log in when they have a temporarily suspended account
-    Given the user comes from the stub relying party with options: "default"
+    And the user has a temporarily suspended intervention
+    And the user comes from the stub relying party with options: "default"
     When the user is taken to the "Create your GOV.UK One Login or sign in" page
     And the user selects sign in
     Then the user is taken to the "Enter your email" page
-    When user enters "TEMPORARILY_SUSPENDED_ACCOUNT_EMAIL_2" email address
+    When the user enters their email address
+    Then the user is taken to the "Enter your password" page
+    When the user enters their password
+    Then the user is taken to the "Check your phone" page
+    When the user enters the six digit security code from their phone
+    Then the user is taken to the "Sorry, there is a problem" page
+
+  @suspended
+  Scenario: Auth app user cannot log in when they have a temporarily suspended account
+    Given a user with app MFA exists
+    And the user has a temporarily suspended intervention
+    And the user comes from the stub relying party with options: "default"
+    When the user is taken to the "Create your GOV.UK One Login or sign in" page
+    And the user selects sign in
+    Then the user is taken to the "Enter your email" page
+    When the user enters their email address
     Then the user is taken to the "Enter your password" page
     When the user enters their password
     Then the user is taken to the "Enter the 6 digit security code shown in your authenticator app" page
@@ -31,11 +33,14 @@ Feature: Account interventions
 
   @suspended
   Scenario: Sms user with outdated terms and conditions cannot log in when they have a temporarily suspended account
-    Given the user comes from the stub relying party with options: "default"
+    Given a user with sms MFA exists
+    And the user has a temporarily suspended intervention
+    And the user has not yet accepted the latest terms and conditions
+    And the user comes from the stub relying party with options: "default"
     When the user is taken to the "Create your GOV.UK One Login or sign in" page
     And the user selects sign in
     Then the user is taken to the "Enter your email" page
-    When user enters "TEMPORARILY_SUSPENDED_ACCOUNT_EMAIL_4" email address
+    When the user enters their email address
     Then the user is taken to the "Enter your password" page
     When the user enters their password
     Then the user is taken to the "Check your phone" page
@@ -46,11 +51,13 @@ Feature: Account interventions
 
   @suspended
   Scenario: Sms user cannot change their password when they have a temporarily suspended account
-    Given the user comes from the stub relying party with options: "2fa-on"
+    Given a user with sms MFA exists
+    And the user has a temporarily suspended intervention
+    And the user comes from the stub relying party with options: "2fa-on"
     When the user is taken to the "Create your GOV.UK One Login or sign in" page
     And the user selects sign in
     Then the user is taken to the "Enter your email" page
-    When user enters "TEMPORARILY_SUSPENDED_ACCOUNT_EMAIL_1" email address
+    When the user enters their email address
     Then the user is taken to the "Enter your password" page
     When the user clicks the forgotten password link
     Then the user is taken to the "Check your email" page
@@ -61,13 +68,16 @@ Feature: Account interventions
 
   @suspended
   Scenario: Auth app user with a current password on the top 100k unacceptable password list cannot change their password when they have a temporarily suspended account
-    Given the user comes from the stub relying party with options: "2fa-on"
+    Given a user with app MFA exists
+    And the user's password is on the top 100k unacceptable password list
+    And the user has a temporarily suspended intervention
+    And the user comes from the stub relying party with options: "2fa-on"
     When the user is taken to the "Create your GOV.UK One Login or sign in" page
     And the user selects sign in
     Then the user is taken to the "Enter your email" page
-    When user enters "TEMPORARILY_SUSPENDED_ACCOUNT_EMAIL_3" email address
+    When the user enters their email address
     Then the user is taken to the "Enter your password" page
-    When the user enters their password which is on the top 100k password list
+    When the user enters their password
     Then the user is taken to the "Check your email" page
     When the user enters the six digit security code from their email
     Then the user is taken to the "Enter a security code from your authenticator app" page
@@ -76,11 +86,13 @@ Feature: Account interventions
 
   @suspended
   Scenario: Sms user cannot change the way they get security codes when they have a temporarily suspended account
-    Given the user comes from the stub relying party with options: "2fa-on"
+    Given a user with sms MFA exists
+    And the user has a temporarily suspended intervention
+    And the user comes from the stub relying party with options: "2fa-on"
     When the user is taken to the "Create your GOV.UK One Login or sign in" page
     And the user selects sign in
     Then the user is taken to the "Enter your email" page
-    When user enters "TEMPORARILY_SUSPENDED_ACCOUNT_EMAIL_1" email address
+    When the user enters their email address
     Then the user is taken to the "Enter your password" page
     When the user enters their password
     Then the user is taken to the "Check your phone" page
@@ -92,11 +104,13 @@ Feature: Account interventions
 
   @suspended
   Scenario: Auth app user cannot change the way they get security codes when they have a temporarily suspended account
-    Given the user comes from the stub relying party with options: "2fa-on"
+    Given a user with app MFA exists
+    And the user has a temporarily suspended intervention
+    And the user comes from the stub relying party with options: "2fa-on"
     When the user is taken to the "Create your GOV.UK One Login or sign in" page
     And the user selects sign in
     Then the user is taken to the "Enter your email" page
-    When user enters "TEMPORARILY_SUSPENDED_ACCOUNT_EMAIL_2" email address
+    When the user enters their email address
     Then the user is taken to the "Enter your password" page
     When the user enters their password
     Then the user is taken to the "Enter the 6 digit security code shown in your authenticator app" page
@@ -108,11 +122,13 @@ Feature: Account interventions
 
   @locked
   Scenario: Sms user cannot log in when they have a permanently locked account
-    Given the user comes from the stub relying party with options: "default"
+    Given a user with sms MFA exists
+    And the user has a permanently locked intervention
+    And the user comes from the stub relying party with options: "default"
     When the user is taken to the "Create your GOV.UK One Login or sign in" page
     And the user selects sign in
     Then the user is taken to the "Enter your email" page
-    When user enters "PERMANENTLY_LOCKED_ACCOUNT_EMAIL_1" email address
+    When the user enters their email address
     Then the user is taken to the "Enter your password" page
     When the user enters their password
     Then the user is taken to the "Check your phone" page
@@ -121,11 +137,13 @@ Feature: Account interventions
 
   @locked
   Scenario: Auth app user cannot log in when they have a permanently locked account
-    Given the user comes from the stub relying party with options: "default"
+    Given a user with app MFA exists
+    And the user has a permanently locked intervention
+    And the user comes from the stub relying party with options: "default"
     When the user is taken to the "Create your GOV.UK One Login or sign in" page
     And the user selects sign in
     Then the user is taken to the "Enter your email" page
-    When user enters "PERMANENTLY_LOCKED_ACCOUNT_EMAIL_2" email address
+    When the user enters their email address
     Then the user is taken to the "Enter your password" page
     When the user enters their password
     Then the user is taken to the "Enter the 6 digit security code shown in your authenticator app" page
@@ -134,11 +152,14 @@ Feature: Account interventions
 
   @locked
   Scenario: Auth app user with outdated terms and conditions cannot log in when they have a permanently locked account
-    Given the user comes from the stub relying party with options: "default"
+    Given a user with app MFA exists
+    And the user has a permanently locked intervention
+    And the user has not yet accepted the latest terms and conditions
+    And the user comes from the stub relying party with options: "default"
     When the user is taken to the "Create your GOV.UK One Login or sign in" page
     And the user selects sign in
     Then the user is taken to the "Enter your email" page
-    When user enters "PERMANENTLY_LOCKED_ACCOUNT_EMAIL_6" email address
+    When the user enters their email address
     Then the user is taken to the "Enter your password" page
     When the user enters their password
     Then the user is taken to the "Enter the 6 digit security code shown in your authenticator app" page
@@ -148,12 +169,14 @@ Feature: Account interventions
     Then the user is taken to the "Your GOV.UK One Login has been permanently locked" page
 
   @locked
-  Scenario: Auth app user cannot create a new account using the email address of a permanently locked address
-    Given the user comes from the stub relying party with options: "2fa-on"
+  Scenario: Auth app user cannot create a new account using the email address of a permanently locked account
+    Given a user with app MFA exists
+    And the user has a permanently locked intervention
+    And the user comes from the stub relying party with options: "2fa-on"
     When the user is taken to the "Create your GOV.UK One Login or sign in" page
     And the user selects create an account
     Then the user is taken to the "Enter your email address" page
-    When user enters "PERMANENTLY_LOCKED_ACCOUNT_EMAIL_5" email address
+    When the user enters the email address
     Then the user is taken to the "You have a GOV.UK One Login" page
     When the user enters their password
     Then the user is taken to the "Enter the 6 digit security code shown in your authenticator app" page
@@ -162,11 +185,13 @@ Feature: Account interventions
 
   @locked
   Scenario: Sms user cannot change their password when they have a permanently locked account
-    Given the user comes from the stub relying party with options: "2fa-on"
+    Given a user with sms MFA exists
+    And the user has a permanently locked intervention
+    And the user comes from the stub relying party with options: "2fa-on"
     When the user is taken to the "Create your GOV.UK One Login or sign in" page
     And the user selects sign in
     Then the user is taken to the "Enter your email" page
-    When user enters "PERMANENTLY_LOCKED_ACCOUNT_EMAIL_3" email address
+    When the user enters their email address
     Then the user is taken to the "Enter your password" page
     When the user clicks the forgotten password link
     Then the user is taken to the "Check your email" page
@@ -177,11 +202,14 @@ Feature: Account interventions
 
   @locked
   Scenario: Sms user with a current password on the top 100k unacceptable password list cannot change their password when they have a permanently locked account
-    Given the user comes from the stub relying party with options: "2fa-on"
+    Given a user with sms MFA exists
+    And the user's password is on the top 100k unacceptable password list
+    And the user has a permanently locked intervention
+    And the user comes from the stub relying party with options: "2fa-on"
     When the user is taken to the "Create your GOV.UK One Login or sign in" page
     And the user selects sign in
     Then the user is taken to the "Enter your email" page
-    When user enters "PERMANENTLY_LOCKED_ACCOUNT_EMAIL_7" email address
+    When the user enters their email address
     Then the user is taken to the "Enter your password" page
     When the user enters their password which is on the top 100k password list
     Then the user is taken to the "Check your email" page
@@ -192,11 +220,13 @@ Feature: Account interventions
 
   @locked
   Scenario: Sms user cannot change the way they get security codes when they have a permanently locked account
-    Given the user comes from the stub relying party with options: "2fa-on"
+    Given a user with sms MFA exists
+    And the user has a permanently locked intervention
+    And the user comes from the stub relying party with options: "2fa-on"
     When the user is taken to the "Create your GOV.UK One Login or sign in" page
     And the user selects sign in
     Then the user is taken to the "Enter your email" page
-    When user enters "PERMANENTLY_LOCKED_ACCOUNT_EMAIL_4" email address
+    When the user enters their email address
     Then the user is taken to the "Enter your password" page
     When the user enters their password
     Then the user is taken to the "Check your phone" page
@@ -208,11 +238,13 @@ Feature: Account interventions
 
   @locked
   Scenario: Auth app user cannot change the way they get security codes when they have a permanently locked account
-    Given the user comes from the stub relying party with options: "2fa-on"
+    Given a user with app MFA exists
+    And the user has a permanently locked intervention
+    And the user comes from the stub relying party with options: "2fa-on"
     When the user is taken to the "Create your GOV.UK One Login or sign in" page
     And the user selects sign in
     Then the user is taken to the "Enter your email" page
-    When user enters "PERMANENTLY_LOCKED_ACCOUNT_EMAIL_2" email address
+    When the user enters their email address
     Then the user is taken to the "Enter your password" page
     When the user enters their password
     Then the user is taken to the "Enter the 6 digit security code shown in your authenticator app" page
@@ -224,11 +256,13 @@ Feature: Account interventions
 
 #  @reset_password # commented out due to an unidentified data issue that causes failure in th pipeline. Runs fine locally.
 #  Scenario: Sms user forced to reset their password when a password reset intervention has been placed on their account
-#    Given the user comes from the stub relying party with options: "default"
+#    Given a user with sms MFA exists
+#    And the user has a password reset intervention
+#    And the user comes from the stub relying party with options: "default"
 #    When the user is taken to the "Create your GOV.UK One Login or sign in" page
 #    And the user selects sign in
 #    Then the user is taken to the "Enter your email" page
-#    When user enters "TEST_USER_PASSWORD_RESET_ACCOUNT_EMAIL_1" email address
+#    When the user enters their email address
 #    Then the user is taken to the "Enter your password" page
 #    When the user enters their password
 #    Then the user is taken to the "Check your phone" page
@@ -245,11 +279,13 @@ Feature: Account interventions
 
   @reset_password
   Scenario: Auth app user forced to reset their password when a password reset intervention has been placed on their account
-    Given the user comes from the stub relying party with options: "default"
+    Given a user with app MFA exists
+    And the user has a password reset intervention
+    And the user comes from the stub relying party with options: "default"
     When the user is taken to the "Create your GOV.UK One Login or sign in" page
     And the user selects sign in
     Then the user is taken to the "Enter your email" page
-    When user enters "TEST_USER_PASSWORD_RESET_ACCOUNT_EMAIL_2" email address
+    When the user enters their email address
     Then the user is taken to the "Enter your password" page
     When the user enters their password
     Then the user is taken to the "Enter the 6 digit security code shown in your authenticator app" page
@@ -265,11 +301,13 @@ Feature: Account interventions
 
   @reset_password
   Scenario: Auth app user with a password reset intervention on their account is able to use the I have forgotten my password link
-    Given the user comes from the stub relying party with options: "default"
+    Given a user with app MFA exists
+    And the user has a password reset intervention
+    And the user comes from the stub relying party with options: "default"
     When the user is taken to the "Create your GOV.UK One Login or sign in" page
     And the user selects sign in
     Then the user is taken to the "Enter your email" page
-    When user enters "TEST_USER_PASSWORD_RESET_ACCOUNT_EMAIL_4" email address
+    When the user enters their email address
     Then the user is taken to the "Enter your password" page
     When the user clicks the forgotten password link
     Then the user is taken to the "Check your email" page
@@ -283,13 +321,16 @@ Feature: Account interventions
 
   @reset_password
   Scenario: Sms user is forced to reset their password when they have a password reset intervention on their account and their existing password is on top 100k password list
-    Given the user comes from the stub relying party with options: "default"
+    Given a user with sms MFA exists
+    And the user has a password reset intervention
+    And the user's password is on the top 100k unacceptable password list
+    And the user comes from the stub relying party with options: "default"
     When the user is taken to the "Create your GOV.UK One Login or sign in" page
     And the user selects sign in
     Then the user is taken to the "Enter your email" page
-    When user enters "TEST_USER_PASSWORD_RESET_ACCOUNT_EMAIL_5" email address
+    When the user enters their email address
     Then the user is taken to the "Enter your password" page
-    When the user enters their password which is on the top 100k password list
+    When the user enters their password
     Then the user is taken to the "Check your email" page
     When the user enters the six digit security code from their email
     Then the user is taken to the "Check your phone" page
@@ -301,11 +342,14 @@ Feature: Account interventions
 
   @reset_password
   Scenario: Auth app user with outdated terms and conditions cannot log in when they have a password reset intervention on their account
-    Given the user comes from the stub relying party with options: "default"
+    Given a user with app MFA exists
+    And the user has a password reset intervention
+    And the user has not yet accepted the latest terms and conditions
+    And the user comes from the stub relying party with options: "default"
     When the user is taken to the "Create your GOV.UK One Login or sign in" page
     And the user selects sign in
     Then the user is taken to the "Enter your email" page
-    When user enters "TEST_USER_PASSWORD_RESET_ACCOUNT_EMAIL_6" email address
+    When the user enters their email address
     Then the user is taken to the "Enter your password" page
     When the user enters their password
     Then the user is taken to the "Enter the 6 digit security code shown in your authenticator app" page
@@ -323,11 +367,13 @@ Feature: Account interventions
 
   @reset_password
   Scenario: Auth app user cannot change the way they get security codes when they have a password reset intervention on their account
-    Given the user comes from the stub relying party with options: "2fa-on"
+    Given a user with app MFA exists
+    And the user has a password reset intervention
+    And the user comes from the stub relying party with options: "2fa-on"
     When the user is taken to the "Create your GOV.UK One Login or sign in" page
     And the user selects sign in
     Then the user is taken to the "Enter your email" page
-    When user enters "TEST_USER_PASSWORD_RESET_ACCOUNT_EMAIL_7" email address
+    When the user enters their email address
     Then the user is taken to the "Enter your password" page
     When the user enters their password
     Then the user is taken to the "Enter the 6 digit security code shown in your authenticator app" page
@@ -344,13 +390,27 @@ Feature: Account interventions
     Then the user is returned to the service
     And the user clicks logout
 
-  @locked @suspended @reset_password
+  @suspended @reset_password
   Scenario: Auth app user can log in when their One Login account intervention has been removed
-    Given the user comes from the stub relying party with options: "2fa-on"
+    Given a user with app MFA exists
+    And the user has a temporarily suspended intervention
+    And the user comes from the stub relying party with options: "2fa-on"
     When the user is taken to the "Create your GOV.UK One Login or sign in" page
     And the user selects sign in
     Then the user is taken to the "Enter your email" page
-    When user enters "ACCOUNT_INTERVENTION_REMOVED_EMAIL_1" email address
+    When the user enters their email address
+    Then the user is taken to the "Enter your password" page
+    When the user enters their password
+    Then the user is taken to the "Enter the 6 digit security code shown in your authenticator app" page
+    When the user enters the security code from the auth app
+    Then the user is taken to the "Sorry, there is a problem" page
+
+    When the user's interventions have been removed
+    And the user comes from the stub relying party with options: "2fa-on"
+    When the user is taken to the "Create your GOV.UK One Login or sign in" page
+    And the user selects sign in
+    Then the user is taken to the "Enter your email" page
+    When the user enters their email address
     Then the user is taken to the "Enter your password" page
     When the user enters their password
     Then the user is taken to the "Enter the 6 digit security code shown in your authenticator app" page

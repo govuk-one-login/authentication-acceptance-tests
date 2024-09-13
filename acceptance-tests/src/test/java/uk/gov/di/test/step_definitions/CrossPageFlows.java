@@ -19,7 +19,6 @@ import uk.gov.di.test.pages.SetUpAnAuthenticatorAppPage;
 import uk.gov.di.test.pages.UserInformationPage;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static uk.gov.di.test.utils.Constants.NEW_VALID_PASSWORD;
 
 public class CrossPageFlows extends BasePage {
     private final World world;
@@ -136,7 +135,6 @@ public class CrossPageFlows extends BasePage {
                             System.getenv().get("ACCOUNT_RECOVERY_USER_AUTH_APP_SECRET"));
         }
         waitForPageLoad("Example - GOV.UK - User Info");
-        userInformationPage.logoutOfAccount();
     }
 
     public void smsUserChangeHowGetSecurityCodesToAuthApp() {
@@ -178,8 +176,8 @@ public class CrossPageFlows extends BasePage {
         waitForPageLoad("Check your phone");
         checkYourPhonePage.enterCorrectPhoneCodeAndContinue();
         waitForPageLoad("Reset your password");
-        resetYourPasswordPage.enterPasswordResetDetailsAndContinue(
-                NEW_VALID_PASSWORD, NEW_VALID_PASSWORD);
+        String newPassword = UserLifecycleController.generateValidPassword();
+        resetYourPasswordPage.enterPasswordResetDetailsAndContinue(newPassword, newPassword);
     }
 
     public void completeAccountCreationAfterNewEmailCode() {
@@ -187,33 +185,15 @@ public class CrossPageFlows extends BasePage {
         getSecurityCodePage.pressGetSecurityCodeButton();
         waitForPageLoad("Check your email");
         checkYourEmailPage.enterCorrectEmailCodeAndContinue();
-        String pw = System.getenv().get("TEST_USER_PASSWORD");
-        createYourPasswordPage.enterBothPasswordsAndContinue(pw, pw);
+
+        String userPassword = world.getUserPassword();
+        createYourPasswordPage.enterBothPasswordsAndContinue(userPassword, userPassword);
         chooseHowToGetSecurityCodesPage.selectAuthMethodAndContinue("text message");
-        enterYourMobilePhoneNumberPage.enterUkPhoneNumberAndContinue(
-                System.getenv().get("TEST_USER_PHONE_NUMBER"));
+        enterYourMobilePhoneNumberPage.enterUkPhoneNumberAndContinue(world.getUserPhoneNumber());
         checkYourPhonePage.enterCorrectPhoneCodeAndContinue();
         waitForPageLoad("You’ve created your GOV.UK One Login");
         findAndClickContinue();
         waitForPageLoad("User Info");
-        userInformationPage.logoutOfAccount();
-    }
-
-    public void createPartialRegisteredUpToChooseHowToGetSecurityCodesPage(
-            String userEmailAddress) {
-        rpStubPage.goToRpStub();
-        rpStubPage.selectRpOptionsByIdAndContinue("");
-        setAnalyticsCookieTo(false);
-        waitForPageLoad("Create your GOV.UK One Login or sign in");
-        createOrSignInPage.clickCreateAGovUkOneLoginButton();
-        enterYourEmailAddressToSignInPage.enterEmailAddressAndContinue(
-                System.getenv().get(userEmailAddress));
-        waitForPageLoad("Check your email");
-        checkYourEmailPage.enterCorrectEmailCodeAndContinue();
-        waitForPageLoad("Create your password");
-        String passwordVal = System.getenv().get("TEST_USER_PASSWORD");
-        createYourPasswordPage.enterBothPasswordsAndContinue(passwordVal, passwordVal);
-        waitForPageLoad("Choose how to get security codes");
     }
 
     public void createPartialRegisteredUpToChooseHowToGetSecurityCodesPage() {
@@ -238,15 +218,14 @@ public class CrossPageFlows extends BasePage {
         waitForPageLoad("Create your GOV.UK One Login or sign in");
         createOrSignInPage.clickSignInButton();
         waitForPageLoad("Enter your email address to sign in");
-        enterYourEmailAddressToSignInPage.enterEmailAddressAndContinue(
-                System.getenv().get(userEmailAddress));
+        enterYourEmailAddressToSignInPage.enterEmailAddressAndContinue(world.getUserEmailAddress());
         waitForPageLoad("Enter your password");
         enterYourPasswordPage.clickForgottenPasswordLink();
         waitForPageLoad("Check your email");
         checkYourEmailPage.enterCorrectEmailCodeAndContinue();
         waitForPageLoad("Reset your password");
-        resetYourPasswordPage.enterPasswordResetDetailsAndContinue(
-                NEW_VALID_PASSWORD, NEW_VALID_PASSWORD);
+        String newPassword = UserLifecycleController.generateValidPassword();
+        resetYourPasswordPage.enterPasswordResetDetailsAndContinue(newPassword, newPassword);
     }
 
     public void selectForgottenPasswordLinkAndCompletePasswordChange() {
@@ -274,7 +253,7 @@ public class CrossPageFlows extends BasePage {
                 chooseHowToGetSecurityCodesPage.selectAuthMethodAndContinue("text message");
                 waitForPageLoad("Enter your mobile phone number");
                 enterYourMobilePhoneNumberPage.enterUkPhoneNumberAndContinue(
-                        System.getenv().get("TEST_USER_PHONE_NUMBER"));
+                        world.getUserPhoneNumber());
                 waitForPageLoad("Check your phone");
                 checkYourPhonePage.enterCorrectPhoneCodeAndContinue();
                 break;

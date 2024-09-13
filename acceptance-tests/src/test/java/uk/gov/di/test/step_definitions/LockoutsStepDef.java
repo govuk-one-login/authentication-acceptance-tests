@@ -99,43 +99,6 @@ public class LockoutsStepDef extends BasePage {
     }
 
     @When(
-            "the user {string} with a lockout for requesting too many email security codes attempts to change the way they get security codes during the lockout period")
-    @When(
-            "the user {string} with a lockout for too many incorrect email security codes attempts to change the way they get security codes during the lockout period")
-    public void
-            theUserWithALockoutForRequestingTooManyEmailSecurityCodesAttemptsToChangeHowTheyGetSecurityCodes(
-                    String emailAddress) {
-        rpStubPage.goToRpStub();
-        rpStubPage.selectRpOptionsByIdAndContinue("default");
-        setAnalyticsCookieTo(false);
-        createOrSignInPage.clickSignInButton();
-        enterYourEmailAddressToSignInPage.enterEmailAddressAndContinue(
-                System.getenv().get(emailAddress));
-        enterYourPasswordPage.enterCorrectPasswordAndContinue();
-        checkYourPhonePage.changeHowToGetSecurityCodes();
-    }
-
-    @When(
-            "the user {string} with a lockout for requesting too many sms security codes attempts to change the way they get security codes during the lockout period")
-    @When(
-            "the user {string} with a lockout for too many incorrect sms security codes attempts to change the way they get security codes during the lockout period")
-    public void
-            theUserWithALockoutForRequestingTooManySmsSecurityCodesAttemptsToChangeHowTheyGetSecurityCodes(
-                    String emailAddress) {
-        rpStubPage.goToRpStub();
-        rpStubPage.selectRpOptionsByIdAndContinue("default");
-        setAnalyticsCookieTo(false);
-        createOrSignInPage.clickSignInButton();
-        enterYourEmailAddressToSignInPage.enterEmailAddressAndContinue(
-                System.getenv().get(emailAddress));
-        enterYourPasswordPage.enterCorrectPasswordAndContinue();
-        checkYourPhonePage.changeHowToGetSecurityCodes();
-        checkYourEmailPage.enterCorrectEmailCodeAndContinue();
-        chooseHowToGetSecurityCodesPage.selectAuthMethodAndContinue("text message");
-        enterYourMobilePhoneNumberPage.enterValidUkPhoneNumberAndContinue();
-    }
-
-    @When(
             "the user {string} with a lockout for too many incorrect passwords attempts to sign in during the lockout period")
     public void theUserWithALockoutForTooManyIncorrectPasswordsAttemptsToSignInDuringLockoutPeriod(
             String emailAddress) {
@@ -189,53 +152,31 @@ public class LockoutsStepDef extends BasePage {
     }
 
     @When(
-            "the user {string} with a lockout for too many incorrect sms security codes attempts to create account during the lockout period")
+            "the user with a lockout for too many incorrect sms security codes attempts to create account during the lockout period")
     @When(
-            "the user {string} with a lockout for requesting too many sms security codes attempts to create account during the lockout period")
+            "the user with a lockout for requesting too many sms security codes attempts to create account during the lockout period")
     public void
-            theUserWithALockoutForTooManyIncorrectSmsCodesAttemptsToCreateAccountDuringLockoutPeriod(
-                    String emailAddress) {
+            theUserWithALockoutForTooManyIncorrectSmsCodesAttemptsToCreateAccountDuringLockoutPeriod() {
         rpStubPage.goToRpStub();
         rpStubPage.selectRpOptionsByIdAndContinue("default");
         setAnalyticsCookieTo(false);
         createOrSignInPage.clickCreateAGovUkOneLoginButton();
-        enterYourEmailAddressPage.enterEmailAddressAndContinue(System.getenv().get(emailAddress));
+        enterYourEmailAddressPage.enterEmailAddressAndContinue(world.getUserEmailAddress());
         youHaveAGOVUKOneLoginPage.enterCorrectPasswordAndContinue();
         finishCreatingYourAccountPage.selectAuthMethodAndContinue("text message");
         enterYourMobilePhoneNumberPage.enterValidUkPhoneNumberAndContinue();
     }
 
-    @Then("the 2hr You entered the wrong security code too many times screen is displayed")
+    // YOU ENTERED WRONG SECURITY CODES
+    @Then("the 'You entered the wrong security code too many times' screen is displayed")
+    @Then("the non blocking You entered the wrong security code too many times page is displayed")
     public void theLockoutScreenForWrongSecurityCodesIsDisplayed() {
         waitForPageLoad("You entered the wrong security code too many times");
-        assertTrue(lockoutPage.getLockoutScreenText().contains("2 hours"));
     }
 
-    // YOU ENTERED WRONG SECURITY CODES
-    @Then("the 15min You entered the wrong security code too many times screen is displayed")
-    public void the15minLockoutScreenForWrongSecurityCodesIsDisplayed() {
-        waitForPageLoad("You entered the wrong security code too many times");
-        assertTrue(lockoutPage.getLockoutScreenText().contains("15 minutes"));
-    }
-
-    @Then("the non blocking You entered the wrong security code too many times page is displayed")
-    public void theNonBlockingYouEnteredTheWrongSecurityCodeTooManyTimesPageIsDisplayed() {
-        waitForPageLoad("You entered the wrong security code too many times");
-    }
-
-    // YOU CANNOT GET A NEW SECURITY CODE
-    @Then("the 15min You cannot get a new security code at the moment screen is displayed")
-    public void the15minCannotSignInLockoutScreenIsDisplayed() {
-        waitForPageLoad("You cannot get a new security code at the moment");
-        assertTrue(lockoutPage.getLockoutScreenText().contains("wrong security code"));
-        assertTrue(lockoutPage.getLockoutScreenText().contains("15 minutes"));
-    }
-
-    // YOU ASKED TO RESEND SECURITY CODES
-    @Then("the 2hr You asked to resend the security code too many times screen is displayed")
+    @Then("the 'You asked to resend the security code too many times' screen is displayed")
     public void theLockoutScreenForRequestingTooManySecurityCodesIsDisplayed() {
         waitForPageLoad("You asked to resend the security code too many times");
-        assertTrue(lockoutPage.getLockoutScreenText().contains("2 hours"));
     }
 
     // CANNOT CREATE
@@ -248,20 +189,27 @@ public class LockoutsStepDef extends BasePage {
         assertTrue(lockoutPage.getLockoutScreenText().contains("2 hours"));
     }
 
-    // CANNOT SIGN IN
-    @Then("the 2hr You cannot sign in at the moment screen for wrong password is displayed")
-    public void the2hrCannotSignInScreenForTooManyIncorrectPasswordsIsDisplayed() {
-        waitForPageLoad("You cannot sign in at the moment");
-        assertTrue(lockoutPage.getLockoutScreenText().contains("wrong password"));
-        assertTrue(lockoutPage.getLockoutScreenText().contains("2 hours"));
+    @Then("the 'You cannot create a GOV.UK One Login at the moment' screen is displayed")
+    public void theYouCannotCreateAccountLockoutScreenIsDisplayed() {
+        waitForPageLoad("You cannot create a GOV.UK One Login at the moment");
     }
 
-    @Then(
-            "the 2hr You cannot sign in at the moment screen for requesting too many security code resends is displayed")
-    public void theCannotSignInLockoutScreenForRequestingTooManySecurityCodeResendsIsDisplayed() {
+    @Then("the 'You cannot sign in at the moment' screen is displayed")
+    public void theYouCannotSignInLockoutScreenIsDisplayed() {
         waitForPageLoad("You cannot sign in at the moment");
-        assertTrue(lockoutPage.getLockoutScreenText().contains("resend the security code"));
-        assertTrue(lockoutPage.getLockoutScreenText().contains("2 hours"));
+    }
+
+    @And("the reason is {string}")
+    public void theReasonIs(String input) {
+        assertTrue(
+                lockoutPage
+                        .getLockoutScreenText()
+                        .contains(String.format("This is because %s", input)));
+    }
+
+    @And("the duration is {string}")
+    public void theDurationIs(String input) {
+        assertTrue(lockoutPage.getLockoutScreenText().contains(input));
     }
 
     @Then("the 2hr You cannot sign in at the moment screen for wrong security codes is displayed")
@@ -320,7 +268,6 @@ public class LockoutsStepDef extends BasePage {
         resetYourPasswordPage.enterPasswordResetDetailsAndContinue(
                 NEW_VALID_PASSWORD, NEW_VALID_PASSWORD);
         waitForPageLoad("Example - GOV.UK - User Info");
-        userInformationPage.logoutOfAccount();
     }
 
     @And("the block is lifted and the user {string} can login")
@@ -338,6 +285,5 @@ public class LockoutsStepDef extends BasePage {
         waitForPageLoad("Check your phone");
         checkYourPhonePage.enterCorrectPhoneCodeAndContinue();
         waitForPageLoad("Example - GOV.UK - User Info");
-        userInformationPage.logoutOfAccount();
     }
 }

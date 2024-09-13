@@ -17,12 +17,12 @@ public class UserInterventionStepDef {
         this.world = world;
     }
 
-    @ParameterType("temporarily suspended|permanently blocked|password reset|reprove identity")
+    @ParameterType("temporarily suspended|permanently locked|password reset|reprove identity")
     public String intervention(String intervention) {
         return intervention;
     }
 
-    @Given("and the user has a {intervention} intervention")
+    @Given("the user has a {intervention} intervention")
     public void andHasAnIntervention(String intervention) throws NoSuchAlgorithmException {
         if (world.userProfile == null || world.userCredentials == null) {
             throw new RuntimeException("User profile or credentials do not exist");
@@ -33,7 +33,7 @@ public class UserInterventionStepDef {
                 world.userInterventions =
                         lifecycleController.buildAndPutSuspendedInterventions(world.userProfile);
                 break;
-            case "permanently blocked":
+            case "permanently locked":
                 world.userInterventions =
                         lifecycleController.buildAndPutBlockedInterventions(world.userProfile);
                 break;
@@ -52,6 +52,7 @@ public class UserInterventionStepDef {
         }
     }
 
+    @Given("the user's interventions have been removed")
     public void removeInterventionBlocks() {
         lifecycleController.removeAllInterventionsBlocksAndUpdateInDynamodb(
                 world.userInterventions);

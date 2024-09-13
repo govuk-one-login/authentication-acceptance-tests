@@ -1,4 +1,4 @@
-@Existing @build @staging
+@Existing @build @staging @updated @working
 Feature: Login Journey
   Existing user walks through a login journey
 
@@ -11,8 +11,6 @@ Feature: Login Journey
     When the user enters their email address
     Then the user is taken to the "You have a GOV.UK One Login" page
 
-    # TODO: phone code not working
-  @testTag
   Scenario: Existing user is correctly prompted to login using sms
     Given a user with sms MFA exists
     And the user comes from the stub relying party with options: "default"
@@ -27,8 +25,6 @@ Feature: Login Journey
     Then the user is returned to the service
     And the user clicks logout
 
-
-  @testTag
   Scenario: Existing user switches content to Welsh
     Given a user exists
     And the user comes from the stub relying party with options: "default"
@@ -45,13 +41,14 @@ Feature: Login Journey
     Then the user is taken to the Identity Provider Welsh Login Page
     When the user switches to "English" language
     Then the user is taken to the "Create your GOV.UK One Login or sign in" page
-
+    
   Scenario: Existing user logs in without 2FA then uplift with 2FA
-    Given the user comes from the stub relying party with options: "2fa-off"
+    Given a user with sms MFA exists
+    And the user comes from the stub relying party with options: "2fa-off"
     Then the user is taken to the "Create your GOV.UK One Login or sign in" page
     When the user selects sign in
     Then the user is taken to the "Enter your email" page
-    When user enters "TEST_USER_6_EMAIL" email address
+    When the user enters their email address
     Then the user is taken to the "Enter your password" page
     When the user enters their password
     Then the user is returned to the service

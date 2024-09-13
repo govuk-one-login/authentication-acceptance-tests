@@ -13,6 +13,8 @@ public class AccountManagementStepDef {
     UserInformationPage userInformationPage = new UserInformationPage();
 
     @When(
+            "the Account Management Update Password API is called with an email address that does not exist, an error is returned")
+    @When(
             "the test calls the Account Management Update Password API with the access token and validates response")
     public void theUserIsReturnedToTheService() {
         JSONObject obj = new JSONObject(userInformationPage.getAccessToken());

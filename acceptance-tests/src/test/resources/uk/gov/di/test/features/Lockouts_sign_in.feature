@@ -3,7 +3,7 @@ Feature: Sign in lockouts
 
   # ENTER INCORRECT PASSWORD TOO MANY TIMES DURING SIGN IN - 2060
   Scenario: A user is blocked when they enter too many incorrect passwords during sign in.
-    Given the user comes from the stub relying party with options: "default"
+    And the user comes from the stub relying party with options: "default"
     Then the user is taken to the "Create your GOV.UK One Login or sign in" page
     When the user selects sign in
     Then the user is taken to the "Enter your email" page
@@ -23,7 +23,7 @@ Feature: Sign in lockouts
 
   # ENTER INCORRECT SMS SECURITY CODE TOO MANY TIMES DURING SIGN IN - 2064
   Scenario: A user is blocked when they enter too many incorrect sms codes during sign in.
-    Given the user comes from the stub relying party with options: "default"
+    And the user comes from the stub relying party with options: "default"
     Then the user is taken to the "Create your GOV.UK One Login or sign in" page
     When the user selects sign in
     Then the user is taken to the "Enter your email" page
@@ -38,7 +38,7 @@ Feature: Sign in lockouts
 
   # REQUEST TOO MANY SMS SECURITY CODE TOO MANY TIMES DURING SIGN IN - 2378
   Scenario: A user is blocked when they request too many sms codes during sign in.
-    Given the user comes from the stub relying party with options: "default"
+    And the user comes from the stub relying party with options: "default"
     Then the user is taken to the "Create your GOV.UK One Login or sign in" page
     When the user selects sign in
     Then the user is taken to the "Enter your email" page
@@ -53,7 +53,7 @@ Feature: Sign in lockouts
 
   # ENTER TOO MANY INCORRECT AUTH APP CODES TOO MANY TIMES DURING SIGN IN - 2061
   Scenario: A user is blocked when they enter an incorrect auth app security code more than 5 times during sign in.
-    Given the user comes from the stub relying party with options: "default"
+    And the user comes from the stub relying party with options: "default"
     Then the user is taken to the "Create your GOV.UK One Login or sign in" page
     When the user selects sign in
     Then the user is taken to the "Enter your email" page

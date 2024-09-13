@@ -4,6 +4,7 @@ import io.cucumber.java.en.And;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.junit.jupiter.api.Assertions;
+import uk.gov.di.test.controllers.UserLifecycleController;
 import uk.gov.di.test.pages.BasePage;
 import uk.gov.di.test.pages.CheckYourEmailPage;
 import uk.gov.di.test.pages.CheckYourPhonePage;
@@ -32,6 +33,9 @@ import static uk.gov.di.test.utils.Constants.TOP_100K_PASSWORD;
 public class LoginStepDef extends BasePage {
     private final World world;
     private String authAppSecretKey;
+
+    private static final UserLifecycleController userLifecycleController =
+            UserLifecycleController.getInstance();
 
     public EnterYourPasswordPage enterYourPasswordPage;
     public ResetYourPasswordPage resetYourPasswordPage = new ResetYourPasswordPage();
@@ -82,8 +86,8 @@ public class LoginStepDef extends BasePage {
         enterYourEmailAddressToSignInPage.enterEmailAddressAndContinue(System.getenv().get(email));
     }
 
-    @And("user enters their email address")
     @And("the user enters their email address")
+    @And("the user enters the email address")
     public void theUserEntersTheirEmailAddress() {
         enterYourEmailAddressPage.enterEmailAddressAndContinue(world.getUserEmailAddress());
     }
@@ -167,14 +171,16 @@ public class LoginStepDef extends BasePage {
 
     @When("the user enters valid new password and correctly retypes it")
     public void theUserEntersValidNewPasswordAndCorrectlyRetypesIt() {
-        resetYourPasswordPage.enterPasswordResetDetailsAndContinue(
-                NEW_VALID_PASSWORD, NEW_VALID_PASSWORD);
+        String newPassword = UserLifecycleController.generateValidPassword();
+        resetYourPasswordPage.enterPasswordResetDetailsAndContinue(newPassword, newPassword);
+        world.userProfile.setPassword(newPassword);
     }
 
     @When("the user resets their password to be the same as their current password")
     public void theUserResetsTheirPasswordToBeTheSameAsTheirCurrentPassword() {
-        String newPassword = System.getenv().get("TEST_USER_PASSWORD");
-        resetYourPasswordPage.enterPasswordResetDetailsAndContinue(newPassword, newPassword);
+        String currentPassword = world.userProfile.getPassword();
+        resetYourPasswordPage.enterPasswordResetDetailsAndContinue(
+                currentPassword, currentPassword);
     }
 
     @When("the user resets their password to an invalid one")

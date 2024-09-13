@@ -19,6 +19,11 @@ public class World {
         return userProfile.getPassword();
     }
 
+    public String getUserPhoneNumber() {
+        throwIfUserProfileDoesNotExist();
+        return userProfile.getPhoneNumber();
+    }
+
     public static class WorldException extends RuntimeException {
         public WorldException() {}
 

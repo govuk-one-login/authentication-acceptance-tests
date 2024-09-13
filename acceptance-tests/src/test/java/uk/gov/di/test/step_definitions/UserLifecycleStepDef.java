@@ -5,9 +5,12 @@ import io.cucumber.java.ParameterType;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import uk.gov.di.test.controllers.UserLifecycleController;
+import uk.gov.di.test.utils.Environment;
 
 public class UserLifecycleStepDef {
     private final World world;
+
+    private static final String TOP_100K_PASSWORD = Environment.getOrThrow("TOP_100K_PASSWORD");
 
     private static final UserLifecycleController userLifecycleController =
             UserLifecycleController.getInstance();
@@ -52,9 +55,16 @@ public class UserLifecycleStepDef {
     }
 
     @And("the user has not yet accepted the latest terms and conditions")
+    @And("the user has outdated terms and conditions")
     public void theUserHasNotYetAcceptedTheLatestTermsAndConditions() {
         userLifecycleController.updateUserTermsAndConditions(
                 world.userProfile, userLifecycleController.buildOldTermsAndConditions());
+    }
+
+    @And("the user's password is on the top 100k unacceptable password list")
+    public void theUsersPasswordIsOnTheTop100kUnacceptablePasswordList() {
+        userLifecycleController.changeUserPassword(
+                TOP_100K_PASSWORD, world.userProfile, world.userCredentials);
     }
 
     @After

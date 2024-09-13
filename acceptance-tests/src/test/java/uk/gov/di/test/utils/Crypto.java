@@ -62,9 +62,11 @@ public class Crypto {
     }
 
     public static String generatePairwiseIdDigest(String sector, String subjectId, byte[] salt) {
-        String rawDigest =
-                String.format(
-                        "%s%s%s", sector, subjectId, Base64.getEncoder().encodeToString(salt));
+        byte[] sectorAndSubjectId = String.format("%s%s", sector, subjectId).getBytes();
+
+        byte[] rawDigest = new byte[sectorAndSubjectId.length + salt.length];
+        System.arraycopy(sectorAndSubjectId, 0, rawDigest, 0, sectorAndSubjectId.length);
+        System.arraycopy(salt, 0, rawDigest, sectorAndSubjectId.length, salt.length);
 
         MessageDigest messageDigest;
         try {
@@ -72,7 +74,7 @@ public class Crypto {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-        byte[] digestBytes = messageDigest.digest(rawDigest.getBytes());
+        byte[] digestBytes = messageDigest.digest(rawDigest);
         String b64Digest = Base64.getEncoder().encodeToString(digestBytes);
         b64Digest = b64Digest.replace("/", "_").replace("+", "-").replace("=", "");
         return b64Digest;
