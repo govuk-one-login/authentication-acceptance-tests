@@ -35,7 +35,6 @@ Feature: Authentication App Journeys
     Then the user is taken to the "Enter the 6 digit security code shown in your authenticator app" page
     When the user enters the security code from the auth app
     Then the user is returned to the service
-    And the user clicks logout
 
   Scenario: User successfully login without 2FA
     Given a user with app MFA exists
@@ -47,7 +46,6 @@ Feature: Authentication App Journeys
     Then the user is taken to the "Enter your password" page
     When the user enters their password
     Then the user is returned to the service
-    And the user clicks logout
 
   Scenario: User signs in auth app without 2FA, then uplifts
     Given a user with app MFA exists

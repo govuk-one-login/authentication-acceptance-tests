@@ -23,7 +23,6 @@ Feature: Login Journey
     Then the user is taken to the "Check your phone" page
     When the user enters the six digit security code from their phone
     Then the user is returned to the service
-    And the user clicks logout
 
   Scenario: Existing user switches content to Welsh
     Given a user exists
@@ -56,4 +55,3 @@ Feature: Login Journey
     Then the user is taken to the "Enter a security code to continue" page
     When the user enters the six digit security code from their phone
     Then the user is returned to the service
-    And the user clicks logout

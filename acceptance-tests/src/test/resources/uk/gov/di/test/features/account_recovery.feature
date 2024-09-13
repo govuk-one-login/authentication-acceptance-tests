@@ -35,7 +35,6 @@ Feature: Account recovery
     Then the user is taken to the "Enter the 6 digit security code shown in your authenticator app" page
     When the user enters the security code from the auth app
     Then the user is returned to the service
-    And the user clicks logout
 
 
   Scenario: An auth app user can change how they get security codes and log in with new method
@@ -61,7 +60,6 @@ Feature: Account recovery
     Then the user is taken to the "You’ve changed how you get security codes" page
     And confirmation that the user will get security codes via "text message" is displayed
     Then the user is returned to the service
-    And the user logs out
 
     When the user comes from the stub relying party with options: "default"
     Then the user is taken to the "Create your GOV.UK One Login or sign in" page
@@ -73,4 +71,3 @@ Feature: Account recovery
     Then the user is taken to the "Check your phone" page
     When the user enters the six digit security code from their phone
     Then the user is returned to the service
-    And the user clicks logout
