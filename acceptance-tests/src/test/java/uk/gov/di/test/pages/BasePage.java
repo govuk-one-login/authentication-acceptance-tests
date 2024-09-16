@@ -33,7 +33,8 @@ public class BasePage {
 
     protected static final Duration DEFAULT_PAGE_LOAD_WAIT_TIME = Duration.ofSeconds(20);
     protected static final Duration NO_PAGE_LOAD_WAIT_TIME = Duration.ofSeconds(0);
-    protected static final SecretsManagerController secretsManagerController = SecretsManagerController.getInstance();
+    protected static final SecretsManagerController secretsManagerController =
+            SecretsManagerController.getInstance();
 
     protected static WebDriver driver;
     protected static Scenario scenario;

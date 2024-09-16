@@ -20,15 +20,18 @@ public class SecretsManagerController {
         secretsManagerClient = SecretsManagerClient.builder().build();
         secretPrefix = String.format("/deploy/%s/", Environment.getOrThrow("ENVIRONMENT"));
 
-        cache = CacheBuilder.newBuilder()
-                .maximumSize(1000)
-                .build(
-                        new CacheLoader<>() {
-                            @Override
-                            public String load(String key) {
-                                return secretsManagerClient.getSecretValue(r -> r.secretId(secretPrefix + key)).secretString();
-                            }
-                        });
+        cache =
+                CacheBuilder.newBuilder()
+                        .maximumSize(1000)
+                        .build(
+                                new CacheLoader<>() {
+                                    @Override
+                                    public String load(String key) {
+                                        return secretsManagerClient
+                                                .getSecretValue(r -> r.secretId(secretPrefix + key))
+                                                .secretString();
+                                    }
+                                });
     }
 
     public static SecretsManagerController getInstance() {

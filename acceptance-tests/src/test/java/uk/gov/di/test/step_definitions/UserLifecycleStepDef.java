@@ -31,7 +31,8 @@ public class UserLifecycleStepDef {
         aUserDoesNotYetExist();
         userLifecycleController.putUserProfileToDynamodb(world.userProfile);
         world.userCredentials =
-                userLifecycleController.buildNewUserCredentialsAndPutToDynamodb(world.userProfile, world.getUserPassword());
+                userLifecycleController.buildNewUserCredentialsAndPutToDynamodb(
+                        world.userProfile, world.getUserPassword());
     }
 
     @ParameterType("SMS|App|no")

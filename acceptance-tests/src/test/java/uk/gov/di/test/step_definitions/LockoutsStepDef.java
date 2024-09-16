@@ -8,18 +8,9 @@ import io.cucumber.java.en.When;
 import uk.gov.di.test.pages.BasePage;
 import uk.gov.di.test.pages.CheckYourEmailPage;
 import uk.gov.di.test.pages.CheckYourPhonePage;
-import uk.gov.di.test.pages.ChooseHowToGetSecurityCodesPage;
-import uk.gov.di.test.pages.CreateOrSignInPage;
-import uk.gov.di.test.pages.EnterYourEmailAddressPage;
-import uk.gov.di.test.pages.EnterYourEmailAddressToSignInPage;
-import uk.gov.di.test.pages.EnterYourMobilePhoneNumberPage;
 import uk.gov.di.test.pages.EnterYourPasswordPage;
-import uk.gov.di.test.pages.FinishCreatingYourAccountPage;
 import uk.gov.di.test.pages.LockoutPage;
 import uk.gov.di.test.pages.ResetYourPasswordPage;
-import uk.gov.di.test.pages.RpStubPage;
-import uk.gov.di.test.pages.UserInformationPage;
-import uk.gov.di.test.pages.YouHaveAGOVUKOneLoginPage;
 import uk.gov.di.test.utils.Driver;
 
 import java.util.Objects;
@@ -50,10 +41,7 @@ public class LockoutsStepDef extends BasePage {
 
     @And("the lockout reason is {string}")
     public void theLockoutReasonIs(String input) {
-        assertTrue(
-                lockoutPage
-                        .getLockoutScreenText()
-                        .contains(String.format("because %s", input)));
+        assertTrue(lockoutPage.getLockoutScreenText().contains(String.format("because %s", input)));
     }
 
     @ParameterType("hour|hours|minute|minutes|second|seconds")
@@ -63,7 +51,10 @@ public class LockoutsStepDef extends BasePage {
 
     @And("the lockout duration is {int} {timeUnit}")
     public void theLockoutDurationIs(int time, String timeUnit) {
-        assertTrue(lockoutPage.getLockoutScreenText().contains(String.format("%s %s", time, timeUnit)));
+        assertTrue(
+                lockoutPage
+                        .getLockoutScreenText()
+                        .contains(String.format("%s %s", time, timeUnit)));
     }
 
     @Then("no lockout is triggered and the user remains on the {string} page")
@@ -89,17 +80,17 @@ public class LockoutsStepDef extends BasePage {
     @Given("the user {string} is on the blocked page for entering too many incorrect passwords")
     public void theUserIsOnBlockedPageForEnteringTooManyIncorrectPasswords(String emailAddress) {
         throw new RuntimeException("Need to implement new-style user flows for this");
-//        rpStubPage.goToRpStub();
-//        rpStubPage.useDefaultOptionsAndContinue();
-//        setAnalyticsCookieTo(false);
-//        waitForPageLoad("Create your GOV.UK One Login or sign in");
-//        createOrSignInPage.clickSignInButton();
-//        waitForPageLoad("Enter your email address to sign in");
-//        enterYourEmailAddressToSignInPage.enterEmailAddressAndContinue(
-//                System.getenv().get(emailAddress));
-//        waitForPageLoad("Enter your password");
-//        enterYourPasswordPage.enterIncorrectPasswordNumberOfTimes(6);
-//        waitForPageLoad("You entered the wrong password too many times");
+        //        rpStubPage.goToRpStub();
+        //        rpStubPage.useDefaultOptionsAndContinue();
+        //        setAnalyticsCookieTo(false);
+        //        waitForPageLoad("Create your GOV.UK One Login or sign in");
+        //        createOrSignInPage.clickSignInButton();
+        //        waitForPageLoad("Enter your email address to sign in");
+        //        enterYourEmailAddressToSignInPage.enterEmailAddressAndContinue(
+        //                System.getenv().get(emailAddress));
+        //        waitForPageLoad("Enter your password");
+        //        enterYourPasswordPage.enterIncorrectPasswordNumberOfTimes(6);
+        //        waitForPageLoad("You entered the wrong password too many times");
     }
 
     @Then("the user resets their password")
@@ -118,18 +109,18 @@ public class LockoutsStepDef extends BasePage {
     @And("the block is lifted and the user {string} can login")
     public void theBlockIsLiftedAndTheUserCanLogin(String emailAddress) {
         throw new RuntimeException("Need to implement new-style user flows for this");
-//        rpStubPage.goToRpStub();
-//        rpStubPage.useDefaultOptionsAndContinue();
-//        setAnalyticsCookieTo(false);
-//        waitForPageLoad("Create your GOV.UK One Login or sign in");
-//        createOrSignInPage.clickSignInButton();
-//        waitForPageLoad("Enter your email address to sign in");
-//        enterYourEmailAddressToSignInPage.enterEmailAddressAndContinue(
-//                System.getenv().get(emailAddress));
-//        waitForPageLoad("Enter your password");
-//        enterYourPasswordPage.enterNewPasswordAndContinue();
-//        waitForPageLoad("Check your phone");
-//        checkYourPhonePage.enterCorrectPhoneCodeAndContinue();
-//        waitForPageLoad("Example - GOV.UK - User Info");
+        //        rpStubPage.goToRpStub();
+        //        rpStubPage.useDefaultOptionsAndContinue();
+        //        setAnalyticsCookieTo(false);
+        //        waitForPageLoad("Create your GOV.UK One Login or sign in");
+        //        createOrSignInPage.clickSignInButton();
+        //        waitForPageLoad("Enter your email address to sign in");
+        //        enterYourEmailAddressToSignInPage.enterEmailAddressAndContinue(
+        //                System.getenv().get(emailAddress));
+        //        waitForPageLoad("Enter your password");
+        //        enterYourPasswordPage.enterNewPasswordAndContinue();
+        //        waitForPageLoad("Check your phone");
+        //        checkYourPhonePage.enterCorrectPhoneCodeAndContinue();
+        //        waitForPageLoad("Example - GOV.UK - User Info");
     }
 }

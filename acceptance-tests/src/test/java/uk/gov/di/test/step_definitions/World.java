@@ -14,10 +14,10 @@ public class World {
     public String getUserPassword() {
         return userPassword;
     }
+
     public void setUserPassword(String userPassword) {
         this.userPassword = userPassword;
     }
-
 
     public String getUserEmailAddress() {
         throwIfUserProfileDoesNotExist();

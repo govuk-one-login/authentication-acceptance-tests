@@ -2,8 +2,6 @@ package uk.gov.di.test.pages;
 
 import io.cucumber.java.en.When;
 import org.openqa.selenium.By;
-import uk.gov.di.test.controllers.DynamoDbController;
-import uk.gov.di.test.controllers.SecretsManagerController;
 
 import static uk.gov.di.test.utils.Constants.INCORRECT_EMAIL_OTP_CODE;
 

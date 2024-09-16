@@ -18,9 +18,9 @@ public class RpStubStepDef extends BasePage {
         return opts.split(",");
     }
 
-
     @When("the user comes from the stub relying party with default options")
-    @When("the user returns from the stub relying party with default options( before the lockout expires)")
+    @When(
+            "the user returns from the stub relying party with default options( before the lockout expires)")
     public void theUserVisitsTheStubRelyingParty() {
         rpStubPage.goToRpStub();
         rpStubPage.useDefaultOptionsAndContinue();
@@ -28,16 +28,19 @@ public class RpStubStepDef extends BasePage {
     }
 
     @When("the user comes from the stub relying party with options: {rpStubOptions}")
-    @When("the user returns from the stub relying party with options: {rpStubOptions}( before the lockout expires)")
+    @When(
+            "the user returns from the stub relying party with options: {rpStubOptions}( before the lockout expires)")
     public void theExistingUserVisitsTheStubRelyingParty(String[] rpStubOptions) {
         rpStubPage.goToRpStub();
         rpStubPage.selectRpOptionsByIdAndContinue(rpStubOptions);
         setAnalyticsCookieTo(false);
     }
+
     @When("the user comes from the stub relying party with option {word}")
-    @When("the user returns from the stub relying party with option {word}( before the lockout expires)")
+    @When(
+            "the user returns from the stub relying party with option {word}( before the lockout expires)")
     public void theExistingUserVisitsTheStubRelyingParty(String option) {
-        theExistingUserVisitsTheStubRelyingParty(new String[]{option});
+        theExistingUserVisitsTheStubRelyingParty(new String[] {option});
     }
 
     @Then("the user is forcibly logged out")

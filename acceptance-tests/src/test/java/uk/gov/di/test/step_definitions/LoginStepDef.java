@@ -22,8 +22,6 @@ import uk.gov.di.test.pages.YouveChangedHowYouGetSecurityCodesPage;
 import uk.gov.di.test.utils.Driver;
 import uk.gov.di.test.utils.PasswordGenerator;
 
-import java.util.Set;
-
 import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static uk.gov.di.test.utils.Constants.*;
@@ -87,8 +85,8 @@ public class LoginStepDef extends BasePage {
     @And("user enters the same email address {string} for reauth as they used for login")
     public void userEntersSameEmailAddressForReauth(String email) {
         throw new RuntimeException("Need to implement new-style user flows for this");
-//        reenterYourSignInDetailsToContinuePage.enterEmailAddressAndContinue(
-//                System.getenv().get(email));
+        //        reenterYourSignInDetailsToContinuePage.enterEmailAddressAndContinue(
+        //                System.getenv().get(email));
     }
 
     @When("the user enters an invalid email address")
@@ -185,8 +183,7 @@ public class LoginStepDef extends BasePage {
     @When("the user resets their password but enters mismatching new passwords")
     public void theUserResetsTheirPasswordButEntersMismatchingNewPasswords() {
         String[] passwords = passwordGenerator.generatePasswords(2);
-        resetYourPasswordPage.enterPasswordResetDetailsAndContinue(
-                passwords[0],passwords[1]);
+        resetYourPasswordPage.enterPasswordResetDetailsAndContinue(passwords[0], passwords[1]);
     }
 
     @And("confirmation that the user will get security codes via {string} is displayed")
@@ -218,7 +215,8 @@ public class LoginStepDef extends BasePage {
 
     @When("the user adds the secret key on the screen to their auth app")
     public void theNewUserAddTheSecretKeyOnTheScreenToTheirAuthApp() {
-        authAppSecretKey = secretsManagerController.getSecretValue("test_user_pw_reset_auth_app_secret");
+        authAppSecretKey =
+                secretsManagerController.getSecretValue("test_user_pw_reset_auth_app_secret");
         setUpAnAuthenticatorAppPage.iCannotScanQrCodeClick();
         authAppSecretKey = setUpAnAuthenticatorAppPage.getSecretFieldText();
         assertEquals(32, setUpAnAuthenticatorAppPage.getSecretFieldText().length());
@@ -227,7 +225,8 @@ public class LoginStepDef extends BasePage {
     @And("the user enters the security code from the auth app")
     public void theNewUserEntersTheSecurityCodeFromTheAuthApp() {
         if (authAppSecretKey == null) {
-            authAppSecretKey = secretsManagerController.getSecretValue("test_user_pw_reset_auth_app_secret");
+            authAppSecretKey =
+                    secretsManagerController.getSecretValue("test_user_pw_reset_auth_app_secret");
         }
         setUpAnAuthenticatorAppPage.enterCorrectAuthAppCodeAndContinue(authAppSecretKey);
     }

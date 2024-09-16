@@ -1,7 +1,6 @@
 package uk.gov.di.test.step_definitions;
 
 import io.cucumber.java.en.And;
-import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import uk.gov.di.test.pages.BasePage;
@@ -14,7 +13,6 @@ import uk.gov.di.test.pages.EnterYourMobilePhoneNumberPage;
 import uk.gov.di.test.pages.NoGovUkOneLoginFoundPage;
 import uk.gov.di.test.pages.RpStubPage;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static uk.gov.di.test.utils.Constants.INTERNATIONAL_MOBILE_PHONE_NUMBER_INCORRECT_FORMAT;
 import static uk.gov.di.test.utils.Constants.INTERNATIONAL_MOBILE_PHONE_NUMBER_NON_DIGIT_CHARS;

@@ -3,7 +3,6 @@ package uk.gov.di.test.controllers;
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbEnhancedClient;
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbTable;
 import software.amazon.awssdk.enhanced.dynamodb.TableSchema;
-import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
 import uk.gov.di.test.entity.UserCredentials;
 import uk.gov.di.test.entity.UserInterventions;
@@ -30,8 +29,7 @@ public class DynamoDbController {
 
     protected static final String ENVIRONMENT = Environment.getOrThrow("ENVIRONMENT");
 
-    private static final DynamoDbClient standardClient =
-            DynamoDbClient.builder().build();
+    private static final DynamoDbClient standardClient = DynamoDbClient.builder().build();
 
     private static final DynamoDbEnhancedClient enhancedClient =
             DynamoDbEnhancedClient.builder().dynamoDbClient(standardClient).build();

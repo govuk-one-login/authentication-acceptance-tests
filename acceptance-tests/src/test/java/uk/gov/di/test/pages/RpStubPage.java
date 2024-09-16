@@ -13,7 +13,7 @@ public class RpStubPage extends BasePage {
 
     public void selectRpOptionsByIdAndContinue(String[] opts) {
         if (opts != null) {
-            for (String id: opts){
+            for (String id : opts) {
                 Driver.get().findElement(By.id(id)).click();
             }
         }
@@ -21,7 +21,8 @@ public class RpStubPage extends BasePage {
     }
 
     public void useDefaultOptionsAndContinue() {
-        selectRpOptionsByIdAndContinue(null);}
+        selectRpOptionsByIdAndContinue(null);
+    }
 
     public void enterReauthIdToken(String token) {
         Driver.get().findElement(reauthIdTokenField).clear();
@@ -31,7 +32,7 @@ public class RpStubPage extends BasePage {
     public void reauthRequired(String idToken) {
         goToRpStub();
         enterReauthIdToken(idToken);
-        selectRpOptionsByIdAndContinue(new String[]{"2fa-on", "prompt-login", "request-object"});
+        selectRpOptionsByIdAndContinue(new String[] {"2fa-on", "prompt-login", "request-object"});
         setAnalyticsCookieTo(false);
     }
 }

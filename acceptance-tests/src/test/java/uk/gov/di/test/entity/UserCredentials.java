@@ -173,7 +173,7 @@ public class UserCredentials {
     public void setTestUser(int isTestUser) {
         this.testUser = isTestUser;
     }
-    
+
     public UserCredentials withTestUser(int isTestUser) {
         this.testUser = isTestUser;
         return this;

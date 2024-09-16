@@ -5,8 +5,6 @@ import io.cucumber.java.ParameterType;
 import io.cucumber.java.en.Given;
 import uk.gov.di.test.controllers.UserInterventionLifecycleController;
 
-import java.security.NoSuchAlgorithmException;
-
 public class UserInterventionStepDef {
     private final World world;
 

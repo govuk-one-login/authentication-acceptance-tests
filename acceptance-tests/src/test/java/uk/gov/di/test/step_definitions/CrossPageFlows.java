@@ -29,24 +29,25 @@ public class CrossPageFlows extends BasePage {
     public EnterYourPasswordPage enterYourPasswordPage;
     public CreateOrSignInPage createOrSignInPage = new CreateOrSignInPage();
     public RpStubPage rpStubPage = new RpStubPage();
-    public EnterYourEmailAddressToSignInPage enterYourEmailAddressToSignInPage
-            = new EnterYourEmailAddressToSignInPage();
+    public EnterYourEmailAddressToSignInPage enterYourEmailAddressToSignInPage =
+            new EnterYourEmailAddressToSignInPage();
     public CheckYourPhonePage checkYourPhonePage = new CheckYourPhonePage();
-    public EnterThe6DigitSecurityCodeShownInYourAuthenticatorAppPage enterThe6DigitSecurityCodeShownInYourAuthenticatorAppPage
-            = new EnterThe6DigitSecurityCodeShownInYourAuthenticatorAppPage();
+    public EnterThe6DigitSecurityCodeShownInYourAuthenticatorAppPage
+            enterThe6DigitSecurityCodeShownInYourAuthenticatorAppPage =
+                    new EnterThe6DigitSecurityCodeShownInYourAuthenticatorAppPage();
     public GetSecurityCodePage getSecurityCodePage = new GetSecurityCodePage();
     public CheckYourEmailPage checkYourEmailPage = new CheckYourEmailPage();
-    public ChooseHowToGetSecurityCodesPage chooseHowToGetSecurityCodesPage
-            = new ChooseHowToGetSecurityCodesPage();
-    public SetUpAnAuthenticatorAppPage setUpAnAuthenticatorAppPage
-            = new SetUpAnAuthenticatorAppPage();
-    public EnterYourMobilePhoneNumberPage enterYourMobilePhoneNumberPage
-            = new EnterYourMobilePhoneNumberPage();
+    public ChooseHowToGetSecurityCodesPage chooseHowToGetSecurityCodesPage =
+            new ChooseHowToGetSecurityCodesPage();
+    public SetUpAnAuthenticatorAppPage setUpAnAuthenticatorAppPage =
+            new SetUpAnAuthenticatorAppPage();
+    public EnterYourMobilePhoneNumberPage enterYourMobilePhoneNumberPage =
+            new EnterYourMobilePhoneNumberPage();
     public ResetYourPasswordPage resetYourPasswordPage = new ResetYourPasswordPage();
     public CreateYourPasswordPage createYourPasswordPage = new CreateYourPasswordPage();
     public UserInformationPage userInformationPage = new UserInformationPage();
-    public ReenterYourSignInDetailsToContinuePage reenterYourSignInDetailsToContinuePage
-            = new ReenterYourSignInDetailsToContinuePage();
+    public ReenterYourSignInDetailsToContinuePage reenterYourSignInDetailsToContinuePage =
+            new ReenterYourSignInDetailsToContinuePage();
 
     public CrossPageFlows(World world) {
         this.world = world;
@@ -65,10 +66,10 @@ public class CrossPageFlows extends BasePage {
             getSecurityCodePage.pressGetSecurityCodeButton();
             System.out.println(
                     "Code request count: "
-                    + (i + 1)
-                    + " ("
-                    + (i + 2)
-                    + " including code sent on initial entry to the Check Your Phone page)");
+                            + (i + 1)
+                            + " ("
+                            + (i + 2)
+                            + " including code sent on initial entry to the Check Your Phone page)");
         }
     }
 
@@ -80,64 +81,69 @@ public class CrossPageFlows extends BasePage {
             getSecurityCodePage.pressGetSecurityCodeButton();
             System.out.println(
                     "Code request count: "
-                    + (index + 1)
-                    + " ("
-                    + (index + 2)
-                    + " including code sent on initial entry to the Check Your Email page)");
+                            + (index + 1)
+                            + " ("
+                            + (index + 2)
+                            + " including code sent on initial entry to the Check Your Email page)");
         }
     }
 
     public void successfulSignIn(String userType, String userEmailAddress) {
         throw new RuntimeException("Need to implement new-style user flows for this");
-//        rpStubPage.goToRpStub();
-//        rpStubPage.selectRpOptionsByIdAndContinue(null);
-//        setAnalyticsCookieTo(false);
-//        waitForPageLoad("Create your GOV.UK One Login or sign in");
-//        createOrSignInPage.clickSignInButton();
-//        waitForPageLoad("Enter your email address to sign in");
-//        enterYourEmailAddressToSignInPage.enterEmailAddressAndContinue(
-//                System.getenv().get(userEmailAddress));
-//        waitForPageLoad("Enter your password");
-//        enterYourPasswordPage.enterPasswordAndContinue(System.getenv().get("TEST_USER_PASSWORD"));
-//        if (userType.equalsIgnoreCase("sms")) {
-//            // sms steps
-//            waitForPageLoad("Check your phone");
-//            checkYourPhonePage.enterCorrectPhoneCodeAndContinue();
-//        } else {
-//            // auth app steps
-//            waitForPageLoad("Enter the 6 digit security code shown in your authenticator app");
-//            enterThe6DigitSecurityCodeShownInYourAuthenticatorAppPage
-//                    .enterCorrectAuthAppCodeAndContinue(
-//                            secretsManagerController.getSecretValue("test_user_pw_reset_auth_app_secret"));
-//        }
-//        waitForPageLoad("Example - GOV.UK - User Info");
+        //        rpStubPage.goToRpStub();
+        //        rpStubPage.selectRpOptionsByIdAndContinue(null);
+        //        setAnalyticsCookieTo(false);
+        //        waitForPageLoad("Create your GOV.UK One Login or sign in");
+        //        createOrSignInPage.clickSignInButton();
+        //        waitForPageLoad("Enter your email address to sign in");
+        //        enterYourEmailAddressToSignInPage.enterEmailAddressAndContinue(
+        //                System.getenv().get(userEmailAddress));
+        //        waitForPageLoad("Enter your password");
+        //
+        // enterYourPasswordPage.enterPasswordAndContinue(System.getenv().get("TEST_USER_PASSWORD"));
+        //        if (userType.equalsIgnoreCase("sms")) {
+        //            // sms steps
+        //            waitForPageLoad("Check your phone");
+        //            checkYourPhonePage.enterCorrectPhoneCodeAndContinue();
+        //        } else {
+        //            // auth app steps
+        //            waitForPageLoad("Enter the 6 digit security code shown in your authenticator
+        // app");
+        //            enterThe6DigitSecurityCodeShownInYourAuthenticatorAppPage
+        //                    .enterCorrectAuthAppCodeAndContinue(
+        //
+        // secretsManagerController.getSecretValue("test_user_pw_reset_auth_app_secret"));
+        //        }
+        //        waitForPageLoad("Example - GOV.UK - User Info");
     }
 
     public void successfulReauth(String userType, String userEmailAddress) {
         throw new RuntimeException("Need to implement new-style user flows for this");
-//        // assumes that the signed in page is currently displayed
-//        waitForPageLoad("Example - GOV.UK - User Info");
-//        String idToken = userInformationPage.getIdToken();
-//        rpStubPage.reauthRequired(idToken);
-//        waitForPageLoad("Enter your sign in details for GOV.UK One Login again");
-//        // enter original email address
-//        reenterYourSignInDetailsToContinuePage.enterEmailAddressAndContinue(
-//                System.getenv().get(userEmailAddress));
-//        // enter correct password
-//        enterYourPasswordPage.enterCorrectPasswordAndContinue();
-//        // enter correct otp
-//        if (userType.equalsIgnoreCase("sms")) {
-//            // sms steps
-//            waitForPageLoad("Check your phone");
-//            checkYourPhonePage.enterCorrectPhoneCodeAndContinue();
-//        } else {
-//            // auth app steps
-//            waitForPageLoad("Enter the 6 digit security code shown in your authenticator app");
-//            enterThe6DigitSecurityCodeShownInYourAuthenticatorAppPage
-//                    .enterCorrectAuthAppCodeAndContinue(
-//                            secretsManagerController.getSecretValue("test_user_pw_reset_auth_app_secret"));
-//        }
-//        waitForPageLoad("Example - GOV.UK - User Info");
+        //        // assumes that the signed in page is currently displayed
+        //        waitForPageLoad("Example - GOV.UK - User Info");
+        //        String idToken = userInformationPage.getIdToken();
+        //        rpStubPage.reauthRequired(idToken);
+        //        waitForPageLoad("Enter your sign in details for GOV.UK One Login again");
+        //        // enter original email address
+        //        reenterYourSignInDetailsToContinuePage.enterEmailAddressAndContinue(
+        //                System.getenv().get(userEmailAddress));
+        //        // enter correct password
+        //        enterYourPasswordPage.enterCorrectPasswordAndContinue();
+        //        // enter correct otp
+        //        if (userType.equalsIgnoreCase("sms")) {
+        //            // sms steps
+        //            waitForPageLoad("Check your phone");
+        //            checkYourPhonePage.enterCorrectPhoneCodeAndContinue();
+        //        } else {
+        //            // auth app steps
+        //            waitForPageLoad("Enter the 6 digit security code shown in your authenticator
+        // app");
+        //            enterThe6DigitSecurityCodeShownInYourAuthenticatorAppPage
+        //                    .enterCorrectAuthAppCodeAndContinue(
+        //
+        // secretsManagerController.getSecretValue("test_user_pw_reset_auth_app_secret"));
+        //        }
+        //        waitForPageLoad("Example - GOV.UK - User Info");
     }
 
     public void smsUserChangeHowGetSecurityCodesToAuthApp() {
@@ -264,13 +270,17 @@ public class CrossPageFlows extends BasePage {
                 chooseHowToGetSecurityCodesPage.selectAuthMethodAndContinue("auth app");
                 waitForPageLoad("Set up an authenticator app");
 
-                authAppSecretKey = secretsManagerController.getSecretValue("test_user_pw_reset_auth_app_secret");
+                authAppSecretKey =
+                        secretsManagerController.getSecretValue(
+                                "test_user_pw_reset_auth_app_secret");
                 setUpAnAuthenticatorAppPage.iCannotScanQrCodeClick();
                 authAppSecretKey = setUpAnAuthenticatorAppPage.getSecretFieldText();
                 assertEquals(32, setUpAnAuthenticatorAppPage.getSecretFieldText().length());
 
                 if (authAppSecretKey == null) {
-                    authAppSecretKey = secretsManagerController.getSecretValue("test_user_pw_reset_auth_app_secret");
+                    authAppSecretKey =
+                            secretsManagerController.getSecretValue(
+                                    "test_user_pw_reset_auth_app_secret");
                 }
                 setUpAnAuthenticatorAppPage.enterCorrectAuthAppCodeAndContinue(authAppSecretKey);
                 break;

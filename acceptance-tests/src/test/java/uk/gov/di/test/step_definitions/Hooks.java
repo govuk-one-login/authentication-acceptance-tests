@@ -25,8 +25,8 @@ public class Hooks extends BasePage {
     public void setUpScenario(Scenario scenario) {
         BasePage.scenario = scenario;
         if (FAIL_FAST_ENABLED && failureCount > 0) {
-                throw new PendingException();
-            }
+            throw new PendingException();
+        }
     }
 
     @AfterStep

@@ -19,7 +19,8 @@ import static uk.gov.di.test.utils.Constants.UK_MOBILE_PHONE_NUMBER;
 
 public class UserLifecycleController {
     private static volatile UserLifecycleController instance;
-    protected static volatile SecretsManagerController secretsManagerController = SecretsManagerController.getInstance();
+    protected static volatile SecretsManagerController secretsManagerController =
+            SecretsManagerController.getInstance();
 
     private final Long instantiationMillis;
     private final Map<String, String> baseEmailFormatValues;
@@ -65,7 +66,8 @@ public class UserLifecycleController {
     }
 
     public TermsAndConditions buildTermsAndConditions() {
-        return buildTermsAndConditions(secretsManagerController.getSecretValue("test_user_latest_terms_and_conditions"));
+        return buildTermsAndConditions(
+                secretsManagerController.getSecretValue("test_user_latest_terms_and_conditions"));
     }
 
     public TermsAndConditions buildOldTermsAndConditions() {
@@ -84,7 +86,8 @@ public class UserLifecycleController {
     }
 
     public MFAMethod buildAppMfaMethod() {
-        return buildAppMfaMethod(secretsManagerController.getSecretValue("test_user_pw_reset_auth_app_secret"));
+        return buildAppMfaMethod(
+                secretsManagerController.getSecretValue("test_user_pw_reset_auth_app_secret"));
     }
 
     public static String generateValidPassword() {
@@ -120,7 +123,6 @@ public class UserLifecycleController {
                 .withSubjectID(UUID.randomUUID().toString())
                 .withSalt(Crypto.generateSalt())
                 .withTermsAndConditions(buildTermsAndConditions());
-
     }
 
     public UserProfile buildNewUserProfileAndPutToDynamodb() {
@@ -160,8 +162,7 @@ public class UserLifecycleController {
     }
 
     public UserCredentials buildNewUserCredentials(UserProfile userProfile, String userPassword) {
-        String encodedPassword =
-                Crypto.encodePassword(userPassword, userProfile.getSalt());
+        String encodedPassword = Crypto.encodePassword(userPassword, userProfile.getSalt());
         return new UserCredentials()
                 .withTestUser(1)
                 .withEmail(userProfile.getEmail())
@@ -169,7 +170,8 @@ public class UserLifecycleController {
                 .withSubjectID(userProfile.getSubjectID());
     }
 
-    public UserCredentials buildNewUserCredentialsAndPutToDynamodb(UserProfile userProfile, String userPassword) {
+    public UserCredentials buildNewUserCredentialsAndPutToDynamodb(
+            UserProfile userProfile, String userPassword) {
         UserCredentials userCredentials = buildNewUserCredentials(userProfile, userPassword);
         putUserCredentialsToDynamodb(userCredentials);
         return userCredentials;

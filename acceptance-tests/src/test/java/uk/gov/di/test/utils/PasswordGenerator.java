@@ -1,7 +1,5 @@
 package uk.gov.di.test.utils;
 
-import io.cucumber.java.sl.In;
-
 import java.security.SecureRandom;
 import java.util.*;
 
@@ -17,6 +15,7 @@ public class PasswordGenerator {
     public String generatePassword() {
         return generatePassword(DEFAULT_PASSWORD_LENGTH);
     }
+
     public String generatePassword(int length) {
 
         // Password will contain at least 1 uppercase, 1 lowercase, 1 digit, 1 special character
@@ -33,6 +32,7 @@ public class PasswordGenerator {
     public String[] generatePasswords(int count) {
         return generatePasswords(count, DEFAULT_PASSWORD_LENGTH);
     }
+
     public String[] generatePasswords(int count, int length) {
         Set<String> passwords = new HashSet<>();
         while (passwords.size() < count) {
