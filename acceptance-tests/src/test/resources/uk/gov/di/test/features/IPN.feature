@@ -3,7 +3,7 @@ Feature: International Phone Numbers
 
   Scenario: User cannot register using an invalid UK mobile phone number
     Given a user does not yet exist
-    And the user comes from the stub relying party with options: "default"
+    And the user comes from the stub relying party with default options
     Then the user is taken to the "Create your GOV.UK One Login or sign in" page
     When the user selects create an account
     Then the user is taken to the "Enter your email" page
@@ -26,7 +26,7 @@ Feature: International Phone Numbers
 
   Scenario: User can successfully complete registration using an international phone number
     Given a user does not yet exist
-    And the user comes from the stub relying party with options: "default"
+    And the user comes from the stub relying party with default options
     Then the user is taken to the "Create your GOV.UK One Login or sign in" page
     When the user selects create an account
     Then the user is taken to the "Enter your email" page
@@ -54,7 +54,7 @@ Feature: International Phone Numbers
     Then the user is returned to the service
 
 #  Scenario: User with an international phone number reports that they did not receive their security code
-#    And the user comes from the stub relying party with options: "default"
+#    And the user comes from the stub relying party with default options
 #    Then the user is taken to the "Create your GOV.UK One Login or sign in" page
 #    When the user clicks on the support link
 #    Then the user is taken to the Contact us page in a new tab
@@ -67,7 +67,7 @@ Feature: International Phone Numbers
 #
 #
 #  Scenario: User with an international phone number reports that their security code did not work
-#    And the user comes from the stub relying party with options: "default"
+#    And the user comes from the stub relying party with default options
 #    Then the user is taken to the "Create your GOV.UK One Login or sign in" page
 #    When the user clicks on the support link
 #    Then the user is taken to the Contact us page in a new tab

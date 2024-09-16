@@ -113,12 +113,6 @@ fi
 #  ./reset-test-data.sh -r $ENVIRONMENT
 #fi
 
-export TEST_EMAIL_COUNTER_START=100000
-export TEST_USER_EMAIL_USER="test-user"
-export TEST_USER_EMAIL_DOMAIN="test.null.local"
-# shellcheck disable=SC2016
-export EMAIL_ADDRESS_FORMAT='test-user+${environment}-${instantiationMillis}-${counter}@test.null.local'
-
 ./gradlew cucumber
 
 build_and_test_exit_code=$?

@@ -1,5 +1,6 @@
 package uk.gov.di.test.step_definitions;
 
+import io.cucumber.java.ParameterType;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -20,6 +21,8 @@ import uk.gov.di.test.pages.RpStubPage;
 import uk.gov.di.test.pages.UserInformationPage;
 import uk.gov.di.test.pages.YouHaveAGOVUKOneLoginPage;
 import uk.gov.di.test.utils.Driver;
+
+import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static uk.gov.di.test.utils.Constants.NEW_VALID_PASSWORD;
@@ -53,183 +56,38 @@ public class LockoutsStepDef extends BasePage {
         this.crossPageFlows = new CrossPageFlows(world);
     }
 
-    @When(
-            "the user {string} with a lockout for wrong email security codes reattempts to change their password during the lockout period")
-    @When(
-            "the user {string} with a lockout for requesting too many email security codes reattempts to change their password during the lockout period")
-    public void theUserWithWrongEmailCodeBlockReattemptsToChangeTheirPasswordDuringLockoutPeriod(
-            String emailAddress) {
-        rpStubPage.goToRpStub();
-        rpStubPage.selectRpOptionsByIdAndContinue("default");
-        setAnalyticsCookieTo(false);
-        createOrSignInPage.clickSignInButton();
-        enterYourEmailAddressToSignInPage.enterEmailAddressAndContinue(
-                System.getenv().get(emailAddress));
-        enterYourPasswordPage.clickForgottenPasswordLink();
+    // Error Screen Parsing
+
+    @Then("the non blocking {string} lockout screen is displayed")
+    @Then("the {string} lockout screen is displayed")
+    public void theLockoutScreenIsDisplayed(String titleText) {
+        waitForPageLoad(titleText);
     }
 
-    @When(
-            "the user {string} with a lockout for wrong sms security codes reattempts to change their password during the lockout period")
-    @When(
-            "the user {string} with a lockout for requesting too many sms security codes reattempts to change their password during the lockout period")
-    public void theUserWithWrongSMSCodeBlockReattemptsToChangeTheirPasswordDuringLockoutPeriod(
-            String emailAddress) {
-        rpStubPage.goToRpStub();
-        rpStubPage.selectRpOptionsByIdAndContinue("default");
-        setAnalyticsCookieTo(false);
-        createOrSignInPage.clickSignInButton();
-        enterYourEmailAddressToSignInPage.enterEmailAddressAndContinue(
-                System.getenv().get(emailAddress));
-        enterYourPasswordPage.clickForgottenPasswordLink();
-        checkYourEmailPage.enterCorrectEmailCodeAndContinue();
-    }
-
-    @When(
-            "the user {string} with a lockout for too many incorrect auth app codes reattempts to change their password during the lockout period")
-    public void theUserWithWrongAuthAppCodeBlockReattemptsToChangeTheirPasswordDuringLockoutPeriod(
-            String emailAddress) {
-        rpStubPage.goToRpStub();
-        rpStubPage.selectRpOptionsByIdAndContinue("default");
-        setAnalyticsCookieTo(false);
-        createOrSignInPage.clickSignInButton();
-        enterYourEmailAddressToSignInPage.enterEmailAddressAndContinue(
-                System.getenv().get(emailAddress));
-        enterYourPasswordPage.clickForgottenPasswordLink();
-        checkYourEmailPage.enterCorrectEmailCodeAndContinue();
-    }
-
-    @When(
-            "the user {string} with a lockout for too many incorrect passwords attempts to sign in during the lockout period")
-    public void theUserWithALockoutForTooManyIncorrectPasswordsAttemptsToSignInDuringLockoutPeriod(
-            String emailAddress) {
-        rpStubPage.goToRpStub();
-        rpStubPage.selectRpOptionsByIdAndContinue("default");
-        setAnalyticsCookieTo(false);
-        createOrSignInPage.clickSignInButton();
-        enterYourEmailAddressToSignInPage.enterEmailAddressAndContinue(
-                System.getenv().get(emailAddress));
-    }
-
-    @When(
-            "the user {string} with a lockout for too many incorrect sms security codes attempts to sign in during the lockout period")
-    @When(
-            "the user {string} with a lockout for requesting too many sms security code resends attempts to sign in during the lockout period")
-    public void theUserWithALockoutForTooManyIncorrectSmsCodesAttemptsToSignInDuringLockoutPeriod(
-            String emailAddress) {
-        rpStubPage.goToRpStub();
-        rpStubPage.selectRpOptionsByIdAndContinue("default");
-        setAnalyticsCookieTo(false);
-        createOrSignInPage.clickSignInButton();
-        enterYourEmailAddressToSignInPage.enterEmailAddressAndContinue(
-                System.getenv().get(emailAddress));
-        enterYourPasswordPage.enterCorrectPasswordAndContinue();
-    }
-
-    @When(
-            "the user {string} with a lockout for too many incorrect auth app codes reattempts to sign in during the lockout period")
-    public void
-            theUserWithALockoutForTooManyIncorrectAuthAppCodesAttemptsToSignInDuringLockoutPeriod(
-                    String emailAddress) {
-        rpStubPage.goToRpStub();
-        rpStubPage.selectRpOptionsByIdAndContinue("default");
-        setAnalyticsCookieTo(false);
-        createOrSignInPage.clickSignInButton();
-        enterYourEmailAddressToSignInPage.enterEmailAddressAndContinue(
-                System.getenv().get(emailAddress));
-        enterYourPasswordPage.enterCorrectPasswordAndContinue();
-    }
-
-    @When(
-            "the user {string} with a lockout for requesting too many email security codes attempts to create account during the lockout period")
-    public void
-            theUserWithALockoutForRequestingTooManyEmailSecurityCodesAttemptsToCreateAccountDuringLockoutPeriod(
-                    String emailAddress) {
-        rpStubPage.goToRpStub();
-        rpStubPage.selectRpOptionsByIdAndContinue("default");
-        setAnalyticsCookieTo(false);
-        createOrSignInPage.clickCreateAGovUkOneLoginButton();
-        enterYourEmailAddressPage.enterEmailAddressAndContinue(System.getenv().get(emailAddress));
-    }
-
-    @When(
-            "the user with a lockout for too many incorrect sms security codes attempts to create account during the lockout period")
-    @When(
-            "the user with a lockout for requesting too many sms security codes attempts to create account during the lockout period")
-    public void
-            theUserWithALockoutForTooManyIncorrectSmsCodesAttemptsToCreateAccountDuringLockoutPeriod() {
-        rpStubPage.goToRpStub();
-        rpStubPage.selectRpOptionsByIdAndContinue("default");
-        setAnalyticsCookieTo(false);
-        createOrSignInPage.clickCreateAGovUkOneLoginButton();
-        enterYourEmailAddressPage.enterEmailAddressAndContinue(world.getUserEmailAddress());
-        youHaveAGOVUKOneLoginPage.enterCorrectPasswordAndContinue();
-        finishCreatingYourAccountPage.selectAuthMethodAndContinue("text message");
-        enterYourMobilePhoneNumberPage.enterValidUkPhoneNumberAndContinue();
-    }
-
-    // YOU ENTERED WRONG SECURITY CODES
-    @Then("the 'You entered the wrong security code too many times' screen is displayed")
-    @Then("the non blocking You entered the wrong security code too many times page is displayed")
-    public void theLockoutScreenForWrongSecurityCodesIsDisplayed() {
-        waitForPageLoad("You entered the wrong security code too many times");
-    }
-
-    @Then("the 'You asked to resend the security code too many times' screen is displayed")
-    public void theLockoutScreenForRequestingTooManySecurityCodesIsDisplayed() {
-        waitForPageLoad("You asked to resend the security code too many times");
-    }
-
-    // CANNOT CREATE
-    @Then(
-            "the 2hr You cannot create a GOV.UK One Login at the moment screen for requesting too many security code resends is displayed")
-    public void
-            theCannotCreateAccountLockoutScreenForRequestingTooManySecurityCodeResendsIsDisplayed() {
-        waitForPageLoad("You cannot create a GOV.UK One Login at the moment");
-        assertTrue(lockoutPage.getLockoutScreenText().contains("resend the security code"));
-        assertTrue(lockoutPage.getLockoutScreenText().contains("2 hours"));
-    }
-
-    @Then("the 'You cannot create a GOV.UK One Login at the moment' screen is displayed")
-    public void theYouCannotCreateAccountLockoutScreenIsDisplayed() {
-        waitForPageLoad("You cannot create a GOV.UK One Login at the moment");
-    }
-
-    @Then("the 'You cannot sign in at the moment' screen is displayed")
-    public void theYouCannotSignInLockoutScreenIsDisplayed() {
-        waitForPageLoad("You cannot sign in at the moment");
-    }
-
-    @And("the reason is {string}")
-    public void theReasonIs(String input) {
+    @And("the lockout reason is {string}")
+    public void theLockoutReasonIs(String input) {
         assertTrue(
                 lockoutPage
                         .getLockoutScreenText()
-                        .contains(String.format("This is because %s", input)));
+                        .contains(String.format("because %s", input)));
     }
 
-    @And("the duration is {string}")
-    public void theDurationIs(String input) {
-        assertTrue(lockoutPage.getLockoutScreenText().contains(input));
+    @ParameterType("hour|hours|minute|minutes|second|seconds")
+    public String timeUnit(String timeUnit) {
+        return timeUnit;
     }
 
-    @Then("the 2hr You cannot sign in at the moment screen for wrong security codes is displayed")
-    public void theCannotSignInLockoutScreenIsDisplayed() {
-        waitForPageLoad("You cannot sign in at the moment");
-        assertTrue(lockoutPage.getLockoutScreenText().contains("wrong security code"));
-        assertTrue(lockoutPage.getLockoutScreenText().contains("2 hours"));
+    @And("the lockout duration is {int} {timeUnit}")
+    public void theLockoutDurationIs(int time, String timeUnit) {
+        assertTrue(lockoutPage.getLockoutScreenText().contains(String.format("%s %s", time, timeUnit)));
     }
 
     @Then("no lockout is triggered and the user remains on the {string} page")
     public void noLockoutIsTriggered(String pageTitle) {
-        assertTrue(Driver.get().getTitle().contains(pageTitle));
+        assertTrue(Objects.requireNonNull(Driver.get().getTitle()).contains(pageTitle));
     }
 
-    @Then("the 2hr You entered the wrong password too many times screen is displayed")
-    public void the2hrLockoutScreenForTooManyIncorrectPasswordsDuringSignInIsDisplayed() {
-        waitForPageLoad("You entered the wrong password too many times");
-        assertTrue(lockoutPage.getLockoutScreenText().contains("2 hours"));
-        assertTrue(lockoutPage.getLockoutScreenText().contains("wrong password"));
-    }
+    // Utility
 
     @When("the user selects to get a new code")
     public void whenTheUserSelectsToGetANewCode() {
@@ -242,10 +100,12 @@ public class LockoutsStepDef extends BasePage {
         crossPageFlows.completeAccountCreationAfterNewEmailCode();
     }
 
+    // USER BLOCKED FOR TOO MANY INCORRECT PASSWORDS CAN RESET THEIR PASSWORD AND BLOCK IS LIFTED
+
     @Given("the user {string} is on the blocked page for entering too many incorrect passwords")
     public void theUserIsOnBlockedPageForEnteringTooManyIncorrectPasswords(String emailAddress) {
         rpStubPage.goToRpStub();
-        rpStubPage.selectRpOptionsByIdAndContinue("");
+        rpStubPage.useDefaultOptionsAndContinue();
         setAnalyticsCookieTo(false);
         waitForPageLoad("Create your GOV.UK One Login or sign in");
         createOrSignInPage.clickSignInButton();
@@ -273,7 +133,7 @@ public class LockoutsStepDef extends BasePage {
     @And("the block is lifted and the user {string} can login")
     public void theBlockIsLiftedAndTheUserCanLogin(String emailAddress) {
         rpStubPage.goToRpStub();
-        rpStubPage.selectRpOptionsByIdAndContinue("");
+        rpStubPage.useDefaultOptionsAndContinue();
         setAnalyticsCookieTo(false);
         waitForPageLoad("Create your GOV.UK One Login or sign in");
         createOrSignInPage.clickSignInButton();

@@ -2,8 +2,8 @@
 Feature: Account recovery
 
   Scenario: An sms user can change how they get security codes and log in with new method
-    Given a user with sms MFA exists
-    And the user comes from the stub relying party with options: "default"
+    Given a user with SMS MFA exists
+    And the user comes from the stub relying party with default options
     Then the user is taken to the "Create your GOV.UK One Login or sign in" page
     When the user selects sign in
     Then the user is taken to the "Enter your email" page
@@ -25,7 +25,7 @@ Feature: Account recovery
     Then the user is returned to the service
     And the user logs out
 
-    When the user comes from the stub relying party with options: "default"
+    When the user comes from the stub relying party with default options
     Then the user is taken to the "Create your GOV.UK One Login or sign in" page
     When the user selects sign in
     Then the user is taken to the "Enter your email" page
@@ -38,8 +38,8 @@ Feature: Account recovery
 
 
   Scenario: An auth app user can change how they get security codes and log in with new method
-    Given a user with app MFA exists
-    When the user comes from the stub relying party with options: "default"
+    Given a user with App MFA exists
+    When the user comes from the stub relying party with default options
     Then the user is taken to the "Create your GOV.UK One Login or sign in" page
     When the user selects sign in
     Then the user is taken to the "Enter your email" page
@@ -62,7 +62,7 @@ Feature: Account recovery
     Then the user is returned to the service
     And the user logs out
 
-    When the user comes from the stub relying party with options: "default"
+    When the user comes from the stub relying party with default options
     Then the user is taken to the "Create your GOV.UK One Login or sign in" page
     When the user selects sign in
     Then the user is taken to the "Enter your email" page

@@ -34,7 +34,7 @@ public class UserLifecycleStepDef {
                 userLifecycleController.buildNewUserCredentialsAndPutToDynamodb(world.userProfile);
     }
 
-    @ParameterType("sms|app")
+    @ParameterType("sms|SMS|app|App")
     public String mfaMethod(String mfaMethodType) {
         return mfaMethodType;
     }
@@ -42,7 +42,7 @@ public class UserLifecycleStepDef {
     @Given("a user with {mfaMethod} MFA exists")
     public void aUserWithOtpExists(String mfaMethod) {
         aUserExists();
-        switch (mfaMethod) {
+        switch (mfaMethod.toLowerCase()) {
             case "sms":
                 userLifecycleController.updateUserMfaSms(world.userProfile);
                 break;

@@ -4,7 +4,7 @@ Feature: Login Journey
 
   Scenario: Existing user tries to create an account with the same email address
     Given a user exists
-    And the user comes from the stub relying party with options: "default"
+    And the user comes from the stub relying party with default options
     Then the user is taken to the "Create your GOV.UK One Login or sign in" page
     When the user selects create an account
     Then the user is taken to the "Enter your email address" page
@@ -12,8 +12,8 @@ Feature: Login Journey
     Then the user is taken to the "You have a GOV.UK One Login" page
 
   Scenario: Existing user is correctly prompted to login using sms
-    Given a user with sms MFA exists
-    And the user comes from the stub relying party with options: "default"
+    Given a user with SMS MFA exists
+    And the user comes from the stub relying party with default options
     Then the user is taken to the "Create your GOV.UK One Login or sign in" page
     When the user selects sign in
     Then the user is taken to the "Enter your email" page
@@ -26,7 +26,7 @@ Feature: Login Journey
 
   Scenario: Existing user switches content to Welsh
     Given a user exists
-    And the user comes from the stub relying party with options: "default"
+    And the user comes from the stub relying party with default options
     Then the user is taken to the "Create your GOV.UK One Login or sign in" page
     And the user switches to "Welsh" language
     Then the user is taken to the Identity Provider Welsh Login Page
@@ -42,7 +42,7 @@ Feature: Login Journey
     Then the user is taken to the "Create your GOV.UK One Login or sign in" page
     
   Scenario: Existing user logs in without 2FA then uplift with 2FA
-    Given a user with sms MFA exists
+    Given a user with SMS MFA exists
     And the user comes from the stub relying party with options: "2fa-off"
     Then the user is taken to the "Create your GOV.UK One Login or sign in" page
     When the user selects sign in
@@ -51,7 +51,7 @@ Feature: Login Journey
     Then the user is taken to the "Enter your password" page
     When the user enters their password
     Then the user is returned to the service
-    When the user comes from the stub relying party with options: "default"
+    When the user comes from the stub relying party with default options
     Then the user is taken to the "Enter a security code to continue" page
     When the user enters the six digit security code from their phone
     Then the user is returned to the service

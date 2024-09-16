@@ -88,7 +88,7 @@ public class CrossPageFlows extends BasePage {
 
     public void successfulSignIn(String userType, String userEmailAddress) {
         rpStubPage.goToRpStub();
-        rpStubPage.selectRpOptionsByIdAndContinue("");
+        rpStubPage.selectRpOptionsByIdAndContinue(null);
         setAnalyticsCookieTo(false);
         waitForPageLoad("Create your GOV.UK One Login or sign in");
         createOrSignInPage.clickSignInButton();
@@ -198,7 +198,7 @@ public class CrossPageFlows extends BasePage {
 
     public void createPartialRegisteredUpToChooseHowToGetSecurityCodesPage() {
         rpStubPage.goToRpStub();
-        rpStubPage.selectRpOptionsByIdAndContinue("");
+        rpStubPage.useDefaultOptionsAndContinue();
         setAnalyticsCookieTo(false);
         waitForPageLoad("Create your GOV.UK One Login or sign in");
         createOrSignInPage.clickCreateAGovUkOneLoginButton();
@@ -213,7 +213,7 @@ public class CrossPageFlows extends BasePage {
 
     public void selectForgottenPasswordLinkAndCompletePasswordChange(String userEmailAddress) {
         rpStubPage.goToRpStub();
-        rpStubPage.selectRpOptionsByIdAndContinue("");
+        rpStubPage.useDefaultOptionsAndContinue();
         setAnalyticsCookieTo(false);
         waitForPageLoad("Create your GOV.UK One Login or sign in");
         createOrSignInPage.clickSignInButton();
@@ -230,7 +230,7 @@ public class CrossPageFlows extends BasePage {
 
     public void selectForgottenPasswordLinkAndCompletePasswordChange() {
         rpStubPage.goToRpStub();
-        rpStubPage.selectRpOptionsByIdAndContinue("");
+        rpStubPage.useDefaultOptionsAndContinue();
         setAnalyticsCookieTo(false);
         waitForPageLoad("Create your GOV.UK One Login or sign in");
         createOrSignInPage.clickSignInButton();

@@ -25,7 +25,7 @@ Feature: Authentication App Journeys
     And the user clicks logout
     And the users cookies are cleared
 
-    When the user comes from the stub relying party with options: "default"
+    When the user comes from the stub relying party with default options
     Then the user is taken to the "Create your GOV.UK One Login or sign in" page
     When the user selects sign in
     Then the user is taken to the "Enter your email" page
@@ -37,7 +37,7 @@ Feature: Authentication App Journeys
     Then the user is returned to the service
 
   Scenario: User successfully login without 2FA
-    Given a user with app MFA exists
+    Given a user with App MFA exists
     And the user comes from the stub relying party with options: "2fa-off"
     Then the user is taken to the "Create your GOV.UK One Login or sign in" page
     When the user selects sign in
@@ -48,7 +48,7 @@ Feature: Authentication App Journeys
     Then the user is returned to the service
 
   Scenario: User signs in auth app without 2FA, then uplifts
-    Given a user with app MFA exists
+    Given a user with App MFA exists
     And the user comes from the stub relying party with options: "2fa-off"
     Then the user is taken to the "Create your GOV.UK One Login or sign in" page
     When the user selects sign in

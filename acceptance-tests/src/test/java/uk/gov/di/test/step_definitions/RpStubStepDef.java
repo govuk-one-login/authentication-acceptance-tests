@@ -1,5 +1,6 @@
 package uk.gov.di.test.step_definitions;
 
+import io.cucumber.java.ParameterType;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import uk.gov.di.test.pages.BasePage;
@@ -9,10 +10,28 @@ public class RpStubStepDef extends BasePage {
 
     RpStubPage rpStubPage = new RpStubPage();
 
-    @When("the user comes from the stub relying party with options: {string}")
-    public void theExistingUserVisitsTheStubRelyingParty(String options) {
+    @ParameterType("\\[((?:[\\w-_]+,?)+)\\]")
+    public String[] rpStubOptions(String opts) {
+        if (opts == null || opts.isEmpty() || opts.equalsIgnoreCase("default")) {
+            return null;
+        }
+        return opts.split(",");
+    }
+
+
+    @When("the user comes from the stub relying party with default options")
+    @When("the user returns from the stub relying party with default options( before the lockout expires)")
+    public void theUserVisitsTheStubRelyingParty() {
         rpStubPage.goToRpStub();
-        rpStubPage.selectRpOptionsByIdAndContinue(options);
+        rpStubPage.useDefaultOptionsAndContinue();
+        setAnalyticsCookieTo(false);
+    }
+
+    @When("the user comes from the stub relying party with options: {rpStubOptions}")
+    @When("the user returns from the stub relying party with options: {rpStubOptions}( before the lockout expires)")
+    public void theExistingUserVisitsTheStubRelyingParty(String[] rpStubOptions) {
+        rpStubPage.goToRpStub();
+        rpStubPage.selectRpOptionsByIdAndContinue(rpStubOptions);
         setAnalyticsCookieTo(false);
     }
 

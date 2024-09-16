@@ -171,7 +171,7 @@ public class RegistrationStepDef extends BasePage {
         String emailAddress = System.getenv().get("TEST_USER_STATE_PRESERVATION_EMAIL1");
         String password = System.getenv().get("TEST_USER_PASSWORD");
         rpStubPage.goToRpStub();
-        rpStubPage.selectRpOptionsByIdAndContinue("");
+        rpStubPage.useDefaultOptionsAndContinue();
         waitForPageLoad("Create your GOV.UK One Login or sign in");
         createOrSignInPage.clickCreateAGovUkOneLoginButton();
         waitForPageLoad("Enter your email address");
@@ -192,7 +192,7 @@ public class RegistrationStepDef extends BasePage {
         String emailAddress = System.getenv().get("TEST_USER_STATE_PRESERVATION_EMAIL2");
         String password = System.getenv().get("TEST_USER_PASSWORD");
         rpStubPage.goToRpStub();
-        rpStubPage.selectRpOptionsByIdAndContinue("");
+        rpStubPage.useDefaultOptionsAndContinue();
         waitForPageLoad("Create your GOV.UK One Login or sign in");
         createOrSignInPage.clickCreateAGovUkOneLoginButton();
         waitForPageLoad("Enter your email address");

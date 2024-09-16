@@ -29,10 +29,9 @@ public class DynamoDbController {
     }
 
     protected static final String ENVIRONMENT = Environment.getOrThrow("ENVIRONMENT");
-    protected static final String AWS_REGION = Environment.getOrThrow("AWS_REGION");
 
     private static final DynamoDbClient standardClient =
-            DynamoDbClient.builder().region(Region.of(AWS_REGION)).build();
+            DynamoDbClient.builder().build();
 
     private static final DynamoDbEnhancedClient enhancedClient =
             DynamoDbEnhancedClient.builder().dynamoDbClient(standardClient).build();

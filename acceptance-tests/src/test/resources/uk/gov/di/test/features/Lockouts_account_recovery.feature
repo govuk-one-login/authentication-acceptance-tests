@@ -3,8 +3,8 @@ Feature: Account recovery lockouts
 
   # ENTER INCORRECT EMAIL OTP TOO MANY TIMES DURING ACCOUNT RECOVERY - 2081 - PASS
   Scenario: A user is blocked when they enter an incorrect email OTP code 6 times during a change of auth method.
-    Given a user with sms MFA exists
-    And the user comes from the stub relying party with options: "default"
+    Given a user with SMS MFA exists
+    And the user comes from the stub relying party with default options
     Then the user is taken to the "Create your GOV.UK One Login or sign in" page
     When the user selects sign in
     Then the user is taken to the "Enter your email" page
@@ -16,10 +16,10 @@ Feature: Account recovery lockouts
     And the user selects "change how you get security codes" link
     Then the user is taken to the "Check your email" page
     When the user enters an incorrect email OTP 6 times
-    Then the 'You entered the wrong security code too many times' screen is displayed
-    And the duration is "2 hours"
+    Then the "You entered the wrong security code too many times" lockout screen is displayed
+    * the lockout duration is 2 hours
 
-    When the user comes from the stub relying party with options: "default"
+    When the user comes from the stub relying party with default options
     Then the user is taken to the "Create your GOV.UK One Login or sign in" page
     When the user selects sign in
     Then the user is taken to the "Enter your email" page
@@ -29,14 +29,14 @@ Feature: Account recovery lockouts
     Then the user is taken to the "Check your phone" page
     When the user selects "Problems with the code?" link
     And the user selects "change how you get security codes" link
-    Then the 'You cannot sign in at the moment' screen is displayed
-    And the reason is "you entered the wrong security code too many times"
-    And the duration is "2 hours"
+    Then the "You cannot sign in at the moment" lockout screen is displayed
+    * the lockout reason is "you entered the wrong security code too many times"
+    * the lockout duration is 2 hours
 
   # REQUEST EMAIL OTP TOO MANY TIMES DURING ACCOUNT RECOVERY - 2382
   Scenario: A user with sms authentication is blocked when they request their email OTP code 6 times during a change of auth method.
-    Given a user with sms MFA exists
-    And the user comes from the stub relying party with options: "default"
+    Given a user with SMS MFA exists
+    And the user comes from the stub relying party with default options
     Then the user is taken to the "Create your GOV.UK One Login or sign in" page
     When the user selects sign in
     Then the user is taken to the "Enter your email" page
@@ -48,10 +48,10 @@ Feature: Account recovery lockouts
     And the user selects "change how you get security codes" link
     Then the user is taken to the "Check your email" page
     When the user requests the email OTP code be sent again a further 5 times
-    Then the 'You asked to resend the security code too many times' screen is displayed
-    And the duration is "2 hours"
+    Then the "You asked to resend the security code too many times" lockout screen is displayed
+    * the lockout duration is 2 hours
 
-    When the user comes from the stub relying party with options: "default"
+    When the user comes from the stub relying party with default options
     Then the user is taken to the "Create your GOV.UK One Login or sign in" page
     When the user selects sign in
     Then the user is taken to the "Enter your email" page
@@ -61,14 +61,14 @@ Feature: Account recovery lockouts
     Then the user is taken to the "Check your phone" page
     When the user selects "Problems with the code?" link
     And the user selects "change how you get security codes" link
-    Then the 'You cannot sign in at the moment' screen is displayed
-    And the reason is "you asked to resend the security code too many times"
-    And the duration is "2 hours"
+    Then the "You cannot sign in at the moment" lockout screen is displayed
+    * the lockout reason is "you asked to resend the security code too many times"
+    * the lockout duration is 2 hours
 
   # ENTER INCORRECT SMS SECURITY CODE TOO MANY TIMES DURING ACCOUNT RECOVERY - REG
   Scenario: A user is blocked when they enter too many incorrect sms codes during a change of auth method.
-    Given a user with sms MFA exists
-    And the user comes from the stub relying party with options: "default"
+    Given a user with SMS MFA exists
+    And the user comes from the stub relying party with default options
     Then the user is taken to the "Create your GOV.UK One Login or sign in" page
     When the user selects sign in
     Then the user is taken to the "Enter your email" page
@@ -86,10 +86,10 @@ Feature: Account recovery lockouts
     When the user enters their mobile phone number
     Then the user is taken to the "Check your phone" page
     When the user enters an incorrect phone security code 6 times
-    Then the 'You entered the wrong security code too many times' screen is displayed
-    And the duration is "15 minutes"
+    Then the "You entered the wrong security code too many times" lockout screen is displayed
+    * the lockout duration is 15 minutes
 
-    When the user comes from the stub relying party with options: "default"
+    When the user comes from the stub relying party with default options
     Then the user is taken to the "Create your GOV.UK One Login or sign in" page
     When the user selects sign in
     Then the user is taken to the "Enter your email" page
@@ -105,13 +105,13 @@ Feature: Account recovery lockouts
     When the user selects radio button "Text message"
     Then the user is taken to the "Enter your mobile phone number" page
     When the user enters their mobile phone number
-    Then the 'You entered the wrong security code too many times' screen is displayed
-    And the duration is "15 minutes"
+    Then the "You entered the wrong security code too many times" lockout screen is displayed
+    * the lockout duration is 15 minutes
 
   # REQUEST SMS CODE TOO MANY TIMES DURING ACCOUNT RECOVERY - 2380
   Scenario: A user is blocked when they request sms code more than 5 times during a change of auth method.
-    Given a user with sms MFA exists
-    And the user comes from the stub relying party with options: "default"
+    Given a user with SMS MFA exists
+    And the user comes from the stub relying party with default options
     Then the user is taken to the "Create your GOV.UK One Login or sign in" page
     When the user selects sign in
     Then the user is taken to the "Enter your email" page
@@ -129,11 +129,11 @@ Feature: Account recovery lockouts
     When the user enters their mobile phone number
     Then the user is taken to the "Check your phone" page
     When the user requests the phone otp code a further 5 times
-    Then the 'You asked to resend the security code too many times' screen is displayed
-    And the duration is "2 hours"
+    Then the "You asked to resend the security code too many times" lockout screen is displayed
+    * the lockout duration is 2 hours
 
 
-    When the user comes from the stub relying party with options: "default"
+    When the user comes from the stub relying party with default options
     Then the user is taken to the "Create your GOV.UK One Login or sign in" page
     When the user selects sign in
     Then the user is taken to the "Enter your email" page
@@ -149,15 +149,15 @@ Feature: Account recovery lockouts
     When the user selects radio button "Text message"
     Then the user is taken to the "Enter your mobile phone number" page
     When the user enters their mobile phone number
-    Then the 'You cannot sign in at the moment' screen is displayed
-    And the reason is "you asked to resend the security code too many times"
-    And the duration is "2 hours"
+    Then the "You cannot sign in at the moment" lockout screen is displayed
+    * the lockout reason is "you asked to resend the security code too many times"
+    * the lockout duration is 2 hours
 
 
   # NO LIMIT ON ENTERING INCORRECT AUTH APP CODES DURING ACCOUNT RECOVERY - REG
   Scenario: A user is not blocked when they enter an incorrect auth app code during a change of auth method.
-    Given a user with sms MFA exists
-    And the user comes from the stub relying party with options: "default"
+    Given a user with SMS MFA exists
+    And the user comes from the stub relying party with default options
     Then the user is taken to the "Create your GOV.UK One Login or sign in" page
     When the user selects sign in
     Then the user is taken to the "Enter your email" page
