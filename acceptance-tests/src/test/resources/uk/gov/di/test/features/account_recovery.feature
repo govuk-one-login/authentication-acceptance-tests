@@ -34,7 +34,7 @@ Feature: Account recovery
     Then the user is taken to the "Enter the 6 digit security code shown in your authenticator app" page
     When the user enters the security code from the auth app
     Then the user is returned to the service
-    And the user logs out
+    And the user clicks logout
 
 
   Scenario: An auth app user can change how they get security codes and log in with new method
@@ -71,4 +71,4 @@ Feature: Account recovery
     Then the user is taken to the "Check your phone" page
     When the user enters the six digit security code from their phone
     Then the user is returned to the service
-    And the user logs out
+    And the user clicks logout
