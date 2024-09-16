@@ -77,6 +77,11 @@ public class CommonStepDef extends BasePage {
         waitForPageLoad("Signed out");
     }
 
+    @And("the users cookies are cleared")
+    public void theUsersCookiesAreCleared() {
+        Driver.get().manage().deleteAllCookies();
+    }
+
     @Then("the user is shown an error message")
     public void theUserIsShownAnErrorMessageOnTheEnterEmailPage() {
         assertTrue(isErrorSummaryDisplayed());

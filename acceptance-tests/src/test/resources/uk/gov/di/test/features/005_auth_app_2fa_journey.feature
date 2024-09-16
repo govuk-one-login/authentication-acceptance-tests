@@ -21,7 +21,8 @@ Feature: Authentication App Journeys
     And the user is taken to the "You’ve created your GOV.UK One Login" page
     When the user clicks the continue button
     Then the user is returned to the service
-    And the user logs out
+    And the user clicks logout
+    And the users cookies are cleared
 
     When the user comes from the stub relying party with options: "default"
     Then the user is taken to the "Create your GOV.UK One Login or sign in" page
