@@ -20,22 +20,19 @@ import uk.gov.di.test.pages.TermsAndConditionsPage;
 import uk.gov.di.test.pages.YouAskedToResendTheSecurityCodeTooManyTimesPage;
 import uk.gov.di.test.pages.YouveChangedHowYouGetSecurityCodesPage;
 import uk.gov.di.test.utils.Driver;
+import uk.gov.di.test.utils.PasswordGenerator;
+
+import java.util.Set;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static uk.gov.di.test.utils.Constants.INVALID_EMAIL;
-import static uk.gov.di.test.utils.Constants.INVALID_PASSWORD;
-import static uk.gov.di.test.utils.Constants.MISMATCHING_PASSWORD_1;
-import static uk.gov.di.test.utils.Constants.MISMATCHING_PASSWORD_2;
-import static uk.gov.di.test.utils.Constants.NEW_VALID_PASSWORD;
-import static uk.gov.di.test.utils.Constants.TOP_100K_PASSWORD;
+import static uk.gov.di.test.utils.Constants.*;
 
 public class LoginStepDef extends BasePage {
     private final World world;
     private String authAppSecretKey;
 
-    private static final UserLifecycleController userLifecycleController =
-            UserLifecycleController.getInstance();
+    private static final PasswordGenerator passwordGenerator = new PasswordGenerator();
 
     public EnterYourPasswordPage enterYourPasswordPage;
     public ResetYourPasswordPage resetYourPasswordPage = new ResetYourPasswordPage();
@@ -68,7 +65,7 @@ public class LoginStepDef extends BasePage {
 
     @When("the user enters their password which is on the top 100k password list")
     public void theUserEntersTheirPasswordWhichIsOnTheTop100kPasswordList() {
-        enterYourPasswordPage.enterPasswordAndContinue(System.getenv().get("TOP_100K_PASSWORD"));
+        enterYourPasswordPage.enterPasswordAndContinue(TOP_100K_PASSWORD);
     }
 
     @When("the user clicks the forgotten password link")
@@ -173,12 +170,12 @@ public class LoginStepDef extends BasePage {
     public void theUserEntersValidNewPasswordAndCorrectlyRetypesIt() {
         String newPassword = UserLifecycleController.generateValidPassword();
         resetYourPasswordPage.enterPasswordResetDetailsAndContinue(newPassword, newPassword);
-        world.userProfile.setPassword(newPassword);
+        world.setUserPassword(newPassword);
     }
 
     @When("the user resets their password to be the same as their current password")
     public void theUserResetsTheirPasswordToBeTheSameAsTheirCurrentPassword() {
-        String currentPassword = world.userProfile.getPassword();
+        String currentPassword = world.getUserPassword();
         resetYourPasswordPage.enterPasswordResetDetailsAndContinue(
                 currentPassword, currentPassword);
     }
@@ -197,8 +194,9 @@ public class LoginStepDef extends BasePage {
 
     @When("the user resets their password but enters mismatching new passwords")
     public void theUserResetsTheirPasswordButEntersMismatchingNewPasswords() {
+        String[] passwords = passwordGenerator.generatePasswords(2);
         resetYourPasswordPage.enterPasswordResetDetailsAndContinue(
-                MISMATCHING_PASSWORD_1, MISMATCHING_PASSWORD_2);
+                passwords[0],passwords[1]);
     }
 
     @And("confirmation that the user will get security codes via {string} is displayed")
@@ -208,7 +206,7 @@ public class LoginStepDef extends BasePage {
         switch (method) {
             case "text message":
                 // Check the last four digits of the phone number appear in the page message
-                String phoneNumber = System.getenv().get("TEST_USER_PHONE_NUMBER");
+                String phoneNumber = world.getUserPhoneNumber();
                 String lastFourDigitsOfPhone = phoneNumber.substring(phoneNumber.length() - 4);
                 assertTrue(
                         youveChangedHowYouGetSecurityCodes
@@ -230,16 +228,16 @@ public class LoginStepDef extends BasePage {
 
     @When("the user adds the secret key on the screen to their auth app")
     public void theNewUserAddTheSecretKeyOnTheScreenToTheirAuthApp() {
-        authAppSecretKey = System.getenv().get("ACCOUNT_RECOVERY_USER_AUTH_APP_SECRET");
+        authAppSecretKey = secretsManagerController.getSecretValue("test_user_pw_reset_auth_app_secret");
         setUpAnAuthenticatorAppPage.iCannotScanQrCodeClick();
         authAppSecretKey = setUpAnAuthenticatorAppPage.getSecretFieldText();
-        assertTrue(setUpAnAuthenticatorAppPage.getSecretFieldText().length() == 32);
+        assertEquals(32, setUpAnAuthenticatorAppPage.getSecretFieldText().length());
     }
 
     @And("the user enters the security code from the auth app")
     public void theNewUserEntersTheSecurityCodeFromTheAuthApp() {
         if (authAppSecretKey == null) {
-            authAppSecretKey = System.getenv().get("ACCOUNT_RECOVERY_USER_AUTH_APP_SECRET");
+            authAppSecretKey = secretsManagerController.getSecretValue("test_user_pw_reset_auth_app_secret");
         }
         setUpAnAuthenticatorAppPage.enterCorrectAuthAppCodeAndContinue(authAppSecretKey);
     }

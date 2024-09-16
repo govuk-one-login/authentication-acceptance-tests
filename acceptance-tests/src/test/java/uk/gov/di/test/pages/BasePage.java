@@ -11,6 +11,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import uk.gov.di.test.controllers.SecretsManagerController;
 import uk.gov.di.test.utils.AuthAppStub;
 import uk.gov.di.test.utils.AuthenticationJourneyPages;
 import uk.gov.di.test.utils.Driver;
@@ -32,6 +33,7 @@ public class BasePage {
 
     protected static final Duration DEFAULT_PAGE_LOAD_WAIT_TIME = Duration.ofSeconds(20);
     protected static final Duration NO_PAGE_LOAD_WAIT_TIME = Duration.ofSeconds(0);
+    protected static final SecretsManagerController secretsManagerController = SecretsManagerController.getInstance();
 
     protected static WebDriver driver;
     protected static Scenario scenario;

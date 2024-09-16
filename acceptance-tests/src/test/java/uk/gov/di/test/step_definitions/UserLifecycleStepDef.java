@@ -5,12 +5,12 @@ import io.cucumber.java.ParameterType;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import uk.gov.di.test.controllers.UserLifecycleController;
-import uk.gov.di.test.utils.Environment;
+
+import static uk.gov.di.test.controllers.UserLifecycleController.generateValidPassword;
+import static uk.gov.di.test.utils.Constants.TOP_100K_PASSWORD;
 
 public class UserLifecycleStepDef {
     private final World world;
-
-    private static final String TOP_100K_PASSWORD = Environment.getOrThrow("TOP_100K_PASSWORD");
 
     private static final UserLifecycleController userLifecycleController =
             UserLifecycleController.getInstance();
@@ -23,30 +23,32 @@ public class UserLifecycleStepDef {
     public void aUserDoesNotYetExist() {
         world.throwIfUserProfileExists().throwIfUserCredentialsExists();
         world.userProfile = userLifecycleController.buildNewUserProfile();
+        world.setUserPassword(generateValidPassword());
     }
 
-    @Given("a user with no MFA exists")
     @Given("a user exists")
     public void aUserExists() {
         aUserDoesNotYetExist();
         userLifecycleController.putUserProfileToDynamodb(world.userProfile);
         world.userCredentials =
-                userLifecycleController.buildNewUserCredentialsAndPutToDynamodb(world.userProfile);
+                userLifecycleController.buildNewUserCredentialsAndPutToDynamodb(world.userProfile, world.getUserPassword());
     }
 
-    @ParameterType("sms|SMS|app|App")
+    @ParameterType("SMS|App|no")
     public String mfaMethod(String mfaMethodType) {
         return mfaMethodType;
     }
 
     @Given("a user with {mfaMethod} MFA exists")
-    public void aUserWithOtpExists(String mfaMethod) {
+    public void aUserExists(String mfaMethod) {
         aUserExists();
-        switch (mfaMethod.toLowerCase()) {
-            case "sms":
+        switch (mfaMethod) {
+            case "no":
+                break;
+            case "SMS":
                 userLifecycleController.updateUserMfaSms(world.userProfile);
                 break;
-            case "app":
+            case "App":
                 userLifecycleController.updateUserMfaApp(world.userCredentials);
                 break;
             default:
@@ -65,6 +67,7 @@ public class UserLifecycleStepDef {
     public void theUsersPasswordIsOnTheTop100kUnacceptablePasswordList() {
         userLifecycleController.changeUserPassword(
                 TOP_100K_PASSWORD, world.userProfile, world.userCredentials);
+        world.setUserPassword(TOP_100K_PASSWORD);
     }
 
     @After

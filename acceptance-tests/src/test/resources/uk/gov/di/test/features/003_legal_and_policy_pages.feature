@@ -3,8 +3,7 @@ Feature: Legal and policy pages
   User clicks on the legal and policy pages
 
   Scenario: User views legal and policy pages
-    Given the services are running
-    When the user comes from the stub relying party with default options
+    Given the user comes from the stub relying party with default options
     Then the user is taken to the "Create your GOV.UK One Login or sign in" page
     When the user clicks link "Accessibility statement"
     Then the user is taken to the accessibility statement page

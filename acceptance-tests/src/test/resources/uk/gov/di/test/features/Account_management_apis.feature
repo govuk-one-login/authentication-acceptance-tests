@@ -2,7 +2,7 @@
   Feature: Account Management
     Scenario: Account Management API throws "An account with this email address does not exist" when a user sends an unregistered email to the API, after signing in
       Given a user with SMS MFA exists
-      And the user comes from the stub relying party with options: "scopes-account-management"
+      And the user comes from the stub relying party with option scopes-account-management
       Then the user is taken to the "Create your GOV.UK One Login or sign in" page
       When the user selects sign in
       Then the user is taken to the "Enter your email" page

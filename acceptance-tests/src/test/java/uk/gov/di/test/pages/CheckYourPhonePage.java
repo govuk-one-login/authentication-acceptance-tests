@@ -1,6 +1,7 @@
 package uk.gov.di.test.pages;
 
 import org.openqa.selenium.By;
+import uk.gov.di.test.controllers.SecretsManagerController;
 import uk.gov.di.test.utils.Driver;
 
 import static uk.gov.di.test.utils.Constants.INCORRECT_PHONE_CODE;
@@ -17,7 +18,7 @@ public class CheckYourPhonePage extends BasePage {
     }
 
     public void enterCorrectPhoneCodeAndContinue() {
-        enterPhoneCode(System.getenv().get("TEST_USER_PHONE_CODE"));
+        enterPhoneCode(secretsManagerController.getSecretValue("test_client_verify_phone_number_otp"));
         findAndClickContinue();
     }
 

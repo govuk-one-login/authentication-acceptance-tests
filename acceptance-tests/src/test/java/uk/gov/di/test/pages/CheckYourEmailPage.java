@@ -2,6 +2,8 @@ package uk.gov.di.test.pages;
 
 import io.cucumber.java.en.When;
 import org.openqa.selenium.By;
+import uk.gov.di.test.controllers.DynamoDbController;
+import uk.gov.di.test.controllers.SecretsManagerController;
 
 import static uk.gov.di.test.utils.Constants.INCORRECT_EMAIL_OTP_CODE;
 
@@ -15,7 +17,7 @@ public class CheckYourEmailPage extends BasePage {
 
     @When("the user enters the correct email code and clicks continue")
     public void enterCorrectEmailCodeAndContinue() {
-        enterEmailCode(System.getenv().get("TEST_USER_EMAIL_CODE"));
+        enterEmailCode(secretsManagerController.getSecretValue("test_client_verify_email_otp"));
         findAndClickContinue();
     }
 

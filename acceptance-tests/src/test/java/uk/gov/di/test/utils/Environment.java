@@ -17,4 +17,13 @@ public class Environment {
         }
         return value;
     }
+
+    public static Integer getIntegerOrThrow(String key) throws EnvironmentException {
+        String value = getOrThrow(key);
+        try {
+            return Integer.parseInt(value);
+        } catch (NumberFormatException e) {
+            throw new EnvironmentException("Environment variable " + key + " is not an integer");
+        }
+    }
 }

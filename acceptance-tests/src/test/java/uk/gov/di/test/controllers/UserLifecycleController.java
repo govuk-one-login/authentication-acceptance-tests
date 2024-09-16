@@ -14,8 +14,12 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicLong;
 
+import static uk.gov.di.test.utils.Constants.DEFAULT_TIMESTAMP;
+import static uk.gov.di.test.utils.Constants.UK_MOBILE_PHONE_NUMBER;
+
 public class UserLifecycleController {
     private static volatile UserLifecycleController instance;
+    protected static volatile SecretsManagerController secretsManagerController = SecretsManagerController.getInstance();
 
     private final Long instantiationMillis;
     private final Map<String, String> baseEmailFormatValues;
@@ -44,16 +48,6 @@ public class UserLifecycleController {
         return instance;
     }
 
-    private static final String DEFAULT_TIMESTAMP = "1970-01-01T00:00:00.000000";
-    private static final String TEST_USER_PHONE_NUMBER = "07700900000";
-
-    protected static final String TEST_USER_LATEST_TERMS_AND_CONDITIONS_VERSION =
-            Environment.getOrThrow("TEST_USER_LATEST_TERMS_AND_CONDITIONS_VERSION");
-    protected static final String ACCOUNT_RECOVERY_USER_AUTH_APP_SECRET =
-            Environment.getOrThrow("ACCOUNT_RECOVERY_USER_AUTH_APP_SECRET");
-
-    protected static final String EMAIL_ADDRESS_FORMAT =
-            Environment.getOrThrow("EMAIL_ADDRESS_FORMAT");
     private static final PasswordGenerator passwordGenerator = new PasswordGenerator();
     private static final DynamoDbController dynamoDbController = DynamoDbController.getInstance();
 
@@ -63,7 +57,7 @@ public class UserLifecycleController {
         Map<String, String> values = new HashMap<>(baseEmailFormatValues);
         values.put("counter", String.valueOf(emailSubAddressCounter.getAndIncrement()));
         StringSubstitutor sub = new StringSubstitutor(values);
-        return sub.replace(EMAIL_ADDRESS_FORMAT);
+        return sub.replace(secretsManagerController.getSecretValue("test-email-address-format"));
     }
 
     private TermsAndConditions buildTermsAndConditions(String version) {
@@ -71,7 +65,7 @@ public class UserLifecycleController {
     }
 
     public TermsAndConditions buildTermsAndConditions() {
-        return buildTermsAndConditions(TEST_USER_LATEST_TERMS_AND_CONDITIONS_VERSION);
+        return buildTermsAndConditions(secretsManagerController.getSecretValue("test_user_latest_terms_and_conditions"));
     }
 
     public TermsAndConditions buildOldTermsAndConditions() {
@@ -90,16 +84,15 @@ public class UserLifecycleController {
     }
 
     public MFAMethod buildAppMfaMethod() {
-        return buildAppMfaMethod(ACCOUNT_RECOVERY_USER_AUTH_APP_SECRET);
+        return buildAppMfaMethod(secretsManagerController.getSecretValue("test_user_pw_reset_auth_app_secret"));
     }
 
     public static String generateValidPassword() {
-        return passwordGenerator.generatePassword(10);
+        return passwordGenerator.generatePassword();
     }
 
     public void changeUserPassword(
             String newPassword, UserProfile userProfile, UserCredentials userCredentials) {
-        userProfile.setPassword(newPassword);
         String encodedPassword = Crypto.encodePassword(newPassword, userProfile.getSalt());
         userCredentials.setPassword(encodedPassword);
         updateUserProfileInDynamodb(userProfile);
@@ -120,13 +113,14 @@ public class UserLifecycleController {
 
     public UserProfile buildNewUserProfile() {
         return new UserProfile()
+                .withTestUser(1)
                 .withEmail(generateNewUniqueEmailAddress())
-                .withPhoneNumber(TEST_USER_PHONE_NUMBER)
+                .withPhoneNumber(UK_MOBILE_PHONE_NUMBER)
                 .withPublicSubjectID(UUID.randomUUID().toString())
                 .withSubjectID(UUID.randomUUID().toString())
                 .withSalt(Crypto.generateSalt())
-                .withPassword(generateValidPassword())
                 .withTermsAndConditions(buildTermsAndConditions());
+
     }
 
     public UserProfile buildNewUserProfileAndPutToDynamodb() {
@@ -136,7 +130,9 @@ public class UserLifecycleController {
     }
 
     public void updateUserMfaSms(UserProfile userProfile) {
-        userProfile.setMfaToSms(TEST_USER_PHONE_NUMBER);
+        userProfile.setAccountVerified(1);
+        userProfile.setPhoneNumber(UK_MOBILE_PHONE_NUMBER);
+        userProfile.setPhoneNumberVerified(true);
         updateUserProfileInDynamodb(userProfile);
     }
 
@@ -163,17 +159,18 @@ public class UserLifecycleController {
         dynamoDbController.deleteUserCredentials(userCredentials);
     }
 
-    public UserCredentials buildNewUserCredentials(UserProfile userProfile) {
+    public UserCredentials buildNewUserCredentials(UserProfile userProfile, String userPassword) {
         String encodedPassword =
-                Crypto.encodePassword(userProfile.getPassword(), userProfile.getSalt());
+                Crypto.encodePassword(userPassword, userProfile.getSalt());
         return new UserCredentials()
+                .withTestUser(1)
                 .withEmail(userProfile.getEmail())
                 .withPassword(encodedPassword)
                 .withSubjectID(userProfile.getSubjectID());
     }
 
-    public UserCredentials buildNewUserCredentialsAndPutToDynamodb(UserProfile userProfile) {
-        UserCredentials userCredentials = buildNewUserCredentials(userProfile);
+    public UserCredentials buildNewUserCredentialsAndPutToDynamodb(UserProfile userProfile, String userPassword) {
+        UserCredentials userCredentials = buildNewUserCredentials(userProfile, userPassword);
         putUserCredentialsToDynamodb(userCredentials);
         return userCredentials;
     }

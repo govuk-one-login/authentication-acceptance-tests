@@ -34,6 +34,11 @@ public class RpStubStepDef extends BasePage {
         rpStubPage.selectRpOptionsByIdAndContinue(rpStubOptions);
         setAnalyticsCookieTo(false);
     }
+    @When("the user comes from the stub relying party with option {word}")
+    @When("the user returns from the stub relying party with option {word}( before the lockout expires)")
+    public void theExistingUserVisitsTheStubRelyingParty(String option) {
+        theExistingUserVisitsTheStubRelyingParty(new String[]{option});
+    }
 
     @Then("the user is forcibly logged out")
     public void theUserIsLoggedOut() {

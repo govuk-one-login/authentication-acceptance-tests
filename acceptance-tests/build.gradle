@@ -16,37 +16,44 @@ def dependencyVersions = [
         junit_version: '5.9.0',
         cucumber_version: '7.8.1',
         axe_version: '3.0',
-        json_version: '20220320',
-        selenium_java_version: '4.24.0',
+        json_version: '20240303',
         rest_assured: '5.5.0'
 ]
 
 dependencies {
-    implementation group: 'org.apache.maven.plugins', name: 'maven-surefire-plugin', version: '3.2.5'
+    implementation("org.apache.maven.plugins:maven-surefire-plugin:3.5.0")
 
-    testImplementation "software.amazon.awssdk:dynamodb:${dependencyVersions.aws_sdk_v2_version}",
-                "software.amazon.awssdk:dynamodb-enhanced:${dependencyVersions.aws_sdk_v2_version}"
+    testImplementation(platform("org.junit:junit-bom:5.9.0"))
+    testImplementation(platform("software.amazon.awssdk:bom:2.27.17"))
+    testImplementation(platform("io.cucumber:cucumber-bom:7.8.1"))
+    testImplementation(platform("org.seleniumhq.selenium:selenium-dependencies-bom:4.24.0"))
 
-    testImplementation "io.cucumber:cucumber-picocontainer:${dependencyVersions.cucumber_version}"
+    testImplementation("software.amazon.awssdk:dynamodb")
+    testImplementation("software.amazon.awssdk:dynamodb-enhanced")
+    testImplementation("software.amazon.awssdk:secretsmanager")
 
-    testImplementation 'org.apache.commons:commons-text:1.12.0'
+    testImplementation("io.cucumber:cucumber-java")
+    testImplementation("io.cucumber:cucumber-junit")
+    testImplementation("io.cucumber:cucumber-picocontainer")
 
-    testImplementation "org.bouncycastle:bcpkix-jdk18on:1.78.1",
-      "org.springframework.security:spring-security-crypto:6.3.3"
+    testImplementation("org.seleniumhq.selenium:selenium-java")
+    testImplementation("org.seleniumhq.selenium:selenium-devtools-v128")
+    testImplementation("com.deque:axe-selenium:${dependencyVersions.axe_version}")
 
-    testImplementation "io.cucumber:cucumber-java:${dependencyVersions.cucumber_version}",
-                       "io.cucumber:cucumber-junit:${dependencyVersions.cucumber_version}",
-                       "org.seleniumhq.selenium:selenium-java:${dependencyVersions.selenium_java_version}",
-                       "org.seleniumhq.selenium:selenium-devtools-v128:${dependencyVersions.selenium_java_version}",
-                       "org.junit.jupiter:junit-jupiter-api:${dependencyVersions.junit_version}",
-                       "commons-codec:commons-codec:1.15","io.github.cdimascio:java-dotenv:5.2.2",
-                       "commons-codec:commons-codec:1.15"
+    testImplementation("org.junit.jupiter:junit-jupiter-api")
+    testImplementation("org.junit.jupiter:junit-jupiter-engine")
 
-    testImplementation group: 'com.deque', name: 'axe-selenium', version:"${dependencyVersions.axe_version}"
-    testImplementation group: 'org.json', name: 'json', version:"${dependencyVersions.json_version}"
-    testImplementation "io.rest-assured:rest-assured:${dependencyVersions.rest_assured}"
+    testImplementation("org.apache.commons:commons-text:1.12.0")
 
-    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:${dependencyVersions.junit_version}"
+    testImplementation("commons-codec:commons-codec:1.15")
+
+    testImplementation("com.google.guava:guava:33.3.0-jre")
+
+    testImplementation("org.bouncycastle:bcpkix-jdk18on:1.78.1")
+    testImplementation("org.springframework.security:spring-security-crypto:6.3.3")
+
+    testImplementation("org.json:json:${dependencyVersions.json_version}")
+    testImplementation("io.rest-assured:rest-assured:${dependencyVersions.rest_assured}")
 }
 
 group = 'acceptance-tests'

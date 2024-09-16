@@ -19,6 +19,7 @@ import uk.gov.di.test.pages.SetUpAnAuthenticatorAppPage;
 import uk.gov.di.test.pages.UserInformationPage;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static uk.gov.di.test.utils.Constants.UK_MOBILE_PHONE_NUMBER;
 
 public class CrossPageFlows extends BasePage {
     private final World world;
@@ -106,7 +107,7 @@ public class CrossPageFlows extends BasePage {
             waitForPageLoad("Enter the 6 digit security code shown in your authenticator app");
             enterThe6DigitSecurityCodeShownInYourAuthenticatorAppPage
                     .enterCorrectAuthAppCodeAndContinue(
-                            System.getenv().get("ACCOUNT_RECOVERY_USER_AUTH_APP_SECRET"));
+                            secretsManagerController.getSecretValue("test_user_pw_reset_auth_app_secret"));
         }
         waitForPageLoad("Example - GOV.UK - User Info");
     }
@@ -132,7 +133,7 @@ public class CrossPageFlows extends BasePage {
             waitForPageLoad("Enter the 6 digit security code shown in your authenticator app");
             enterThe6DigitSecurityCodeShownInYourAuthenticatorAppPage
                     .enterCorrectAuthAppCodeAndContinue(
-                            System.getenv().get("ACCOUNT_RECOVERY_USER_AUTH_APP_SECRET"));
+                            secretsManagerController.getSecretValue("test_user_pw_reset_auth_app_secret"));
         }
         waitForPageLoad("Example - GOV.UK - User Info");
     }
@@ -161,8 +162,7 @@ public class CrossPageFlows extends BasePage {
         waitForPageLoad("How do you want to get security codes?");
         chooseHowToGetSecurityCodesPage.selectAuthMethodAndContinue("text message");
         waitForPageLoad("Enter your mobile phone number");
-        enterYourMobilePhoneNumberPage.enterUkPhoneNumberAndContinue(
-                System.getenv().get("TEST_USER_PHONE_NUMBER"));
+        enterYourMobilePhoneNumberPage.enterUkPhoneNumberAndContinue(UK_MOBILE_PHONE_NUMBER);
         waitForPageLoad("Check your phone");
         checkYourPhonePage.enterCorrectPhoneCodeAndContinue();
         waitForPageLoad("You’ve changed how you get security codes");
@@ -244,7 +244,7 @@ public class CrossPageFlows extends BasePage {
         String newPassword = UserLifecycleController.generateValidPassword();
         resetYourPasswordPage.enterPasswordResetDetailsAndContinue(newPassword, newPassword);
 
-        world.userProfile.setPassword(newPassword);
+        world.setUserPassword(newPassword);
     }
 
     public void setUpAuthenticationBy(String userType) {
@@ -262,13 +262,13 @@ public class CrossPageFlows extends BasePage {
                 chooseHowToGetSecurityCodesPage.selectAuthMethodAndContinue("auth app");
                 waitForPageLoad("Set up an authenticator app");
 
-                authAppSecretKey = System.getenv().get("ACCOUNT_RECOVERY_USER_AUTH_APP_SECRET");
+                authAppSecretKey = secretsManagerController.getSecretValue("test_user_pw_reset_auth_app_secret");
                 setUpAnAuthenticatorAppPage.iCannotScanQrCodeClick();
                 authAppSecretKey = setUpAnAuthenticatorAppPage.getSecretFieldText();
                 assertEquals(32, setUpAnAuthenticatorAppPage.getSecretFieldText().length());
 
                 if (authAppSecretKey == null) {
-                    authAppSecretKey = System.getenv().get("ACCOUNT_RECOVERY_USER_AUTH_APP_SECRET");
+                    authAppSecretKey = secretsManagerController.getSecretValue("test_user_pw_reset_auth_app_secret");
                 }
                 setUpAnAuthenticatorAppPage.enterCorrectAuthAppCodeAndContinue(authAppSecretKey);
                 break;

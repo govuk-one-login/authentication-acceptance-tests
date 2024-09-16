@@ -4,7 +4,7 @@ Feature: Authentication App Journeys
 
   Scenario: User successfully registers with auth app 2FA and login with 2fa-on
     Given a user does not yet exist
-    And the user comes from the stub relying party with options: "2fa-off"
+    And the user comes from the stub relying party with option 2fa-off
     Then the user is taken to the "Create your GOV.UK One Login or sign in" page
     When the user selects create an account
     Then the user is taken to the "Enter your email" page
@@ -38,7 +38,7 @@ Feature: Authentication App Journeys
 
   Scenario: User successfully login without 2FA
     Given a user with App MFA exists
-    And the user comes from the stub relying party with options: "2fa-off"
+    And the user comes from the stub relying party with option 2fa-off
     Then the user is taken to the "Create your GOV.UK One Login or sign in" page
     When the user selects sign in
     Then the user is taken to the "Enter your email" page
@@ -49,7 +49,7 @@ Feature: Authentication App Journeys
 
   Scenario: User signs in auth app without 2FA, then uplifts
     Given a user with App MFA exists
-    And the user comes from the stub relying party with options: "2fa-off"
+    And the user comes from the stub relying party with option 2fa-off
     Then the user is taken to the "Create your GOV.UK One Login or sign in" page
     When the user selects sign in
     Then the user is taken to the "Enter your email" page
@@ -57,5 +57,5 @@ Feature: Authentication App Journeys
     Then the user is taken to the "Enter your password" page
     When the user enters their password
     Then the user is returned to the service
-    When the user comes from the stub relying party with options: "2fa-on"
+    When the user comes from the stub relying party with option 2fa-on
     Then the user is taken to the "Enter a security code to continue" page

@@ -43,7 +43,7 @@ Feature: Login Journey
     
   Scenario: Existing user logs in without 2FA then uplift with 2FA
     Given a user with SMS MFA exists
-    And the user comes from the stub relying party with options: "2fa-off"
+    And the user comes from the stub relying party with option 2fa-off
     Then the user is taken to the "Create your GOV.UK One Login or sign in" page
     When the user selects sign in
     Then the user is taken to the "Enter your email" page

@@ -53,7 +53,7 @@ Feature: Account interventions
   Scenario: Sms user cannot change their password when they have a temporarily suspended account
     Given a user with SMS MFA exists
     And the user has a temporarily suspended intervention
-    And the user comes from the stub relying party with options: "2fa-on"
+    And the user comes from the stub relying party with option 2fa-on
     When the user is taken to the "Create your GOV.UK One Login or sign in" page
     And the user selects sign in
     Then the user is taken to the "Enter your email" page
@@ -71,7 +71,7 @@ Feature: Account interventions
     Given a user with App MFA exists
     And the user's password is on the top 100k unacceptable password list
     And the user has a temporarily suspended intervention
-    And the user comes from the stub relying party with options: "2fa-on"
+    And the user comes from the stub relying party with option 2fa-on
     When the user is taken to the "Create your GOV.UK One Login or sign in" page
     And the user selects sign in
     Then the user is taken to the "Enter your email" page
@@ -88,7 +88,7 @@ Feature: Account interventions
   Scenario: Sms user cannot change the way they get security codes when they have a temporarily suspended account
     Given a user with SMS MFA exists
     And the user has a temporarily suspended intervention
-    And the user comes from the stub relying party with options: "2fa-on"
+    And the user comes from the stub relying party with option 2fa-on
     When the user is taken to the "Create your GOV.UK One Login or sign in" page
     And the user selects sign in
     Then the user is taken to the "Enter your email" page
@@ -106,7 +106,7 @@ Feature: Account interventions
   Scenario: Auth app user cannot change the way they get security codes when they have a temporarily suspended account
     Given a user with App MFA exists
     And the user has a temporarily suspended intervention
-    And the user comes from the stub relying party with options: "2fa-on"
+    And the user comes from the stub relying party with option 2fa-on
     When the user is taken to the "Create your GOV.UK One Login or sign in" page
     And the user selects sign in
     Then the user is taken to the "Enter your email" page
@@ -172,7 +172,7 @@ Feature: Account interventions
   Scenario: Auth app user cannot create a new account using the email address of a permanently locked account
     Given a user with App MFA exists
     And the user has a permanently locked intervention
-    And the user comes from the stub relying party with options: "2fa-on"
+    And the user comes from the stub relying party with option 2fa-on
     When the user is taken to the "Create your GOV.UK One Login or sign in" page
     And the user selects create an account
     Then the user is taken to the "Enter your email address" page
@@ -187,7 +187,7 @@ Feature: Account interventions
   Scenario: Sms user cannot change their password when they have a permanently locked account
     Given a user with SMS MFA exists
     And the user has a permanently locked intervention
-    And the user comes from the stub relying party with options: "2fa-on"
+    And the user comes from the stub relying party with option 2fa-on
     When the user is taken to the "Create your GOV.UK One Login or sign in" page
     And the user selects sign in
     Then the user is taken to the "Enter your email" page
@@ -205,7 +205,7 @@ Feature: Account interventions
     Given a user with SMS MFA exists
     And the user's password is on the top 100k unacceptable password list
     And the user has a permanently locked intervention
-    And the user comes from the stub relying party with options: "2fa-on"
+    And the user comes from the stub relying party with option 2fa-on
     When the user is taken to the "Create your GOV.UK One Login or sign in" page
     And the user selects sign in
     Then the user is taken to the "Enter your email" page
@@ -222,7 +222,7 @@ Feature: Account interventions
   Scenario: Sms user cannot change the way they get security codes when they have a permanently locked account
     Given a user with SMS MFA exists
     And the user has a permanently locked intervention
-    And the user comes from the stub relying party with options: "2fa-on"
+    And the user comes from the stub relying party with option 2fa-on
     When the user is taken to the "Create your GOV.UK One Login or sign in" page
     And the user selects sign in
     Then the user is taken to the "Enter your email" page
@@ -240,7 +240,7 @@ Feature: Account interventions
   Scenario: Auth app user cannot change the way they get security codes when they have a permanently locked account
     Given a user with App MFA exists
     And the user has a permanently locked intervention
-    And the user comes from the stub relying party with options: "2fa-on"
+    And the user comes from the stub relying party with option 2fa-on
     When the user is taken to the "Create your GOV.UK One Login or sign in" page
     And the user selects sign in
     Then the user is taken to the "Enter your email" page
@@ -365,7 +365,7 @@ Feature: Account interventions
   Scenario: Auth app user cannot change the way they get security codes when they have a password reset intervention on their account
     Given a user with App MFA exists
     And the user has a password reset intervention
-    And the user comes from the stub relying party with options: "2fa-on"
+    And the user comes from the stub relying party with option 2fa-on
     When the user is taken to the "Create your GOV.UK One Login or sign in" page
     And the user selects sign in
     Then the user is taken to the "Enter your email" page
@@ -389,7 +389,7 @@ Feature: Account interventions
   Scenario: Auth app user can log in when their One Login account intervention has been removed
     Given a user with App MFA exists
     And the user has a temporarily suspended intervention
-    And the user comes from the stub relying party with options: "2fa-on"
+    And the user comes from the stub relying party with option 2fa-on
     When the user is taken to the "Create your GOV.UK One Login or sign in" page
     And the user selects sign in
     Then the user is taken to the "Enter your email" page
@@ -401,7 +401,7 @@ Feature: Account interventions
     Then the user is taken to the "Sorry, there is a problem" page
 
     When the user's interventions have been removed
-    And the user comes from the stub relying party with options: "2fa-on"
+    And the user comes from the stub relying party with option 2fa-on
     When the user is taken to the "Create your GOV.UK One Login or sign in" page
     And the user selects sign in
     Then the user is taken to the "Enter your email" page

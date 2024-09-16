@@ -221,24 +221,12 @@ public class UserProfile {
         this.testUser = isTestUser;
     }
 
-    @DynamoDbIgnore
-    public String getPassword() {
-        return password;
-    }
-
-    public UserProfile withPassword(String password) {
-        this.password = password;
+    public UserProfile withTestUser(int isTestUser) {
+        this.setTestUser(isTestUser);
         return this;
     }
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    @DynamoDbIgnore
-    public void setMfaToSms(String phoneNumber) {
-        this.accountVerified = 1;
-        this.phoneNumber = phoneNumber;
-        this.phoneNumberVerified = true;
     }
 }

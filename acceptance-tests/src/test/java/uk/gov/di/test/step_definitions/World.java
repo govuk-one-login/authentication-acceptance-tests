@@ -9,14 +9,19 @@ public class World {
     public UserCredentials userCredentials;
     public UserInterventions userInterventions;
 
+    private String userPassword;
+
+    public String getUserPassword() {
+        return userPassword;
+    }
+    public void setUserPassword(String userPassword) {
+        this.userPassword = userPassword;
+    }
+
+
     public String getUserEmailAddress() {
         throwIfUserProfileDoesNotExist();
         return userProfile.getEmail();
-    }
-
-    public String getUserPassword() {
-        throwIfUserProfileDoesNotExist();
-        return userProfile.getPassword();
     }
 
     public String getUserPhoneNumber() {
