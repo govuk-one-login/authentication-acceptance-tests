@@ -28,30 +28,14 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static uk.gov.di.test.utils.Constants.NEW_VALID_PASSWORD;
 
 public class LockoutsStepDef extends BasePage {
-    private final World world;
-
     public EnterYourPasswordPage enterYourPasswordPage;
     public CrossPageFlows crossPageFlows;
     public CheckYourEmailPage checkYourEmailPage = new CheckYourEmailPage();
     public CheckYourPhonePage checkYourPhonePage = new CheckYourPhonePage();
-    public EnterYourEmailAddressToSignInPage enterYourEmailAddressToSignInPage =
-            new EnterYourEmailAddressToSignInPage();
-    public CreateOrSignInPage createOrSignInPage = new CreateOrSignInPage();
-    public EnterYourEmailAddressPage enterYourEmailAddressPage = new EnterYourEmailAddressPage();
-    public ChooseHowToGetSecurityCodesPage chooseHowToGetSecurityCodesPage =
-            new ChooseHowToGetSecurityCodesPage();
-    public EnterYourMobilePhoneNumberPage enterYourMobilePhoneNumberPage =
-            new EnterYourMobilePhoneNumberPage();
-    RpStubPage rpStubPage = new RpStubPage();
-    public FinishCreatingYourAccountPage finishCreatingYourAccountPage =
-            new FinishCreatingYourAccountPage();
-    public YouHaveAGOVUKOneLoginPage youHaveAGOVUKOneLoginPage = new YouHaveAGOVUKOneLoginPage();
     public LockoutPage lockoutPage = new LockoutPage();
     public ResetYourPasswordPage resetYourPasswordPage = new ResetYourPasswordPage();
-    public UserInformationPage userInformationPage = new UserInformationPage();
 
     public LockoutsStepDef(World world) {
-        this.world = world;
         this.enterYourPasswordPage = new EnterYourPasswordPage(world);
         this.crossPageFlows = new CrossPageFlows(world);
     }
@@ -104,17 +88,18 @@ public class LockoutsStepDef extends BasePage {
 
     @Given("the user {string} is on the blocked page for entering too many incorrect passwords")
     public void theUserIsOnBlockedPageForEnteringTooManyIncorrectPasswords(String emailAddress) {
-        rpStubPage.goToRpStub();
-        rpStubPage.useDefaultOptionsAndContinue();
-        setAnalyticsCookieTo(false);
-        waitForPageLoad("Create your GOV.UK One Login or sign in");
-        createOrSignInPage.clickSignInButton();
-        waitForPageLoad("Enter your email address to sign in");
-        enterYourEmailAddressToSignInPage.enterEmailAddressAndContinue(
-                System.getenv().get(emailAddress));
-        waitForPageLoad("Enter your password");
-        enterYourPasswordPage.enterIncorrectPasswordNumberOfTimes(6);
-        waitForPageLoad("You entered the wrong password too many times");
+        throw new RuntimeException("Need to implement new-style user flows for this");
+//        rpStubPage.goToRpStub();
+//        rpStubPage.useDefaultOptionsAndContinue();
+//        setAnalyticsCookieTo(false);
+//        waitForPageLoad("Create your GOV.UK One Login or sign in");
+//        createOrSignInPage.clickSignInButton();
+//        waitForPageLoad("Enter your email address to sign in");
+//        enterYourEmailAddressToSignInPage.enterEmailAddressAndContinue(
+//                System.getenv().get(emailAddress));
+//        waitForPageLoad("Enter your password");
+//        enterYourPasswordPage.enterIncorrectPasswordNumberOfTimes(6);
+//        waitForPageLoad("You entered the wrong password too many times");
     }
 
     @Then("the user resets their password")
@@ -132,18 +117,19 @@ public class LockoutsStepDef extends BasePage {
 
     @And("the block is lifted and the user {string} can login")
     public void theBlockIsLiftedAndTheUserCanLogin(String emailAddress) {
-        rpStubPage.goToRpStub();
-        rpStubPage.useDefaultOptionsAndContinue();
-        setAnalyticsCookieTo(false);
-        waitForPageLoad("Create your GOV.UK One Login or sign in");
-        createOrSignInPage.clickSignInButton();
-        waitForPageLoad("Enter your email address to sign in");
-        enterYourEmailAddressToSignInPage.enterEmailAddressAndContinue(
-                System.getenv().get(emailAddress));
-        waitForPageLoad("Enter your password");
-        enterYourPasswordPage.enterNewPasswordAndContinue();
-        waitForPageLoad("Check your phone");
-        checkYourPhonePage.enterCorrectPhoneCodeAndContinue();
-        waitForPageLoad("Example - GOV.UK - User Info");
+        throw new RuntimeException("Need to implement new-style user flows for this");
+//        rpStubPage.goToRpStub();
+//        rpStubPage.useDefaultOptionsAndContinue();
+//        setAnalyticsCookieTo(false);
+//        waitForPageLoad("Create your GOV.UK One Login or sign in");
+//        createOrSignInPage.clickSignInButton();
+//        waitForPageLoad("Enter your email address to sign in");
+//        enterYourEmailAddressToSignInPage.enterEmailAddressAndContinue(
+//                System.getenv().get(emailAddress));
+//        waitForPageLoad("Enter your password");
+//        enterYourPasswordPage.enterNewPasswordAndContinue();
+//        waitForPageLoad("Check your phone");
+//        checkYourPhonePage.enterCorrectPhoneCodeAndContinue();
+//        waitForPageLoad("Example - GOV.UK - User Info");
     }
 }

@@ -65,7 +65,7 @@ public class SupportStepDef extends BasePage {
     public void theUserReceivesConfirmationThatTheirMessageHasBeenSent() {
         assertTrue(supportPage.isSuccessMessageDisplayed());
         closeActiveTab();
-        ArrayList<String> tabs = new ArrayList<String>(Driver.get().getWindowHandles());
+        ArrayList<String> tabs = new ArrayList<>(Driver.get().getWindowHandles());
         Driver.get().switchTo().window(tabs.get(0)); // switch back to main tab
     }
 }

@@ -78,11 +78,6 @@ public class LoginStepDef extends BasePage {
         createOrSignInPage.clickSignInButton();
     }
 
-    @And("user enters {string} email address")
-    public void userEntersEmailAddress(String email) {
-        enterYourEmailAddressToSignInPage.enterEmailAddressAndContinue(System.getenv().get(email));
-    }
-
     @And("the user enters their email address")
     @And("the user enters the email address")
     public void theUserEntersTheirEmailAddress() {
@@ -91,8 +86,9 @@ public class LoginStepDef extends BasePage {
 
     @And("user enters the same email address {string} for reauth as they used for login")
     public void userEntersSameEmailAddressForReauth(String email) {
-        reenterYourSignInDetailsToContinuePage.enterEmailAddressAndContinue(
-                System.getenv().get(email));
+        throw new RuntimeException("Need to implement new-style user flows for this");
+//        reenterYourSignInDetailsToContinuePage.enterEmailAddressAndContinue(
+//                System.getenv().get(email));
     }
 
     @When("the user enters an invalid email address")
@@ -152,12 +148,6 @@ public class LoginStepDef extends BasePage {
     @Then("the user is prompted for their password in Welsh")
     public void theUserIsPromptedForTheirPasswordInWelsh() {
         assertEquals("Rhowch eich cyfrinair - GOV.UK One Login", Driver.get().getTitle());
-    }
-
-    @When("user enters {string} email address in Welsh")
-    public void userEntersEmailAddressInWelsh(String email) {
-        enterYourEmailAddressToSignInPage.enterEmailAddressAndContinueWelsh(
-                System.getenv().get(email));
     }
 
     @When("the user enters their email address in Welsh")
@@ -362,16 +352,5 @@ public class LoginStepDef extends BasePage {
     @And("the owner of the incorrect email address is not blocked from reauthenticating")
     public void theUserIsAbleToReauthWithoutBeingBlocked() {
         crossPageFlows.successfulReauth("sms", "TEST_USER_REAUTH_SMS_9");
-    }
-
-    @When("the user enters {string} email address, password and six digit SMS OTP")
-    public void theUserGoesThroughSmsSignInJourney(String email) {
-        theUserSelectsSignIn();
-        waitForPageLoad("Enter your email");
-        enterYourEmailAddressToSignInPage.enterEmailAddressAndContinue(System.getenv().get(email));
-        waitForPageLoad("Enter your password");
-        enterYourPasswordPage.enterCorrectPasswordAndContinue();
-        waitForPageLoad("Check your phone");
-        checkYourPhonePage.enterCorrectPhoneCodeAndContinue();
     }
 }

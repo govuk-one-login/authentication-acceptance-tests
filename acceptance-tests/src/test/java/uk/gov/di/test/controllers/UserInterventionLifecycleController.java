@@ -3,6 +3,7 @@ package uk.gov.di.test.controllers;
 import uk.gov.di.test.entity.UserInterventions;
 import uk.gov.di.test.entity.UserProfile;
 import uk.gov.di.test.utils.Crypto;
+import uk.gov.di.test.utils.Environment;
 
 public class UserInterventionLifecycleController {
     private static volatile UserInterventionLifecycleController instance;
@@ -22,7 +23,7 @@ public class UserInterventionLifecycleController {
         return instance;
     }
 
-    protected static final String ENVIRONMENT = System.getenv().get("ENVIRONMENT");
+    private static final String ENVIRONMENT = Environment.getOrThrow("ENVIRONMENT");
 
     private static final DynamoDbController dynamoDbController = DynamoDbController.getInstance();
 

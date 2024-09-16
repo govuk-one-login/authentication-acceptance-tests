@@ -14,11 +14,12 @@ public class ReenterYourSignInDetailsToContinuePage extends BasePage {
     }
 
     public void enterSameIncorrectEmailAddressesNumberOfTimes(Integer numberOfTimes) {
-        for (int index = 0; index < numberOfTimes; index++) {
-            int count = index + 1;
-            enterEmailAddressAndContinue(System.getenv().get("TEST_USER_REAUTH_SMS_9"));
-            System.out.println("Wrong email entry count: " + count);
-        }
+        throw new RuntimeException("Need to implement new-style user flows for this");
+//        for (int index = 0; index < numberOfTimes; index++) {
+//            int count = index + 1;
+//            enterEmailAddressAndContinue(System.getenv().get("TEST_USER_REAUTH_SMS_9"));
+//            System.out.println("Wrong email entry count: " + count);
+//        }
     }
 
     public void enterDifferentIncorrectEmailAddressesNumberOfTimes(Integer numberOfTimes) {

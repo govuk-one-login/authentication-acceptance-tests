@@ -23,7 +23,7 @@ public class UserInterventionStepDef {
     }
 
     @Given("the user has a {intervention} intervention")
-    public void andHasAnIntervention(String intervention) throws NoSuchAlgorithmException {
+    public void andHasAnIntervention(String intervention) {
         if (world.userProfile == null || world.userCredentials == null) {
             throw new RuntimeException("User profile or credentials do not exist");
         }

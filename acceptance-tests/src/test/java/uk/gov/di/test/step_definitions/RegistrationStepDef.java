@@ -165,49 +165,6 @@ public class RegistrationStepDef extends BasePage {
                 INTERNATIONAL_MOBILE_PHONE_NUMBER_VALID);
     }
 
-    @Given(
-            "a user has selected text message as their auth method and has moved on to the next page")
-    public void aUserHasSelectedAnAuthMethodAndHasMovedOnToTheNextPage() {
-        String emailAddress = System.getenv().get("TEST_USER_STATE_PRESERVATION_EMAIL1");
-        String password = System.getenv().get("TEST_USER_PASSWORD");
-        rpStubPage.goToRpStub();
-        rpStubPage.useDefaultOptionsAndContinue();
-        waitForPageLoad("Create your GOV.UK One Login or sign in");
-        createOrSignInPage.clickCreateAGovUkOneLoginButton();
-        waitForPageLoad("Enter your email address");
-        enterYourEmailAddressPage.enterEmailAddressAndContinue(emailAddress);
-        waitForPageLoad("Check your email");
-        checkYourEmailPage.enterCorrectEmailCodeAndContinue();
-        waitForPageLoad("Create your password");
-        createYourPasswordPage.enterBothPasswordsAndContinue(password, password);
-        waitForPageLoad("Choose how to get security codes");
-        assertFalse(chooseHowToGetSecurityCodesPage.getTextMessageRadioButtonStatus());
-        assertFalse(chooseHowToGetSecurityCodesPage.getAuthAppRadioButtonStatus());
-        chooseHowToGetSecurityCodesPage.selectAuthMethodAndContinue("Text message");
-        waitForPageLoad("Enter your mobile phone number");
-    }
-
-    @Given("a user has selected auth app as their auth method and has moved on to the next page")
-    public void aUserHasSelectedAuthAppAsTheirAuthMethodAndHasMovedOnToTheNextPage() {
-        String emailAddress = System.getenv().get("TEST_USER_STATE_PRESERVATION_EMAIL2");
-        String password = System.getenv().get("TEST_USER_PASSWORD");
-        rpStubPage.goToRpStub();
-        rpStubPage.useDefaultOptionsAndContinue();
-        waitForPageLoad("Create your GOV.UK One Login or sign in");
-        createOrSignInPage.clickCreateAGovUkOneLoginButton();
-        waitForPageLoad("Enter your email address");
-        enterYourEmailAddressPage.enterEmailAddressAndContinue(emailAddress);
-        waitForPageLoad("Check your email");
-        checkYourEmailPage.enterCorrectEmailCodeAndContinue();
-        waitForPageLoad("Create your password");
-        createYourPasswordPage.enterBothPasswordsAndContinue(password, password);
-        waitForPageLoad("Choose how to get security codes");
-        assertFalse(chooseHowToGetSecurityCodesPage.getTextMessageRadioButtonStatus());
-        assertFalse(chooseHowToGetSecurityCodesPage.getAuthAppRadioButtonStatus());
-        chooseHowToGetSecurityCodesPage.selectAuthMethodAndContinue("Auth app");
-        waitForPageLoad("Set up an authenticator app");
-    }
-
     @And("their previously chosen text message auth method remains selected")
     public void theirPreviouslySelectedTextMessageAuthMethodRemainsSelected() {
         waitForPageLoad("Choose how to get security codes");

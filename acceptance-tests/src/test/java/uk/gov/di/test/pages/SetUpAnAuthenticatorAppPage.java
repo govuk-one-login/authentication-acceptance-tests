@@ -22,10 +22,10 @@ public class SetUpAnAuthenticatorAppPage extends BasePage {
         new WebDriverWait(Driver.get(), DEFAULT_PAGE_LOAD_WAIT_TIME)
                 .until(ExpectedConditions.visibilityOf(Driver.get().findElement(secretKeyField)));
         List<WebElement> secretKeyComponents = Driver.get().findElements(secretKeyBlocks);
-        String secretKeyText = "";
+        StringBuilder secretKeyText = new StringBuilder();
         for (int i = 1; i < secretKeyComponents.size(); i++) {
-            secretKeyText = secretKeyText + secretKeyComponents.get(i).getText();
+            secretKeyText.append(secretKeyComponents.get(i).getText());
         }
-        return secretKeyText;
+        return secretKeyText.toString();
     }
 }

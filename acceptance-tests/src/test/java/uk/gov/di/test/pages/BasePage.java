@@ -95,16 +95,12 @@ public class BasePage {
 
     protected boolean isLinkTextDisplayedImmediately(String linkText) {
         switchDefaultTimeout("off");
-        List elements =
+        List<WebElement> elements =
                 Driver.get()
                         .findElements(
                                 By.xpath("//*[text()[normalize-space() = '" + linkText + "']]"));
         switchDefaultTimeout("on");
-        if (elements.size() > 0) {
-            return true;
-        } else {
-            return false;
-        }
+        return !elements.isEmpty();
     }
 
     public void waitForThisErrorMessage(String expectedMessage) {
@@ -160,7 +156,7 @@ public class BasePage {
     }
 
     public void switchToTabByIndex(Integer idx) {
-        ArrayList<String> tabs = new ArrayList<String>(Driver.get().getWindowHandles());
+        ArrayList<String> tabs = new ArrayList<>(Driver.get().getWindowHandles());
         Driver.get().switchTo().window(tabs.get(idx));
     }
 
@@ -168,6 +164,7 @@ public class BasePage {
         Set<String> allTabs = Driver.get().getWindowHandles();
         for (String tab : allTabs) {
             String title = Driver.get().switchTo().window(tab).getTitle();
+            assert title != null;
             if (title.contains(titleToSwitchTo)) {
                 break;
             }

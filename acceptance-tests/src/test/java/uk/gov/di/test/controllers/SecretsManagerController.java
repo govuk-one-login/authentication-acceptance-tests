@@ -6,6 +6,9 @@ import com.google.common.cache.LoadingCache;
 import software.amazon.awssdk.services.secretsmanager.SecretsManagerClient;
 import uk.gov.di.test.utils.Environment;
 
+import javax.annotation.ParametersAreNonnullByDefault;
+
+@ParametersAreNonnullByDefault
 public class SecretsManagerController {
     private static volatile SecretsManagerController instance;
 
@@ -20,9 +23,9 @@ public class SecretsManagerController {
         cache = CacheBuilder.newBuilder()
                 .maximumSize(1000)
                 .build(
-                        new CacheLoader<String, String>() {
+                        new CacheLoader<>() {
                             @Override
-                            public String load(String key) throws Exception {
+                            public String load(String key) {
                                 return secretsManagerClient.getSecretValue(r -> r.secretId(secretPrefix + key)).secretString();
                             }
                         });

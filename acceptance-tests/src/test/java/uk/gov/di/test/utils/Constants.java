@@ -4,6 +4,7 @@ public final class Constants {
 
 
     public static final String INVALID_EMAIL = "joe.bloggs";
+    public static final String NON_EXISTANT_EMAIL = "does-not-exist@baddomain.null.local";
 
     public static final Integer DEFAULT_PASSWORD_LENGTH = 10;
     public static final String WEAK_PASSWORD = "password1";
