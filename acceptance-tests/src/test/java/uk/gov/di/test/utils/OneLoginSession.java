@@ -19,7 +19,7 @@ public class OneLoginSession {
                     sessionId = split[0];
                     clientSessionID = split[1];
                     break;
-                case "persistent-session-id":
+                case "di-persistent-session-id":
                     persistentSessionId = cookie.getValue();
                     break;
                 case "lng":

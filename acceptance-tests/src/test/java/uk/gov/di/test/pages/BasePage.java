@@ -120,10 +120,7 @@ public class BasePage {
                 .until(
                         ExpectedConditions.visibilityOf(
                                 findElement(
-                                                By.xpath(
-                                                        "//li/a[text() = '"
-                                                                + expectedMessage
-                                                                + "']"))));
+                                        By.xpath("//li/a[text() = '" + expectedMessage + "']"))));
     }
 
     public void waitForThisText(String expectedText) {
@@ -131,10 +128,8 @@ public class BasePage {
                 .until(
                         ExpectedConditions.visibilityOf(
                                 findElement(
-                                                By.xpath(
-                                                        "//*[contains(text(), '"
-                                                                + expectedText
-                                                                + "')]"))));
+                                        By.xpath(
+                                                "//*[contains(text(), '" + expectedText + "')]"))));
     }
 
     protected void pressBack() {
@@ -142,8 +137,7 @@ public class BasePage {
     }
 
     protected void selectLinkByText(String linkText) {
-        findElement(By.xpath("//*[text()[normalize-space() = '" + linkText + "']]"))
-                .click();
+        findElement(By.xpath("//*[text()[normalize-space() = '" + linkText + "']]")).click();
     }
 
     protected void clearFieldAndEnter(By ele, String text) {
