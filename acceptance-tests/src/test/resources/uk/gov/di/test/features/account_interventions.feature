@@ -158,7 +158,7 @@ Feature: Account interventions
     When the user enters the security code from the auth app
     Then the user is taken to the "Your GOV.UK One Login has been permanently locked" page
 
-  @locked @build-sp-fail
+  @locked @build-sp
   Scenario: Sms user cannot change their password when they have a permanently locked account
     Given the user comes from the stub relying party with options: "2fa-on"
     When the user is taken to the "Create your GOV.UK One Login or sign in" page
@@ -261,7 +261,7 @@ Feature: Account interventions
     Then the user is returned to the service
     And the user clicks logout
 
-  @reset_password @build-sp-fail
+  @reset_password @build-sp
   Scenario: Auth app user with a password reset intervention on their account is able to use the I have forgotten my password link
     Given the user comes from the stub relying party with options: "default"
     When the user is taken to the "Create your GOV.UK One Login or sign in" page
