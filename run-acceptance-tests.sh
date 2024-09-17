@@ -10,23 +10,18 @@ DOCKER_BASE=docker-compose
 SSM_VARS_PATH="/acceptance-tests/$ENVIRONMENT"
 TESTDIR="/test"
 
-CUCUMBER_OPTIONS=""
-
-EXPORT_ENV=0
-LOCAL=0
+WRITE_ENV=0
+USE_SSM=0
 while getopts "lret:" opt; do
   case ${opt} in
   l)
-    LOCAL=1
+    USE_SSM=0
     ;;
   r)
-    LOCAL=0
+    USE_SSM=1
     ;;
   e)
-    EXPORT_ENV=1
-    ;;
-  t)
-    CUCUMBER_OPTIONS="${CUCUMBER_OPTIONS} --tags ${OPTARG}"
+    WRITE_ENV=1
     ;;
   *)
     usage
@@ -35,46 +30,33 @@ while getopts "lret:" opt; do
   esac
 done
 
+export USE_SSM
+
 echo "Running in $ENVIRONMENT environment..."
 
-function get_env_vars_from_SSM() {
+function write_env_file() {
 
   echo "Getting environment variables from SSM ... "
-  if [ ${EXPORT_ENV} == "1" ]; then
-    dt="$(date "+%Y%m%d-%H%M%S")"
-    envfile="${dt}.env"
-    echo "Exporting environment variables from SSM to file ${envfile} ... "
-    {
-      echo "#"
-      echo "# Acceptance test config exported from ${SSM_VARS_PATH} at ${dt}"
-      echo "#"
-      echo "# Rename to .env to use for testing"
-      echo "#"
-    } >>"${envfile}"
-  fi
 
-  envars="$(aws ssm get-parameters-by-path --with-decryption --path /acceptance-tests/dev |
+  dt="$(date "+%Y%m%d-%H%M%S")"
+  envfile="${dt}.env"
+  echo "Exporting environment variables from SSM to file ${envfile} ... "
+  {
+    echo "#"
+    echo "# Acceptance test config exported from ${SSM_VARS_PATH} at ${dt}"
+    echo "#"
+    echo "# Rename to .env to use for testing"
+    echo "#"
+  } >>"${envfile}"
+
+  envars="$(aws ssm get-parameters-by-path --with-decryption --path "/acceptance-tests/${ENVIRONMENT}" |
     jq -r '.Parameters[] | [(.Name|split("/")|last), .Value]|@tsv')"
 
   while IFS=$'\t' read -r name value; do
-    export "${name}"="${value}"
-    if [ ${EXPORT_ENV} == "1" ]; then
-      echo "${name}=${value}" >>"${envfile}"
-    fi
+    echo "${name}=${value}" >>"${envfile}"
   done <<<"${envars}"
-  echo "Exported SSM parameters completed."
-
-  if [ ${EXPORT_ENV} == "1" ]; then
-    exit 0
-  fi
-}
-
-function export_selenium_config() {
-  export SELENIUM_URL="http://localhost:4444/wd/hub"
-  export SELENIUM_BROWSER=chrome
-  export SELENIUM_LOCAL=true
-  export SELENIUM_HEADLESS=true
-  export DEBUG_MODE=false
+  echo "Exporting SSM parameters completed."
+  exit 0
 }
 
 echo -e "Building di-authentication-acceptance-tests..."
@@ -94,24 +76,18 @@ fi
 
 echo -e "Running di-authentication-acceptance-tests..."
 
-export_selenium_config
-
 export AWS_PROFILE="gds-di-development-admin"
 # shellcheck source=./scripts/export_aws_creds.sh
 source "${DIR}/scripts/export_aws_creds.sh"
 
-if [ $LOCAL == "1" ]; then
-  # shellcheck source=/dev/null
-  set -o allexport && source .env && set +o allexport
-else
-  get_env_vars_from_SSM
+if [ "${WRITE_ENV}" == "1" ]; then
+  write_env_file
 fi
 
-#if [ $LOCAL == "1" ]; then
-#  ./reset-test-data.sh -l $ENVIRONMENT
-#else
-#  ./reset-test-data.sh -r $ENVIRONMENT
-#fi
+if [ "${USE_SSM}" == "0" ]; then
+  # shellcheck source=/dev/null
+  set -o allexport && source .env && set +o allexport
+fi
 
 ./gradlew cucumber
 

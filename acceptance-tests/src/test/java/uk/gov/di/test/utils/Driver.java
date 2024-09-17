@@ -6,6 +6,7 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.remote.RemoteWebDriver;
+import uk.gov.di.test.services.TestConfigurationService;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -14,15 +15,18 @@ import java.time.Duration;
 import static java.time.temporal.ChronoUnit.SECONDS;
 
 public class Driver {
+    protected static final TestConfigurationService TEST_CONFIG_SERVICE =
+            TestConfigurationService.getInstance();
+
     protected static final String FIREFOX_BROWSER = "firefox";
     protected static final String SELENIUM_URL =
-            System.getenv().getOrDefault("SELENIUM_URL", "http://localhost:4445/wd/hub");
+            TEST_CONFIG_SERVICE.getOrDefault("SELENIUM_URL", "http://localhost:4445/wd/hub");
     protected static final Boolean SELENIUM_LOCAL =
-            Boolean.parseBoolean(System.getenv().getOrDefault("SELENIUM_LOCAL", "true"));
+            Boolean.parseBoolean(TEST_CONFIG_SERVICE.getOrDefault("SELENIUM_LOCAL", "true"));
     protected static final Boolean SELENIUM_HEADLESS =
-            Boolean.parseBoolean(System.getenv().getOrDefault("SELENIUM_HEADLESS", "false"));
+            Boolean.parseBoolean(TEST_CONFIG_SERVICE.getOrDefault("SELENIUM_HEADLESS", "false"));
     protected static final String SELENIUM_BROWSER =
-            System.getenv().getOrDefault("SELENIUM_BROWSER", FIREFOX_BROWSER);
+            TEST_CONFIG_SERVICE.getOrDefault("SELENIUM_BROWSER", FIREFOX_BROWSER);
     protected static WebDriver driver;
     private static InheritableThreadLocal<WebDriver> driverPool = new InheritableThreadLocal<>();
 

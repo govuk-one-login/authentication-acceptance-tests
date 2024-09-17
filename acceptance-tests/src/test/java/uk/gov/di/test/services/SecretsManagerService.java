@@ -1,4 +1,4 @@
-package uk.gov.di.test.controllers;
+package uk.gov.di.test.services;
 
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
@@ -9,12 +9,12 @@ import uk.gov.di.test.utils.Environment;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 @ParametersAreNonnullByDefault
-public class SecretsManagerController {
-    private static volatile SecretsManagerController instance;
+public class SecretsManagerService {
+    private static volatile SecretsManagerService instance;
 
     private final SecretsManagerClient secretsManagerClient;
     private final LoadingCache<String, String> cache;
-    private final String secretPrefix;
+    private final String deploySecretPrefix;
 
     public static class SecretRetrievalException extends RuntimeException {
         public SecretRetrievalException(String key, Exception e) {
@@ -22,9 +22,9 @@ public class SecretsManagerController {
         }
     }
 
-    private SecretsManagerController() {
+    private SecretsManagerService() {
         secretsManagerClient = SecretsManagerClient.builder().build();
-        secretPrefix = String.format("/deploy/%s/", Environment.getOrThrow("ENVIRONMENT"));
+        deploySecretPrefix = String.format("/deploy/%s/", Environment.getOrThrow("ENVIRONMENT"));
 
         cache =
                 CacheBuilder.newBuilder()
@@ -40,11 +40,11 @@ public class SecretsManagerController {
                                 });
     }
 
-    public static SecretsManagerController getInstance() {
+    public static SecretsManagerService getInstance() {
         if (instance == null) {
-            synchronized (SecretsManagerController.class) {
+            synchronized (SecretsManagerService.class) {
                 if (instance == null) {
-                    instance = new SecretsManagerController();
+                    instance = new SecretsManagerService();
                 }
             }
         }
@@ -60,6 +60,6 @@ public class SecretsManagerController {
     }
 
     public String getDeploySecretValue(String secretName) {
-        return getSecretValue(secretPrefix + secretName);
+        return getSecretValue(deploySecretPrefix + secretName);
     }
 }

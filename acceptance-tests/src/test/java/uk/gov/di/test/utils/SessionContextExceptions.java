@@ -15,7 +15,7 @@ public class SessionContextExceptions {
                 WebDriverException lastException) {
             super(
                     String.format(
-                            "%s | Current Page URL: %s | Current Page Title: %s | Time: %s | Session: %s",
+                            "%s | Current Page URL: \"%s\" | Current Page Title: \"%s\" | Time: %s | Session: %s",
                             message,
                             currentDriverUrl,
                             currentDriverTitle,
@@ -34,7 +34,7 @@ public class SessionContextExceptions {
                 OneLoginSession session,
                 WebDriverException e) {
             super(
-                    String.format("Error when loading page with title: %s", titleContains),
+                    String.format("Error when loading page with title: \"%s\"", titleContains),
                     currentDriverUrl,
                     currentDriverTitle,
                     startTime,

@@ -17,9 +17,7 @@ public class CheckYourPhonePage extends BasePage {
     }
 
     public void enterCorrectPhoneCodeAndContinue() {
-        enterPhoneCode(
-                secretsManagerController.getDeploySecretValue(
-                        "test_client_verify_phone_number_otp"));
+        enterPhoneCode(SSM_SERVICE.getDeploySecretValue("test_client_verify_phone_number_otp"));
         findAndClickContinue();
     }
 

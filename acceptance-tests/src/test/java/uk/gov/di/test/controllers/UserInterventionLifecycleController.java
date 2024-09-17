@@ -2,6 +2,7 @@ package uk.gov.di.test.controllers;
 
 import uk.gov.di.test.entity.UserInterventions;
 import uk.gov.di.test.entity.UserProfile;
+import uk.gov.di.test.services.DynamoDbService;
 import uk.gov.di.test.utils.Crypto;
 import uk.gov.di.test.utils.Environment;
 
@@ -23,7 +24,7 @@ public class UserInterventionLifecycleController {
         return instance;
     }
 
-    private static final DynamoDbController dynamoDbController = DynamoDbController.getInstance();
+    private static final DynamoDbService DYNAMO_DB_SERVICE = DynamoDbService.getInstance();
 
     public static UserInterventions buildBaseInterventions(UserProfile userProfile) {
         String b64Digest =
@@ -76,14 +77,14 @@ public class UserInterventionLifecycleController {
     }
 
     public void putInterventionInDynamoDb(UserInterventions userInterventions) {
-        dynamoDbController.putUserInterventions(userInterventions);
+        DYNAMO_DB_SERVICE.putUserInterventions(userInterventions);
     }
 
     public void updateInterventionInDynamoDb(UserInterventions userInterventions) {
-        dynamoDbController.updateUserInterventions(userInterventions);
+        DYNAMO_DB_SERVICE.updateUserInterventions(userInterventions);
     }
 
     public void deleteInterventionInDynamoDb(UserInterventions userInterventions) {
-        dynamoDbController.deleteUserInterventions(userInterventions);
+        DYNAMO_DB_SERVICE.deleteUserInterventions(userInterventions);
     }
 }

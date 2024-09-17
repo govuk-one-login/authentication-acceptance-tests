@@ -271,16 +271,14 @@ public class CrossPageFlows extends BasePage {
                 waitForPageLoad("Set up an authenticator app");
 
                 authAppSecretKey =
-                        secretsManagerController.getDeploySecretValue(
-                                "test_user_pw_reset_auth_app_secret");
+                        SSM_SERVICE.getDeploySecretValue("test_user_pw_reset_auth_app_secret");
                 setUpAnAuthenticatorAppPage.iCannotScanQrCodeClick();
                 authAppSecretKey = setUpAnAuthenticatorAppPage.getSecretFieldText();
                 assertEquals(32, setUpAnAuthenticatorAppPage.getSecretFieldText().length());
 
                 if (authAppSecretKey == null) {
                     authAppSecretKey =
-                            secretsManagerController.getDeploySecretValue(
-                                    "test_user_pw_reset_auth_app_secret");
+                            SSM_SERVICE.getDeploySecretValue("test_user_pw_reset_auth_app_secret");
                 }
                 setUpAnAuthenticatorAppPage.enterCorrectAuthAppCodeAndContinue(authAppSecretKey);
                 break;

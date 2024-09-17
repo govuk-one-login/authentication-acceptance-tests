@@ -1,4 +1,4 @@
-package uk.gov.di.test.controllers;
+package uk.gov.di.test.services;
 
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbEnhancedClient;
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbTable;
@@ -9,18 +9,18 @@ import uk.gov.di.test.entity.UserInterventions;
 import uk.gov.di.test.entity.UserProfile;
 import uk.gov.di.test.utils.Environment;
 
-public class DynamoDbController {
-    private static volatile DynamoDbController instance;
+public class DynamoDbService {
+    private static volatile DynamoDbService instance;
 
-    private DynamoDbController() {
+    private DynamoDbService() {
         // Private constructor to prevent direct instantiation
     }
 
-    public static DynamoDbController getInstance() {
+    public static DynamoDbService getInstance() {
         if (instance == null) {
-            synchronized (DynamoDbController.class) {
+            synchronized (DynamoDbService.class) {
                 if (instance == null) {
-                    instance = new DynamoDbController();
+                    instance = new DynamoDbService();
                 }
             }
         }

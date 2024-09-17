@@ -5,7 +5,8 @@ import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import uk.gov.di.test.controllers.SecretsManagerController;
+import uk.gov.di.test.services.SecretsManagerService;
+import uk.gov.di.test.services.TestConfigurationService;
 import uk.gov.di.test.utils.*;
 
 import java.net.URI;
@@ -19,16 +20,16 @@ import java.util.Set;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class BasePage {
+    protected static final TestConfigurationService TEST_CONFIG_SERVICE =
+            TestConfigurationService.getInstance();
+
     protected static final String RP_URL =
-            System.getenv()
-                    .getOrDefault(
-                            "RP_URL",
-                            "https://acceptance-test-rp-build.build.stubs.account.gov.uk/");
+            TEST_CONFIG_SERVICE.getOrDefault(
+                    "RP_URL", "https://acceptance-test-rp-build.build.stubs.account.gov.uk/");
 
     protected static final Duration DEFAULT_PAGE_LOAD_WAIT_TIME = Duration.ofSeconds(20);
     protected static final Duration NO_PAGE_LOAD_WAIT_TIME = Duration.ofSeconds(0);
-    protected static final SecretsManagerController secretsManagerController =
-            SecretsManagerController.getInstance();
+    protected static final SecretsManagerService SSM_SERVICE = SecretsManagerService.getInstance();
 
     protected static WebDriver driver;
     protected static Scenario scenario;

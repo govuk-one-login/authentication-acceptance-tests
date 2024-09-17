@@ -215,8 +215,7 @@ public class LoginStepDef extends BasePage {
 
     @When("the user adds the secret key on the screen to their auth app")
     public void theNewUserAddTheSecretKeyOnTheScreenToTheirAuthApp() {
-        authAppSecretKey =
-                secretsManagerController.getDeploySecretValue("test_user_pw_reset_auth_app_secret");
+        authAppSecretKey = SSM_SERVICE.getDeploySecretValue("test_user_pw_reset_auth_app_secret");
         setUpAnAuthenticatorAppPage.iCannotScanQrCodeClick();
         authAppSecretKey = setUpAnAuthenticatorAppPage.getSecretFieldText();
         assertEquals(32, setUpAnAuthenticatorAppPage.getSecretFieldText().length());
@@ -226,8 +225,7 @@ public class LoginStepDef extends BasePage {
     public void theNewUserEntersTheSecurityCodeFromTheAuthApp() {
         if (authAppSecretKey == null) {
             authAppSecretKey =
-                    secretsManagerController.getDeploySecretValue(
-                            "test_user_pw_reset_auth_app_secret");
+                    SSM_SERVICE.getDeploySecretValue("test_user_pw_reset_auth_app_secret");
         }
         setUpAnAuthenticatorAppPage.enterCorrectAuthAppCodeAndContinue(authAppSecretKey);
     }

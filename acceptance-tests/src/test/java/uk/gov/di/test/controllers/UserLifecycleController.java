@@ -5,6 +5,8 @@ import uk.gov.di.test.entity.MFAMethod;
 import uk.gov.di.test.entity.TermsAndConditions;
 import uk.gov.di.test.entity.UserCredentials;
 import uk.gov.di.test.entity.UserProfile;
+import uk.gov.di.test.services.DynamoDbService;
+import uk.gov.di.test.services.SecretsManagerService;
 import uk.gov.di.test.utils.Crypto;
 import uk.gov.di.test.utils.Environment;
 import uk.gov.di.test.utils.PasswordGenerator;
@@ -19,8 +21,8 @@ import static uk.gov.di.test.utils.Constants.UK_MOBILE_PHONE_NUMBER;
 
 public class UserLifecycleController {
     private static volatile UserLifecycleController instance;
-    protected static volatile SecretsManagerController secretsManagerController =
-            SecretsManagerController.getInstance();
+    protected static volatile SecretsManagerService secretsManagerService =
+            SecretsManagerService.getInstance();
 
     private final Long instantiationMillis;
     private final Map<String, String> baseEmailFormatValues;
@@ -50,7 +52,7 @@ public class UserLifecycleController {
     }
 
     private static final PasswordGenerator passwordGenerator = new PasswordGenerator();
-    private static final DynamoDbController dynamoDbController = DynamoDbController.getInstance();
+    private static final DynamoDbService DYNAMO_DB_SERVICE = DynamoDbService.getInstance();
 
     private static final AtomicLong emailSubAddressCounter = new AtomicLong();
 
@@ -59,7 +61,7 @@ public class UserLifecycleController {
         values.put("counter", String.valueOf(emailSubAddressCounter.getAndIncrement()));
         StringSubstitutor sub = new StringSubstitutor(values);
         return sub.replace(
-                secretsManagerController.getSecretValue("acceptance-test-email-address-format"));
+                secretsManagerService.getSecretValue("acceptance-test-email-address-format"));
     }
 
     private TermsAndConditions buildTermsAndConditions(String version) {
@@ -68,7 +70,7 @@ public class UserLifecycleController {
 
     public TermsAndConditions buildTermsAndConditions() {
         return buildTermsAndConditions(
-                secretsManagerController.getDeploySecretValue(
+                secretsManagerService.getDeploySecretValue(
                         "test_user_latest_terms_and_conditions"));
     }
 
@@ -89,8 +91,7 @@ public class UserLifecycleController {
 
     public MFAMethod buildAppMfaMethod() {
         return buildAppMfaMethod(
-                secretsManagerController.getDeploySecretValue(
-                        "test_user_pw_reset_auth_app_secret"));
+                secretsManagerService.getDeploySecretValue("test_user_pw_reset_auth_app_secret"));
     }
 
     public static String generateValidPassword() {
@@ -106,15 +107,15 @@ public class UserLifecycleController {
     }
 
     public void putUserProfileToDynamodb(UserProfile userProfile) {
-        dynamoDbController.putUserProfile(userProfile);
+        DYNAMO_DB_SERVICE.putUserProfile(userProfile);
     }
 
     public void updateUserProfileInDynamodb(UserProfile userProfile) {
-        dynamoDbController.updateUserProfile(userProfile);
+        DYNAMO_DB_SERVICE.updateUserProfile(userProfile);
     }
 
     public void deleteUserProfileFromDynamodb(UserProfile userProfile) {
-        dynamoDbController.deleteUserProfile(userProfile);
+        DYNAMO_DB_SERVICE.deleteUserProfile(userProfile);
     }
 
     public UserProfile buildNewUserProfile() {
@@ -153,15 +154,15 @@ public class UserLifecycleController {
     }
 
     public void putUserCredentialsToDynamodb(UserCredentials userCredentials) {
-        dynamoDbController.putUserCredentials(userCredentials);
+        DYNAMO_DB_SERVICE.putUserCredentials(userCredentials);
     }
 
     public void updateUserCredentialsInDynamodb(UserCredentials userCredentials) {
-        dynamoDbController.updateUserCredentials(userCredentials);
+        DYNAMO_DB_SERVICE.updateUserCredentials(userCredentials);
     }
 
     public void deleteUserCredentialsFromDynamodb(UserCredentials userCredentials) {
-        dynamoDbController.deleteUserCredentials(userCredentials);
+        DYNAMO_DB_SERVICE.deleteUserCredentials(userCredentials);
     }
 
     public UserCredentials buildNewUserCredentials(UserProfile userProfile, String userPassword) {
