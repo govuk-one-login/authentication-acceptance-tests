@@ -15,7 +15,8 @@ public class CheckYourEmailPage extends BasePage {
 
     @When("the user enters the correct email code and clicks continue")
     public void enterCorrectEmailCodeAndContinue() {
-        enterEmailCode(secretsManagerController.getSecretValue("test_client_verify_email_otp"));
+        enterEmailCode(
+                secretsManagerController.getDeploySecretValue("test_client_verify_email_otp"));
         findAndClickContinue();
     }
 

@@ -23,14 +23,12 @@ public class UserInterventionLifecycleController {
         return instance;
     }
 
-    private static final String ENVIRONMENT = Environment.getOrThrow("ENVIRONMENT");
-
     private static final DynamoDbController dynamoDbController = DynamoDbController.getInstance();
 
     public static UserInterventions buildBaseInterventions(UserProfile userProfile) {
         String b64Digest =
                 Crypto.generatePairwiseIdDigest(
-                        String.format("identity.%s.account.gov.uk", ENVIRONMENT),
+                        Environment.getOrThrow("SECTOR_HOST"),
                         userProfile.getSubjectID(),
                         userProfile.getSalt());
         String pairwiseID = String.format("urn:fdc:gov.uk:2022:%s", b64Digest);

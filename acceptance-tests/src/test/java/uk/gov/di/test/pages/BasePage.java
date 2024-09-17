@@ -1,25 +1,19 @@
 package uk.gov.di.test.pages;
 
 import io.cucumber.java.Scenario;
-import org.openqa.selenium.By;
-import org.openqa.selenium.Cookie;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.OutputType;
-import org.openqa.selenium.TakesScreenshot;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import uk.gov.di.test.controllers.SecretsManagerController;
-import uk.gov.di.test.utils.AuthAppStub;
-import uk.gov.di.test.utils.AuthenticationJourneyPages;
-import uk.gov.di.test.utils.Driver;
+import uk.gov.di.test.utils.*;
 
 import java.net.URI;
 import java.time.Duration;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -42,43 +36,60 @@ public class BasePage {
     public By authAppCodeField = By.id("code");
 
     protected void waitForPageLoad(String titleContains) {
-        new WebDriverWait(Driver.get(), DEFAULT_PAGE_LOAD_WAIT_TIME)
-                .until(ExpectedConditions.titleContains(titleContains));
+        Instant start = Instant.now();
+        try {
+            new WebDriverWait(Driver.get(), DEFAULT_PAGE_LOAD_WAIT_TIME)
+                    .until(ExpectedConditions.titleContains(titleContains));
+        } catch (WebDriverException e) {
+            throw new SessionContextExceptions.WaitForPageLoadException(
+                    titleContains,
+                    Driver.get().getCurrentUrl(),
+                    Driver.get().getTitle(),
+                    start,
+                    new OneLoginSession(Driver.get().manage().getCookies()),
+                    e);
+        }
         waitForReadyStateComplete();
     }
 
     protected void waitForPageLoadThenValidate(AuthenticationJourneyPages page) {
         waitForPageLoad(page.getShortTitle());
-        assertEquals(page.getRoute(), URI.create(Driver.get().getCurrentUrl()).getPath());
+        assertEquals(
+                page.getRoute(),
+                URI.create(Objects.requireNonNull(Driver.get().getCurrentUrl())).getPath());
         assertEquals(page.getFullTitle(), Driver.get().getTitle());
     }
 
-    protected void findAndClickContinue() {
+    protected WebElement findElement(By selector) {
         waitForReadyStateComplete();
-        WebElement continueButton =
-                Driver.get()
-                        .findElement(By.xpath("//button[text()[normalize-space() = 'Continue']]"));
-        continueButton.click();
+        try {
+            return Driver.get().findElement(selector);
+        } catch (WebDriverException e) {
+            throw new SessionContextExceptions.FindElementException(
+                    selector.toString(),
+                    Driver.get().getCurrentUrl(),
+                    Driver.get().getTitle(),
+                    new OneLoginSession(Driver.get().manage().getCookies()),
+                    e);
+        }
+    }
+
+    protected void findAndClickButton(By selector) {
+        waitForReadyStateComplete();
+        WebElement button = findElement(selector);
+        button.click();
+    }
+
+    protected void findAndClickContinue() {
+        findAndClickButton(By.xpath("//button[text()[normalize-space() = 'Continue']]"));
     }
 
     protected void findAndClickContinueWelsh() {
-        waitForReadyStateComplete();
-        WebElement continueButton =
-                Driver.get()
-                        .findElement(By.cssSelector("#main-content > div > div > form > button"));
-        continueButton.click();
+        findAndClickButton(By.cssSelector("#main-content > div > div > form > button"));
     }
 
     protected void findAndClickButtonByText(String buttonText) {
-        waitForReadyStateComplete();
-        WebElement button =
-                Driver.get()
-                        .findElement(
-                                By.xpath(
-                                        "//button[text()[normalize-space() = '"
-                                                + buttonText
-                                                + "']]"));
-        button.click();
+        findAndClickButton(By.xpath("//button[text()[normalize-space() = '" + buttonText + "']]"));
     }
 
     public void switchDefaultTimeout(String status) {
@@ -108,8 +119,7 @@ public class BasePage {
         new WebDriverWait(Driver.get(), DEFAULT_PAGE_LOAD_WAIT_TIME)
                 .until(
                         ExpectedConditions.visibilityOf(
-                                Driver.get()
-                                        .findElement(
+                                findElement(
                                                 By.xpath(
                                                         "//li/a[text() = '"
                                                                 + expectedMessage
@@ -120,8 +130,7 @@ public class BasePage {
         new WebDriverWait(Driver.get(), DEFAULT_PAGE_LOAD_WAIT_TIME)
                 .until(
                         ExpectedConditions.visibilityOf(
-                                Driver.get()
-                                        .findElement(
+                                findElement(
                                                 By.xpath(
                                                         "//*[contains(text(), '"
                                                                 + expectedText
@@ -129,26 +138,25 @@ public class BasePage {
     }
 
     protected void pressBack() {
-        Driver.get().findElement(By.xpath("//a[text()[normalize-space() = 'Back']]")).click();
+        findElement(By.xpath("//a[text()[normalize-space() = 'Back']]")).click();
     }
 
     protected void selectLinkByText(String linkText) {
-        Driver.get()
-                .findElement(By.xpath("//*[text()[normalize-space() = '" + linkText + "']]"))
+        findElement(By.xpath("//*[text()[normalize-space() = '" + linkText + "']]"))
                 .click();
     }
 
     protected void clearFieldAndEnter(By ele, String text) {
-        Driver.get().findElement(ele).clear();
-        Driver.get().findElement(ele).sendKeys(text);
+        findElement(ele).clear();
+        findElement(ele).sendKeys(text);
     }
 
     public Boolean isErrorSummaryDisplayed() {
-        return Driver.get().findElement(By.className("govuk-error-summary")).isDisplayed();
+        return findElement(By.className("govuk-error-summary")).isDisplayed();
     }
 
     public String getPageHeading() {
-        return Driver.get().findElement(By.cssSelector("h1")).getText().trim();
+        return findElement(By.cssSelector("h1")).getText().trim();
     }
 
     public void checkForNewTabAndGoToIt(String newTabTitle) {
@@ -190,7 +198,7 @@ public class BasePage {
 
     public void waitUntilElementClickable(By by) {
         new WebDriverWait(Driver.get(), DEFAULT_PAGE_LOAD_WAIT_TIME)
-                .until(ExpectedConditions.elementToBeClickable(Driver.get().findElement(by)));
+                .until(ExpectedConditions.elementToBeClickable(findElement(by)));
     }
 
     public void waitUntilElementClickable(WebElement element) {

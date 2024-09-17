@@ -18,7 +18,8 @@ public class CheckYourPhonePage extends BasePage {
 
     public void enterCorrectPhoneCodeAndContinue() {
         enterPhoneCode(
-                secretsManagerController.getSecretValue("test_client_verify_phone_number_otp"));
+                secretsManagerController.getDeploySecretValue(
+                        "test_client_verify_phone_number_otp"));
         findAndClickContinue();
     }
 

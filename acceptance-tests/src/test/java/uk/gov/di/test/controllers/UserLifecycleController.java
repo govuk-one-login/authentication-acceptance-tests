@@ -58,7 +58,8 @@ public class UserLifecycleController {
         Map<String, String> values = new HashMap<>(baseEmailFormatValues);
         values.put("counter", String.valueOf(emailSubAddressCounter.getAndIncrement()));
         StringSubstitutor sub = new StringSubstitutor(values);
-        return sub.replace(secretsManagerController.getSecretValue("test-email-address-format"));
+        return sub.replace(
+                secretsManagerController.getSecretValue("acceptance-test-email-address-format"));
     }
 
     private TermsAndConditions buildTermsAndConditions(String version) {
@@ -67,7 +68,8 @@ public class UserLifecycleController {
 
     public TermsAndConditions buildTermsAndConditions() {
         return buildTermsAndConditions(
-                secretsManagerController.getSecretValue("test_user_latest_terms_and_conditions"));
+                secretsManagerController.getDeploySecretValue(
+                        "test_user_latest_terms_and_conditions"));
     }
 
     public TermsAndConditions buildOldTermsAndConditions() {
@@ -87,7 +89,8 @@ public class UserLifecycleController {
 
     public MFAMethod buildAppMfaMethod() {
         return buildAppMfaMethod(
-                secretsManagerController.getSecretValue("test_user_pw_reset_auth_app_secret"));
+                secretsManagerController.getDeploySecretValue(
+                        "test_user_pw_reset_auth_app_secret"));
     }
 
     public static String generateValidPassword() {

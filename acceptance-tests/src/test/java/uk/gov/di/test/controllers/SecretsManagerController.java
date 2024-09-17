@@ -16,6 +16,12 @@ public class SecretsManagerController {
     private final LoadingCache<String, String> cache;
     private final String secretPrefix;
 
+    public static class SecretRetrievalException extends RuntimeException {
+        public SecretRetrievalException(String key, Exception e) {
+            super(String.format("Failed to retrieve secret '%s'", key), e);
+        }
+    }
+
     private SecretsManagerController() {
         secretsManagerClient = SecretsManagerClient.builder().build();
         secretPrefix = String.format("/deploy/%s/", Environment.getOrThrow("ENVIRONMENT"));
@@ -28,7 +34,7 @@ public class SecretsManagerController {
                                     @Override
                                     public String load(String key) {
                                         return secretsManagerClient
-                                                .getSecretValue(r -> r.secretId(secretPrefix + key))
+                                                .getSecretValue(r -> r.secretId(key))
                                                 .secretString();
                                     }
                                 });
@@ -45,11 +51,15 @@ public class SecretsManagerController {
         return instance;
     }
 
-    public String getSecretValue(String secretName) {
+    public String getSecretValue(String key) {
         try {
-            return cache.get(secretName);
+            return cache.get(key);
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new SecretRetrievalException(key, e);
         }
+    }
+
+    public String getDeploySecretValue(String secretName) {
+        return getSecretValue(secretPrefix + secretName);
     }
 }
