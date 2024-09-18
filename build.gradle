@@ -16,10 +16,26 @@ sonar {
 }
 
 spotless {
+    String ref = project.properties["ratchetFrom"]
+    if (ref != null) {
+        ref = ref.trim()
+        if (ref.length() > 0) {
+            ratchetFrom ref
+        }
+    }
     java {
         target '**/*.java'
         googleJavaFormat('1.11.0').aosp()
         importOrder '', 'javax', 'java', '\\#'
+    }
+    groovyGradle {
+        target "**/*.gradle"
+        greclipse().configFile("tools/spotless-gradle.properties")
+    }
+
+    format 'styling', {
+        target '**/*.md', '**/*.yml', '**/*.yaml', '**/*.json'
+        prettier()
     }
 }
 

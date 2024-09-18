@@ -1,3 +1,9 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
 .gradle/
 .idea/
 .vscode/
@@ -11,4 +17,6 @@ bin/
 *.bat
 node_modules/
 target/
-.DS_Store
+failures.json
+assets/*
+.LCKbuild.gradle~
