@@ -24,7 +24,8 @@ public class RpStubStepDef extends BasePage {
         }
     }
 
-    public void doRpStubAndWaitForSignInPage(String rpStubOptions, Throwable lastException) {
+    public void doRpStubAndWaitForSignInPage(
+            String rpStubOptions, Throwable lastException, String pageTitle) {
         if (lastException != null) {
             Integer currentRetries = retryHelper.getAndIncrement("come-from-rp-stub");
             if (currentRetries > RETRY_LIMIT) {
@@ -37,19 +38,22 @@ public class RpStubStepDef extends BasePage {
             rpStubPage.goToRpStub();
             rpStubPage.selectRpOptionsByIdAndContinue(rpStubOptions);
             setAnalyticsCookieTo(false);
-            waitForPageLoad("Create your GOV.UK One Login or sign in");
+            waitForPageLoad(pageTitle);
         } catch (SessionContextExceptions.SessionContextException | WebDriverException e) {
-            doRpStubAndWaitForSignInPage(rpStubOptions, e);
+            doRpStubAndWaitForSignInPage(rpStubOptions, e, pageTitle);
         }
-    }
-
-    public void doRpStubAndWaitForSignInPage(String rpStubOptions) {
-        doRpStubAndWaitForSignInPage(rpStubOptions, null);
     }
 
     @When("the user comes from the stub relying party with options: {string}")
     public void theExistingUserVisitsTheStubRelyingParty(String options) {
-        doRpStubAndWaitForSignInPage(options);
+        doRpStubAndWaitForSignInPage(options, null, "Create your GOV.UK One Login or sign in");
+    }
+
+    @When(
+            "the user comes from the stub relying party with options: {string} and the user is taken to the {string} page")
+    public void theExistingUserVisitsTheStubRelyingPartyAndReturnsToPage(
+            String option, String pageTitle) {
+        doRpStubAndWaitForSignInPage(option, null, pageTitle);
     }
 
     @Then("the user is forcibly logged out")
