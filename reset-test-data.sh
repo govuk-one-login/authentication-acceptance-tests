@@ -2,7 +2,7 @@
 
 set -eu
 
-DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1 && pwd)"
+DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" > /dev/null 2>&1 && pwd)"
 
 ENVIRONMENT=${2:-build}
 
@@ -16,16 +16,16 @@ source ./scripts/reset-account-management.sh
 LOCAL=0
 while getopts "lr" opt; do
   case ${opt} in
-  l)
-    LOCAL=1
-    ;;
-  r)
-    LOCAL=0
-    ;;
-  *)
-    usage
-    exit 1
-    ;;
+    l)
+      LOCAL=1
+      ;;
+    r)
+      LOCAL=0
+      ;;
+    *)
+      usage
+      exit 1
+      ;;
   esac
 done
 
@@ -41,17 +41,18 @@ if [ "${LOCAL}" == "1" ]; then
     export AWS_PROFILE="di-auth-staging-admin"
   else
     if [ "${ENVIRONMENT}" == "authdev1" ] || [ "${ENVIRONMENT}" == "authdev2" ] || [ "${ENVIRONMENT}" == "dev" ]; then
-        export AWS_PROFILE="di-auth-development-admin"
+      export AWS_PROFILE="di-auth-development-admin"
     else
-        export AWS_PROFILE="gds-di-development-admin"
+      export AWS_PROFILE="gds-di-development-admin"
     fi
   fi
   # shellcheck source=./scripts/export_aws_creds.sh
   source "${DIR}/scripts/export_aws_creds.sh"
 fi
 
-resetTestUsers
-resetAccountInterventions
-#reAuthentication
-2hrLockoutPeriod
-resetAccountManagement
+resetTestUsers &
+resetAccountInterventions &
+#reAuthentication &
+2hrLockoutPeriod &
+resetAccountManagement &
+wait

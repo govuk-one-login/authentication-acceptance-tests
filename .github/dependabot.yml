@@ -7,5 +7,13 @@ updates:
       time: "03:00"
     open-pull-requests-limit: 10
     target-branch: main
-    labels:
-      - dependabot
+    commit-message:
+      prefix: BAU
+  - package-ecosystem: github-actions
+    directory: "/"
+    open-pull-requests-limit: 100
+    target-branch: main
+    schedule:
+      interval: weekly
+    commit-message:
+      prefix: BAU

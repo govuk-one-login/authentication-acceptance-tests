@@ -1,0 +1,60 @@
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.6.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-added-large-files
+      - id: mixed-line-ending
+      - id: check-executables-have-shebangs
+
+  - repo: local
+    hooks:
+      - id: gradle-spotless-apply
+        name: Run Gradle Spotless Apply
+        language: script
+        entry: ./scripts/pre-commit__spotless-apply.sh
+        types_or:
+          - java
+          - groovy
+          - yaml
+          - markdown
+          - json
+        pass_filenames: false
+        require_serial: true
+
+  - repo: https://github.com/antonbabenko/pre-commit-terraform
+    rev: v1.92.1
+    hooks:
+      - id: terraform_fmt
+
+  - repo: https://github.com/shellcheck-py/shellcheck-py
+    rev: a23f6b85d0fdd5bb9d564e2579e678033debbdff # v0.10.0.1 # pragma: allowlist secret
+    hooks:
+      - id: shellcheck
+        exclude: ./gradlew
+        args:
+          - --external-sources
+
+  - repo: https://github.com/rhysd/actionlint
+    rev: v1.7.0
+    hooks:
+      - id: actionlint
+
+  - repo: local
+    hooks:
+      - id: shfmt
+        name: shfmt (shell scripts)
+        language: golang
+        additional_dependencies:
+          - mvdan.cc/sh/v3/cmd/shfmt@v3.8.0
+        entry: shfmt
+        types:
+          - file
+          - shell
+        exclude_types:
+          - zsh
+        args:
+          - -w # write
+          - -s # simplify
+          - -l # list files that differ
