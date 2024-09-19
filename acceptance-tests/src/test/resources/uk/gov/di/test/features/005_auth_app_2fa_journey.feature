@@ -56,5 +56,5 @@ Feature: Authentication App Journeys
     Then the user is taken to the "Enter your password" page
     When the user enters their password
     Then the user is returned to the service
-    When the user comes from the stub relying party with options: "2fa-on"
+    When the user comes from the stub relying party with options: "2fa-on" and the user is taken to the "Enter a security code to continue" page
     Then the user is taken to the "Enter a security code to continue" page
