@@ -63,7 +63,7 @@ if [ -d "$TESTDIR" ]; then
   cd $TESTDIR
 fi
 
-./gradlew clean spotlessApply build -x :acceptance-tests:test
+./gradlew clean build -x :acceptance-tests:test -x spotlessApply -x spotlessCheck
 
 build_and_test_exit_code=$?
 if [ ${build_and_test_exit_code} -ne 0 ]; then
@@ -82,7 +82,7 @@ set -o allexport && source .env && set +o allexport
 
 ./reset-test-data.sh -l "${ENVIRONMENT}"
 
-./gradlew cucumber
+./gradlew cucumber -x spotlessApply -x spotlessCheck
 
 build_and_test_exit_code=$?
 
