@@ -17,9 +17,6 @@ repos:
         types_or:
           - java
           - groovy
-          - yaml
-          - markdown
-          - json
         pass_filenames: false
         require_serial: true
 
@@ -27,6 +24,20 @@ repos:
     rev: v1.92.1
     hooks:
       - id: terraform_fmt
+
+  - repo: local
+    hooks:
+      - id: shfmt
+        name: shfmt (shell scripts)
+        language: golang
+        additional_dependencies:
+          - mvdan.cc/sh/v3/cmd/shfmt@v3.8.0
+        entry: shfmt -w -s -l
+        types:
+          - file
+          - shell
+        exclude_types:
+          - zsh
 
   - repo: https://github.com/shellcheck-py/shellcheck-py
     rev: a23f6b85d0fdd5bb9d564e2579e678033debbdff # v0.10.0.1 # pragma: allowlist secret
@@ -40,21 +51,3 @@ repos:
     rev: v1.7.0
     hooks:
       - id: actionlint
-
-  - repo: local
-    hooks:
-      - id: shfmt
-        name: shfmt (shell scripts)
-        language: golang
-        additional_dependencies:
-          - mvdan.cc/sh/v3/cmd/shfmt@v3.8.0
-        entry: shfmt
-        types:
-          - file
-          - shell
-        exclude_types:
-          - zsh
-        args:
-          - -w # write
-          - -s # simplify
-          - -l # list files that differ

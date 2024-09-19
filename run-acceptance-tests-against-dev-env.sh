@@ -5,8 +5,8 @@ set -eu
 envvalue=("sandpit" "authdev1" "authdev2" "dev")
 
 select word in "${envvalue[@]}"; do
-  if [[ -z "$word" ]]; then
-    printf '"%s" is not a valid choice\n' "$REPLY" >&2
+  if [[ -z ${word} ]]; then
+    printf '"%s" is not a valid choice\n' "${REPLY}" >&2
   else
     user_in="$((REPLY - 1))"
     break
@@ -22,12 +22,11 @@ for ((i = 0; i < ${#envvalue[@]}; ++i)); do
   fi
 done
 
-
 DOCKER_BASE=docker-compose
 SSM_VARS_PATH="/acceptance-tests/$ENVIRONMENT"
 TESTDIR="/test"
 
-echo "Running in $ENVIRONMENT environment..."
+echo "Running in ${ENVIRONMENT} environment..."
 
 function start_docker_services() {
   ${DOCKER_BASE} up --build -d --wait --no-deps --quiet-pull "$@"
@@ -41,10 +40,10 @@ function get_env_vars_from_SSM() {
 
   echo "Getting environment variables from SSM ... "
 
-  VARS="$(aws ssm get-parameters-by-path --with-decryption --path $SSM_VARS_PATH | jq -r '.Parameters[] | @base64')"
+  VARS="$(aws ssm get-parameters-by-path --with-decryption --path "${SSM_VARS_PATH}" | jq -r '.Parameters[] | @base64')"
   for VAR in $VARS; do
-    VAR_NAME="$(echo ${VAR} | base64 -d | jq -r '.Name / "/" | .[3]')"
-    export "$VAR_NAME"="$(echo ${VAR} | base64 -d | jq -r '.Value')"
+    VAR_NAME="$(echo "${VAR}" | base64 -d | jq -r '.Name / "/" | .[3]')"
+    export "$VAR_NAME"="$(echo "${VAR}" | base64 -d | jq -r '.Value')"
   done
   echo "Exported SSM parameters completed."
 }
@@ -60,11 +59,11 @@ function export_selenium_config() {
 echo -e "Building di-authentication-acceptance-tests..."
 
 if [ -d "$TESTDIR" ]; then
-  echo "Changing to $TESTDIR"
+  echo "Changing to ${TESTDIR}"
   cd $TESTDIR
 fi
 
-./gradlew clean spotlessApply build -x :acceptance-tests:test
+./gradlew clean build -x :acceptance-tests:test -x spotlessApply -x spotlessCheck
 
 build_and_test_exit_code=$?
 if [ ${build_and_test_exit_code} -ne 0 ]; then
@@ -78,14 +77,12 @@ start_docker_services selenium-firefox selenium-chrome
 
 export_selenium_config
 
+# shellcheck source=/dev/null
 set -o allexport && source .env && set +o allexport
 
+./reset-test-data.sh -l "${ENVIRONMENT}"
 
-
-./reset-test-data.sh -l "$ENVIRONMENT"
-
-
-./gradlew cucumber
+./gradlew cucumber -x spotlessApply -x spotlessCheck
 
 build_and_test_exit_code=$?
 

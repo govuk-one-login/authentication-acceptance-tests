@@ -32,11 +32,6 @@ spotless {
         target "**/*.gradle"
         greclipse().configFile("tools/spotless-gradle.properties")
     }
-
-    format 'styling', {
-        target '**/*.md', '**/*.yml', '**/*.yaml', '**/*.json'
-        prettier()
-    }
 }
 
 repositories {

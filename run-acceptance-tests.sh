@@ -2,11 +2,10 @@
 
 set -eu
 
-DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1 && pwd)"
+DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" > /dev/null 2>&1 && pwd)"
 
-ENVIRONMENT=${2:-local}
+ENVIRONMENT="${2:-local}"
 
-DOCKER_BASE=docker-compose
 SSM_VARS_PATH="/acceptance-tests/$ENVIRONMENT"
 TESTDIR="/test"
 
@@ -14,23 +13,23 @@ EXPORT_ENV=0
 LOCAL=0
 while getopts "lre" opt; do
   case ${opt} in
-  l)
-    LOCAL=1
-    ;;
-  r)
-    LOCAL=0
-    ;;
-  e)
-    EXPORT_ENV=1
-    ;;
-  *)
-    usage
-    exit 1
-    ;;
+    l)
+      LOCAL=1
+      ;;
+    r)
+      LOCAL=0
+      ;;
+    e)
+      EXPORT_ENV=1
+      ;;
+    *)
+      usage
+      exit 1
+      ;;
   esac
 done
 
-echo "Running in $ENVIRONMENT environment..."
+echo "Running in ${ENVIRONMENT} environment..."
 
 function get_env_vars_from_SSM() {
 
@@ -45,17 +44,17 @@ function get_env_vars_from_SSM() {
       echo "#"
       echo "# Rename to .env to use for testing"
       echo "#"
-    } >>$envfile
+    } >> "${envfile}"
   fi
 
-  VARS="$(aws ssm get-parameters-by-path --with-decryption --path $SSM_VARS_PATH | jq -r '.Parameters[] | @base64')"
+  VARS="$(aws ssm get-parameters-by-path --with-decryption --path "${SSM_VARS_PATH}" | jq -r '.Parameters[] | @base64')"
   for VAR in $VARS; do
-    VAR_NAME="$(echo ${VAR} | base64 -d | jq -r '.Name / "/" | .[3]')"
-    VAR_NAME_VALUE=$VAR_NAME="$(echo ${VAR} | base64 -d | jq -r '.Value')"
+    VAR_NAME="$(echo "${VAR}" | base64 -d | jq -r '.Name / "/" | .[3]')"
+    VAR_NAME_VALUE=$VAR_NAME="$(echo "${VAR}" | base64 -d | jq -r '.Value')"
     if [ $EXPORT_ENV == "1" ]; then
-      echo "$VAR_NAME_VALUE" >>$envfile
+      echo "$VAR_NAME_VALUE" >> "${envfile}"
     fi
-    export "$VAR_NAME"="$(echo ${VAR} | base64 -d | jq -r '.Value')"
+    export "$VAR_NAME"="$(echo "${VAR}" | base64 -d | jq -r '.Value')"
   done
   echo "Exported SSM parameters completed."
 
@@ -75,11 +74,11 @@ function export_selenium_config() {
 echo -e "Building di-authentication-acceptance-tests..."
 
 if [ -d "$TESTDIR" ]; then
-  echo "Changing to $TESTDIR"
+  echo "Changing to ${TESTDIR}"
   cd $TESTDIR
 fi
 
-./gradlew clean spotlessApply build -x :acceptance-tests:test
+./gradlew clean build -x :acceptance-tests:test -x spotlessApply -x spotlessCheck
 
 build_and_test_exit_code=$?
 if [ ${build_and_test_exit_code} -ne 0 ]; then
@@ -101,12 +100,12 @@ else
 fi
 
 if [ $LOCAL == "1" ]; then
-  ./reset-test-data.sh -l $ENVIRONMENT
+  ./reset-test-data.sh -l "${ENVIRONMENT}"
 else
-  ./reset-test-data.sh -r $ENVIRONMENT
+  ./reset-test-data.sh -r "${ENVIRONMENT}"
 fi
 
-./gradlew cucumber
+./gradlew cucumber -x spotlessApply -x spotlessCheck
 
 build_and_test_exit_code=$?
 
