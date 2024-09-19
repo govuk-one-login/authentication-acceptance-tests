@@ -26,13 +26,13 @@ public class RpStubStepDef extends BasePage {
     }
 
     public void doRpStubAndWaitForSignInPage(String rpStubOptions, Throwable lastException) {
-        Integer attempt = retryHelper.getAndIncrement("come-from-rp-stub");
-        if (attempt > RETRY_LIMIT) {
-            throw new RPStubRetryException(lastException);
-        }
-        if (attempt > 1) {
+        if (lastException != null) {
+            Integer currentRetries = retryHelper.getAndIncrement("come-from-rp-stub");
+            if (currentRetries > RETRY_LIMIT) {
+                throw new RPStubRetryException(lastException);
+            }
             Driver.get().manage().deleteAllCookies();
-            System.out.printf("Retrying RP stub, attempt %s%n", attempt);
+            System.out.printf("Retrying RP stub, retry %s of %s%n", currentRetries, RETRY_LIMIT);
         }
 
         try {
