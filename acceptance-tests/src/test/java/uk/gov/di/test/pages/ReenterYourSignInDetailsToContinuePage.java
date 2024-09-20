@@ -5,7 +5,7 @@ import org.openqa.selenium.By;
 public class ReenterYourSignInDetailsToContinuePage extends BasePage {
     By emailField = By.id("email");
     public static final String REAUTH_SIGN_IN_PAGE_HEADER =
-            "Re-enter your sign-in details to continue";
+            "Enter your sign in details for GOV.UK One Login again";
 
     public void enterEmailAddressAndContinue(String emailAddress) {
         waitForPage();

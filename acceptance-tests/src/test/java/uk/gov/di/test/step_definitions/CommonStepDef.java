@@ -23,6 +23,8 @@ public class CommonStepDef extends BasePage {
     public UserInformationPage userInformationPage = new UserInformationPage();
     public CrossPageFlows crossPageFlows = new CrossPageFlows();
 
+    String idToken;
+
     @Then("the user is taken to the {string} page")
     public void theUserIsTakenToThePage(String pageTitle) {
         waitForPageLoad(pageTitle);
@@ -96,6 +98,7 @@ public class CommonStepDef extends BasePage {
         pressBack();
     }
 
+    @Given("the {string} user {string} is signed in to their One Login account")
     @Given("the {string} user {string} is already signed in to their One Login account")
     public void theUserAlreadySignedIn(String userType, String emailAddress) {
         crossPageFlows.successfulSignIn(userType, emailAddress);
@@ -103,7 +106,12 @@ public class CommonStepDef extends BasePage {
 
     @When("the RP requires the user to reauthenticate")
     public void theRPRequiresTheUserToReauthenticate() {
-        String idToken = userInformationPage.getIdToken();
+        idToken = userInformationPage.getIdToken();
+        rpStubPage.reauthRequired(idToken);
+    }
+
+    @When("user attempts to restart their reauthentication again")
+    public void userAttemptsToRestartTheirReauthenticationAgain() {
         rpStubPage.reauthRequired(idToken);
     }
 

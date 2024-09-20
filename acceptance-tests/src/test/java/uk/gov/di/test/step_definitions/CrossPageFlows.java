@@ -109,7 +109,7 @@ public class CrossPageFlows extends BasePage {
         waitForPageLoad("Example - GOV.UK - User Info");
         String idToken = userInformationPage.getIdToken();
         rpStubPage.reauthRequired(idToken);
-        waitForPageLoad("Re-enter your sign-in details to continue");
+        waitForPageLoad("Enter your sign in details for GOV.UK One Login again");
         // enter original email address
         reenterYourSignInDetailsToContinuePage.enterEmailAddressAndContinue(
                 System.getenv().get(userEmailAddress));
