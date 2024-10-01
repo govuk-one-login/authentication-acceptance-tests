@@ -30,7 +30,7 @@ public class CrossPageFlows extends BasePage {
     public CheckYourPhonePage checkYourPhonePage = new CheckYourPhonePage();
     public EnterThe6DigitSecurityCodeShownInYourAuthenticatorAppPage
             enterThe6DigitSecurityCodeShownInYourAuthenticatorAppPage =
-                    new EnterThe6DigitSecurityCodeShownInYourAuthenticatorAppPage();
+            new EnterThe6DigitSecurityCodeShownInYourAuthenticatorAppPage();
     public GetSecurityCodePage getSecurityCodePage = new GetSecurityCodePage();
     public CheckYourEmailPage checkYourEmailPage = new CheckYourEmailPage();
     public ChooseHowToGetSecurityCodesPage chooseHowToGetSecurityCodesPage =
