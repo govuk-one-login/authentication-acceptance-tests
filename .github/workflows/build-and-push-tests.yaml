@@ -4,7 +4,7 @@ env:
   AWS_REGION: eu-west-2
 
 #Role to Assume is  dev-auth-deploy-pipeline githubaction Role
-#ECR repo is acceptance test ECR repo 
+#ECR repo is acceptance test ECR repo
 
 on:
   push:

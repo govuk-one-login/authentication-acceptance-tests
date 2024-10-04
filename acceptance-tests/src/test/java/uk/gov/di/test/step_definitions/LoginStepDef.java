@@ -34,7 +34,7 @@ public class LoginStepDef extends BasePage {
     public CreateOrSignInPage createOrSignInPage = new CreateOrSignInPage();
     public YouAskedToResendTheSecurityCodeTooManyTimesPage
             youAskedToResendTheSecurityCodeTooManyTimesPage =
-            new YouAskedToResendTheSecurityCodeTooManyTimesPage();
+                    new YouAskedToResendTheSecurityCodeTooManyTimesPage();
     public EnterYourEmailAddressPage enterYourEmailAddressPage = new EnterYourEmailAddressPage();
     public SetUpAnAuthenticatorAppPage setUpAnAuthenticatorAppPage =
             new SetUpAnAuthenticatorAppPage();
@@ -42,7 +42,7 @@ public class LoginStepDef extends BasePage {
             new ReenterYourSignInDetailsToContinuePage();
     public EnterThe6DigitSecurityCodeShownInYourAuthenticatorAppPage
             enterThe6DigitSecurityCodeShownInYourAuthenticatorAppPage =
-            new EnterThe6DigitSecurityCodeShownInYourAuthenticatorAppPage();
+                    new EnterThe6DigitSecurityCodeShownInYourAuthenticatorAppPage();
     public CrossPageFlows crossPageFlows = new CrossPageFlows();
 
     @When("the user enters their password which is on the top 100k password list")
@@ -344,7 +344,7 @@ public class LoginStepDef extends BasePage {
     @When(
             "user opens up new tab in the same browser and performs a silent log in and navigate back to the first tab")
     public void
-    userOpensUpAnotherTabInTheSameBrowserAndPerformsASilentLogInAndNavigateBackToTheFirstTab() {
+            userOpensUpAnotherTabInTheSameBrowserAndPerformsASilentLogInAndNavigateBackToTheFirstTab() {
         ((JavascriptExecutor) Driver.getDriver()).executeScript("window.open()");
         switchToTab(1);
         rpStubPage.goToRpStub();
