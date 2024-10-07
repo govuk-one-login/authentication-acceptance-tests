@@ -4,21 +4,11 @@ import io.cucumber.java.en.And;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.junit.jupiter.api.Assertions;
-import uk.gov.di.test.pages.BasePage;
-import uk.gov.di.test.pages.CheckYourEmailPage;
-import uk.gov.di.test.pages.CheckYourPhonePage;
-import uk.gov.di.test.pages.CreateOrSignInPage;
-import uk.gov.di.test.pages.EnterThe6DigitSecurityCodeShownInYourAuthenticatorAppPage;
-import uk.gov.di.test.pages.EnterYourEmailAddressPage;
-import uk.gov.di.test.pages.EnterYourEmailAddressToSignInPage;
-import uk.gov.di.test.pages.EnterYourPasswordPage;
-import uk.gov.di.test.pages.ReenterYourSignInDetailsToContinuePage;
-import uk.gov.di.test.pages.ResetYourPasswordPage;
-import uk.gov.di.test.pages.SetUpAnAuthenticatorAppPage;
-import uk.gov.di.test.pages.TermsAndConditionsPage;
-import uk.gov.di.test.pages.YouAskedToResendTheSecurityCodeTooManyTimesPage;
-import uk.gov.di.test.pages.YouveChangedHowYouGetSecurityCodesPage;
+import org.openqa.selenium.JavascriptExecutor;
+import uk.gov.di.test.pages.*;
 import uk.gov.di.test.utils.Driver;
+
+import java.util.ArrayList;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -30,6 +20,7 @@ import static uk.gov.di.test.utils.Constants.NEW_VALID_PASSWORD;
 import static uk.gov.di.test.utils.Constants.TOP_100K_PASSWORD;
 
 public class LoginStepDef extends BasePage {
+    RpStubPage rpStubPage = new RpStubPage();
     private String authAppSecretKey;
     public ResetYourPasswordPage resetYourPasswordPage = new ResetYourPasswordPage();
     public CheckYourEmailPage checkYourEmailPage = new CheckYourEmailPage();
@@ -348,5 +339,41 @@ public class LoginStepDef extends BasePage {
         enterYourPasswordPage.enterCorrectPasswordAndContinue();
         waitForPageLoad("Check your phone");
         checkYourPhonePage.enterCorrectPhoneCodeAndContinue();
+    }
+
+    @When(
+            "user opens up new tab in the same browser and performs a silent log in and navigate back to the first tab")
+    public void
+            userOpensUpAnotherTabInTheSameBrowserAndPerformsASilentLogInAndNavigateBackToTheFirstTab() {
+        ((JavascriptExecutor) Driver.getDriver()).executeScript("window.open()");
+        switchToTab(1);
+        rpStubPage.goToRpStub();
+        rpStubPage.selectRpOptionsByIdAndContinue("");
+        setAnalyticsCookieTo(false);
+        switchToTab(0);
+    }
+
+    @When("user opens up new tab and performs a silent log in")
+    public void userOpensUpNewTabAndPerformASilentLogIn() {
+        ((JavascriptExecutor) Driver.getDriver()).executeScript("window.open()");
+        switchToTab(1);
+        rpStubPage.goToRpStub();
+        rpStubPage.selectRpOptionsByIdAndContinue("");
+        setAnalyticsCookieTo(false);
+    }
+
+    @When("navigate back to the first tab")
+    public void navigateBackToTheFirstTab() {
+        switchToTab(0);
+    }
+
+    @When("navigate back to the second tab")
+    public void navigateBackToTheSecondTab() {
+        switchToTab(1);
+    }
+
+    public void switchToTab(int index) {
+        ArrayList<String> tabs = new ArrayList<String>(Driver.getDriver().getWindowHandles());
+        Driver.getDriver().switchTo().window(tabs.get(index));
     }
 }

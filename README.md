@@ -25,7 +25,7 @@ The configuration provided will connect to the build environment.
 
 #### Local .env Configuration
 
-To create a .env file based on the values in AWS SSM Parameter Store: 
+To create a .env file based on the values in AWS SSM Parameter Store:
 
 - Run `./run-acceptance-tests.sh -e`.  This will export a .env file with a timestamp.
 - Rename this file to `.env` before use.
@@ -78,11 +78,11 @@ Email and SMS OTP notifications will be sent to the email address and phone numb
 
 Email and SMS OTP notifications will be suppressed for [Frontend](https://github.com/alphagov/di-authentication-frontend), but not for [Account Management](https://github.com/alphagov/di-authentication-account-management).
 
-NOTES for now until further implementation (Ability to interact with the DB from the framework) takes place when debugging locally: 
+NOTES for now until further implementation (Ability to interact with the DB from the framework) takes place when debugging locally:
 - the TermsAndConditions version value for the tc test user will need to be reset to 1.0 in DynamoDB after running the test suite
 - the +lock2 test user will need deleting after running the test suite
 
-## Making changes 
+## Making changes
 
 Cucumber feature files live in the acceptance-tests [resources](acceptance-tests/src/test/resources/uk/gov/di/test/acceptance/) directory.
 

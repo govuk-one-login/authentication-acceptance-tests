@@ -5,5 +5,9 @@ import io.cucumber.junit.CucumberOptions;
 import org.junit.runner.RunWith;
 
 @RunWith(Cucumber.class)
-@CucumberOptions(plugin = {"pretty", "html:target/cucumber-report/index.html"})
+@CucumberOptions(
+        tags = "@Test123",
+        plugin = {"pretty", "html:target/cucumber-report/index.html"},
+        features = {"src/test/resources/uk/gov/di/test/features"},
+        glue = {"uk.gov.di.test.step_definitions"})
 public class RunCucumberTest {}

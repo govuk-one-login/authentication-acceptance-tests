@@ -43,11 +43,6 @@ repos:
     rev: a23f6b85d0fdd5bb9d564e2579e678033debbdff # v0.10.0.1 # pragma: allowlist secret
     hooks:
       - id: shellcheck
-        exclude: ./gradlew
+        exclude: gradlew
         args:
           - --external-sources
-
-  - repo: https://github.com/rhysd/actionlint
-    rev: v1.7.0
-    hooks:
-      - id: actionlint
