@@ -2,6 +2,7 @@
 plugins {
     id 'java'
     id 'maven-publish'
+    id "jacoco"
 }
 
 repositories {
@@ -81,5 +82,10 @@ task cucumber() {
                 no_of_threads
             ]
         }
+    }
+}
+jacocoTestReport {
+    reports {
+        xml.required = true
     }
 }
