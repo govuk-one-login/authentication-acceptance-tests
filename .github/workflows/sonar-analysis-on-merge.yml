@@ -6,6 +6,7 @@ on:
 
 jobs:
   run-code-analysis:
+    if: ${{ github.actor != 'dependabot[bot]' }}
     name: Build and analyze with Sonar
     runs-on: ubuntu-latest
     steps:
