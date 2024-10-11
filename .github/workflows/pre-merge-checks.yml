@@ -27,6 +27,7 @@ jobs:
         run: ./gradlew --no-daemon spotlessCheck -PratchetFrom=${{ github.event.pull_request.base.sha }} --stacktrace
 
   run-sonar-analysis:
+    if: ${{ github.actor != 'dependabot[bot]' }}
     name: Build and analyze with Sonar
     runs-on: ubuntu-latest
     steps:
