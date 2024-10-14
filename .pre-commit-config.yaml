@@ -28,6 +28,7 @@ repos:
   - repo: local
     hooks:
       - id: shfmt
+        exclude: gradlew
         name: shfmt (shell scripts)
         language: golang
         additional_dependencies:
