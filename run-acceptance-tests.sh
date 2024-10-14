@@ -4,23 +4,27 @@ set -eu
 
 DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" > /dev/null 2>&1 && pwd)"
 
-ENVIRONMENT="${2:-local}"
+export ENVIRONMENT=${2?Please provide the environment to run the tests against.}
 
 SSM_VARS_PATH="/acceptance-tests/$ENVIRONMENT"
-TESTDIR="/test"
+pushd "${DIR}" > /dev/null || exit 1
 
-EXPORT_ENV=0
-LOCAL=0
-while getopts "lre" opt; do
+WRITE_ENV=false
+USE_SSM=false
+LOCAL=true
+while getopts "lrset:" opt; do
   case ${opt} in
     l)
-      LOCAL=1
+      LOCAL=true
       ;;
     r)
-      LOCAL=0
+      LOCAL=false
+      ;;
+    s)
+      USE_SSM=true
       ;;
     e)
-      EXPORT_ENV=1
+      WRITE_ENV=true
       ;;
     *)
       usage
@@ -29,89 +33,66 @@ while getopts "lre" opt; do
   esac
 done
 
-echo "Running in ${ENVIRONMENT} environment..."
+export USE_SSM
 
-function get_env_vars_from_SSM() {
+echo "Running in $ENVIRONMENT environment..."
+
+function write_env_file() {
 
   echo "Getting environment variables from SSM ... "
-  if [ $EXPORT_ENV == "1" ]; then
-    dt="$(date "+%Y%m%d-%H%M%S")"
-    envfile="$dt.env"
-    echo "Exporting environment variables from SSM to file $envfile ... "
-    {
-      echo "#"
-      echo "# Acceptance test config exported from $SSM_VARS_PATH at $dt"
-      echo "#"
-      echo "# Rename to .env to use for testing"
-      echo "#"
-    } >> "${envfile}"
-  fi
 
-  VARS="$(aws ssm get-parameters-by-path --with-decryption --path "${SSM_VARS_PATH}" | jq -r '.Parameters[] | @base64')"
-  for VAR in $VARS; do
-    VAR_NAME="$(echo "${VAR}" | base64 -d | jq -r '.Name / "/" | .[3]')"
-    VAR_NAME_VALUE=$VAR_NAME="$(echo "${VAR}" | base64 -d | jq -r '.Value')"
-    if [ $EXPORT_ENV == "1" ]; then
-      echo "$VAR_NAME_VALUE" >> "${envfile}"
-    fi
-    export "$VAR_NAME"="$(echo "${VAR}" | base64 -d | jq -r '.Value')"
-  done
-  echo "Exported SSM parameters completed."
+  dt="$(date "+%Y%m%d-%H%M%S")"
+  envfile="${dt}.env"
+  echo "Exporting environment variables from SSM to file ${envfile} ... "
+  {
+    echo "#"
+    echo "# Acceptance test config exported from ${SSM_VARS_PATH} at ${dt}"
+    echo "#"
+    echo "# Rename to .env to use for testing"
+    echo "#"
+  } >> "${envfile}"
 
-  if [ $EXPORT_ENV == "1" ]; then
-    exit 0
-  fi
+  envars="$(aws ssm get-parameters-by-path --with-decryption --path "/acceptance-tests/${ENVIRONMENT}" \
+    | jq -r '.Parameters[] | [(.Name|split("/")|last), .Value]|@tsv')"
+
+  while IFS=$'\t' read -r name value; do
+    echo "${name}=${value}" >> "${envfile}"
+  done <<< "${envars}"
+  echo "Exporting SSM parameters completed."
+  exit 0
 }
 
-function export_selenium_config() {
-  export SELENIUM_URL="http://localhost:4444/wd/hub"
-  export SELENIUM_BROWSER=chrome
-  export SELENIUM_LOCAL=true
-  export SELENIUM_HEADLESS=true
-  export DEBUG_MODE=false
-}
+# shellcheck source=./scripts/check_aws_creds.sh
+source "${DIR}/scripts/check_aws_creds.sh"
+
+if [ "${WRITE_ENV}" == "true" ]; then
+  write_env_file
+fi
 
 echo -e "Building di-authentication-acceptance-tests..."
 
-if [ -d "$TESTDIR" ]; then
-  echo "Changing to ${TESTDIR}"
-  cd $TESTDIR
-fi
-
-./gradlew clean build -x :acceptance-tests:test -x spotlessApply -x spotlessCheck
-
-build_and_test_exit_code=$?
-if [ ${build_and_test_exit_code} -ne 0 ]; then
-  echo -e "acceptance-tests failed."
+if ! ./gradlew clean build -x :acceptance-tests:test -x spotlessApply -x spotlessCheck; then
+  echo -e "acceptance-tests build failed."
   exit 1
 fi
 
 echo -e "Running di-authentication-acceptance-tests..."
 
-export_selenium_config
-if [ $LOCAL == "1" ]; then
+if [ "${LOCAL}" == "true" ]; then
+  export SELENIUM_URL="http://localhost:4444/wd/hub"
+  export SELENIUM_BROWSER=chrome
+  export SELENIUM_LOCAL=true
+  export SELENIUM_HEADLESS=true
+  export DEBUG_MODE=false
+fi
+
+if [ -f ".env" ]; then
   # shellcheck source=/dev/null
   set -o allexport && source .env && set +o allexport
-else
-  export AWS_PROFILE="gds-di-development-admin"
-  # shellcheck source=./scripts/export_aws_creds.sh
-  source "${DIR}/scripts/export_aws_creds.sh"
-  get_env_vars_from_SSM
 fi
 
-if [ $LOCAL == "1" ]; then
-  ./reset-test-data.sh -l "${ENVIRONMENT}"
-else
-  ./reset-test-data.sh -r "${ENVIRONMENT}"
-fi
-
-./gradlew cucumber -x spotlessApply -x spotlessCheck
-
-build_and_test_exit_code=$?
-
-if [ ${build_and_test_exit_code} -ne 0 ]; then
-  echo -e "acceptance-tests failed."
-
-else
+if ./gradlew cucumber -x spotlessApply -x spotlessCheck; then
   echo -e "acceptance-tests SUCCEEDED."
+else
+  echo -e "acceptance-tests failed."
 fi
