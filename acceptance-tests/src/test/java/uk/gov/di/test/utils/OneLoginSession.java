@@ -6,6 +6,7 @@ import org.openqa.selenium.Cookie;
 import java.util.Set;
 
 public class OneLoginSession {
+
     private String sessionId;
     private String clientSessionID;
     private String persistentSessionId;
@@ -15,22 +16,15 @@ public class OneLoginSession {
     public OneLoginSession(Set<Cookie> cookies) {
         for (Cookie cookie : cookies) {
             switch (cookie.getName()) {
-                case "gs":
+                case "gs" -> {
                     String[] split = cookie.getValue().split("\\.");
                     sessionId = split[0];
                     clientSessionID = split[1];
-                    break;
-                case "di-persistent-session-id":
-                    persistentSessionId = cookie.getValue();
-                    break;
-                case "lng":
-                    languageFromCookie = cookie.getValue();
-                    break;
-                case "bsid":
-                    browserSessionId = cookie.getValue();
-                    break;
-                default:
-                    break;
+                }
+                case "di-persistent-session-id" -> persistentSessionId = cookie.getValue();
+                case "lng" -> languageFromCookie = cookie.getValue();
+                case "bsid" -> browserSessionId = cookie.getValue();
+                default -> {}
             }
         }
     }

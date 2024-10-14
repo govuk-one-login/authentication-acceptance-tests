@@ -1,5 +1,6 @@
 package uk.gov.di.test.pages;
 
+import io.cucumber.java.en.When;
 import org.openqa.selenium.By;
 
 import static uk.gov.di.test.utils.Constants.INCORRECT_EMAIL_OTP_CODE;
@@ -12,8 +13,9 @@ public class CheckYourEmailPage extends BasePage {
         clearFieldAndEnter(emailCodeField, emailCode);
     }
 
+    @When("the user enters the correct email code and clicks continue")
     public void enterCorrectEmailCodeAndContinue() {
-        enterEmailCode(System.getenv().get("TEST_USER_EMAIL_CODE"));
+        enterEmailCode(TEST_CONFIG_SERVICE.get("EMAIL_VERIFY_CODE"));
         findAndClickContinue();
     }
 
@@ -27,6 +29,7 @@ public class CheckYourEmailPage extends BasePage {
         selectLinkByText("send the code again");
     }
 
+    @Override
     public void waitForPage() {
         waitForPageLoad("Check your email");
     }

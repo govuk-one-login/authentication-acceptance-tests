@@ -17,7 +17,7 @@ public class CheckYourPhonePage extends BasePage {
     }
 
     public void enterCorrectPhoneCodeAndContinue() {
-        enterPhoneCode(System.getenv().get("TEST_USER_PHONE_CODE"));
+        enterPhoneCode(TEST_CONFIG_SERVICE.get("PHONE_VERIFY_CODE"));
         findAndClickContinue();
     }
 

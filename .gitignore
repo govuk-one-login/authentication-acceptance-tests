@@ -20,3 +20,5 @@ target/
 failures.json
 assets/*
 .LCKbuild.gradle~
+rundocker.sh
+*.env

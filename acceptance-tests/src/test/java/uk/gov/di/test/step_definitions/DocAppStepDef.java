@@ -15,9 +15,8 @@ public class DocAppStepDef extends BasePage {
     private String jsonPayLoad;
     public DocAppPage docAppPage = new DocAppPage();
     protected static final String DOC_APP_URL =
-            System.getenv()
-                    .getOrDefault(
-                            "DOC_APP_URL", "https://doc-app-rp-build.build.stubs.account.gov.uk/");
+            TEST_CONFIG_SERVICE.getOrDefault(
+                    "DOC_APP_URL", "https://doc-app-rp-build.build.stubs.account.gov.uk/");
 
     @Given("the doc app services are running")
     public void theDocAppServicesAreRunning() {
