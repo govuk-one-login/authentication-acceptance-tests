@@ -30,4 +30,9 @@ public class CreateOrSignInPage extends BasePage {
                 throw new RuntimeException("Invalid language: " + language);
         }
     }
+
+    @Override
+    public void waitForPage() {
+        waitForPageLoad("Create your GOV.UK One Login or sign in");
+    }
 }

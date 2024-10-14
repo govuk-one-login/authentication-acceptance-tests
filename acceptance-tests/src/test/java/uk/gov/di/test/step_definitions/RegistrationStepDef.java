@@ -1,7 +1,6 @@
 package uk.gov.di.test.step_definitions;
 
 import io.cucumber.java.en.And;
-import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import uk.gov.di.test.pages.BasePage;
@@ -12,9 +11,8 @@ import uk.gov.di.test.pages.CreateYourPasswordPage;
 import uk.gov.di.test.pages.EnterYourEmailAddressPage;
 import uk.gov.di.test.pages.EnterYourMobilePhoneNumberPage;
 import uk.gov.di.test.pages.NoGovUkOneLoginFoundPage;
-import uk.gov.di.test.pages.RpStubPage;
+import uk.gov.di.test.pages.StubUserInfoPage;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static uk.gov.di.test.utils.Constants.INTERNATIONAL_MOBILE_PHONE_NUMBER_INCORRECT_FORMAT;
 import static uk.gov.di.test.utils.Constants.INTERNATIONAL_MOBILE_PHONE_NUMBER_NON_DIGIT_CHARS;
@@ -28,17 +26,22 @@ import static uk.gov.di.test.utils.Constants.UK_MOBILE_PHONE_NUMBER_WITH_INTERNA
 import static uk.gov.di.test.utils.Constants.WEAK_PASSWORD;
 
 public class RegistrationStepDef extends BasePage {
+    private final World world;
 
     EnterYourMobilePhoneNumberPage enterYourMobilePhoneNumberPage =
             new EnterYourMobilePhoneNumberPage();
     EnterYourEmailAddressPage enterYourEmailAddressPage = new EnterYourEmailAddressPage();
     CreateOrSignInPage createOrSignInPage = new CreateOrSignInPage();
-    RpStubPage rpStubPage = new RpStubPage();
     CheckYourEmailPage checkYourEmailPage = new CheckYourEmailPage();
     CreateYourPasswordPage createYourPasswordPage = new CreateYourPasswordPage();
     ChooseHowToGetSecurityCodesPage chooseHowToGetSecurityCodesPage =
             new ChooseHowToGetSecurityCodesPage();
     NoGovUkOneLoginFoundPage noGovUkOneLoginFoundPage = new NoGovUkOneLoginFoundPage();
+    StubUserInfoPage stubUserInfoPage = StubUserInfoPage.getStubUserInfoPage();
+
+    public RegistrationStepDef(World world) {
+        this.world = world;
+    }
 
     @When("the user selects create an account")
     public void theUserSelectsCreateAnAccount() {
@@ -57,8 +60,8 @@ public class RegistrationStepDef extends BasePage {
 
     @And("the user creates a password")
     public void theUserCreatesAPassword() {
-        String passwordVal = System.getenv().get("TEST_USER_PASSWORD");
-        createYourPasswordPage.enterBothPasswordsAndContinue(passwordVal, passwordVal);
+        String userPassword = world.getUserPassword();
+        createYourPasswordPage.enterBothPasswordsAndContinue(userPassword, userPassword);
     }
 
     @And("the user creates and enters an invalid password")
@@ -95,7 +98,7 @@ public class RegistrationStepDef extends BasePage {
 
     @When("the user clicks logout")
     public void theUserClicksLogout() {
-        findAndClickButtonByText("Log out");
+        stubUserInfoPage.logoutOfAccount();
     }
 
     @When("the user enters their mobile phone number using an international dialling code")
@@ -158,49 +161,6 @@ public class RegistrationStepDef extends BasePage {
     public void theUserEntersAValidInternationalMobilePhoneNumber() {
         enterYourMobilePhoneNumberPage.enterInternationalMobilePhoneNumberAndContinue(
                 INTERNATIONAL_MOBILE_PHONE_NUMBER_VALID);
-    }
-
-    @Given(
-            "a user has selected text message as their auth method and has moved on to the next page")
-    public void aUserHasSelectedAnAuthMethodAndHasMovedOnToTheNextPage() {
-        String emailAddress = System.getenv().get("TEST_USER_STATE_PRESERVATION_EMAIL1");
-        String password = System.getenv().get("TEST_USER_PASSWORD");
-        rpStubPage.goToRpStub();
-        rpStubPage.selectRpOptionsByIdAndContinue("");
-        waitForPageLoad("Create your GOV.UK One Login or sign in");
-        createOrSignInPage.clickCreateAGovUkOneLoginButton();
-        waitForPageLoad("Enter your email address");
-        enterYourEmailAddressPage.enterEmailAddressAndContinue(emailAddress);
-        waitForPageLoad("Check your email");
-        checkYourEmailPage.enterCorrectEmailCodeAndContinue();
-        waitForPageLoad("Create your password");
-        createYourPasswordPage.enterBothPasswordsAndContinue(password, password);
-        waitForPageLoad("Choose how to get security codes");
-        assertFalse(chooseHowToGetSecurityCodesPage.getTextMessageRadioButtonStatus());
-        assertFalse(chooseHowToGetSecurityCodesPage.getAuthAppRadioButtonStatus());
-        chooseHowToGetSecurityCodesPage.selectAuthMethodAndContinue("Text message");
-        waitForPageLoad("Enter your mobile phone number");
-    }
-
-    @Given("a user has selected auth app as their auth method and has moved on to the next page")
-    public void aUserHasSelectedAuthAppAsTheirAuthMethodAndHasMovedOnToTheNextPage() {
-        String emailAddress = System.getenv().get("TEST_USER_STATE_PRESERVATION_EMAIL2");
-        String password = System.getenv().get("TEST_USER_PASSWORD");
-        rpStubPage.goToRpStub();
-        rpStubPage.selectRpOptionsByIdAndContinue("");
-        waitForPageLoad("Create your GOV.UK One Login or sign in");
-        createOrSignInPage.clickCreateAGovUkOneLoginButton();
-        waitForPageLoad("Enter your email address");
-        enterYourEmailAddressPage.enterEmailAddressAndContinue(emailAddress);
-        waitForPageLoad("Check your email");
-        checkYourEmailPage.enterCorrectEmailCodeAndContinue();
-        waitForPageLoad("Create your password");
-        createYourPasswordPage.enterBothPasswordsAndContinue(password, password);
-        waitForPageLoad("Choose how to get security codes");
-        assertFalse(chooseHowToGetSecurityCodesPage.getTextMessageRadioButtonStatus());
-        assertFalse(chooseHowToGetSecurityCodesPage.getAuthAppRadioButtonStatus());
-        chooseHowToGetSecurityCodesPage.selectAuthMethodAndContinue("Auth app");
-        waitForPageLoad("Set up an authenticator app");
     }
 
     @And("their previously chosen text message auth method remains selected")

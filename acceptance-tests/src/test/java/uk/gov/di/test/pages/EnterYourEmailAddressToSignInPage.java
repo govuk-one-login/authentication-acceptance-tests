@@ -18,4 +18,9 @@ public class EnterYourEmailAddressToSignInPage extends BasePage {
         enterEmailAddress(emailAddress);
         findAndClickContinueWelsh();
     }
+
+    @Override
+    public void waitForPage() {
+        waitForPageLoad("Enter your email address to sign in");
+    }
 }
