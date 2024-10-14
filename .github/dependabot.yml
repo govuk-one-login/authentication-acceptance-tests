@@ -11,7 +11,11 @@ updates:
       prefix: BAU
   - package-ecosystem: github-actions
     directory: "/"
-    open-pull-requests-limit: 100
+    open-pull-requests-limit: 10
+    groups:
+      all-dependencies:
+        patterns:
+          - "*"
     target-branch: main
     schedule:
       interval: weekly
