@@ -8,8 +8,8 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import uk.gov.di.test.pages.BasePage;
 import uk.gov.di.test.pages.CreateOrSignInPage;
-import uk.gov.di.test.pages.RpStubPage;
-import uk.gov.di.test.pages.UserInformationPage;
+import uk.gov.di.test.pages.StubStartPage;
+import uk.gov.di.test.pages.StubUserInfoPage;
 import uk.gov.di.test.utils.Driver;
 
 import java.util.List;
@@ -18,10 +18,14 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class CommonStepDef extends BasePage {
+    public CrossPageFlows crossPageFlows;
     public CreateOrSignInPage createOrSignInPage = new CreateOrSignInPage();
-    public RpStubPage rpStubPage = new RpStubPage();
-    public UserInformationPage userInformationPage = new UserInformationPage();
-    public CrossPageFlows crossPageFlows = new CrossPageFlows();
+    public StubUserInfoPage stubUserInfoPage = StubUserInfoPage.getStubUserInfoPage();
+    StubStartPage stubStartPage = StubStartPage.getStubStartPage();
+
+    public CommonStepDef(World world) {
+        this.crossPageFlows = new CrossPageFlows(world);
+    }
 
     String idToken;
 
@@ -68,13 +72,17 @@ public class CommonStepDef extends BasePage {
     @Then("the user is returned to the service")
     @Then("the user is successfully reauthenticated and returned to the service")
     public void theUserIsReturnedToTheService() {
-        waitForPageLoad("Example - GOV.UK - User Info");
+        stubUserInfoPage.waitForReturnToTheService();
     }
 
     @And("the user logs out")
     public void theUserLogsOut() {
-        findAndClickButtonByText("Log out");
-        waitForPageLoad("Signed out");
+        stubUserInfoPage.logoutOfAccount();
+    }
+
+    @And("the user's cookies are cleared")
+    public void theUsersCookiesAreCleared() {
+        Driver.get().manage().deleteAllCookies();
     }
 
     @Then("the user is shown an error message")
@@ -98,33 +106,33 @@ public class CommonStepDef extends BasePage {
         pressBack();
     }
 
-    @Given("the {string} user {string} is signed in to their One Login account")
-    @Given("the {string} user {string} is already signed in to their One Login account")
-    public void theUserAlreadySignedIn(String userType, String emailAddress) {
-        crossPageFlows.successfulSignIn(userType, emailAddress);
+    @Given("the user is signed in to their One Login account")
+    @Given("the user is already signed in to their One Login account")
+    @And("the user is not blocked from signing in")
+    public void theUserIsAlreadySignedIn() {
+        crossPageFlows.successfulSignIn();
     }
 
     @When("the RP requires the user to reauthenticate")
     public void theRPRequiresTheUserToReauthenticate() {
-        idToken = userInformationPage.getIdToken();
-        rpStubPage.reauthRequired(idToken);
+        idToken = stubUserInfoPage.getIdToken();
+        stubStartPage.reauthRequired(idToken);
     }
 
-    @When("user attempts to restart their reauthentication again")
+    @When("the user attempts to restart their reauthentication again")
     public void userAttemptsToRestartTheirReauthenticationAgain() {
-        rpStubPage.reauthRequired(idToken);
+        stubStartPage.reauthRequired(idToken);
     }
 
-    @Given("the user {string} is partial registered up to choose how to get security codes page")
-    public void theUserPartialRegisteredUpToChooseHowToGetSecurityCodesPage(String emailAddress) {
-        crossPageFlows.createPartialRegisteredUpToChooseHowToGetSecurityCodesPage(emailAddress);
+    @Given("the user is partially registered up to \"choose how to get security codes\" page")
+    public void theUserIsPartiallyRegisteredUpToChooseHowToGetSecurityCodesPage() {
+        crossPageFlows.createPartialRegisteredUpToChooseHowToGetSecurityCodesPage();
     }
 
     @When(
-            "the user {string} attempts to resign in after partial registered and select forgotten password link")
-    public void theUserAttemptsToResignInAfterPartialRegisteredAndSelectForgottenPasswordLink(
-            String emailAddress) {
-        crossPageFlows.selectForgottenPasswordLinkAndCompletePasswordChange(emailAddress);
+            "the user attempts to re-sign-in after partial registration and selects forgotten password link")
+    public void theUserAttemptsToReSignInAfterPartialRegistrationAndSelectsForgottenPasswordLink() {
+        crossPageFlows.selectForgottenPasswordLinkAndCompletePasswordChange();
     }
 
     @When("the user chooses {string} to get security codes and progress to set it up")

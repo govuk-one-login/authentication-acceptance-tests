@@ -19,15 +19,13 @@ public class Hooks extends BasePage {
     private static int failureCount = 0;
 
     protected static final Boolean FAIL_FAST_ENABLED =
-            Boolean.parseBoolean(System.getenv().getOrDefault("FAIL_FAST_ENABLED", "false"));
+            Boolean.parseBoolean(TEST_CONFIG_SERVICE.getOrDefault("FAIL_FAST_ENABLED", "false"));
 
     @Before(order = 1)
     public void setUpScenario(Scenario scenario) {
         BasePage.scenario = scenario;
-        if (FAIL_FAST_ENABLED) {
-            if (failureCount > 0) {
-                throw new PendingException();
-            }
+        if (FAIL_FAST_ENABLED && failureCount > 0) {
+            throw new PendingException();
         }
     }
 

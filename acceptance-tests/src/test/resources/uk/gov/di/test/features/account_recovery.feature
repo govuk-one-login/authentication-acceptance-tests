@@ -2,11 +2,11 @@
 Feature: Account recovery
 
   Scenario: An sms user can change how they get security codes and log in with new method
-    When the user comes from the stub relying party with options: "default"
-    Then the user is taken to the "Create your GOV.UK One Login or sign in" page
+    Given a user with SMS MFA exists
+    When the user comes from the stub relying party with default options and is taken to the "Create your GOV.UK One Login or sign in" page
     When the user selects sign in
     Then the user is taken to the "Enter your email" page
-    When user enters "TEST_USER_ACCOUNT_RECOVERY_EMAIL_1" email address
+    When the user enters their email address
     Then the user is taken to the "Enter your password" page
     When the user enters their password
     Then the user is taken to the "Check your phone" page
@@ -24,25 +24,23 @@ Feature: Account recovery
     Then the user is returned to the service
     And the user logs out
 
-    When the user comes from the stub relying party with options: "default"
-    Then the user is taken to the "Create your GOV.UK One Login or sign in" page
-    When the user selects sign in
+    When the user comes from the stub relying party with default options and is taken to the "Create your GOV.UK One Login or sign in" page
+    And the user selects sign in
     Then the user is taken to the "Enter your email" page
-    When user enters "TEST_USER_ACCOUNT_RECOVERY_EMAIL_1" email address
+    When the user enters their email address
     Then the user is taken to the "Enter your password" page
     When the user enters their password
     Then the user is taken to the "Enter the 6 digit security code shown in your authenticator app" page
     When the user enters the security code from the auth app
     Then the user is returned to the service
-    And the user clicks logout
 
 
   Scenario: An auth app user can change how they get security codes and log in with new method
-    When the user comes from the stub relying party with options: "default"
-    Then the user is taken to the "Create your GOV.UK One Login or sign in" page
+    Given a user with App MFA exists
+    When the user comes from the stub relying party with default options and is taken to the "Create your GOV.UK One Login or sign in" page
     When the user selects sign in
     Then the user is taken to the "Enter your email" page
-    When user enters "TEST_USER_ACCOUNT_RECOVERY_EMAIL_2" email address
+    When the user enters their email address
     Then the user is taken to the "Enter your password" page
     When the user enters their password
     Then the user is taken to the "Enter the 6 digit security code shown in your authenticator app" page
@@ -61,14 +59,12 @@ Feature: Account recovery
     Then the user is returned to the service
     And the user logs out
 
-    When the user comes from the stub relying party with options: "default"
-    Then the user is taken to the "Create your GOV.UK One Login or sign in" page
+    When the user comes from the stub relying party with default options and is taken to the "Create your GOV.UK One Login or sign in" page
     When the user selects sign in
     Then the user is taken to the "Enter your email" page
-    When user enters "TEST_USER_ACCOUNT_RECOVERY_EMAIL_2" email address
+    When the user enters their email address
     Then the user is taken to the "Enter your password" page
     When the user enters their password
     Then the user is taken to the "Check your phone" page
     When the user enters the six digit security code from their phone
     Then the user is returned to the service
-    And the user clicks logout

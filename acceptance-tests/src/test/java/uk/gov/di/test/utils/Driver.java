@@ -15,14 +15,12 @@ import static java.time.temporal.ChronoUnit.SECONDS;
 
 public class Driver {
     protected static final String FIREFOX_BROWSER = "firefox";
-    protected static final String SELENIUM_URL =
-            System.getenv().getOrDefault("SELENIUM_URL", "http://localhost:4445/wd/hub");
+    protected static final String SELENIUM_URL = Environment.getOrThrow("SELENIUM_URL");
     protected static final Boolean SELENIUM_LOCAL =
-            Boolean.parseBoolean(System.getenv().getOrDefault("SELENIUM_LOCAL", "true"));
+            Boolean.valueOf(System.getenv().getOrDefault("SELENIUM_LOCAL", "true"));
     protected static final Boolean SELENIUM_HEADLESS =
-            Boolean.parseBoolean(System.getenv().getOrDefault("SELENIUM_HEADLESS", "false"));
-    protected static final String SELENIUM_BROWSER =
-            System.getenv().getOrDefault("SELENIUM_BROWSER", FIREFOX_BROWSER);
+            Boolean.valueOf(Environment.getOrThrow("SELENIUM_HEADLESS"));
+    protected static final String SELENIUM_BROWSER = Environment.getOrThrow("SELENIUM_BROWSER");
     protected static WebDriver driver;
     private static final InheritableThreadLocal<WebDriver> driverPool =
             new InheritableThreadLocal<>();
@@ -36,15 +34,8 @@ public class Driver {
         if (driverPool.get() == null)
             synchronized (Driver.class) {
                 switch (SELENIUM_BROWSER) {
-                    case "chrome":
-                        ChromeOptions chromeOptions = new ChromeOptions();
-                        if (SELENIUM_HEADLESS) chromeOptions.addArguments("--headless=new");
-                        chromeOptions.addArguments("--remote-allow-origins=*");
-                        chromeOptions.addArguments("--disable-gpu");
-                        chromeOptions.addArguments("--disable-extensions");
-                        chromeOptions.addArguments("--no-sandbox");
-                        chromeOptions.addArguments("--disable-dev-shm-usage");
-                        chromeOptions.addArguments("--incognito");
+                    case "chrome" -> {
+                        ChromeOptions chromeOptions = buildChromeOptions();
                         if (SELENIUM_LOCAL) {
                             System.setProperty("webdriver.chrome.whitelistedIps", "");
                             driverPool.set(new ChromeDriver(chromeOptions));
@@ -56,11 +47,13 @@ public class Driver {
                                 throw new RuntimeException(e);
                             }
                         }
-                        break;
+                    }
 
-                    case "firefox":
+                    case FIREFOX_BROWSER -> {
                         FirefoxOptions firefoxOptions = new FirefoxOptions();
-                        if (SELENIUM_HEADLESS) firefoxOptions.addArguments("--headless=new");
+                        if (SELENIUM_HEADLESS) {
+                            firefoxOptions.addArguments("--headless");
+                        }
                         firefoxOptions.setPageLoadTimeout(Duration.of(30, SECONDS));
                         firefoxOptions.setImplicitWaitTimeout(Duration.of(30, SECONDS));
                         if (SELENIUM_LOCAL) {
@@ -73,14 +66,27 @@ public class Driver {
                                 throw new RuntimeException(e);
                             }
                         }
-                        break;
-                    default:
-                        throw new RuntimeException("Invalid driver: " + SELENIUM_BROWSER);
+                    }
+                    default -> throw new RuntimeException("Invalid driver: " + SELENIUM_BROWSER);
                 }
                 driverPool.get().manage().deleteAllCookies();
                 driverPool.get().manage().window().maximize();
             }
         return driverPool.get();
+    }
+
+    private static ChromeOptions buildChromeOptions() {
+        ChromeOptions chromeOptions = new ChromeOptions();
+        if (SELENIUM_HEADLESS) {
+            chromeOptions.addArguments("--headless=new");
+        }
+        chromeOptions.addArguments("--remote-allow-origins=*");
+        chromeOptions.addArguments("--disable-gpu");
+        chromeOptions.addArguments("--disable-extensions");
+        chromeOptions.addArguments("--no-sandbox");
+        chromeOptions.addArguments("--disable-dev-shm-usage");
+        chromeOptions.addArguments("--incognito");
+        return chromeOptions;
     }
 
     public static void closeDriver() {
