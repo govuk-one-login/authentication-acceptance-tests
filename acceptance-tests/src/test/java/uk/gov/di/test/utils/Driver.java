@@ -24,7 +24,8 @@ public class Driver {
     protected static final String SELENIUM_BROWSER =
             System.getenv().getOrDefault("SELENIUM_BROWSER", FIREFOX_BROWSER);
     protected static WebDriver driver;
-    private static InheritableThreadLocal<WebDriver> driverPool = new InheritableThreadLocal<>();
+    private static final InheritableThreadLocal<WebDriver> driverPool =
+            new InheritableThreadLocal<>();
 
     public static WebDriver getDriver() {
         return driverPool.get();
@@ -37,7 +38,7 @@ public class Driver {
                 switch (SELENIUM_BROWSER) {
                     case "chrome":
                         ChromeOptions chromeOptions = new ChromeOptions();
-                        chromeOptions.setHeadless(SELENIUM_HEADLESS);
+                        if (SELENIUM_HEADLESS) chromeOptions.addArguments("--headless=new");
                         chromeOptions.addArguments("--remote-allow-origins=*");
                         chromeOptions.addArguments("--disable-gpu");
                         chromeOptions.addArguments("--disable-extensions");
@@ -59,7 +60,7 @@ public class Driver {
 
                     case "firefox":
                         FirefoxOptions firefoxOptions = new FirefoxOptions();
-                        firefoxOptions.setHeadless(SELENIUM_HEADLESS);
+                        if (SELENIUM_HEADLESS) firefoxOptions.addArguments("--headless=new");
                         firefoxOptions.setPageLoadTimeout(Duration.of(30, SECONDS));
                         firefoxOptions.setImplicitWaitTimeout(Duration.of(30, SECONDS));
                         if (SELENIUM_LOCAL) {
