@@ -105,7 +105,7 @@ else
   ./reset-test-data.sh -r "${ENVIRONMENT}"
 fi
 
-./gradlew cucumber -x spotlessApply -x spotlessCheck
+./gradlew cucumber -x spotlessApply
 
 build_and_test_exit_code=$?
 
