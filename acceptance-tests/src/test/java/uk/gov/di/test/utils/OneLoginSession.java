@@ -10,7 +10,6 @@ public class OneLoginSession {
     private String clientSessionID;
     private String persistentSessionId;
     private String languageFromCookie;
-    private String browserSessionId;
 
     public OneLoginSession(Set<Cookie> cookies) {
         for (Cookie cookie : cookies) {
@@ -26,9 +25,6 @@ public class OneLoginSession {
                 case "lng":
                     languageFromCookie = cookie.getValue();
                     break;
-                case "bsid":
-                    browserSessionId = cookie.getValue();
-                    break;
                 default:
                     break;
             }
@@ -42,7 +38,6 @@ public class OneLoginSession {
         json.put("clientSessionId", clientSessionID);
         json.put("persistentSessionId", persistentSessionId);
         json.put("languageFromCookie", language);
-        json.put("browserSessionId", browserSessionId);
         return json;
     }
 }
