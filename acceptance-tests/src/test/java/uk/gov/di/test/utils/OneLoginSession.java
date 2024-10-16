@@ -36,11 +36,12 @@ public class OneLoginSession {
     }
 
     public JSONObject toJSONObject() {
+        var language = languageFromCookie == null ? "MISSING" : languageFromCookie.toUpperCase();
         JSONObject json = new JSONObject();
         json.put("sessionId", sessionId);
         json.put("clientSessionId", clientSessionID);
         json.put("persistentSessionId", persistentSessionId);
-        json.put("languageFromCookie", languageFromCookie.toUpperCase());
+        json.put("languageFromCookie", language);
         json.put("browserSessionId", browserSessionId);
         return json;
     }
