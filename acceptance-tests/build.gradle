@@ -11,11 +11,11 @@ repositories {
 }
 
 def dependencyVersions = [
-    junit_version: '5.11.2',
+    junit_version: '5.11.3',
     cucumber_version: '7.20.1',
     axe_version: '3.0',
     selenium_java_version: '4.25.0',
-    aws_sdk_v2_version: "2.27.17",
+    aws_sdk_v2_version: "2.28.28",
     json_version: '20240303',
     rest_assured: '5.5.0'
 ]
@@ -47,12 +47,12 @@ dependencies {
 
     testImplementation("org.apache.commons:commons-text:1.12.0")
 
-    testImplementation("commons-codec:commons-codec:1.15")
+    testImplementation("commons-codec:commons-codec:1.17.1")
 
-    testImplementation("com.google.guava:guava:33.3.0-jre")
+    testImplementation("com.google.guava:guava:33.3.1-jre")
 
     testImplementation("org.bouncycastle:bcpkix-jdk18on:1.78.1")
-    testImplementation("org.springframework.security:spring-security-crypto:6.3.3")
+    testImplementation("org.springframework.security:spring-security-crypto:6.3.4")
 
     testImplementation("org.json:json:${dependencyVersions.json_version}")
     testImplementation("io.rest-assured:rest-assured:${dependencyVersions.rest_assured}")
