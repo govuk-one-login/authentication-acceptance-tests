@@ -1,0 +1,53 @@
+FROM gradle:7-jdk17 AS builder
+
+WORKDIR /test
+
+COPY build.gradle settings.gradle gradlew ./
+COPY gradle ./gradle
+COPY acceptance-tests ./acceptance-tests
+
+RUN chmod u+x ./gradlew \
+    && ./gradlew --no-daemon build \
+    assemble \
+    :acceptance-tests:testClasses \
+    -x :acceptance-tests:test -x spotlessApply -x spotlessCheck
+
+FROM selenium/standalone-firefox:133.0
+ARG SEL_USER=seluser
+ARG SEL_GROUP=${SEL_USER}
+
+USER root
+RUN apt-get update \
+    && apt-get install -y \
+    awscli \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
+USER ${SEL_USER}
+
+COPY --chown=${SEL_USER}:${SEL_GROUP} --from=builder /root/.gradle /home/${SEL_USER}/.gradle
+
+
+WORKDIR /test
+
+COPY --chown=${SEL_USER}:${SEL_GROUP} --from=builder /test/build.gradle /test/settings.gradle /test/gradlew ./
+COPY --chown=${SEL_USER}:${SEL_GROUP} --from=builder /test/.gradle /test/.gradle
+COPY --chown=${SEL_USER}:${SEL_GROUP} --from=builder /test/gradle ./gradle
+COPY --chown=${SEL_USER}:${SEL_GROUP} --from=builder /test/build /test/build
+COPY --chown=${SEL_USER}:${SEL_GROUP} --from=builder /test/acceptance-tests ./acceptance-tests
+
+RUN chmod u+x ./gradlew
+
+ENV SELENIUM_HEADLESS="true"
+ENV SELENIUM_LOCAL="false"
+ENV SELENIUM_URL="http://127.0.0.1:4444"
+ENV SELENIUM_BROWSER="firefox"
+
+ENV SE_ENABLE_TRACING="false"
+
+COPY --chown=${SEL_USER}:${SEL_GROUP} docker/run-acceptance-tests-in-docker.sh ./docker/run-acceptance-tests-in-docker.sh
+COPY --chown=${SEL_USER}:${SEL_GROUP} docker/docker-entrypoint.sh /auth-docker-entrypoint.sh
+RUN chmod 500 ./docker/run-acceptance-tests-in-docker.sh /auth-docker-entrypoint.sh
+
+ENTRYPOINT [ "/auth-docker-entrypoint.sh" ]
+CMD []
