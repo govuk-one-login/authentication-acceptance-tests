@@ -12,7 +12,7 @@ pushd "${DIR}" > /dev/null || exit 1
 WRITE_ENV=false
 USE_SSM=false
 LOCAL=true
-while getopts "lrset:" opt; do
+while getopts "lrse:" opt; do
   case ${opt} in
     l)
       LOCAL=true
@@ -94,5 +94,7 @@ fi
 if ./gradlew cucumber -x spotlessApply -x spotlessCheck; then
   echo -e "acceptance-tests SUCCEEDED."
 else
+  result=$?
   echo -e "acceptance-tests failed."
+  exit ${result}
 fi
