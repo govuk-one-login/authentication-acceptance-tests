@@ -12,6 +12,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import uk.gov.di.test.services.TestConfigurationService;
 import uk.gov.di.test.utils.AuthAppStub;
 import uk.gov.di.test.utils.AuthenticationJourneyPages;
 import uk.gov.di.test.utils.Driver;
@@ -29,17 +30,19 @@ import java.util.Set;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class BasePage {
-    protected static final String RP_URL =
-            System.getenv()
-                    .getOrDefault(
-                            "RP_URL",
-                            "https://acceptance-test-rp-build.build.stubs.account.gov.uk/");
+
+    protected static final TestConfigurationService TEST_CONFIG_SERVICE =
+            TestConfigurationService.getInstance();
 
     protected static final Duration DEFAULT_PAGE_LOAD_WAIT_TIME = Duration.ofSeconds(20);
     protected static final Duration NO_PAGE_LOAD_WAIT_TIME = Duration.ofSeconds(0);
 
     protected static WebDriver driver;
     protected static Scenario scenario;
+
+    public void waitForPage() {
+        throw new UnsupportedOperationException("This method is not implemented");
+    }
 
     public By authAppCodeField = By.id("code");
 
@@ -115,7 +118,7 @@ public class BasePage {
 
     protected boolean isLinkTextDisplayedImmediately(String linkText) {
         switchDefaultTimeout("off");
-        List elements =
+        List<WebElement> elements =
                 Driver.get()
                         .findElements(
                                 By.xpath("//*[text()[normalize-space() = '" + linkText + "']]"));
@@ -208,7 +211,7 @@ public class BasePage {
                 .until(ExpectedConditions.elementToBeClickable(element));
     }
 
-    public void waitForReadyStateComplete() {
+    public static void waitForReadyStateComplete() {
         new WebDriverWait(Driver.get(), DEFAULT_PAGE_LOAD_WAIT_TIME)
                 .until(
                         (ExpectedCondition<Boolean>)

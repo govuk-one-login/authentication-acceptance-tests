@@ -3,6 +3,8 @@ package uk.gov.di.test.pages;
 import org.openqa.selenium.By;
 import uk.gov.di.test.utils.Driver;
 
+import static uk.gov.di.test.utils.Constants.UK_MOBILE_PHONE_NUMBER;
+
 public class EnterYourMobilePhoneNumberPage extends BasePage {
     By internationalPhoneNumberField = By.id("internationalPhoneNumber");
     By iDoNotHaveUkMobilePhoneNumberCheckbox = By.id("hasInternationalPhoneNumber");
@@ -28,7 +30,6 @@ public class EnterYourMobilePhoneNumberPage extends BasePage {
     }
 
     public void enterValidUkPhoneNumberAndContinue() {
-        String validUkPhoneNumber = System.getenv("TEST_USER_PHONE_NUMBER");
-        enterUkPhoneNumberAndContinue(validUkPhoneNumber);
+        enterUkPhoneNumberAndContinue(UK_MOBILE_PHONE_NUMBER);
     }
 }

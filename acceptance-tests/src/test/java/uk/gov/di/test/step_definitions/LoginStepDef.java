@@ -4,30 +4,49 @@ import io.cucumber.java.en.And;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.junit.jupiter.api.Assertions;
-import org.openqa.selenium.JavascriptExecutor;
-import uk.gov.di.test.pages.*;
+import uk.gov.di.test.pages.BasePage;
+import uk.gov.di.test.pages.CheckYourEmailPage;
+import uk.gov.di.test.pages.CheckYourPhonePage;
+import uk.gov.di.test.pages.CreateOrSignInPage;
+import uk.gov.di.test.pages.EnterThe6DigitSecurityCodeShownInYourAuthenticatorAppPage;
+import uk.gov.di.test.pages.EnterYourEmailAddressPage;
+import uk.gov.di.test.pages.EnterYourEmailAddressToSignInPage;
+import uk.gov.di.test.pages.EnterYourPasswordPage;
+import uk.gov.di.test.pages.ReenterYourSignInDetailsToContinuePage;
+import uk.gov.di.test.pages.ResetYourPasswordPage;
+import uk.gov.di.test.pages.SetUpAnAuthenticatorAppPage;
+import uk.gov.di.test.pages.StubStartPage;
+import uk.gov.di.test.pages.TermsAndConditionsPage;
+import uk.gov.di.test.pages.YouAskedToResendTheSecurityCodeTooManyTimesPage;
+import uk.gov.di.test.pages.YouveChangedHowYouGetSecurityCodesPage;
+import uk.gov.di.test.services.UserLifecycleService;
+import uk.gov.di.test.utils.BrowserTabs;
 import uk.gov.di.test.utils.Driver;
-
-import java.util.ArrayList;
+import uk.gov.di.test.utils.PasswordGenerator;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static uk.gov.di.test.utils.Constants.INVALID_EMAIL;
 import static uk.gov.di.test.utils.Constants.INVALID_PASSWORD;
-import static uk.gov.di.test.utils.Constants.MISMATCHING_PASSWORD_1;
-import static uk.gov.di.test.utils.Constants.MISMATCHING_PASSWORD_2;
 import static uk.gov.di.test.utils.Constants.NEW_VALID_PASSWORD;
 import static uk.gov.di.test.utils.Constants.TOP_100K_PASSWORD;
 
 public class LoginStepDef extends BasePage {
-    RpStubPage rpStubPage = new RpStubPage();
+
+    StubStartPage stubStartPage = StubStartPage.getStubStartPage();
+    private final World world;
+
     private String authAppSecretKey;
+
+    private static final PasswordGenerator passwordGenerator = new PasswordGenerator();
+
+    public EnterYourPasswordPage enterYourPasswordPage;
     public ResetYourPasswordPage resetYourPasswordPage = new ResetYourPasswordPage();
+    public CrossPageFlows crossPageFlows;
     public CheckYourEmailPage checkYourEmailPage = new CheckYourEmailPage();
     public YouveChangedHowYouGetSecurityCodesPage youveChangedHowYouGetSecurityCodes =
             new YouveChangedHowYouGetSecurityCodesPage();
     public TermsAndConditionsPage termsAndConditionsPage = new TermsAndConditionsPage();
-    public EnterYourPasswordPage enterYourPasswordPage = new EnterYourPasswordPage();
     public CheckYourPhonePage checkYourPhonePage = new CheckYourPhonePage();
     public EnterYourEmailAddressToSignInPage enterYourEmailAddressToSignInPage =
             new EnterYourEmailAddressToSignInPage();
@@ -43,11 +62,17 @@ public class LoginStepDef extends BasePage {
     public EnterThe6DigitSecurityCodeShownInYourAuthenticatorAppPage
             enterThe6DigitSecurityCodeShownInYourAuthenticatorAppPage =
                     new EnterThe6DigitSecurityCodeShownInYourAuthenticatorAppPage();
-    public CrossPageFlows crossPageFlows = new CrossPageFlows();
+    public TabsStepDef tabsSteps = new TabsStepDef();
+
+    public LoginStepDef(World world) {
+        this.world = world;
+        this.enterYourPasswordPage = new EnterYourPasswordPage(world);
+        this.crossPageFlows = new CrossPageFlows(world);
+    }
 
     @When("the user enters their password which is on the top 100k password list")
     public void theUserEntersTheirPasswordWhichIsOnTheTop100kPasswordList() {
-        enterYourPasswordPage.enterPasswordAndContinue(System.getenv().get("TOP_100K_PASSWORD"));
+        enterYourPasswordPage.enterPasswordAndContinue(TOP_100K_PASSWORD);
     }
 
     @When("the user clicks the forgotten password link")
@@ -60,18 +85,27 @@ public class LoginStepDef extends BasePage {
         createOrSignInPage.clickSignInButton();
     }
 
-    @And("user enters {string} email address")
-    public void userEntersEmailAddress(String email) {
-        enterYourEmailAddressToSignInPage.enterEmailAddressAndContinue(System.getenv().get(email));
+    @And("the user enters their email address")
+    @And("the user enters the email address")
+    public void theUserEntersTheirEmailAddress() {
+        enterYourEmailAddressPage.enterEmailAddressAndContinue(world.getUserEmailAddress());
+    }
+
+    @When("the user enters their email address for reauth")
+    @When("the user enters the same email address for reauth as they used for login")
+    public void userEntersTheirEmailAddressForReauth() {
+        reenterYourSignInDetailsToContinuePage.enterEmailAddressAndContinue(
+                world.getUserEmailAddress());
     }
 
     @And("user enters the same email address {string} for reauth as they used for login")
     public void userEntersSameEmailAddressForReauth(String email) {
-        reenterYourSignInDetailsToContinuePage.enterEmailAddressAndContinue(
-                System.getenv().get(email));
+        throw new RuntimeException("Need to implement new-style user flows for this");
+        //        reenterYourSignInDetailsToContinuePage.enterEmailAddressAndContinue(
+        //                System.getenv().get(email));
     }
 
-    @When("user enters invalid email address")
+    @When("the user enters an invalid email address")
     public void userEntersInvalidEmailAddress() {
         enterYourEmailAddressToSignInPage.enterEmailAddressAndContinue(INVALID_EMAIL);
     }
@@ -129,22 +163,24 @@ public class LoginStepDef extends BasePage {
         assertEquals("Rhowch eich cyfrinair - GOV.UK One Login", Driver.get().getTitle());
     }
 
-    @When("user enters {string} email address in Welsh")
-    public void userEntersEmailAddressInWelsh(String email) {
+    @When("the user enters their email address in Welsh")
+    public void theUserEntersTheirEmailInWelsh() {
         enterYourEmailAddressToSignInPage.enterEmailAddressAndContinueWelsh(
-                System.getenv().get(email));
+                world.getUserEmailAddress());
     }
 
     @When("the user enters valid new password and correctly retypes it")
     public void theUserEntersValidNewPasswordAndCorrectlyRetypesIt() {
-        resetYourPasswordPage.enterPasswordResetDetailsAndContinue(
-                NEW_VALID_PASSWORD, NEW_VALID_PASSWORD);
+        String newPassword = UserLifecycleService.generateValidPassword();
+        resetYourPasswordPage.enterPasswordResetDetailsAndContinue(newPassword, newPassword);
+        world.setUserPassword(newPassword);
     }
 
     @When("the user resets their password to be the same as their current password")
     public void theUserResetsTheirPasswordToBeTheSameAsTheirCurrentPassword() {
-        String newPassword = System.getenv().get("TEST_USER_PASSWORD");
-        resetYourPasswordPage.enterPasswordResetDetailsAndContinue(newPassword, newPassword);
+        String currentPassword = world.getUserPassword();
+        resetYourPasswordPage.enterPasswordResetDetailsAndContinue(
+                currentPassword, currentPassword);
     }
 
     @When("the user resets their password to an invalid one")
@@ -161,8 +197,8 @@ public class LoginStepDef extends BasePage {
 
     @When("the user resets their password but enters mismatching new passwords")
     public void theUserResetsTheirPasswordButEntersMismatchingNewPasswords() {
-        resetYourPasswordPage.enterPasswordResetDetailsAndContinue(
-                MISMATCHING_PASSWORD_1, MISMATCHING_PASSWORD_2);
+        String[] passwords = passwordGenerator.generatePasswords(2);
+        resetYourPasswordPage.enterPasswordResetDetailsAndContinue(passwords[0], passwords[1]);
     }
 
     @And("confirmation that the user will get security codes via {string} is displayed")
@@ -170,23 +206,20 @@ public class LoginStepDef extends BasePage {
             String authenticationType) {
         String method = authenticationType.toLowerCase();
         switch (method) {
-            case "text message":
+            case "text message" -> {
                 // Check the last four digits of the phone number appear in the page message
-                String phoneNumber = System.getenv().get("TEST_USER_PHONE_NUMBER");
+                String phoneNumber = world.getUserPhoneNumber();
                 String lastFourDigitsOfPhone = phoneNumber.substring(phoneNumber.length() - 4);
                 assertTrue(
                         youveChangedHowYouGetSecurityCodes
                                 .getSecurityCodeMessageText()
                                 .contains(lastFourDigitsOfPhone));
-                break;
-            case "auth app":
-                assertTrue(
-                        youveChangedHowYouGetSecurityCodes
-                                .getSecurityCodeMessageText()
-                                .contains("authenticator app"));
-                break;
-            default:
-                throw new RuntimeException("Invalid method type: " + method);
+            }
+            case "auth app" -> assertTrue(
+                    youveChangedHowYouGetSecurityCodes
+                            .getSecurityCodeMessageText()
+                            .contains("authenticator app"));
+            default -> throw new RuntimeException("Invalid method type: " + method);
         }
 
         findAndClickContinue();
@@ -194,16 +227,15 @@ public class LoginStepDef extends BasePage {
 
     @When("the user adds the secret key on the screen to their auth app")
     public void theNewUserAddTheSecretKeyOnTheScreenToTheirAuthApp() {
-        authAppSecretKey = System.getenv().get("ACCOUNT_RECOVERY_USER_AUTH_APP_SECRET");
         setUpAnAuthenticatorAppPage.iCannotScanQrCodeClick();
         authAppSecretKey = setUpAnAuthenticatorAppPage.getSecretFieldText();
-        assertTrue(setUpAnAuthenticatorAppPage.getSecretFieldText().length() == 32);
+        assertEquals(32, authAppSecretKey.length());
     }
 
     @And("the user enters the security code from the auth app")
     public void theNewUserEntersTheSecurityCodeFromTheAuthApp() {
         if (authAppSecretKey == null) {
-            authAppSecretKey = System.getenv().get("ACCOUNT_RECOVERY_USER_AUTH_APP_SECRET");
+            authAppSecretKey = world.userCredentials.getMfaMethods().get(0).getCredentialValue();
         }
         setUpAnAuthenticatorAppPage.enterCorrectAuthAppCodeAndContinue(authAppSecretKey);
     }
@@ -310,70 +342,28 @@ public class LoginStepDef extends BasePage {
         crossPageFlows.smsUserChangesPassword();
     }
 
-    @And("the {string} user {string} is not blocked from signing back in")
-    public void theUserIsAbleToSignBackInWithoutBeingBlocked(String userType, String emailAddress) {
-        crossPageFlows.successfulSignIn(userType, emailAddress);
-    }
-
-    @And("the owner of the incorrect email address is not blocked from signing in")
-    public void theUserIsAbleToSignBackInWithoutBeingBlocked() {
-        crossPageFlows.successfulSignIn("sms", "TEST_USER_REAUTH_SMS_9");
-    }
-
-    @And("the {string} user {string} is not blocked from reauthenticating")
-    public void theUserIsAbleToReauthWithoutBeingBlocked(String userType, String emailAddress) {
-        crossPageFlows.successfulReauth(userType, emailAddress);
-    }
-
-    @And("the owner of the incorrect email address is not blocked from reauthenticating")
+    @And("the user is not blocked from reauthenticating")
     public void theUserIsAbleToReauthWithoutBeingBlocked() {
-        crossPageFlows.successfulReauth("sms", "TEST_USER_REAUTH_SMS_9");
-    }
-
-    @When("the user enters {string} email address, password and six digit SMS OTP")
-    public void theUserGoesThroughSmsSignInJourney(String email) {
-        theUserSelectsSignIn();
-        waitForPageLoad("Enter your email");
-        enterYourEmailAddressToSignInPage.enterEmailAddressAndContinue(System.getenv().get(email));
-        waitForPageLoad("Enter your password");
-        enterYourPasswordPage.enterCorrectPasswordAndContinue();
-        waitForPageLoad("Check your phone");
-        checkYourPhonePage.enterCorrectPhoneCodeAndContinue();
+        crossPageFlows.successfulReauth();
     }
 
     @When(
-            "user opens up new tab in the same browser and performs a silent log in and navigate back to the first tab")
-    public void
-            userOpensUpAnotherTabInTheSameBrowserAndPerformsASilentLogInAndNavigateBackToTheFirstTab() {
-        ((JavascriptExecutor) Driver.getDriver()).executeScript("window.open()");
-        switchToTab(1);
-        rpStubPage.goToRpStub();
-        rpStubPage.selectRpOptionsByIdAndContinue("");
+            "the user opens up new tab in the same browser, performs a silent log in and switches back to the first tab")
+    public void theUserOpensNewTabPerformsSilentLoginAndSwitchesBackToFirstTab() {
+        BrowserTabs.createNewTab();
+        BrowserTabs.switchToTabByIndex(1);
+        stubStartPage.goToRpStub();
+        stubStartPage.useDefaultOptionsAndContinue();
         setAnalyticsCookieTo(false);
-        switchToTab(0);
+        BrowserTabs.switchToTabByIndex(0);
     }
 
-    @When("user opens up new tab and performs a silent log in")
+    @When("the user opens a new tab and performs a silent login")
     public void userOpensUpNewTabAndPerformASilentLogIn() {
-        ((JavascriptExecutor) Driver.getDriver()).executeScript("window.open()");
-        switchToTab(1);
-        rpStubPage.goToRpStub();
-        rpStubPage.selectRpOptionsByIdAndContinue("");
+        BrowserTabs.createNewTab();
+        BrowserTabs.switchToTabByIndex(1);
+        stubStartPage.goToRpStub();
+        stubStartPage.useDefaultOptionsAndContinue();
         setAnalyticsCookieTo(false);
-    }
-
-    @When("navigate back to the first tab")
-    public void navigateBackToTheFirstTab() {
-        switchToTab(0);
-    }
-
-    @When("navigate back to the second tab")
-    public void navigateBackToTheSecondTab() {
-        switchToTab(1);
-    }
-
-    public void switchToTab(int index) {
-        ArrayList<String> tabs = new ArrayList<String>(Driver.getDriver().getWindowHandles());
-        Driver.getDriver().switchTo().window(tabs.get(index));
     }
 }

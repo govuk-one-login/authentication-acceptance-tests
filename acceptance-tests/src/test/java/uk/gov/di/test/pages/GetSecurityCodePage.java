@@ -10,6 +10,7 @@ public class GetSecurityCodePage extends BasePage {
         Driver.get().findElement(getSecurityCodeButton).click();
     }
 
+    @Override
     public void waitForPage() {
         waitForPageLoad("Get security code");
     }

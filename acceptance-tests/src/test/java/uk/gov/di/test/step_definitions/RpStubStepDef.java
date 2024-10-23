@@ -1,59 +1,45 @@
 package uk.gov.di.test.step_definitions;
 
+import io.cucumber.java.ParameterType;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import org.openqa.selenium.WebDriverException;
 import uk.gov.di.test.pages.BasePage;
-import uk.gov.di.test.pages.RpStubPage;
-import uk.gov.di.test.utils.RetryHelper;
-import uk.gov.di.test.utils.SessionContextExceptions;
+import uk.gov.di.test.pages.StubStartPage;
 
 public class RpStubStepDef extends BasePage {
 
-    RpStubPage rpStubPage = new RpStubPage();
+    StubStartPage stubStartPage = StubStartPage.getStubStartPage();
 
-    private static final RetryHelper retryHelper = RetryHelper.getInstance();
-    private static final Integer RETRY_LIMIT = 5;
-
-    public static class RPStubRetryException extends RuntimeException {
-        public RPStubRetryException(Throwable e) {
-            super(
-                    String.format(
-                            "Failed to complete RP stub things after %s attempts", RETRY_LIMIT),
-                    e);
+    @ParameterType("\\[((?:[\\w-_]+,?)+)\\]")
+    public String[] rpStubOptions(String opts) {
+        if (opts == null || opts.isEmpty() || opts.equalsIgnoreCase("default")) {
+            return null;
         }
+        return opts.split(",");
     }
 
-    public void doRpStubAndWaitForSignInPage(
-            String rpStubOptions, Throwable lastException, String pageTitle) {
-        if (lastException != null) {
-            Integer currentRetries = retryHelper.getAndIncrement("come-from-rp-stub");
-            if (currentRetries > RETRY_LIMIT) {
-                throw new RPStubRetryException(lastException);
-            }
-            System.out.printf("Retrying RP stub, retry %s of %s%n", currentRetries, RETRY_LIMIT);
-        }
-
-        try {
-            rpStubPage.goToRpStub();
-            rpStubPage.selectRpOptionsByIdAndContinue(rpStubOptions);
-            setAnalyticsCookieTo(false);
-            waitForPageLoad(pageTitle);
-        } catch (SessionContextExceptions.SessionContextException | WebDriverException e) {
-            doRpStubAndWaitForSignInPage(rpStubOptions, e, pageTitle);
-        }
-    }
-
-    @When("the user comes from the stub relying party with options: {string}")
-    public void theExistingUserVisitsTheStubRelyingParty(String options) {
-        doRpStubAndWaitForSignInPage(options, null, "Create your GOV.UK One Login or sign in");
-    }
-
+    // DEFAULT OPTIONS
     @When(
-            "the user comes from the stub relying party with options: {string} and the user is taken to the {string} page")
-    public void theExistingUserVisitsTheStubRelyingPartyAndReturnsToPage(
+            "the user comes from the stub relying party with default options and is taken to the {string} page")
+    public void theUserVisitsTheStubRelyingPartyAndIsTakenToPage(String pageTitle) {
+        stubStartPage.useRpStubAndWaitForPage(pageTitle);
+    }
+
+    // MULTIPLE OPTIONS
+    @When(
+            "the user comes from the stub relying party with options: {rpStubOptions} and is taken to the {string} page")
+    public void theUserVisitsTheStubRelyingPartyWithOptionsAndIsTakenToThePage(
+            String[] rpStubOptions, String pageTitle) {
+        stubStartPage.useRpStubAndWaitForPage(pageTitle, rpStubOptions);
+    }
+
+    // SINGLE OPTION
+    @When(
+            "the user comes from the stub relying party with option {word} and is taken to the {string} page")
+    public void theUserVisitsTheStubRelyingPartyWithOneOptionAndIsTakenToPage(
             String option, String pageTitle) {
-        doRpStubAndWaitForSignInPage(option, null, pageTitle);
+        theUserVisitsTheStubRelyingPartyWithOptionsAndIsTakenToThePage(
+                new String[] {option}, pageTitle);
     }
 
     @Then("the user is forcibly logged out")

@@ -15,7 +15,7 @@ public class AxeStepDef extends BasePage {
 
     private static final URL scriptUrl = AxeStepDef.class.getResource("/axe.min.js");
     protected static final Boolean ACCESSIBILITY_CHECKS =
-            Boolean.parseBoolean(System.getenv().getOrDefault("ACCESSIBILITY_CHECKS", "false"));
+            Boolean.parseBoolean(TEST_CONFIG_SERVICE.getOrDefault("ACCESSIBILITY_CHECKS", "false"));
 
     @And("there are no accessibility violations")
     public static void thereAreNoAccessibilityViolations() {
