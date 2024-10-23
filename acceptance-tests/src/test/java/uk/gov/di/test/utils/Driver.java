@@ -42,7 +42,8 @@ public class Driver {
                         } else {
                             try {
                                 driverPool.set(
-                                        new RemoteWebDriver(new URL(SELENIUM_URL), chromeOptions));
+                                        new RemoteWebDriver(
+                                                new URL(SELENIUM_URL), chromeOptions, false));
                             } catch (MalformedURLException e) {
                                 throw new RuntimeException(e);
                             }
@@ -61,7 +62,8 @@ public class Driver {
                         } else {
                             try {
                                 driverPool.set(
-                                        new RemoteWebDriver(new URL(SELENIUM_URL), firefoxOptions));
+                                        new RemoteWebDriver(
+                                                new URL(SELENIUM_URL), firefoxOptions, false));
                             } catch (MalformedURLException e) {
                                 throw new RuntimeException(e);
                             }
