@@ -15,13 +15,13 @@ def dependencyVersions = [
     cucumber_version: '7.20.1',
     axe_version: '3.0',
     selenium_java_version: '4.25.0',
-    aws_sdk_v2_version: "2.28.28",
+    aws_sdk_v2_version: "2.28.29",
     json_version: '20240303',
     rest_assured: '5.5.0'
 ]
 
 dependencies {
-    implementation("org.apache.maven.plugins:maven-surefire-plugin:3.5.1")
+    implementation("org.apache.maven.plugins:maven-surefire-plugin:3.2.5")
 
     testImplementation(platform("software.amazon.awssdk:bom:${dependencyVersions.aws_sdk_v2_version}"))
     testImplementation(platform("io.cucumber:cucumber-bom:${dependencyVersions.cucumber_version}"))
@@ -38,7 +38,6 @@ dependencies {
     testImplementation("io.cucumber:cucumber-picocontainer")
 
     testImplementation("org.seleniumhq.selenium:selenium-java")
-    testImplementation("org.seleniumhq.selenium:selenium-devtools-v128")
     testImplementation("com.deque:axe-selenium:${dependencyVersions.axe_version}")
 
     testImplementation(platform("org.junit:junit-bom:${dependencyVersions.junit_version}"))
