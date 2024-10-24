@@ -21,7 +21,7 @@ def dependencyVersions = [
 ]
 
 dependencies {
-    implementation("org.apache.maven.plugins:maven-surefire-plugin:3.2.5")
+    implementation("org.apache.maven.plugins:maven-surefire-plugin:3.5.1")
 
     testImplementation(platform("software.amazon.awssdk:bom:${dependencyVersions.aws_sdk_v2_version}"))
     testImplementation(platform("io.cucumber:cucumber-bom:${dependencyVersions.cucumber_version}"))
