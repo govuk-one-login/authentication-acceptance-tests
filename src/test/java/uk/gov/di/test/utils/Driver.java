@@ -1,5 +1,6 @@
 package uk.gov.di.test.utils;
 
+import org.openqa.selenium.PageLoadStrategy;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -56,6 +57,7 @@ public class Driver {
                         }
                         firefoxOptions.setPageLoadTimeout(Duration.of(30, SECONDS));
                         firefoxOptions.setImplicitWaitTimeout(Duration.of(30, SECONDS));
+                        firefoxOptions.setPageLoadStrategy(PageLoadStrategy.NORMAL);
                         if (SELENIUM_LOCAL) {
                             driverPool.set(new FirefoxDriver(firefoxOptions));
                         } else {
@@ -86,6 +88,7 @@ public class Driver {
         chromeOptions.addArguments("--no-sandbox");
         chromeOptions.addArguments("--disable-dev-shm-usage");
         chromeOptions.addArguments("--incognito");
+        chromeOptions.setPageLoadStrategy(PageLoadStrategy.NORMAL);
         return chromeOptions;
     }
 

@@ -17,6 +17,7 @@ repos:
         types_or:
           - java
           - groovy
+          - kotlin
         pass_filenames: false
         require_serial: true
 

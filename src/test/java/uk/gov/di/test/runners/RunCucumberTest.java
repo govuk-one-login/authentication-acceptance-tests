@@ -1,12 +1,10 @@
 package uk.gov.di.test.runners;
 
-import io.cucumber.junit.Cucumber;
-import io.cucumber.junit.CucumberOptions;
-import org.junit.runner.RunWith;
+import org.junit.platform.suite.api.IncludeEngines;
+import org.junit.platform.suite.api.SelectClasspathResource;
+import org.junit.platform.suite.api.Suite;
 
-@RunWith(Cucumber.class)
-@CucumberOptions(
-        plugin = {"pretty", "html:target/cucumber-report/index.html"},
-        features = {"src/test/resources/uk/gov/di/test/features"},
-        glue = {"uk.gov.di.test.step_definitions"})
+@Suite
+@IncludeEngines("cucumber")
+@SelectClasspathResource("uk/gov/di/test/features")
 public class RunCucumberTest {}

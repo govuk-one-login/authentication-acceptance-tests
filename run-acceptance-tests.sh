@@ -4,15 +4,13 @@ set -eu
 
 DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" > /dev/null 2>&1 && pwd)"
 
-export ENVIRONMENT=${2?Please provide the environment to run the tests against.}
-
-SSM_VARS_PATH="/acceptance-tests/$ENVIRONMENT"
-pushd "${DIR}" > /dev/null || exit 1
-
 WRITE_ENV=false
-USE_SSM=false
+USE_SSM=true
 LOCAL=true
-while getopts "lrse:" opt; do
+FAIL_FAST_ENABLED=false
+INCLUDE_TAGS=()
+EXCLUDE_TAGS=()
+while getopts "lrse:i:x:f" opt; do
   case ${opt} in
     l)
       LOCAL=true
@@ -26,12 +24,26 @@ while getopts "lrse:" opt; do
     e)
       WRITE_ENV=true
       ;;
+    i)
+      INCLUDE_TAGS+=("$OPTARG")
+      ;;
+    x)
+      EXCLUDE_TAGS+=("$OPTARG")
+      ;;
+    f)
+      FAIL_FAST_ENABLED=true
+      ;;
     *)
       usage
       exit 1
       ;;
   esac
 done
+shift $((OPTIND - 1))
+
+export ENVIRONMENT=${1?Please provide the environment to run the tests against.}
+SSM_VARS_PATH="/acceptance-tests/$ENVIRONMENT"
+pushd "${DIR}" > /dev/null || exit 1
 
 export USE_SSM
 
@@ -91,7 +103,32 @@ if [ -f ".env" ]; then
   set -o allexport && source .env && set +o allexport
 fi
 
-if ./gradlew test -PincludeTags=LegalAndPolicy; then
+if [ -n "${CUCUMBER_FILTER_TAGS}" ]; then
+  INCLUDE_TAGS+=("${CUCUMBER_FILTER_TAGS//@/}")
+fi
+
+function run_tests() {
+  GRADLE_ARGS=("test")
+  if [ "${FAIL_FAST_ENABLED}" == "true" ]; then
+    GRADLE_ARGS+=("-PfailFast")
+  fi
+  if [ ${#INCLUDE_TAGS[@]} -gt 0 ]; then
+    GRADLE_ARGS+=("-PincludeTags=$(
+      IFS=\|
+      echo "${INCLUDE_TAGS[*]}"
+    )")
+  fi
+  if [ ${#EXCLUDE_TAGS[@]} -gt 0 ]; then
+    GRADLE_ARGS+=("-PexcludeTags=$(
+      IFS=\|
+      echo "${EXCLUDE_TAGS[*]}"
+    )")
+  fi
+  echo "running ./gradlew ${GRADLE_ARGS[*]}"
+  ./gradlew "${GRADLE_ARGS[@]}"
+}
+
+if run_tests; then
   echo -e "acceptance-tests SUCCEEDED."
 else
   result=$?
