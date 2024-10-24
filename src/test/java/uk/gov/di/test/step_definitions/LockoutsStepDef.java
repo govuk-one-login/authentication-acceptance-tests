@@ -16,7 +16,7 @@ import uk.gov.di.test.utils.Driver;
 
 import java.util.Objects;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.Assert.assertTrue;
 import static uk.gov.di.test.utils.Constants.NEW_VALID_PASSWORD;
 
 public class LockoutsStepDef extends BasePage {

@@ -13,7 +13,7 @@ import uk.gov.di.test.pages.EnterYourMobilePhoneNumberPage;
 import uk.gov.di.test.pages.NoGovUkOneLoginFoundPage;
 import uk.gov.di.test.pages.StubUserInfoPage;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.Assert.assertTrue;
 import static uk.gov.di.test.utils.Constants.INTERNATIONAL_MOBILE_PHONE_NUMBER_INCORRECT_FORMAT;
 import static uk.gov.di.test.utils.Constants.INTERNATIONAL_MOBILE_PHONE_NUMBER_NON_DIGIT_CHARS;
 import static uk.gov.di.test.utils.Constants.INTERNATIONAL_MOBILE_PHONE_NUMBER_VALID;

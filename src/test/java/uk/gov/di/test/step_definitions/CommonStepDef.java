@@ -14,8 +14,8 @@ import uk.gov.di.test.utils.Driver;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 public class CommonStepDef extends BasePage {
     public CrossPageFlows crossPageFlows;

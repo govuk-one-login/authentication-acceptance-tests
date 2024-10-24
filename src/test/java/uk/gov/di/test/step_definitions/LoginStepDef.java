@@ -3,7 +3,6 @@ package uk.gov.di.test.step_definitions;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import org.junit.jupiter.api.Assertions;
 import uk.gov.di.test.pages.BasePage;
 import uk.gov.di.test.pages.CheckYourEmailPage;
 import uk.gov.di.test.pages.CheckYourPhonePage;
@@ -25,7 +24,8 @@ import uk.gov.di.test.utils.Driver;
 import uk.gov.di.test.utils.PasswordGenerator;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertTrue;
 import static uk.gov.di.test.utils.Constants.INVALID_EMAIL;
 import static uk.gov.di.test.utils.Constants.INVALID_PASSWORD;
 import static uk.gov.di.test.utils.Constants.NEW_VALID_PASSWORD;
@@ -154,8 +154,8 @@ public class LoginStepDef extends BasePage {
         assertEquals(
                 "Rhowch eich cyfeiriad e-bost i fewngofnodi i’ch GOV.UK One Login - GOV.UK One Login",
                 Driver.get().getTitle());
-        Assertions.assertNotEquals("Continue", enterYourEmailAddressPage.continueButtonText());
-        Assertions.assertNotEquals("Back", enterYourEmailAddressPage.backButtonText());
+        assertNotEquals("Continue", enterYourEmailAddressPage.continueButtonText());
+        assertNotEquals("Back", enterYourEmailAddressPage.backButtonText());
     }
 
     @Then("the user is prompted for their password in Welsh")

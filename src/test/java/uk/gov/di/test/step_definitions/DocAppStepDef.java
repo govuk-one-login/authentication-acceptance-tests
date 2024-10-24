@@ -8,7 +8,7 @@ import uk.gov.di.test.pages.BasePage;
 import uk.gov.di.test.pages.DocAppPage;
 import uk.gov.di.test.utils.Driver;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.Assert.assertTrue;
 
 public class DocAppStepDef extends BasePage {
 

@@ -2,6 +2,7 @@ plugins {
     java
     id("com.diffplug.spotless") version "6.25.0"
     id("org.sonarqube") version "5.1.0.4882"
+    id("com.gradle.cucumber.companion") version "1.2.0"
 }
 
 group = "uk.gov.di"
@@ -30,30 +31,30 @@ spotless {
 
 repositories {
     mavenCentral()
-    mavenLocal()
-    maven {
-        url = uri("https://repo.maven.apache.org/maven2/")
-    }
 }
 
 
 dependencies {
-    implementation("org.apache.maven.plugins:maven-surefire-plugin:3.2.5")
-
-    testImplementation(platform("io.cucumber:cucumber-bom:7.20.1"))
-    testImplementation("io.cucumber:cucumber-java")
-    testImplementation("io.cucumber:cucumber-junit")
-    testImplementation("io.cucumber:cucumber-picocontainer")
-    testImplementation("io.cucumber:cucumber-junit-platform-engine")
-
-    testImplementation(platform("org.seleniumhq.selenium:selenium-dependencies-bom:4.25.0"))
-    testImplementation("org.seleniumhq.selenium:selenium-java")
-    testImplementation("com.deque:axe-selenium:3.0")
+    implementation("org.apache.maven.plugins:maven-surefire-plugin:3.5.1")
 
     testImplementation(platform("org.junit:junit-bom:5.11.3"))
     testImplementation("org.junit.platform:junit-platform-suite")
     testImplementation("org.junit.jupiter:junit-jupiter-api")
     testImplementation("org.junit.jupiter:junit-jupiter-engine")
+
+    testImplementation("org.testng:testng:7.10.2")
+
+    testImplementation(platform("io.cucumber:cucumber-bom:7.20.1"))
+    testImplementation("io.cucumber:cucumber-java")
+    testImplementation("io.cucumber:cucumber-junit")
+    testImplementation("io.cucumber:cucumber-junit-platform-engine")
+    testImplementation("io.cucumber:cucumber-testng")
+    testImplementation("io.cucumber:cucumber-picocontainer")
+
+    testImplementation(platform("org.seleniumhq.selenium:selenium-dependencies-bom:4.25.0"))
+    testImplementation("org.seleniumhq.selenium:selenium-java")
+    testImplementation("com.deque:axe-selenium:3.0")
+
 
     testImplementation(platform("software.amazon.awssdk:bom:2.28.29"))
     testImplementation("software.amazon.awssdk:sso")
@@ -66,7 +67,7 @@ dependencies {
 
     testImplementation("commons-codec:commons-codec")
 
-    testImplementation("com.google.guava:guava")
+    testImplementation("com.google.guava:guava:33.3.1-jre")
 
     testImplementation("org.springframework.security:spring-security-crypto:6.3.4")
     testImplementation("org.bouncycastle:bcpkix-jdk18on")
@@ -76,7 +77,7 @@ dependencies {
 }
 
 version = "1.0.0"
-description = "acceptance-tests"
+//description = "acceptance-tests"
 
 java {
     toolchain {
@@ -120,7 +121,8 @@ tasks {
         useJUnitPlatform {
             excludeTags("disabled")
             if (project.hasProperty("includeTags")) includeTags(project.property("includeTags") as String?)
-
+            // OPTIONAL: Copy all system properties from the command line (-D...) to the test environment
+            systemProperties(project.gradle.startParameter.systemPropertiesArgs)
             // OPTIONAL: Enable Cucumber plugins, enable/disable as desired
             systemProperty("cucumber.plugin", "message:target/cucumber-report/cucumber.ndjson, timeline:target/cucumber-report/timeline, html:target/cucumber-report/index.html")
             // OPTIONAL: Improve readability of test names in reports

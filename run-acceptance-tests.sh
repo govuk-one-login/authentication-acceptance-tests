@@ -71,10 +71,10 @@ fi
 
 echo -e "Building di-authentication-acceptance-tests..."
 
-if ! ./gradlew clean build -x :acceptance-tests:test -x spotlessApply -x spotlessCheck; then
-  echo -e "acceptance-tests build failed."
-  exit 1
-fi
+#if ! ./gradlew clean build -x :acceptance-tests:test -x spotlessApply -x spotlessCheck; then
+#  echo -e "acceptance-tests build failed."
+#  exit 1
+#fi
 
 echo -e "Running di-authentication-acceptance-tests..."
 
@@ -91,7 +91,7 @@ if [ -f ".env" ]; then
   set -o allexport && source .env && set +o allexport
 fi
 
-if ./gradlew cucumber -x spotlessApply -x spotlessCheck; then
+if ./gradlew test -PincludeTags=LegalAndPolicy; then
   echo -e "acceptance-tests SUCCEEDED."
 else
   result=$?

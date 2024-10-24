@@ -18,7 +18,7 @@ import uk.gov.di.test.pages.StubStartPage;
 import uk.gov.di.test.pages.StubUserInfoPage;
 import uk.gov.di.test.services.UserLifecycleService;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.Assert.assertEquals;
 import static uk.gov.di.test.utils.Constants.UK_MOBILE_PHONE_NUMBER;
 
 public class CrossPageFlows extends BasePage {
