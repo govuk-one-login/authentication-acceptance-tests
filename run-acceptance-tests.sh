@@ -103,7 +103,7 @@ if [ -f ".env" ]; then
   set -o allexport && source .env && set +o allexport
 fi
 
-if [ -n "${CUCUMBER_FILTER_TAGS}" ]; then
+if [ -n "${CUCUMBER_FILTER_TAGS:-}" ]; then
   INCLUDE_TAGS+=("${CUCUMBER_FILTER_TAGS//@/}")
 fi
 

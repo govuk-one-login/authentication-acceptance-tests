@@ -97,6 +97,8 @@ tasks {
       if (project.hasProperty("includeTags"))
         includeTags(project.property("includeTags") as String?)
 
+      if (project.hasProperty("failFast")) failFast = true
+
       // OPTIONAL: Copy all system properties from the command line (-D...) to the test environment
       systemProperties(project.gradle.startParameter.systemPropertiesArgs)
 
@@ -122,8 +124,14 @@ tasks {
       // OPTIONAL: Force test execution even if they are up-to-date according to Gradle or use
       // "gradle test --rerun"
       outputs.upToDateWhen { false }
-      testLogging.showStandardStreams = true
-      if (project.hasProperty("failFast")) failFast = true
+      testLogging {
+        events(
+          "passed",
+          "skipped",
+          "failed",
+          org.gradle.api.tasks.testing.logging.TestLogEvent.STANDARD_OUT
+        )
+      }
     }
   }
 }
