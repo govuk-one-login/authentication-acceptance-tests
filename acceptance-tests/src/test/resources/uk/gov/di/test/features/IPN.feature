@@ -23,6 +23,7 @@ Feature: International Phone Numbers
     When the user submits a UK phone number containing non-digit characters
     Then the "Enter a UK mobile phone number using only numbers or the + symbol" error message is displayed
 
+  @broken-in-dev
   Scenario: User can successfully complete registration using an international phone number
     Given a user does not yet exist
     When the user comes from the stub relying party with default options and is taken to the "Create your GOV.UK One Login or sign in" page

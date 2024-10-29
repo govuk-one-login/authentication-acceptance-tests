@@ -1,6 +1,6 @@
 @Reauth @build @staging
 Feature: Reauthentication of user
-  @happy
+  @happy @broken-in-dev
   Scenario: Sms user successfully reauthenticates
     Given a user with SMS MFA exists
     And the user is already signed in to their One Login account
@@ -11,7 +11,7 @@ Feature: Reauthentication of user
     And the user enters the six digit security code from their phone
     Then the user is successfully reauthenticated and returned to the service
 
-  @happy
+  @happy @broken-in-dev
   Scenario: Auth app user successfully reauthenticates
     Given a user with App MFA exists
     And the user is already signed in to their One Login account
@@ -39,7 +39,7 @@ Feature: Reauthentication of user
     Then the user is not blocked from signing in
     And the user is not blocked from reauthenticating
 
-  @reauth-different-incorrect-emails @AUT-2790
+  @reauth-different-incorrect-emails @AUT-2790 @broken-in-dev
   Scenario: Sms user enters 6 different incorrect email addresses (not known to One Login) during reauthentication and gets logged out. Original user is not locked out.
     Given a user with SMS MFA exists
     And the user is already signed in to their One Login account
@@ -50,7 +50,7 @@ Feature: Reauthentication of user
     * the user is not blocked from signing in
     * the user is not blocked from reauthenticating
 
-  @reauth-incorrect-pw @AUT-2789
+  @reauth-incorrect-pw @AUT-2789 @broken-in-dev
   Scenario: Sms user enters incorrect password during reauthentication
     Given a user with SMS MFA exists
     And the user is already signed in to their One Login account
@@ -64,7 +64,7 @@ Feature: Reauthentication of user
     * the user is not blocked from signing in
     * the user is not blocked from reauthenticating
 
-  @reauth-incorrect-sms-code @AUT-2788
+  @reauth-incorrect-sms-code @AUT-2788 @broken-in-dev
   Scenario: Sms user enters incorrect phone code during reauthentication
     Given a user with SMS MFA exists
     And the user is already signed in to their One Login account
@@ -78,7 +78,7 @@ Feature: Reauthentication of user
     * the user is not blocked from reauthenticating
 
 
-  @reauth-incorrect-auth-app-code @AUT-2788
+  @reauth-incorrect-auth-app-code @AUT-2788 @broken-in-dev
   Scenario: Auth app user enters incorrect auth app code during reauthentication
     Given a user with App MFA exists
     And the user is already signed in to their One Login account
@@ -92,7 +92,7 @@ Feature: Reauthentication of user
     * the user is not blocked from reauthenticating
 
 
-  @reauth-request-too-many-sms-codes @AUT-3089
+  @reauth-request-too-many-sms-codes @AUT-3089 @broken-in-dev
   Scenario: Sms user requests phone code resend during reauthentication
     Given a user with SMS MFA exists
     And the user is already signed in to their One Login account
@@ -119,7 +119,7 @@ Feature: Reauthentication of user
 #    Then the user is forcibly logged out
 
 
-  @reauth-multiple-rp-tab @AUT-3529 @AUT-3530
+  @reauth-multiple-rp-tab @AUT-3529 @AUT-3530 @broken-in-dev
   Scenario: Sms user verify that silent login does not reset the counts of failed credential entry for the re-authentication journey [invalid password]
     Given a user with SMS MFA exists
     And the user is already signed in to their One Login account
@@ -132,7 +132,7 @@ Feature: Reauthentication of user
     Then the user is returned to the service
 
 
-  @reauth-multiple-rp-tab @AUT-3530
+  @reauth-multiple-rp-tab @AUT-3530 @broken-in-dev
   Scenario: Sms user verify that when re-authenticating in tab B and then logs out in a tab A they cannot complete the re-authenticate in tab B when they enter a valid email
     Given a user with SMS MFA exists
     And the user is already signed in to their One Login account
@@ -145,7 +145,7 @@ Feature: Reauthentication of user
     Then the user is taken to the "There’s a problem with this service" page
 
 
-  @reauth-multiple-rp-tab @AUT-3530
+  @reauth-multiple-rp-tab @AUT-3530 @broken-in-dev
   Scenario: Sms user verify that when re-authenticating in tab B and logs out in a tab A they cannot complete the re-authenticate in tab B when they enter a valid password
     Given a user with SMS MFA exists
     And the user is already signed in to their One Login account
@@ -159,7 +159,7 @@ Feature: Reauthentication of user
     Then the user is taken to the "There’s a problem with this service" page
 
 
-  @reauth-multiple-rp-tab @AUT-3530
+  @reauth-multiple-rp-tab @AUT-3530 @broken-in-dev
   Scenario: Sms user verify that when user starts multiple re-authentications and then completes each one
     Given a user with SMS MFA exists
     And the user is already signed in to their One Login account
@@ -176,7 +176,7 @@ Feature: Reauthentication of user
     Then the user is returned to the service
 
 
-  @AUT-3613 @AUT-3530
+  @AUT-3613 @AUT-3530 @broken-in-dev
   Scenario: Sms user enters 6 different incorrect email addresses
     Given a user with SMS MFA exists
     And the user is already signed in to their One Login account
@@ -191,7 +191,7 @@ Feature: Reauthentication of user
     * the user is not blocked from reauthenticating
 
 
-  @AUT-3613 @AUT-3530
+  @AUT-3613 @AUT-3530 @broken-in-dev
   Scenario: Sms user enters incorrect password during reauthentication
     Given a user with SMS MFA exists
     And the user is already signed in to their One Login account
@@ -210,7 +210,7 @@ Feature: Reauthentication of user
 
 
   # WILL BE REPLACED WITH NEW PROCESS IN V3
-  @reauth-change-security-code-method-to-auth-app
+  @reauth-change-security-code-method-to-auth-app @broken-in-dev
   Scenario: Sms user can change how they get security codes during reauthentication
     Given a user with SMS MFA exists
     And the user is already signed in to their One Login account
@@ -225,7 +225,7 @@ Feature: Reauthentication of user
 
 
   # WILL BE REPLACED WITH NEW PROCESS IN V3
-  @reauth-change-security-code-method-to-sms
+  @reauth-change-security-code-method-to-sms @broken-in-dev
   Scenario: Auth app user can change how they get security codes during reauthentication
     Given a user with App MFA exists
     And the user is already signed in to their One Login account
@@ -240,7 +240,7 @@ Feature: Reauthentication of user
 
 
   # WILL BE REPLACED WITH NEW PROCESS IN V3
-  @reauth-pw-reset
+  @reauth-pw-reset @broken-in-dev
   Scenario: User can change their password during reauthenticates
     Given a user with SMS MFA exists
     And the user is already signed in to their One Login account

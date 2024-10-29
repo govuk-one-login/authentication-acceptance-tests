@@ -1,7 +1,7 @@
 @AccountInterventions @build
 Feature: Account interventions
 
-  @suspended @tw-test @focusme
+  @suspended @broken-in-dev
   Scenario: Sms user cannot log in when they have a temporarily suspended account
     Given a user with SMS MFA exists
     And the user has a temporarily suspended intervention
@@ -15,7 +15,7 @@ Feature: Account interventions
     When the user enters the six digit security code from their phone
     Then the user is taken to the "Sorry, there is a problem" page
 
-  @suspended @tw-test
+  @suspended @broken-in-dev
   Scenario: Auth app user cannot log in when they have a temporarily suspended account
     Given a user with App MFA exists
     And the user has a temporarily suspended intervention
@@ -29,7 +29,7 @@ Feature: Account interventions
     When the user enters the security code from the auth app
     Then the user is taken to the "Sorry, there is a problem" page
 
-  @suspended @tw-test
+  @suspended @broken-in-dev
   Scenario: Sms user with outdated terms and conditions cannot log in when they have a temporarily suspended account
     Given a user with SMS MFA exists
     And the user has a temporarily suspended intervention
@@ -365,7 +365,7 @@ Feature: Account interventions
     When the user enters valid new password and correctly retypes it
     Then the user is returned to the service
 
-  @suspended @reset_password @tw-test
+  @suspended @reset_password @broken-in-dev
   Scenario: Auth app user can log in when their One Login account intervention has been removed
     Given a user with App MFA exists
     And the user has a temporarily suspended intervention
