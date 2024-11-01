@@ -46,12 +46,12 @@ public class CrossPageFlows extends BasePage {
     public ResetYourPasswordPage resetYourPasswordPage = new ResetYourPasswordPage();
     public CreateYourPasswordPage createYourPasswordPage = new CreateYourPasswordPage();
     public StubUserInfoPage stubUserInfoPage = StubUserInfoPage.getStubUserInfoPage();
-    public ReenterYourSignInDetailsToContinuePage reenterYourSignInDetailsToContinuePage =
-            new ReenterYourSignInDetailsToContinuePage();
+    public ReenterYourSignInDetailsToContinuePage reenterYourSignInDetailsToContinuePage;
 
     public CrossPageFlows(World world) {
         this.world = world;
         this.enterYourPasswordPage = new EnterYourPasswordPage(world);
+        reenterYourSignInDetailsToContinuePage = new ReenterYourSignInDetailsToContinuePage(world);
     }
 
     public void requestPhoneSecurityCodeResendNumberOfTimes(
@@ -191,7 +191,6 @@ public class CrossPageFlows extends BasePage {
     }
 
     public void smsUserChangeHowGetSecurityCodesToAuthApp() {
-        String authAppSecretKey;
         selectLinkByText("Problems with the code?");
         selectLinkByText("change how you get security codes");
         waitForPageLoad("Check your email");

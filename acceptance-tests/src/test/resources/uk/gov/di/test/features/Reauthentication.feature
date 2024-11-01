@@ -22,16 +22,22 @@ Feature: Reauthentication of user
     And the user enters the security code from the auth app
     Then the user is successfully reauthenticated and returned to the service
 
-#  @reauth-same-incorrect-emails @AUT-2790
-#  Scenario: Sms user enters the same incorrect email address (known to One Login) 6 times during reauthentication and gets logged out. Owner of incorrect email is not locked out.
-#    Given the "sms" user "TEST_USER_REAUTH_SMS_2" is already signed in to their One Login account
-#    And the RP requires the user to reauthenticate
-#    When the user enters an incorrect email address at reauth that is known to One Login
-#    Then the "Enter the same email address you used to sign in" error message is displayed
-#    When the user enters the same incorrect email address for reauth a further 5 times
-#    Then the user is forcibly logged out
-#    And the owner of the incorrect email address is not blocked from signing in
-#    And the owner of the incorrect email address is not blocked from reauthenticating
+  @reauth-same-incorrect-emails @AUT-2790
+  Scenario: Sms user enters the same incorrect email address (known to One Login) 6 times during reauthentication and gets logged out. Owner of incorrect email is not locked out.
+    Given a user with SMS MFA exists
+    And the user is already signed in to their One Login account
+    And the RP requires the user to reauthenticate
+    And Another User with SMS exists
+
+    When the logged in user enters the other users email address
+    Then the "Enter the same email address you used to sign in" error message is displayed
+
+    When the logged-in User enters the other Users email address for reauth a further 5 times
+    Then the logged-in User is forcibly logged out
+
+    When the other User attempts to use OneLogin
+    Then the user is not blocked from signing in
+    And the user is not blocked from reauthenticating
 
   @reauth-different-incorrect-emails @AUT-2790
   Scenario: Sms user enters 6 different incorrect email addresses (not known to One Login) during reauthentication and gets logged out. Original user is not locked out.

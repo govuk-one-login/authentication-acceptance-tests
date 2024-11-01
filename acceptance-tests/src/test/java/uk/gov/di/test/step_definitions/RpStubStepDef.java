@@ -43,6 +43,7 @@ public class RpStubStepDef extends BasePage {
     }
 
     @Then("the user is forcibly logged out")
+    @Then("the logged-in User is forcibly logged out")
     public void theUserIsLoggedOut() {
         waitForThisText("Error in Callback");
         waitForThisText("Error: login_required");

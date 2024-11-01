@@ -57,6 +57,28 @@ public class UserLifecycleStepDef {
         }
     }
 
+    @And("Another User with {mfaMethod} exists")
+    public void anotherUserExists(String mfaMethod) {
+        world.setOtherUserProfile(userLifecycleService.buildNewUserProfile());
+        world.setOtherUserPassword(generateValidPassword());
+        switch (mfaMethod) {
+            case "no":
+                break;
+            case "SMS":
+                userLifecycleService.updateUserMfaSms(world.getOtherUserProfile());
+                break;
+            case "App":
+                userLifecycleService.updateUserMfaApp(world.getOtherUserCredentials());
+                break;
+            default:
+                throw new RuntimeException("Invalid MFA Method");
+        }
+        userLifecycleService.putUserProfileToDynamodb(world.getOtherUserProfile());
+        world.setOtherUserCredentials(
+                userLifecycleService.buildNewUserCredentialsAndPutToDynamodb(
+                        world.getOtherUserProfile(), world.getOtherUserPassword()));
+    }
+
     @And("the user has not yet accepted the latest terms and conditions")
     public void theUserHasNotYetAcceptedTheLatestTermsAndConditions() {
         userLifecycleService.updateUserTermsAndConditions(

@@ -17,8 +17,44 @@ public class World {
     public UserProfile userProfile;
     public UserCredentials userCredentials;
     public UserInterventions userInterventions;
-
     private String userPassword;
+
+    private UserProfile otherUserProfile;
+    private UserCredentials otherUserCredentials;
+    private UserInterventions otherUserInterventions;
+    private String otherUserPassword;
+
+    public UserCredentials getOtherUserCredentials() {
+        return otherUserCredentials;
+    }
+
+    public void setOtherUserCredentials(UserCredentials otherUserCredentials) {
+        this.otherUserCredentials = otherUserCredentials;
+    }
+
+    public UserInterventions getOtherUserInterventions() {
+        return otherUserInterventions;
+    }
+
+    public void setOtherUserInterventions(UserInterventions otherUserInterventions) {
+        this.otherUserInterventions = otherUserInterventions;
+    }
+
+    public String getOtherUserPassword() {
+        return otherUserPassword;
+    }
+
+    public void setOtherUserPassword(String otherUserPassword) {
+        this.otherUserPassword = otherUserPassword;
+    }
+
+    public UserProfile getOtherUserProfile() {
+        return otherUserProfile;
+    }
+
+    public void setOtherUserProfile(UserProfile otherUserProfile) {
+        this.otherUserProfile = otherUserProfile;
+    }
 
     public String getUserPassword() {
         return userPassword;
