@@ -23,6 +23,10 @@ This is the default option if running the tests using `./run-acceptance-tests.sh
 
 The configuration provided will connect to the build environment.
 
+If you need to run against another environment, use the 's' flag e.g. `./run-acceptance-tests.sh -s sandpit`.
+
+Note that you need to export the aws profile required before running this, e.g. `export AWS_PROFILE=[some-aws-profile-with-sufficient-access-to-the-selected-env]`
+
 #### Local .env Configuration
 
 To create a .env file based on the values in AWS SSM Parameter Store:
