@@ -271,7 +271,7 @@ public class LoginStepDef extends BasePage {
         reenterYourSignInDetailsToContinuePage.enterSameIncorrectEmailAddressesNumberOfTimes(1);
     }
 
-    @When("the user enters the same incorrect email address for reauth a further {int} times")
+    @When("the user enters an incorrect email address for reauth {int} times")
     public void theUserEntersDifferentEmailAddressXTimes(Integer attemptCount) {
         reenterYourSignInDetailsToContinuePage.enterSameIncorrectEmailAddressesNumberOfTimes(
                 attemptCount);

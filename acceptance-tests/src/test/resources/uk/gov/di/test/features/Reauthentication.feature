@@ -109,12 +109,14 @@ Feature: Reauthentication of user
   #Silent log in support for multiple RPs re-authenticating (This is only relevant for multiple tabs)
 #  @reauth-multiple-rp-tab @AUT-3529 @AUT-3530
 #  Scenario: Sms user verify that silent login does not reset the counts of failed credential entry for the re-authentication journey [invalid email]
-#    Given the "sms" user "TEST_USER_REAUTH_SMS_2" is already signed in to their One Login account
-#    And the RP requires the user to reauthenticate
-#    When the user enters the same incorrect email address for reauth a further 5 times
-#    And user opens up new tab in the same browser and performs a silent log in and navigate back to the first tab
-#    When the user enters the same incorrect email address for reauth a further 1 times
-#    Then the user is returned to the service
+#    Given a user with SMS MFA exists
+#    And the user is already signed in to their One Login account
+#
+#    Given the RP requires the user to reauthenticate
+#    When the user enters an incorrect email address for reauth 5 times
+#    And the user opens up new tab in the same browser, performs a silent log in and switches back to the first tab
+#    When the user enters an incorrect email address for reauth 1 times
+#    Then the user is forcibly logged out
 
 
   @reauth-multiple-rp-tab @AUT-3529 @AUT-3530
