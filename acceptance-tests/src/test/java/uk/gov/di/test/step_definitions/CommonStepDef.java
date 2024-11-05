@@ -22,9 +22,11 @@ public class CommonStepDef extends BasePage {
     public CreateOrSignInPage createOrSignInPage = new CreateOrSignInPage();
     public StubUserInfoPage stubUserInfoPage = StubUserInfoPage.getStubUserInfoPage();
     StubStartPage stubStartPage = StubStartPage.getStubStartPage();
+    private final World world;
 
     public CommonStepDef(World world) {
         this.crossPageFlows = new CrossPageFlows(world);
+        this.world = world;
     }
 
     String idToken;
@@ -111,6 +113,14 @@ public class CommonStepDef extends BasePage {
     @And("the user is not blocked from signing in")
     public void theUserIsAlreadySignedIn() {
         crossPageFlows.successfulSignIn();
+    }
+
+    @When("the other User attempts to use OneLogin")
+    public void theOtherUserAttemptsToUseOneLogin() {
+        world.userProfile = world.getOtherUserProfile();
+        world.userCredentials = world.getOtherUserCredentials();
+        world.userInterventions = world.getOtherUserInterventions();
+        world.setUserPassword(world.getOtherUserPassword());
     }
 
     @When("the RP requires the user to reauthenticate")

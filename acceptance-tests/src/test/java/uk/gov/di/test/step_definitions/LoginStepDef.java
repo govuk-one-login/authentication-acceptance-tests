@@ -57,8 +57,7 @@ public class LoginStepDef extends BasePage {
     public EnterYourEmailAddressPage enterYourEmailAddressPage = new EnterYourEmailAddressPage();
     public SetUpAnAuthenticatorAppPage setUpAnAuthenticatorAppPage =
             new SetUpAnAuthenticatorAppPage();
-    public ReenterYourSignInDetailsToContinuePage reenterYourSignInDetailsToContinuePage =
-            new ReenterYourSignInDetailsToContinuePage();
+    public ReenterYourSignInDetailsToContinuePage reenterYourSignInDetailsToContinuePage;
     public EnterThe6DigitSecurityCodeShownInYourAuthenticatorAppPage
             enterThe6DigitSecurityCodeShownInYourAuthenticatorAppPage =
                     new EnterThe6DigitSecurityCodeShownInYourAuthenticatorAppPage();
@@ -68,6 +67,7 @@ public class LoginStepDef extends BasePage {
         this.world = world;
         this.enterYourPasswordPage = new EnterYourPasswordPage(world);
         this.crossPageFlows = new CrossPageFlows(world);
+        reenterYourSignInDetailsToContinuePage = new ReenterYourSignInDetailsToContinuePage(world);
     }
 
     @When("the user enters their password which is on the top 100k password list")
@@ -96,6 +96,12 @@ public class LoginStepDef extends BasePage {
     public void userEntersTheirEmailAddressForReauth() {
         reenterYourSignInDetailsToContinuePage.enterEmailAddressAndContinue(
                 world.getUserEmailAddress());
+    }
+
+    @When("the logged in user enters the other users email address")
+    public void userEntersAnotherUsersEmailAddressForReauth() {
+        reenterYourSignInDetailsToContinuePage.enterEmailAddressAndContinue(
+                world.getOtherUserProfile().getEmail());
     }
 
     @And("user enters the same email address {string} for reauth as they used for login")
@@ -265,9 +271,16 @@ public class LoginStepDef extends BasePage {
         reenterYourSignInDetailsToContinuePage.enterSameIncorrectEmailAddressesNumberOfTimes(1);
     }
 
-    @When("the user enters the same incorrect email address for reauth a further {int} times")
+    @When("the user enters an incorrect email address for reauth {int} times")
     public void theUserEntersDifferentEmailAddressXTimes(Integer attemptCount) {
         reenterYourSignInDetailsToContinuePage.enterSameIncorrectEmailAddressesNumberOfTimes(
+                attemptCount);
+    }
+
+    @When(
+            "the logged-in User enters the other Users email address for reauth a further {int} times")
+    public void theUserEntersAnotherUsersEmailAddressXTimes(Integer attemptCount) {
+        reenterYourSignInDetailsToContinuePage.enterAnotherUsersEmailAddressNumberOfTime(
                 attemptCount);
     }
 

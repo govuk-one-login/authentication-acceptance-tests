@@ -22,16 +22,22 @@ Feature: Reauthentication of user
     And the user enters the security code from the auth app
     Then the user is successfully reauthenticated and returned to the service
 
-#  @reauth-same-incorrect-emails @AUT-2790
-#  Scenario: Sms user enters the same incorrect email address (known to One Login) 6 times during reauthentication and gets logged out. Owner of incorrect email is not locked out.
-#    Given the "sms" user "TEST_USER_REAUTH_SMS_2" is already signed in to their One Login account
-#    And the RP requires the user to reauthenticate
-#    When the user enters an incorrect email address at reauth that is known to One Login
-#    Then the "Enter the same email address you used to sign in" error message is displayed
-#    When the user enters the same incorrect email address for reauth a further 5 times
-#    Then the user is forcibly logged out
-#    And the owner of the incorrect email address is not blocked from signing in
-#    And the owner of the incorrect email address is not blocked from reauthenticating
+  @reauth-same-incorrect-emails @AUT-2790
+  Scenario: Sms user enters the same incorrect email address (known to One Login) 6 times during reauthentication and gets logged out. Owner of incorrect email is not locked out.
+    Given a user with SMS MFA exists
+    And the user is already signed in to their One Login account
+    And the RP requires the user to reauthenticate
+    And Another User with SMS exists
+
+    When the logged in user enters the other users email address
+    Then the "Enter the same email address you used to sign in" error message is displayed
+
+    When the logged-in User enters the other Users email address for reauth a further 5 times
+    Then the logged-in User is forcibly logged out
+
+    When the other User attempts to use OneLogin
+    Then the user is not blocked from signing in
+    And the user is not blocked from reauthenticating
 
   @reauth-different-incorrect-emails @AUT-2790
   Scenario: Sms user enters 6 different incorrect email addresses (not known to One Login) during reauthentication and gets logged out. Original user is not locked out.
@@ -103,12 +109,14 @@ Feature: Reauthentication of user
   #Silent log in support for multiple RPs re-authenticating (This is only relevant for multiple tabs)
 #  @reauth-multiple-rp-tab @AUT-3529 @AUT-3530
 #  Scenario: Sms user verify that silent login does not reset the counts of failed credential entry for the re-authentication journey [invalid email]
-#    Given the "sms" user "TEST_USER_REAUTH_SMS_2" is already signed in to their One Login account
-#    And the RP requires the user to reauthenticate
-#    When the user enters the same incorrect email address for reauth a further 5 times
-#    And user opens up new tab in the same browser and performs a silent log in and navigate back to the first tab
-#    When the user enters the same incorrect email address for reauth a further 1 times
-#    Then the user is returned to the service
+#    Given a user with SMS MFA exists
+#    And the user is already signed in to their One Login account
+#
+#    Given the RP requires the user to reauthenticate
+#    When the user enters an incorrect email address for reauth 5 times
+#    And the user opens up new tab in the same browser, performs a silent log in and switches back to the first tab
+#    When the user enters an incorrect email address for reauth 1 times
+#    Then the user is forcibly logged out
 
 
   @reauth-multiple-rp-tab @AUT-3529 @AUT-3530

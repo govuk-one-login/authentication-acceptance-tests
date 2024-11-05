@@ -2,9 +2,15 @@ package uk.gov.di.test.pages;
 
 import org.openqa.selenium.By;
 import uk.gov.di.test.services.UserLifecycleService;
+import uk.gov.di.test.step_definitions.World;
 
 public class ReenterYourSignInDetailsToContinuePage extends BasePage {
     UserLifecycleService userLifecycleService = UserLifecycleService.getInstance();
+    World world;
+
+    public ReenterYourSignInDetailsToContinuePage(World world) {
+        this.world = world;
+    }
 
     By emailField = By.id("email");
     public static final String REAUTH_SIGN_IN_PAGE_HEADER =
@@ -16,13 +22,18 @@ public class ReenterYourSignInDetailsToContinuePage extends BasePage {
         findAndClickContinue();
     }
 
+    public void enterAnotherUsersEmailAddressNumberOfTime(int numberOfTimes) {
+        for (int i = 1; i <= numberOfTimes; i++) {
+            enterEmailAddressAndContinue(world.getOtherUserProfile().getEmail());
+            System.out.println("Wrong email entry count: " + i);
+        }
+    }
+
     public void enterSameIncorrectEmailAddressesNumberOfTimes(Integer numberOfTimes) {
-        throw new RuntimeException("Need to implement new-style user flows for this");
-        //        for (int index = 0; index < numberOfTimes; index++) {
-        //            int count = index + 1;
-        //            enterEmailAddressAndContinue(System.getenv().get("TEST_USER_REAUTH_SMS_9"));
-        //            System.out.println("Wrong email entry count: " + count);
-        //        }
+        for (int i = 1; i <= numberOfTimes; i++) {
+            enterEmailAddressAndContinue(world.getUserEmailAddress());
+            System.out.println("Wrong email entry count: " + i);
+        }
     }
 
     public void enterDifferentIncorrectEmailAddressesNumberOfTimes(Integer numberOfTimes) {
