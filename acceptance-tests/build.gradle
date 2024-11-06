@@ -14,7 +14,7 @@ def dependencyVersions = [
     junit_version: '5.11.3',
     cucumber_version: '7.20.1',
     axe_version: '3.0',
-    selenium_java_version: '4.26.0',
+    selenium_java_version: '4.5.0',
     aws_sdk_v2_version: "2.29.6",
     json_version: '20240303',
     rest_assured: '5.5.0'
@@ -25,7 +25,6 @@ dependencies {
 
     testImplementation(platform("software.amazon.awssdk:bom:${dependencyVersions.aws_sdk_v2_version}"))
     testImplementation(platform("io.cucumber:cucumber-bom:${dependencyVersions.cucumber_version}"))
-    testImplementation(platform("org.seleniumhq.selenium:selenium-dependencies-bom:${dependencyVersions.selenium_java_version}"))
 
     testImplementation("software.amazon.awssdk:sso")
     testImplementation("software.amazon.awssdk:ssooidc")
@@ -37,7 +36,7 @@ dependencies {
     testImplementation("io.cucumber:cucumber-junit")
     testImplementation("io.cucumber:cucumber-picocontainer")
 
-    testImplementation("org.seleniumhq.selenium:selenium-java")
+    testImplementation("org.seleniumhq.selenium:selenium-java:${dependencyVersions.selenium_java_version}")
     testImplementation("com.deque:axe-selenium:${dependencyVersions.axe_version}")
 
     testImplementation(platform("org.junit:junit-bom:${dependencyVersions.junit_version}"))
