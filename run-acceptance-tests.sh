@@ -56,7 +56,7 @@ function write_env_file() {
     | jq -r '.Parameters[] | [(.Name|split("/")|last), .Value]|@tsv')"
 
   while IFS=$'\t' read -r name value; do
-    echo "${name}=${value}" >> "${envfile}"
+    echo "${name}='${value}'" >> "${envfile}"
   done <<< "${envars}"
   echo "Exporting SSM parameters completed."
   exit 0

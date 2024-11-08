@@ -1,4 +1,4 @@
-@AccountRecovery @build @staging
+@AccountRecovery @build @staging @build-sp @staging-sp
 Feature: Account recovery
 
   Scenario: An sms user can change how they get security codes and log in with new method
