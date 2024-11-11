@@ -49,4 +49,11 @@ public class LegacyStubStartPage extends StubStartPage {
         selectRpOptionsByIdAndContinue(new String[] {"2fa-on", "prompt-login", "request-object"});
         setAnalyticsCookieTo(false);
     }
+
+    @Override
+    public void waitForForciblyLoggedOut() {
+        waitForThisText("Error in Callback");
+        waitForThisText("Error: login_required");
+        waitForThisText("Error description: Login required");
+    }
 }

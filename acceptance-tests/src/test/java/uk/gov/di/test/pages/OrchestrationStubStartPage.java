@@ -57,6 +57,18 @@ public class OrchestrationStubStartPage extends StubStartPage {
 
     @Override
     public void reauthRequired(String idToken) {
-        throw new UnsupportedOperationException("Not implemented for orchestration stub");
+        goToRpStub();
+        enterReauthIdToken(idToken);
+        selectRpOptionsByIdAndContinue(new String[] {"2fa-on", "authenticated-2","authenticated-level"});
+        setAnalyticsCookieTo(false);
+//        throw new UnsupportedOperationException("Not implemented for orchestration stub");
+    }
+
+    @Override
+    public void waitForForciblyLoggedOut() {
+        // TODO: Improve this check. Checking for a broken page is not ideal here.
+
+        waitForThisText("Internal server error");
+        waitForThisUrlParameter("error", "login_required");
     }
 }

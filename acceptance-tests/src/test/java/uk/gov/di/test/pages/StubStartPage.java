@@ -34,6 +34,8 @@ public abstract class StubStartPage extends BasePage {
 
     public abstract void reauthRequired(String idToken);
 
+    public abstract void waitForForciblyLoggedOut();
+
     public static class RPStubRetryException extends RuntimeException {
 
         public RPStubRetryException(Throwable e) {
