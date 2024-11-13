@@ -145,8 +145,7 @@ public class BasePage {
 
     public void waitForThisUrlParameter(String parameter, String value) {
         new WebDriverWait(Driver.get(), DEFAULT_PAGE_LOAD_WAIT_TIME)
-                .until(
-                        ExpectedConditions.urlMatches("[?&]" + parameter + "=" + value + "(&|$)"));
+                .until(ExpectedConditions.urlMatches("[?&]" + parameter + "=" + value + "(&|$)"));
     }
 
     protected void pressBack() {

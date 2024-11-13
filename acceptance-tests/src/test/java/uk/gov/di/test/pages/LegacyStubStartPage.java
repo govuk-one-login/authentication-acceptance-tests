@@ -43,9 +43,9 @@ public class LegacyStubStartPage extends StubStartPage {
     }
 
     @Override
-    public void reauthRequired(String idToken) {
+    public void reauthRequired(String reauthCorrelationToken) {
         goToRpStub();
-        enterReauthIdToken(idToken);
+        enterReauthIdToken(reauthCorrelationToken);
         selectRpOptionsByIdAndContinue(new String[] {"2fa-on", "prompt-login", "request-object"});
         setAnalyticsCookieTo(false);
     }

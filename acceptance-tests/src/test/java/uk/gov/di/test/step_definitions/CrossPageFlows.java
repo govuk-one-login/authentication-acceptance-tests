@@ -150,8 +150,8 @@ public class CrossPageFlows extends BasePage {
 
     public void successfulReauth() {
         stubUserInfoPage.waitForReturnToTheService();
-        String idToken = stubUserInfoPage.getIdToken();
-        stubStartPage.reauthRequired(idToken);
+        String reauthCorrelationToken = stubUserInfoPage.getReauthCorrelationToken();
+        stubStartPage.reauthRequired(reauthCorrelationToken);
         reenterYourSignInDetailsToContinuePage.waitForPage();
         reenterYourSignInDetailsToContinuePage.enterEmailAddressAndContinue(
                 world.getUserEmailAddress());

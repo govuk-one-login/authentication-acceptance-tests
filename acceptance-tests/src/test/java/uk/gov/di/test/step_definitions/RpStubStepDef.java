@@ -46,5 +46,6 @@ public class RpStubStepDef extends BasePage {
     @Then("the logged-in User is forcibly logged out")
     public void theUserIsLoggedOut() {
         stubStartPage.waitForForciblyLoggedOut();
+        stubStartPage.goToRpStub();
     }
 }

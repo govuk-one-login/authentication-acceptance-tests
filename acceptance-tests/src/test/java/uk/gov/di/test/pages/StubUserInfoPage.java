@@ -4,7 +4,7 @@ import java.util.Objects;
 
 public abstract class StubUserInfoPage extends BasePage {
 
-    public abstract String getIdToken();
+    public abstract String getReauthCorrelationToken();
 
     public abstract String getAccessToken();
 

@@ -125,7 +125,7 @@ public class CommonStepDef extends BasePage {
 
     @When("the RP requires the user to reauthenticate")
     public void theRPRequiresTheUserToReauthenticate() {
-        idToken = stubUserInfoPage.getIdToken();
+        idToken = stubUserInfoPage.getReauthCorrelationToken();
         stubStartPage.reauthRequired(idToken);
     }
 

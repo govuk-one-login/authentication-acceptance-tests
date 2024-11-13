@@ -1,6 +1,6 @@
 @Reauth @build @staging
 Feature: Reauthentication of user
-  @happy @broken-in-dev
+  @happy
   Scenario: Sms user successfully reauthenticates
     Given a user with SMS MFA exists
     And the user is already signed in to their One Login account
@@ -11,7 +11,7 @@ Feature: Reauthentication of user
     And the user enters the six digit security code from their phone
     Then the user is successfully reauthenticated and returned to the service
 
-  @happy @broken-in-dev
+  @happy
   Scenario: Auth app user successfully reauthenticates
     Given a user with App MFA exists
     And the user is already signed in to their One Login account
@@ -22,7 +22,7 @@ Feature: Reauthentication of user
     And the user enters the security code from the auth app
     Then the user is successfully reauthenticated and returned to the service
 
-  @reauth-same-incorrect-emails @AUT-2790
+  @reauth-same-incorrect-emails @AUT-2790 @broken-in-dev
   Scenario: Sms user enters the same incorrect email address (known to One Login) 6 times during reauthentication and gets logged out. Owner of incorrect email is not locked out.
     Given a user with SMS MFA exists
     And the user is already signed in to their One Login account
@@ -36,8 +36,8 @@ Feature: Reauthentication of user
     Then the logged-in User is forcibly logged out
 
     When the other User attempts to use OneLogin
-    Then the user is not blocked from signing in
-    And the user is not blocked from reauthenticating
+    * the user is not blocked from signing in
+    * the user is not blocked from reauthenticating
 
   @reauth-different-incorrect-emails @AUT-2790 @broken-in-dev
   Scenario: Sms user enters 6 different incorrect email addresses (not known to One Login) during reauthentication and gets logged out. Original user is not locked out.
@@ -240,7 +240,7 @@ Feature: Reauthentication of user
 
 
   # WILL BE REPLACED WITH NEW PROCESS IN V3
-  @reauth-pw-reset @broken-in-dev
+  @reauth-pw-reset
   Scenario: User can change their password during reauthenticates
     Given a user with SMS MFA exists
     And the user is already signed in to their One Login account

@@ -56,12 +56,12 @@ public class OrchestrationStubStartPage extends StubStartPage {
     }
 
     @Override
-    public void reauthRequired(String idToken) {
+    public void reauthRequired(String reauthCorrelationToken) {
         goToRpStub();
-        enterReauthIdToken(idToken);
-        selectRpOptionsByIdAndContinue(new String[] {"2fa-on", "authenticated-2","authenticated-level"});
+        enterReauthIdToken(reauthCorrelationToken);
+        selectRpOptionsByIdAndContinue(
+                new String[] {"2fa-on", "authenticated-2", "authenticated-level"});
         setAnalyticsCookieTo(false);
-//        throw new UnsupportedOperationException("Not implemented for orchestration stub");
     }
 
     @Override

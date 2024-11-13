@@ -32,7 +32,7 @@ public abstract class StubStartPage extends BasePage {
 
     public abstract void selectRpOptionsById(String[] opts);
 
-    public abstract void reauthRequired(String idToken);
+    public abstract void reauthRequired(String reauthCorrelationToken);
 
     public abstract void waitForForciblyLoggedOut();
 

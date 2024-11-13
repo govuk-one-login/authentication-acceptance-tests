@@ -10,7 +10,7 @@ public class LegacyStubUserInfoPage extends StubUserInfoPage {
     By logoutButton = By.name("logout");
 
     @Override
-    public String getIdToken() {
+    public String getReauthCorrelationToken() {
         return Driver.get().findElement(idTokenField).getText();
     }
 
