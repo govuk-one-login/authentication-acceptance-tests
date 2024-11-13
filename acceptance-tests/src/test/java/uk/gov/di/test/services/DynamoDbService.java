@@ -7,10 +7,12 @@ import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
 import uk.gov.di.test.entity.UserCredentials;
 import uk.gov.di.test.entity.UserInterventions;
 import uk.gov.di.test.entity.UserProfile;
-import uk.gov.di.test.utils.Environment;
 
 public class DynamoDbService {
     private static volatile DynamoDbService instance;
+
+    protected static final TestConfigurationService TEST_CONFIG_SERVICE =
+            TestConfigurationService.getInstance();
 
     private DynamoDbService() {
         // Private constructor to prevent direct instantiation
@@ -27,8 +29,6 @@ public class DynamoDbService {
         return instance;
     }
 
-    protected static final String ENVIRONMENT = Environment.getOrThrow("ENVIRONMENT");
-
     private static final DynamoDbClient standardClient = DynamoDbClient.builder().build();
 
     private static final DynamoDbEnhancedClient enhancedClient =
@@ -36,15 +36,17 @@ public class DynamoDbService {
 
     private static final DynamoDbTable<UserProfile> userProfileTable =
             enhancedClient.table(
-                    ENVIRONMENT + "-user-profile", TableSchema.fromBean(UserProfile.class));
+                    TEST_CONFIG_SERVICE.get("USER_PROFILE_TABLE"),
+                    TableSchema.fromBean(UserProfile.class));
 
     private static final DynamoDbTable<UserCredentials> userCredentialsTable =
             enhancedClient.table(
-                    ENVIRONMENT + "-user-credentials", TableSchema.fromBean(UserCredentials.class));
+                    TEST_CONFIG_SERVICE.get("USER_CREDENTIALS_TABLE"),
+                    TableSchema.fromBean(UserCredentials.class));
 
     private static final DynamoDbTable<UserInterventions> userInterventionsTable =
             enhancedClient.table(
-                    ENVIRONMENT + "-stub-account-interventions",
+                    TEST_CONFIG_SERVICE.get("ACCOUNT_INTERVENTIONS_TABLE"),
                     TableSchema.fromBean(UserInterventions.class));
 
     public void putUserProfile(UserProfile userProfile) {

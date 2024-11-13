@@ -1,4 +1,4 @@
-@EnforcePasswordReset @build @staging
+@EnforcePasswordReset @build @staging @build-sp @staging-sp
 Feature: Enforce 100k password check
   If an existing user has a current password that is in the list of top 100k passwords, they are forced to change their password
 

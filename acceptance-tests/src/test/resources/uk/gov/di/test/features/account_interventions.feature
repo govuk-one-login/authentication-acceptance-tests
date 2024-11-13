@@ -1,7 +1,7 @@
 @AccountInterventions @build
 Feature: Account interventions
 
-  @suspended @tw-test @focusme
+  @suspended @tw-test @focusme @build-sp-fail
   Scenario: Sms user cannot log in when they have a temporarily suspended account
     Given a user with SMS MFA exists
     And the user has a temporarily suspended intervention
@@ -15,7 +15,7 @@ Feature: Account interventions
     When the user enters the six digit security code from their phone
     Then the user is taken to the "Sorry, there is a problem" page
 
-  @suspended @tw-test
+  @suspended @tw-test @build-sp-fail
   Scenario: Auth app user cannot log in when they have a temporarily suspended account
     Given a user with App MFA exists
     And the user has a temporarily suspended intervention
@@ -29,7 +29,7 @@ Feature: Account interventions
     When the user enters the security code from the auth app
     Then the user is taken to the "Sorry, there is a problem" page
 
-  @suspended @tw-test
+  @suspended @tw-test @build-sp-fail
   Scenario: Sms user with outdated terms and conditions cannot log in when they have a temporarily suspended account
     Given a user with SMS MFA exists
     And the user has a temporarily suspended intervention
@@ -46,7 +46,7 @@ Feature: Account interventions
     When the user agrees to the updated terms and conditions
     Then the user is taken to the "Sorry, there is a problem" page
 
-  @suspended
+  @suspended @build-sp
   Scenario: Sms user cannot change their password when they have a temporarily suspended account
     Given a user with SMS MFA exists
     And the user has a temporarily suspended intervention
@@ -62,7 +62,7 @@ Feature: Account interventions
     When the user enters the six digit security code from their phone
     Then the user is taken to the "Sorry, there is a problem" page
 
-  @suspended
+  @suspended @build-sp
   Scenario: Auth app user with a current password on the top 100k unacceptable password list cannot change their password when they have a temporarily suspended account
     Given a user with App MFA exists
     And the user's password is on the top 100k unacceptable password list
@@ -79,7 +79,7 @@ Feature: Account interventions
     And the user enters the security code from the auth app
     Then the user is taken to the "Sorry, there is a problem" page
 
-  @suspended
+  @suspended @build-sp
   Scenario: Sms user cannot change the way they get security codes when they have a temporarily suspended account
     Given a user with SMS MFA exists
     And the user has a temporarily suspended intervention
@@ -96,7 +96,7 @@ Feature: Account interventions
     When the user enters the six digit security code from their email
     Then the user is taken to the "Sorry, there is a problem" page
 
-  @suspended
+  @suspended @build-sp
   Scenario: Auth app user cannot change the way they get security codes when they have a temporarily suspended account
     Given a user with App MFA exists
     And the user has a temporarily suspended intervention
@@ -113,7 +113,7 @@ Feature: Account interventions
     When the user enters the six digit security code from their email
     Then the user is taken to the "Sorry, there is a problem" page
 
-  @locked
+  @locked @build-sp
   Scenario: Sms user cannot log in when they have a permanently locked account
     Given a user with SMS MFA exists
     And the user has a permanently locked intervention
@@ -127,7 +127,7 @@ Feature: Account interventions
     When the user enters the six digit security code from their phone
     Then the user is taken to the "Your GOV.UK One Login has been permanently locked" page
 
-  @locked
+  @locked @build-sp
   Scenario: Auth app user cannot log in when they have a permanently locked account
     Given a user with App MFA exists
     And the user has a permanently locked intervention
@@ -141,7 +141,7 @@ Feature: Account interventions
     When the user enters the security code from the auth app
     Then the user is taken to the "Your GOV.UK One Login has been permanently locked" page
 
-  @locked
+  @locked @build-sp
   Scenario: Auth app user with outdated terms and conditions cannot log in when they have a permanently locked account
     Given a user with App MFA exists
     And the user has a permanently locked intervention
@@ -158,7 +158,7 @@ Feature: Account interventions
     When the user agrees to the updated terms and conditions
     Then the user is taken to the "Your GOV.UK One Login has been permanently locked" page
 
-  @locked
+  @locked @build-sp
   Scenario: Auth app user cannot create a new account using the email address of a permanently locked account
     Given a user with App MFA exists
     And the user has a permanently locked intervention
@@ -172,7 +172,7 @@ Feature: Account interventions
     When the user enters the security code from the auth app
     Then the user is taken to the "Your GOV.UK One Login has been permanently locked" page
 
-  @locked
+  @locked @build-sp
   Scenario: Sms user cannot change their password when they have a permanently locked account
     Given a user with SMS MFA exists
     And the user has a permanently locked intervention
@@ -188,7 +188,7 @@ Feature: Account interventions
     When the user enters the six digit security code from their phone
     Then the user is taken to the "Your GOV.UK One Login has been permanently locked" page
 
-  @locked
+  @locked @build-sp
   Scenario: Sms user with a current password on the top 100k unacceptable password list cannot change their password when they have a permanently locked account
     Given a user with SMS MFA exists
     And the user's password is on the top 100k unacceptable password list
@@ -205,7 +205,7 @@ Feature: Account interventions
     When the user enters the six digit security code from their phone
     Then the user is taken to the "Your GOV.UK One Login has been permanently locked" page
 
-  @locked
+  @locked @build-sp
   Scenario: Sms user cannot change the way they get security codes when they have a permanently locked account
     Given a user with SMS MFA exists
     And the user has a permanently locked intervention
@@ -222,7 +222,7 @@ Feature: Account interventions
     When the user enters the six digit security code from their email
     Then the user is taken to the "Your GOV.UK One Login has been permanently locked" page
 
-  @locked
+  @locked @build-sp
   Scenario: Auth app user cannot change the way they get security codes when they have a permanently locked account
     Given a user with App MFA exists
     And the user has a permanently locked intervention
@@ -262,7 +262,7 @@ Feature: Account interventions
 #    Then the user is returned to the service
 #    And the user clicks logout
 
-  @reset_password
+  @reset_password @build-sp
   Scenario: Auth app user forced to reset their password when a password reset intervention has been placed on their account
     Given a user with App MFA exists
     And the user has a password reset intervention
@@ -282,7 +282,7 @@ Feature: Account interventions
     When the user enters valid new password and correctly retypes it
     Then the user is returned to the service
 
-  @reset_password
+  @reset_password @build-sp
   Scenario: Auth app user with a password reset intervention on their account is able to use the I have forgotten my password link
     Given a user with App MFA exists
     And the user has a password reset intervention
@@ -300,7 +300,7 @@ Feature: Account interventions
     When the user enters valid new password and correctly retypes it
     Then the user is returned to the service
 
-  @reset_password
+  @reset_password @build-sp
   Scenario: Sms user is forced to reset their password when they have a password reset intervention on their account and their existing password is on top 100k password list
     Given a user with SMS MFA exists
     And the user has a password reset intervention
@@ -319,7 +319,7 @@ Feature: Account interventions
     When the user enters valid new password and correctly retypes it
     Then the user is returned to the service
 
-  @reset_password
+  @reset_password @build-sp
   Scenario: Auth app user with outdated terms and conditions cannot log in when they have a password reset intervention on their account
     Given a user with App MFA exists
     And the user has a password reset intervention
@@ -342,7 +342,7 @@ Feature: Account interventions
     When the user enters valid new password and correctly retypes it
     Then the user is returned to the service
 
-  @reset_password
+  @reset_password @build-sp
   Scenario: Auth app user cannot change the way they get security codes when they have a password reset intervention on their account
     Given a user with App MFA exists
     And the user has a password reset intervention
@@ -365,7 +365,7 @@ Feature: Account interventions
     When the user enters valid new password and correctly retypes it
     Then the user is returned to the service
 
-  @suspended @reset_password @tw-test
+  @suspended @reset_password @tw-test @build-sp-fail
   Scenario: Auth app user can log in when their One Login account intervention has been removed
     Given a user with App MFA exists
     And the user has a temporarily suspended intervention
