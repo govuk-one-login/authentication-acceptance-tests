@@ -149,4 +149,9 @@ public class CommonStepDef extends BasePage {
     public void theUserToGetSecurityCodesAndProgressToSetItUp(String userType) {
         crossPageFlows.setUpAuthenticationBy(userType);
     }
+
+    @Then("the user is taken to the IPV stub page")
+    public void theUserIsTakenToTheIpvStubPage() {
+        waitForThisText("IPV stub");
+    }
 }
