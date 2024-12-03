@@ -1,4 +1,4 @@
-@mfaRest @build
+@mfa-reset @build
 Feature: MFA reset
 
 # ************************* SMS Section *************************
@@ -28,7 +28,7 @@ Feature: MFA reset
     And the user selects sign in
     And the user enters their email address
     And the user enters their password
-    And the user selects "Problems with the code?" link
+    And the user selects "I do not have access to the authenticator app" link
     And the user selects "change how you get security codes" link
     Then the user is taken to the IPV stub page
     When the user clicks the continue button
@@ -51,7 +51,7 @@ Feature: MFA reset
     And the user selects sign in
     And the user enters their email address
     And the user enters their password
-    And the user selects "Problems with the code?" link
+    And the user selects "I do not have access to the authenticator app" link
     And the user selects "change how you get security codes" link
     Then the user is taken to the IPV stub page
     When the user clicks the continue button
