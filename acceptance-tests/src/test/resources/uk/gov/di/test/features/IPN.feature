@@ -47,7 +47,7 @@ Feature: International Phone Numbers
     When the user enters a valid international mobile phone number
     Then the user is taken to the "Check your phone" page
     When the user enters the six digit security code from their phone
-    Then the user is taken to the "You’ve created your GOV.UK One Login" page
+    Then the user is taken to the "You’ve changed how you get security codes" page
     When the user clicks the continue button
     Then the user is returned to the service
 
