@@ -12,11 +12,11 @@ Feature: MFA reset
     And the user selects "change how you get security codes" link
    Then the user is taken to the IPV stub page
    When the user clicks the continue button
-    Then the user is taken to the "Choose how to get security codes" page
+    Then the user is taken to the "How do you want to get security codes" page
     And the user chooses text message to get security codes
     And the user enters their mobile phone number
     And the user enters the six digit security code from their phone
-    Then the user is taken to the "You’ve created your GOV.UK One Login" page
+    Then the user is taken to the "You’ve changed how you get security codes" page
     When the user clicks the continue button
     Then the user is returned to the service
 
@@ -32,11 +32,11 @@ Feature: MFA reset
     And the user selects "change how you get security codes" link
     Then the user is taken to the IPV stub page
     When the user clicks the continue button
-    Then the user is taken to the "Choose how to get security codes" page
+    Then the user is taken to the "How do you want to get security codes" page
     And the user chooses text message to get security codes
     And the user enters their mobile phone number
     And the user enters the six digit security code from their phone
-    Then the user is taken to the "You’ve created your GOV.UK One Login" page
+    Then the user is taken to the "You’ve changed how you get security codes" page
     When the user clicks the continue button
     Then the user is returned to the service
 
@@ -59,7 +59,7 @@ Feature: MFA reset
     Then the user is taken to the "Set up an authenticator app" page
     When the user adds the secret key on the screen to their auth app
     And the user enters the security code from the auth app
-    Then the user is taken to the "You’ve created your GOV.UK One Login" page
+    Then the user is taken to the "You’ve changed how you get security codes" page
     When the user clicks the continue button
     Then the user is returned to the service
 
@@ -79,6 +79,6 @@ Feature: MFA reset
     Then the user is taken to the "Set up an authenticator app" page
     When the user adds the secret key on the screen to their auth app
     And the user enters the security code from the auth app
-    Then the user is taken to the "You’ve created your GOV.UK One Login" page
+    Then the user is taken to the "You’ve changed how you get security codes" page
     When the user clicks the continue button
     Then the user is returned to the service
