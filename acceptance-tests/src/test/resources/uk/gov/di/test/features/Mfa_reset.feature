@@ -1,4 +1,4 @@
-@mfa-reset @build
+@mfa-reset
 Feature: MFA reset
 
 # ************************* SMS Section *************************
