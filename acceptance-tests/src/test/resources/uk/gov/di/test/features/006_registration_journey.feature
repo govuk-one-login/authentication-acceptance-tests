@@ -77,7 +77,7 @@ Feature: Registration Journey
     When the user enters their mobile phone number
     Then the user is taken to the "Check your phone" page
     When the user enters the six digit security code from their phone
-    Then the user is taken to the "You’ve changed how you get security codes" page
+    Then the user is taken to the "You’ve created your GOV.UK One Login" page
     When the user clicks the continue button
     Then the user is returned to the service
 
@@ -89,6 +89,6 @@ Feature: Registration Journey
     When the user attempts to re-sign-in after partial registration and selects forgotten password link
     Then the user is taken to the "Finish creating your GOV.UK One Login" page
     When the user chooses text message to get security codes and progress to set it up
-    Then the user is taken to the "You’ve changed how you get security codes" page
+    Then the user is taken to the "You’ve created your GOV.UK One Login" page
     When the user clicks the continue button
     Then the user is returned to the service

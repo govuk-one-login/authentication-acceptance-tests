@@ -19,7 +19,7 @@ Feature: Authentication App Journeys
     When the user adds the secret key on the screen to their auth app
     And the user enters the security code from the auth app
     Then the user is not shown any error messages
-    And the user is taken to the "You’ve changed how you get security codes" page
+    And the user is taken to the "You’ve created your GOV.UK One Login" page
     When the user clicks the continue button
     Then the user is returned to the service
     And the user clicks logout
