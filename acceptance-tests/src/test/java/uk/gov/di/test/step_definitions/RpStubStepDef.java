@@ -55,8 +55,4 @@ public class RpStubStepDef extends BasePage {
             String[] rpStubOptions, String pageTitle) {
         stubStartPage.useRpStubAndWaitForPage(pageTitle, rpStubOptions);
     }
-
-//    @When("the user comes from the stub relying party with Strategic-App option and is taken to the {string} page")
-//    public void theUserComesFromTheStubRelyingPartyWithStrategicAppOptionAndIsTakenToThePage(String arg0) {
-//    }
 }
