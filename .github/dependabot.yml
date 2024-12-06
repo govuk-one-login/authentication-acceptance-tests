@@ -28,3 +28,17 @@ updates:
     target-branch: main
     commit-message:
       prefix: BAU
+  - package-ecosystem: docker
+    directories:
+      - "/"
+    schedule:
+      interval: daily
+      time: "03:00"
+    open-pull-requests-limit: 10
+    groups:
+      docker-all-dependencies:
+        patterns:
+          - "*"
+    target-branch: main
+    commit-message:
+      prefix: BAU
