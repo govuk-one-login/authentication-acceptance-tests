@@ -9,8 +9,9 @@ import uk.gov.di.test.utils.SessionContextExceptions;
 import java.util.Objects;
 
 public abstract class StubStartPage extends BasePage {
+
     protected static final RetryHelper RETRY_HELPER = RetryHelper.getInstance();
-    protected static final Integer RETRY_LIMIT = 5;
+    protected static final Integer RETRY_LIMIT = 10;
 
     protected static final String RP_URL = TEST_CONFIG_SERVICE.get("RP_URL");
 
