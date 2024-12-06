@@ -164,6 +164,14 @@ public class BasePage {
         return findElement(By.cssSelector("h1")).getText().trim();
     }
 
+    public String getLockoutText() {
+        return findElement(By.xpath("//*[normalize-space()='Wait 2 hours, then try again.']")).getText().trim();
+    }
+
+    public String getRetryText() {
+        return findElement(By.xpath("//*[@class='govuk-body strategic-app-retry-options']")).getText().trim();
+    }
+
     public void checkForNewTabAndGoToIt(String newTabTitle) {
         switchToTabByIndex(1);
         waitForPageLoad(newTabTitle);

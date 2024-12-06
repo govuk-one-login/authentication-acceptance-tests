@@ -16,6 +16,7 @@ import uk.gov.di.test.utils.Driver;
 
 import java.util.Objects;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static uk.gov.di.test.utils.Constants.NEW_VALID_PASSWORD;
 
@@ -132,5 +133,15 @@ public class LockoutsStepDef extends BasePage {
         //        checkYourPhonePage.enterCorrectPhoneCodeAndContinue();
         //        stubUserInfoPage.waitForReturnToTheService();
         //        stubUserInfoPage.logoutOfAccount()
+    }
+
+    @And("the {string} lockout Text is displayed")
+    public void theLockoutTextIsDisplayed(String lockoutText) {
+        assertEquals(lockoutText, getLockoutText());
+    }
+
+    @And("the {string} retry Text is displayed")
+    public void theRetryTextIsDisplayed(String reTryTxt) {
+        assertEquals(reTryTxt, getRetryText());
     }
 }
