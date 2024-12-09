@@ -1,4 +1,4 @@
-@build @staging @build-sp @staging-sp
+@build @staging @build-sp @staging-sp @dev
 Feature: Page state is preserved when using back link
 
   Scenario: User has chosen text message as their auth method and moved on to the next page. When clicking the Back link, the user is returned to the auth method selection page and their previous choice of text message remains selected.
