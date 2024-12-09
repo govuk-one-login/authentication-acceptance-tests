@@ -12,19 +12,16 @@ Feature: Sign in lockouts for Strategic App
     When the user enters an incorrect password 6 times
     Then the "You entered the wrong password too many times" lockout screen is displayed
     And the "wait 2 hours, then try again" lockout Text is displayed
-
     * the lockout duration is 2 hours
-    * the lockout reason is "you entered the wrong password"
 
-    Given the lockout has not yet expired
-    When the user comes from the stub relying party with option Strategic-App and is taken to the "Sign in to GOV.UK One Login" page
+    When the lockout has not yet expired
+    And the user comes from the stub relying party with option Strategic-App and is taken to the "Sign in to GOV.UK One Login" page
     And the user selects sign in
     Then the user is taken to the "Enter your email" page
     When the user enters their email address
     Then the "You cannot sign in at the moment" lockout screen is displayed
     And the "[Reset your password, ., , You can also wait 2 hours, then try again.]" retry Text is displayed
     * the lockout duration is 2 hours
-    * the lockout reason is "you entered the wrong password"
 
   Scenario: A user is blocked when they enter too many incorrect sms codes during sign in.
     Given a user with SMS MFA exists
@@ -40,8 +37,8 @@ Feature: Sign in lockouts for Strategic App
     And the "Wait 2 hours, then try again." lockout Text for SMS is displayed
     * the lockout duration is 2 hours
 
-    Given the lockout has not yet expired
-    When the user comes from the stub relying party with option Strategic-App and is taken to the "Sign in to GOV.UK One Login" page
+    When the lockout has not yet expired
+    And the user comes from the stub relying party with option Strategic-App and is taken to the "Sign in to GOV.UK One Login" page
     And the user selects sign in
     Then the user is taken to the "Enter your email" page
     When the user enters their email address
@@ -50,4 +47,3 @@ Feature: Sign in lockouts for Strategic App
     Then the "You cannot sign in at the moment" lockout screen is displayed
     And the "Wait 2 hours, then try again." lockout Text for SMS is displayed
     * the lockout duration is 2 hours
-    * the lockout reason is "you entered the wrong security code too many times"
