@@ -14,6 +14,7 @@ import uk.gov.di.test.pages.ResetYourPasswordPage;
 import uk.gov.di.test.pages.StubUserInfoPage;
 import uk.gov.di.test.utils.Driver;
 
+import java.util.Arrays;
 import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -142,6 +143,14 @@ public class LockoutsStepDef extends BasePage {
 
     @And("the {string} retry Text is displayed")
     public void theRetryTextIsDisplayed(String reTryTxt) {
-        assertEquals(reTryTxt, getRetryText());
+        String actualFullText = (getRetryText());
+        String delimiter = "\n";
+        String actualText = Arrays.toString(actualFullText.split(delimiter));
+        assertEquals(reTryTxt, actualText);
+    }
+
+    @And("the {string} lockout Text for SMS is displayed")
+    public void theLockoutTextForSMSIsDisplayed(String lockoutText) {
+        assertEquals(lockoutText, getLockoutTexts());
     }
 }
