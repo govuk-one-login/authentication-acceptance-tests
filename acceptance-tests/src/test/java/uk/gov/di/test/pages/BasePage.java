@@ -173,7 +173,6 @@ public class BasePage {
     }
 
     public String getRetryText() {
-//        String actualText = findElement(By.xpath("//*[@class='govuk-body strategic-app-retry-options']")).getAttribute("You can also wait 2 hours, then try again.");
         return findElement(By.xpath("//*[@class='govuk-body strategic-app-retry-options']")).getText().trim();
     }
 
