@@ -165,15 +165,21 @@ public class BasePage {
     }
 
     public String getLockoutText() {
-        return findElement(By.xpath("//*[normalize-space()='wait 2 hours, then try again']")).getText().trim();
+        return findElement(By.xpath("//*[normalize-space()='wait 2 hours, then try again']"))
+                .getText()
+                .trim();
     }
 
     public String getLockoutTexts() {
-        return findElement(By.xpath("//*[normalize-space()='Wait 2 hours, then try again.']")).getText().trim();
+        return findElement(By.xpath("//*[normalize-space()='Wait 2 hours, then try again.']"))
+                .getText()
+                .trim();
     }
 
     public String getRetryText() {
-        return findElement(By.xpath("//*[@class='govuk-body strategic-app-retry-options']")).getText().trim();
+        return findElement(By.xpath("//*[@class='govuk-body strategic-app-retry-options']"))
+                .getText()
+                .trim();
     }
 
     public void checkForNewTabAndGoToIt(String newTabTitle) {
