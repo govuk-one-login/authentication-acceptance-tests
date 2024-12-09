@@ -38,6 +38,9 @@ public class OrchestrationStubStartPage extends StubStartPage {
                 case "2fa-on":
                     id = "level";
                     break;
+                case "Strategic-App":
+                    id = "channel-strategic-app";
+                    break;
                 case "2fa-off":
                     id = "level-2";
                     break;
