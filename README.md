@@ -1,4 +1,4 @@
-# di-authentication-acceptance-tests
+# di-authentication-acceptance-tests.
 
 This repo contains automated browser based [Cucumber](https://cucumber.io/) tests for [GOV.UK Sign In](https://auth-tech-docs.london.cloudapps.digital/).
 
