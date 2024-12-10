@@ -7,7 +7,6 @@ Feature: The MFA reset process.
   they are redirected to Identity to determine their verification status. Identity verifies
   whether the user is classified as authentication-only or identity-verified.
 
-
 # ************************* SMS Section *************************
   @AUT-3825
   Scenario: SMS User selects SMS OTP for MFA reset after successful identity verification
