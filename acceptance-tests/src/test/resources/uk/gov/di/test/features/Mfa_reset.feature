@@ -1,4 +1,4 @@
-@Mfa-Reset
+@mfa-reset
 
 #https://govukverify.atlassian.net/browse/AUT-3825
 
