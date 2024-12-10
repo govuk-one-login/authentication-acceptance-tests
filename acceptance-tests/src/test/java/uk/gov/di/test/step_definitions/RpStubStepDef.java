@@ -49,11 +49,4 @@ public class RpStubStepDef extends BasePage {
         waitForThisText("Error: login_required");
         waitForThisText("Error description: Login required");
     }
-
-    @When(
-            "the user comes from the stub relying party with {word} options and is taken to the {string} page")
-    public void theUserComesFromTheStubRelyingPartyWithStrategicAppOptionsAndIsTakenToThePage(
-            String[] rpStubOptions, String pageTitle) {
-        stubStartPage.useRpStubAndWaitForPage(pageTitle, rpStubOptions);
-    }
 }

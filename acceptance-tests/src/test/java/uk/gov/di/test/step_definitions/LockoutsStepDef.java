@@ -153,4 +153,11 @@ public class LockoutsStepDef extends BasePage {
     public void theLockoutTextForSMSIsDisplayed(String lockoutText) {
         assertEquals(lockoutText, getLockoutTexts());
     }
+
+    @And("the {string} message regarding what can you do is displayed")
+    public void messageRegardingWhatCanYouDoIsDisplayed(String waitThenTryAgainText) {
+        var actualText =
+                lockoutPage.getStrategicAppWaitAndThenTryAgainTextMessage(waitThenTryAgainText);
+        assertEquals(waitThenTryAgainText, actualText);
+    }
 }
