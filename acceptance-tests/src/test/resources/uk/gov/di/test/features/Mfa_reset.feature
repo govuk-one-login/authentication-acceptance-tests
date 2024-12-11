@@ -89,7 +89,7 @@ Feature: The MFA reset process.
 
 
 
-# ************************* Negative tests when for unsuccessful IPV responses *************************
+# ************************* Negative tests when for unsuccessful IPV responses **********************
   Scenario Outline: Mfa User choose to reset their MFA but are unsuccessful in identity verification
     Given a user with "<Mfa Type>" MFA exists
     When the user comes from the stub relying party with default options and is taken to the "Create your GOV.UK One Login or sign in" page
