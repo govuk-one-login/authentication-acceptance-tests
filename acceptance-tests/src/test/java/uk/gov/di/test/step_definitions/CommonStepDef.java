@@ -154,4 +154,9 @@ public class CommonStepDef extends BasePage {
     public void theUserIsTakenToTheIpvStubPage() {
         waitForThisText("IPV stub");
     }
+
+    @Then("{string} radio option selected")
+    public void radioOptionSelected(String value) {
+        selectRadioOptionWithText(value);
+    }
 }
