@@ -227,7 +227,6 @@ public class BasePage {
         scenario.attach(screenshot, "image/png", "Step screenshot");
     }
 
-
     public void selectRadioOptionWithText(String textValue) {
         findElement(By.xpath(String.format("//label[normalize-space(text())='%s']", textValue)))
                 .click();
