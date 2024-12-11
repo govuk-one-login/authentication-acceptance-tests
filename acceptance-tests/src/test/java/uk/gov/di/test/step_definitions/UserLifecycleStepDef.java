@@ -40,6 +40,7 @@ public class UserLifecycleStepDef {
         return mfaMethodType;
     }
 
+    @Given("a user with {string} MFA exists")
     @Given("a user with {mfaMethod} MFA exists")
     public void aUserExists(String mfaMethod) {
         aUserExists();
