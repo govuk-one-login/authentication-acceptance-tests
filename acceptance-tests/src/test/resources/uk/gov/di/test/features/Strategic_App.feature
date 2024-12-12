@@ -1,4 +1,4 @@
-#@lockouts @lockout_sign_in  @build-sp @staging-sp
+@lockouts @lockout_sign_in  @build-sp
 Feature: Sign in lockouts for Strategic App
 
   # ENTER INCORRECT PASSWORD TOO MANY TIMES DURING SIGN IN - 2060
