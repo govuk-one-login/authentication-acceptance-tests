@@ -3,8 +3,6 @@ package uk.gov.di.test.pages;
 import org.openqa.selenium.By;
 import uk.gov.di.test.utils.Driver;
 
-import static org.junit.Assert.assertEquals;
-
 public class LockoutPage extends BasePage {
 
     By lockoutScreenText = By.cssSelector("#main-content .govuk-grid-column-two-thirds");

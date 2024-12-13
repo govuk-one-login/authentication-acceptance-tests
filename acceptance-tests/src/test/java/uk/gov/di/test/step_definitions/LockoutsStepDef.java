@@ -121,7 +121,7 @@ public class LockoutsStepDef extends BasePage {
     public void theBlockIsLiftedAndTheUserCanLogin(String emailAddress) {
         throw new RuntimeException("Need to implement new-style user flows for this");
     }
-    
+
     @And("the {string} lockout Text is displayed")
     public void theLockoutTextIsDisplayed(String lockoutText) {
         assertEquals(lockoutText, getLockoutText());
