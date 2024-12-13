@@ -1,7 +1,7 @@
 @lockouts @lockout_sign_in @build-sp @dev
 Feature: Sign in lockouts for Strategic App
 
-  # ENTER INCORRECT PASSWORD TOO MANY TIMES DURING SIGN IN - 2060
+  # ENTER INCORRECT PASSWORD TOO MANY TIMES DURING SIGN IN - 3857
   Scenario: A user is blocked when they enter too many incorrect passwords during sign in.
     Given a user exists
     When the user comes from the stub relying party with option Strategic-App and is taken to the "Sign in to GOV.UK One Login" page
