@@ -14,8 +14,10 @@ import uk.gov.di.test.pages.ResetYourPasswordPage;
 import uk.gov.di.test.pages.StubUserInfoPage;
 import uk.gov.di.test.utils.Driver;
 
+import java.util.Arrays;
 import java.util.Objects;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static uk.gov.di.test.utils.Constants.NEW_VALID_PASSWORD;
 
@@ -132,5 +134,30 @@ public class LockoutsStepDef extends BasePage {
         //        checkYourPhonePage.enterCorrectPhoneCodeAndContinue();
         //        stubUserInfoPage.waitForReturnToTheService();
         //        stubUserInfoPage.logoutOfAccount()
+    }
+    
+    @And("the {string} lockout Text is displayed")
+    public void theLockoutTextIsDisplayed(String lockoutText) {
+        assertEquals(lockoutText, getLockoutText());
+    }
+
+    @And("the {string} retry Text is displayed")
+    public void theRetryTextIsDisplayed(String reTryTxt) {
+        String actualFullText = (getRetryText());
+        String delimiter = "\n";
+        String actualText = Arrays.toString(actualFullText.split(delimiter));
+        assertEquals(reTryTxt, actualText);
+    }
+
+    @And("the {string} lockout Text for SMS is displayed")
+    public void theLockoutTextForSMSIsDisplayed(String lockoutText) {
+        assertEquals(lockoutText, getLockoutTexts());
+    }
+
+    @And("the {string} message regarding what can you do is displayed")
+    public void messageRegardingWhatCanYouDoIsDisplayed(String waitThenTryAgainText) {
+        var actualText =
+                lockoutPage.getStrategicAppWaitAndThenTryAgainTextMessage(waitThenTryAgainText);
+        assertEquals(waitThenTryAgainText, actualText);
     }
 }
