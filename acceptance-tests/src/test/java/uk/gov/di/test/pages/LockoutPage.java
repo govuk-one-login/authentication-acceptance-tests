@@ -10,4 +10,11 @@ public class LockoutPage extends BasePage {
     public String getLockoutScreenText() {
         return Driver.get().findElement(lockoutScreenText).getText();
     }
+
+    public String getStrategicAppWaitAndThenTryAgainTextMessage(String textValue) {
+        return Driver.get()
+                .findElement(
+                        By.xpath(String.format("//p[normalize-space(text())='%s']", textValue)))
+                .getText();
+    }
 }
