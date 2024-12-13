@@ -232,7 +232,6 @@ public class BasePage {
                 .click();
     }
 
-
     public String getLockoutText() {
         return findElement(By.xpath("//*[normalize-space()='wait 2 hours, then try again']"))
                 .getText()
