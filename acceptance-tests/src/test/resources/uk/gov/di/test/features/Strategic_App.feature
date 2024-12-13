@@ -20,7 +20,6 @@ Feature: Sign in lockouts for Strategic App
     When the user enters their email address
     Then the "You cannot sign in at the moment" lockout screen is displayed
     And the "[Reset your password, ., , You can also wait 2 hours, then try again.]" retry Text is displayed
-    * the lockout duration is 2 hours
 
   Scenario: A user is blocked when they enter too many incorrect sms codes during sign in.
     Given a user with SMS MFA exists
@@ -34,7 +33,6 @@ Feature: Sign in lockouts for Strategic App
     When the user enters an incorrect phone security code 6 times
     Then the "You entered the wrong security code too many times" lockout screen is displayed
     And the "Wait 2 hours, then try again." lockout Text for SMS is displayed
-    * the lockout duration is 2 hours
     When the lockout has not yet expired
     And the user comes from the stub relying party with option Strategic-App and is taken to the "Sign in to GOV.UK One Login" page
     And the user selects sign in
@@ -44,8 +42,6 @@ Feature: Sign in lockouts for Strategic App
     When the user enters their password
     Then the "You cannot sign in at the moment" lockout screen is displayed
     And the "Wait 2 hours, then try again." lockout Text for SMS is displayed
-    * the lockout duration is 2 hours
-
 
 #  Update MFA reset content for Lockout Scenarios
   @AUT-3839-AUT-3838
@@ -101,8 +97,6 @@ Feature: Sign in lockouts for Strategic App
     And the lockout duration is 2 hours
     And the "Wait 2 hours, then try again." message regarding what can you do is displayed
 
-
-
   @AUT-3839-AUT-3838
   Scenario: Strategic app user is blocked when they request sms code more than 5 times during a change of auth method
     Given a user with SMS MFA exists
@@ -143,7 +137,4 @@ Feature: Sign in lockouts for Strategic App
     Then the user is taken to the "Enter your mobile phone number" page
     When the user enters their mobile phone number
     Then the "You cannot sign in at the moment" lockout screen is displayed
-#    * the lockout reason is "you asked to resend the security code too many times"
-#    * the lockout duration is 2 hours
     And the "Wait 2 hours, then try again." message regarding what can you do is displayed
-
