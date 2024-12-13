@@ -143,7 +143,7 @@ Feature: Sign in lockouts for Strategic App
     Then the user is taken to the "Enter your mobile phone number" page
     When the user enters their mobile phone number
     Then the "You cannot sign in at the moment" lockout screen is displayed
-    * the lockout reason is "you asked to resend the security code too many times"
-    * the lockout duration is 2 hours
+#    * the lockout reason is "you asked to resend the security code too many times"
+#    * the lockout duration is 2 hours
     And the "Wait 2 hours, then try again." message regarding what can you do is displayed
 

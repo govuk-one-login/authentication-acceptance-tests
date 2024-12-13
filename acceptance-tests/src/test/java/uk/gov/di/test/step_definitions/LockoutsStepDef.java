@@ -120,20 +120,6 @@ public class LockoutsStepDef extends BasePage {
     @And("the block is lifted and the user {string} can login")
     public void theBlockIsLiftedAndTheUserCanLogin(String emailAddress) {
         throw new RuntimeException("Need to implement new-style user flows for this");
-        //        rpStubPage.goToRpStub();
-        //        rpStubPage.useDefaultOptionsAndContinue();
-        //        setAnalyticsCookieTo(false);
-        //        waitForPageLoad("Create your GOV.UK One Login or sign in");
-        //        createOrSignInPage.clickSignInButton();
-        //        waitForPageLoad("Enter your email address to sign in");
-        //        enterYourEmailAddressToSignInPage.enterEmailAddressAndContinue(
-        //                System.getenv().get(emailAddress));
-        //        waitForPageLoad("Enter your password");
-        //        enterYourPasswordPage.enterNewPasswordAndContinue();
-        //        waitForPageLoad("Check your phone");
-        //        checkYourPhonePage.enterCorrectPhoneCodeAndContinue();
-        //        stubUserInfoPage.waitForReturnToTheService();
-        //        stubUserInfoPage.logoutOfAccount()
     }
     
     @And("the {string} lockout Text is displayed")
