@@ -43,7 +43,7 @@ public class UserLifecycleStepDef {
     @Given("a user with {string} MFA exists")
     @Given("a user with {mfaMethod} MFA exists")
     public void aUserExists(String mfaMethod) {
-        System.out.println("Verification test for Ola - script updated successfully.");
+        System.out.println("Verification test for Ola -1 script updated successfully.");
         aUserExists();
         switch (mfaMethod) {
             case "no":
