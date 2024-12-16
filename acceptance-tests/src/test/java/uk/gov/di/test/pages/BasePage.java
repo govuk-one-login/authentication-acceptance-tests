@@ -231,22 +231,4 @@ public class BasePage {
         findElement(By.xpath(String.format("//label[normalize-space(text())='%s']", textValue)))
                 .click();
     }
-
-    public String getLockoutText() {
-        return findElement(By.xpath("//*[normalize-space()='wait 2 hours, then try again']"))
-                .getText()
-                .trim();
-    }
-
-    public String getLockoutTexts() {
-        return findElement(By.xpath("//*[normalize-space()='Wait 2 hours, then try again.']"))
-                .getText()
-                .trim();
-    }
-
-    public String getRetryText() {
-        return findElement(By.xpath("//*[@class='govuk-body strategic-app-retry-options']"))
-                .getText()
-                .trim();
-    }
 }
