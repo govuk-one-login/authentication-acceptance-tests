@@ -1,4 +1,4 @@
-@mfa-reset
+@mfa-reset @under-development @dev
 
 #https://govukverify.atlassian.net/browse/AUT-3825
 
@@ -88,8 +88,8 @@ Feature: The MFA reset process.
     Then the user is returned to the service
 
 
-
 # ************************* Negative tests when for unsuccessful IPV responses **********************
+@AUT-3826
   Scenario Outline: Mfa User choose to reset their MFA but are unsuccessful in identity verification
     Given a user with "<Mfa Type>" MFA exists
     When the user comes from the stub relying party with default options and is taken to the "Create your GOV.UK One Login or sign in" page
@@ -101,10 +101,10 @@ Feature: The MFA reset process.
     Then the user is taken to the IPV stub page
     When "<IPV Response>" radio option selected
     And the user clicks the continue button
-    Then the user is taken to the "There’s a problem with this service" page
+    Then the user is taken to the "<Title>" page
     Examples:
-      | Mfa Type | Link Text                                     | IPV Response              |
-      | App      | I do not have access to the authenticator app | No identity available     |
-      | SMS      | Problems with the code?                       | Identity check incomplete |
-      | App      | I do not have access to the authenticator app | Identity check failed     |
-      | SMS      | Problems with the code?                       | Identity did not match    |
+      | Mfa Type | Link Text                                     | IPV Response              | Title                                        |
+      | App      | I do not have access to the authenticator app | No identity available     | You cannot change how you get security codes |
+      | SMS      | Problems with the code?                       | Identity check incomplete | You cannot change how you get security codes |
+      | App      | I do not have access to the authenticator app | Identity check failed     | There’s a problem with this service          |
+      | SMS      | Problems with the code?                       | Identity did not match    | There’s a problem with this service          |
