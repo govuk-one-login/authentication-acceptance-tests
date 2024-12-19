@@ -2,7 +2,6 @@
 Feature: Login Journey
   Existing user walks through a login journey
 
-  @dev
   Scenario: Existing user tries to create an account with the same email address
     Given a user exists
     When the user comes from the stub relying party with default options and is taken to the "Create your GOV.UK One Login or sign in" page
@@ -11,7 +10,6 @@ Feature: Login Journey
     When the user enters their email address
     Then the user is taken to the "You have a GOV.UK One Login" page
 
-  @dev
   Scenario: Existing user is correctly prompted to login using sms
     Given a user with SMS MFA exists
     When the user comes from the stub relying party with default options and is taken to the "Create your GOV.UK One Login or sign in" page
@@ -24,7 +22,6 @@ Feature: Login Journey
     When the user enters the six digit security code from their phone
     Then the user is returned to the service
 
-  @dev
   Scenario: Existing user switches content to Welsh
     Given a user exists
     When the user comes from the stub relying party with default options and is taken to the "Create your GOV.UK One Login or sign in" page
