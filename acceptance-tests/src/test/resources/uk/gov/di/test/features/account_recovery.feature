@@ -12,8 +12,8 @@ Feature: Account recovery
     Then the user is taken to the "Check your phone" page
     When the user selects "Problems with the code?" link
     And the user selects "change how you get security codes" link
-    Then the user is taken to the "Check your email" page
-    When the user enters the six digit security code from their email
+    Then the user is taken to the IPV stub page
+    When the user clicks the continue button
     Then the user is taken to the "How do you want to get security codes" page
     When the user selects radio button "Authenticator app for smartphone, tablet or computer"
     Then the user is taken to the "Set up an authenticator app" page
@@ -46,8 +46,8 @@ Feature: Account recovery
     Then the user is taken to the "Enter the 6 digit security code shown in your authenticator app" page
     When the user selects link "I do not have access to the authenticator app"
     And the user selects link "change how you get security codes"
-    Then the user is taken to the "Check your email" page
-    When the user enters the six digit security code from their email
+    Then the user is taken to the IPV stub page
+    When the user clicks the continue button
     Then the user is taken to the "How do you want to get security codes" page
     When the user selects radio button "Text message"
     Then the user is taken to the "Enter your mobile phone number" page
