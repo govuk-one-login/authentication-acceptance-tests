@@ -79,7 +79,7 @@ public class SupportStepDef extends BasePage {
     @Then(
             "User see updated text If you no longer have access to your authenticator app, check if you can change how you get security codes")
     public void
-        userSeeUpdatedTextIfYouNoLongerHaveAccessToYourAuthenticatorAppCheckIfYouCanChangeHowYouGetSecurityCodes() {
+            userSeeUpdatedTextIfYouNoLongerHaveAccessToYourAuthenticatorAppCheckIfYouCanChangeHowYouGetSecurityCodes() {
         assertEquals(
                 "If you no longer have access to your authenticator app, check if you can change how you get security codes.",
                 supportPage.getLinkAppText());
