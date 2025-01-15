@@ -10,7 +10,7 @@ public class SupportPage extends BasePage {
     By successMessage = By.cssSelector(".govuk-panel--confirmation");
     By mfaSupportLinkText = By.cssSelector("form[id='form-tracking'] p:nth-child(2)");
     By mfaSupportLinkAppText =
-                        By.cssSelector("div[class='govuk-details__text'] p[class='govuk-body']");
+            By.cssSelector("div[class='govuk-details__text'] p[class='govuk-body']");
 
     public void clickSupportLink() {
         Driver.get().findElement(supportLink).click();
