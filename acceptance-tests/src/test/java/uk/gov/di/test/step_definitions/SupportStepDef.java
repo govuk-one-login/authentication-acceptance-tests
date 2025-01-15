@@ -71,8 +71,7 @@ public class SupportStepDef extends BasePage {
 
     @Then("User see updated text If you cannot access the phone number for your GOV.UK One Login")
     public void userSeeUpdatedTextIfYouCannotAccessThePhoneNumberForYourGOVUKOneLogin() {
-        assertEquals(
-                "If you no longer have access to this phone number, check if you can change how you get security codes.",
+        assertEquals("If you no longer have access to this phone number, check if you can change how you get security codes.",
                 supportPage.getLinkText());
     }
 
@@ -80,8 +79,7 @@ public class SupportStepDef extends BasePage {
             "User see updated text If you no longer have access to your authenticator app, check if you can change how you get security codes")
     public void
            userSeeUpdatedTextIfYouNoLongerHaveAccessToYourAuthenticatorAppCheckIfYouCanChangeHowYouGetSecurityCodes() {
-                assertEquals(
-                        "If you no longer have access to your authenticator app, check if you can change how you get security codes.",
+                assertEquals("If you no longer have access to your authenticator app, check if you can change how you get security codes.",
                         supportPage.getLinkAppText());
     }
 }
