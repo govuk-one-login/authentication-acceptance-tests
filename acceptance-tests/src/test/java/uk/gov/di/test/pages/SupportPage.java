@@ -3,8 +3,6 @@ package uk.gov.di.test.pages;
 import org.openqa.selenium.By;
 import uk.gov.di.test.utils.Driver;
 
-import java.awt.*;
-
 public class SupportPage extends BasePage {
 
     By supportLink = By.xpath("//*[contains(text(), 'Support (opens in new tab)')]");
