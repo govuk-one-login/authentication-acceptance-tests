@@ -3,11 +3,15 @@ package uk.gov.di.test.pages;
 import org.openqa.selenium.By;
 import uk.gov.di.test.utils.Driver;
 
+import java.awt.*;
+
 public class SupportPage extends BasePage {
 
     By supportLink = By.xpath("//*[contains(text(), 'Support (opens in new tab)')]");
     By moreDetailsField = By.id("moreDetailDescription");
     By successMessage = By.cssSelector(".govuk-panel--confirmation");
+    By mfaSupportLinkText = By.cssSelector("form[id='form-tracking'] p:nth-child(2)");
+    By mfaSupportLinkAppText = By.cssSelector("div[class='govuk-details__text'] p[class='govuk-body']");
 
     public void clickSupportLink() {
         Driver.get().findElement(supportLink).click();
@@ -46,5 +50,13 @@ public class SupportPage extends BasePage {
         } else {
             findAndClickContinue();
         }
+    }
+
+    public String getLinkText() {
+        return Driver.get().findElement(mfaSupportLinkText).getText();
+    }
+
+    public String getLinkAppText() {
+        return Driver.get().findElement(mfaSupportLinkAppText).getText();
     }
 }
