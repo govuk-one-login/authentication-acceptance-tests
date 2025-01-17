@@ -14,8 +14,8 @@ import uk.gov.di.test.utils.Driver;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
+import static uk.gov.di.test.utils.Driver.getDriver;
 
 public class CommonStepDef extends BasePage {
     public CrossPageFlows crossPageFlows;
@@ -159,4 +159,13 @@ public class CommonStepDef extends BasePage {
     public void radioOptionSelected(String value) {
         selectRadioOptionWithText(value);
     }
+
+    @Then("^the URL is present with suffix \"([^\"]*)\"$")
+    public void theUrlIsPresentWithSuffix(String expectedSuffix) {
+        String currentUrl = getDriver().getCurrentUrl();
+
+        assertEquals(true, currentUrl.contains(expectedSuffix));
+
+    }
+
 }

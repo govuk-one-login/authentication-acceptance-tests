@@ -87,10 +87,8 @@ Feature: The MFA reset process.
     When the user clicks the continue button
     Then the user is returned to the service
 
-
-
-# ************************* Negative tests when for unsuccessful IPV responses **********************
-  Scenario Outline: Mfa User choose to reset their MFA but are unsuccessful in identity verification
+  @AUT-3930
+  Scenario Outline: Mfa User choose to reset their MFA but are unsuccessful in identity verification test
     Given a user with "<Mfa Type>" MFA exists
     When the user comes from the stub relying party with default options and is taken to the "Create your GOV.UK One Login or sign in" page
     And the user selects sign in
@@ -101,10 +99,11 @@ Feature: The MFA reset process.
     Then the user is taken to the IPV stub page
     When "<IPV Response>" radio option selected
     And the user clicks the continue button
-    Then the user is taken to the "There’s a problem with this service" page
+    And the user is taken to the "You cannot change how you get security codes" page
+    Then the URL is present with suffix "cannot-change-security-codes-identity-fail"
     Examples:
       | Mfa Type | Link Text                                     | IPV Response              |
-      | App      | I do not have access to the authenticator app | No identity available     |
-      | SMS      | Problems with the code?                       | Identity check incomplete |
       | App      | I do not have access to the authenticator app | Identity check failed     |
       | SMS      | Problems with the code?                       | Identity did not match    |
+      | SMS      | Problems with the code?                       | Identity check failed     |
+      | App      | I do not have access to the authenticator app | Identity did not match    |
