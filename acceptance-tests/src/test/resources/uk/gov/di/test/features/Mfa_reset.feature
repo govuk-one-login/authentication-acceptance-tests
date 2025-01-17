@@ -107,4 +107,3 @@ Feature: The MFA reset process.
       | SMS      | Problems with the code?                       | Identity did not match    |
       | SMS      | Problems with the code?                       | Identity check failed     |
       | App      | I do not have access to the authenticator app | Identity did not match    |
-
