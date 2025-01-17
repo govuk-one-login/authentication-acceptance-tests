@@ -41,13 +41,13 @@ public class OrchestrationStubStartPage extends StubStartPage {
                 case "2fa-off":
                     id = "level-2";
                     break;
-                    // TODO: create more semantic stub actions
-                    //                case "not-authenticated":
-                    //                    id = "authenticated";
-                    //                    break;
-                    //                case "already-authenticated":
-                    //                    id = "authenticated-2";
-                    //                    break;
+                // TODO: create more semantic stub actions
+                //                case "not-authenticated":
+                //                    id = "authenticated";
+                //                    break;
+                //                case "already-authenticated":
+                //                    id = "authenticated-2";
+                //                    break;
                 default:
                     break;
             }

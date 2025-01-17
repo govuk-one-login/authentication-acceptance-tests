@@ -18,8 +18,9 @@ public class Crypto {
             case 0 -> var10000 = "$argon2d";
             case 1 -> var10000 = "$argon2i";
             case 2 -> var10000 = "$argon2id";
-            default -> throw new IllegalArgumentException(
-                    "Invalid algorithm type: " + parameters.getType());
+            default ->
+                    throw new IllegalArgumentException(
+                            "Invalid algorithm type: " + parameters.getType());
         }
 
         String type = var10000;

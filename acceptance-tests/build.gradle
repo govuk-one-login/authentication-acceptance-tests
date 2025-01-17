@@ -55,6 +55,8 @@ dependencies {
 
     testImplementation("org.json:json:${dependencyVersions.json_version}")
     testImplementation("io.rest-assured:rest-assured:${dependencyVersions.rest_assured}")
+
+    testImplementation("ch.qos.logback:logback-classic:1.5.16")
 }
 
 group = 'acceptance-tests'

@@ -221,10 +221,11 @@ public class LoginStepDef extends BasePage {
                                 .getSecurityCodeMessageText()
                                 .contains(lastFourDigitsOfPhone));
             }
-            case "auth app" -> assertTrue(
-                    youveChangedHowYouGetSecurityCodes
-                            .getSecurityCodeMessageText()
-                            .contains("authenticator app"));
+            case "auth app" ->
+                    assertTrue(
+                            youveChangedHowYouGetSecurityCodes
+                                    .getSecurityCodeMessageText()
+                                    .contains("authenticator app"));
             default -> throw new RuntimeException("Invalid method type: " + method);
         }
 
