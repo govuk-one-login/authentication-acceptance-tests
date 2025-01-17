@@ -165,7 +165,5 @@ public class CommonStepDef extends BasePage {
         String currentUrl = getDriver().getCurrentUrl();
 
         assertEquals(true, currentUrl.contains(expectedSuffix));
-
     }
-
 }
