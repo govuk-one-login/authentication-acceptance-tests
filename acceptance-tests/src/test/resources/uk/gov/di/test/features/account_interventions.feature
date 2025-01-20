@@ -96,22 +96,22 @@ Feature: Account interventions
     When the user enters the six digit security code from their email
     Then the user is taken to the "Sorry, there is a problem" page
 
-#  @under-development @AUT-3921
-#  Scenario: Sms user cannot change the way they get security codes when they have a temporarily suspended account (Dev Only test)
-#    Given a user with SMS MFA exists
-#    And the user has a temporarily suspended intervention
-#    When the user comes from the stub relying party with option 2fa-on and is taken to the "Create your GOV.UK One Login or sign in" page
-#    And the user selects sign in
-#    Then the user is taken to the "Enter your email" page
-#    When the user enters their email address
-#    Then the user is taken to the "Enter your password" page
-#    When the user enters their password
-#    Then the user is taken to the "Check your phone" page
-#    When the user selects "Problems with the code?" link
-#    When the user selects "check if you can change how you get security codes" link
-#    Then the user is taken to the IPV stub page
-#    When the user clicks the continue button
-#    Then the user is taken to the "How do you want to get security codes" page
+  @under-development @AUT-3921
+  Scenario: Sms user cannot change the way they get security codes when they have a temporarily suspended account (Dev Only test)
+    Given a user with SMS MFA exists
+    And the user has a temporarily suspended intervention
+    When the user comes from the stub relying party with option 2fa-on and is taken to the "Create your GOV.UK One Login or sign in" page
+    And the user selects sign in
+    Then the user is taken to the "Enter your email" page
+    When the user enters their email address
+    Then the user is taken to the "Enter your password" page
+    When the user enters their password
+    Then the user is taken to the "Check your phone" page
+    When the user selects "Problems with the code?" link
+    When the user selects "check if you can change how you get security codes" link
+    Then the user is taken to the IPV stub page
+    When the user clicks the continue button
+    Then the user is taken to the "How do you want to get security codes" page
 
   @suspended @build-sp
   Scenario: Auth app user cannot change the way they get security codes when they have a temporarily suspended account
