@@ -159,4 +159,14 @@ public class CommonStepDef extends BasePage {
     public void radioOptionSelected(String value) {
         selectRadioOptionWithText(value);
     }
+
+    @When("User selects get help to delete your GOV.UK One Login from the support team")
+    public void userSelectsGetHelpToDeleteYourGOVUKOneLoginFromTheSupportTeam() {
+        crossPageFlows.selectHelpToGetSecurityCodes();
+    }
+
+    @Then("User is taken to {string}")
+    public void userIsTakenTo(String pageTitle) {
+        waitForPageLoad(pageTitle);
+    }
 }

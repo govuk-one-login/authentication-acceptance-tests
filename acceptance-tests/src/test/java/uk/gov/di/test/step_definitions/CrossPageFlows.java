@@ -1,5 +1,6 @@
 package uk.gov.di.test.step_definitions;
 
+import org.openqa.selenium.By;
 import uk.gov.di.test.pages.BasePage;
 import uk.gov.di.test.pages.CheckYourEmailPage;
 import uk.gov.di.test.pages.CheckYourPhonePage;
@@ -17,6 +18,7 @@ import uk.gov.di.test.pages.SetUpAnAuthenticatorAppPage;
 import uk.gov.di.test.pages.StubStartPage;
 import uk.gov.di.test.pages.StubUserInfoPage;
 import uk.gov.di.test.services.UserLifecycleService;
+import uk.gov.di.test.utils.Driver;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static uk.gov.di.test.utils.Constants.UK_MOBILE_PHONE_NUMBER;
@@ -25,6 +27,7 @@ public class CrossPageFlows extends BasePage {
 
     private final World world;
     private String authAppSecretKey;
+    By getHelpSupportTeam = By.cssSelector("#help-to-delete-account");
 
     public EnterYourPasswordPage enterYourPasswordPage;
     public CreateOrSignInPage createOrSignInPage = new CreateOrSignInPage();
@@ -304,5 +307,9 @@ public class CrossPageFlows extends BasePage {
             default:
                 throw new RuntimeException("Invalid method type: " + userType);
         }
+    }
+
+    public void selectHelpToGetSecurityCodes() {
+        Driver.get().findElement(getHelpSupportTeam).click();
     }
 }
