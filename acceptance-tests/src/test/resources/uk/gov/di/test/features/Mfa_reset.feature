@@ -122,7 +122,7 @@ Feature: The MFA reset process.
     When "<IPV Response>" radio option selected
     And the user clicks the continue button
     Then the user is taken to the "You cannot change how you get security codes" page
-    When User selects get help to delete your GOV.UK One Login from the support team
+    When "Get help to delete your GOV.UK One Login from the support team" radio option selected
     And the user clicks the continue button
     Then User is taken to "Contact GOV.UK One Login"
     Examples:

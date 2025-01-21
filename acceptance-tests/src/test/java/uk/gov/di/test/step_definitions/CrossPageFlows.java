@@ -27,7 +27,6 @@ public class CrossPageFlows extends BasePage {
 
     private final World world;
     private String authAppSecretKey;
-    By getHelpSupportTeam = By.cssSelector("#help-to-delete-account");
 
     public EnterYourPasswordPage enterYourPasswordPage;
     public CreateOrSignInPage createOrSignInPage = new CreateOrSignInPage();
@@ -307,9 +306,5 @@ public class CrossPageFlows extends BasePage {
             default:
                 throw new RuntimeException("Invalid method type: " + userType);
         }
-    }
-
-    public void selectHelpToGetSecurityCodes() {
-        Driver.get().findElement(getHelpSupportTeam).click();
     }
 }
