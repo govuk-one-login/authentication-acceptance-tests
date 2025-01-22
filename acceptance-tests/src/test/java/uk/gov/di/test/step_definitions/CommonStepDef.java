@@ -159,4 +159,9 @@ public class CommonStepDef extends BasePage {
     public void radioOptionSelected(String value) {
         selectRadioOptionWithText(value);
     }
+
+    @Then("User is taken to {string}")
+    public void userIsTakenTo(String pageTitle) {
+        waitForPageLoad(pageTitle);
+    }
 }
