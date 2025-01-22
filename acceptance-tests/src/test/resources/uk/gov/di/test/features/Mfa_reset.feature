@@ -108,3 +108,23 @@ Feature: The MFA reset process.
       | SMS      | Problems with the code?                       | Identity check incomplete |
       | App      | I do not have access to the authenticator app | Identity check failed     |
       | SMS      | Problems with the code?                       | Identity did not match    |
+
+    @under-development @AUT-3931
+  Scenario Outline: Mfa User Error scenario - get help to delete your account
+    Given a user with "<Mfa Type>" MFA exists
+    When the user comes from the stub relying party with default options and is taken to the "Create your GOV.UK One Login or sign in" page
+    And the user selects sign in
+    And the user enters their email address
+    And the user enters their password
+    And the user selects "<Link Text>" link
+    And the user selects "change how you get security codes" link
+    Then the user is taken to the IPV stub page
+    When "<IPV Response>" radio option selected
+    And the user clicks the continue button
+    Then the user is taken to the "You cannot change how you get security codes" page
+    When "Get help to delete your GOV.UK One Login from the support team" radio option selected
+    And the user clicks the continue button
+    Then User is taken to "Contact GOV.UK One Login"
+    Examples:
+      | Mfa Type | Link Text                                     | IPV Response          |
+      | App      | I do not have access to the authenticator app | Identity check failed |
