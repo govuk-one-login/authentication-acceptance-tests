@@ -11,6 +11,9 @@ public class SupportPage extends BasePage {
     By mfaSupportLinkText = By.cssSelector("form[id='form-tracking'] p:nth-child(2)");
     By mfaSupportLinkAppText =
             By.cssSelector("div[class='govuk-details__text'] p[class='govuk-body']");
+    By mfaConfirmAppText = By.xpath("//*[contains(text(),'You can now continue to the service you were using')]");
+    By mfaConfirmAppTextNext = By.xpath("//*[contains(text(),'Next time you sign in, you’ll need to use your aut')]");
+    By mfaConfirmAppTextNextSMS = By.xpath("//*[contains(text(),'Next time you sign in, we’ll send security codes t')]");
 
     public void clickSupportLink() {
         Driver.get().findElement(supportLink).click();
@@ -57,5 +60,17 @@ public class SupportPage extends BasePage {
 
     public String getLinkAppText() {
         return Driver.get().findElement(mfaSupportLinkAppText).getText();
+    }
+
+    public String getMfaResetConfirmText() {
+        return Driver.get().findElement(mfaConfirmAppText).getText();
+    }
+
+    public String getMfaResetConfirmTextnext() {
+        return Driver.get().findElement(mfaConfirmAppTextNext).getText();
+    }
+
+    public String getMfaResetConfirmTextnextSMS() {
+        return Driver.get().findElement(mfaConfirmAppTextNextSMS).getText();
     }
 }

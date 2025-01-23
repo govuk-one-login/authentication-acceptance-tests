@@ -84,4 +84,24 @@ public class SupportStepDef extends BasePage {
                 "If you no longer have access to your authenticator app, check if you can change how you get security codes.",
                 supportPage.getLinkAppText());
     }
+
+    @And("User sees updated text you can now continue to the service you were using")
+    public void userSeesUpdatedTextYouCanNowContinueToTheServiceYouWereUsing() {
+        assertEquals(
+                "You can now continue to the service you were using.",
+                supportPage.getMfaResetConfirmText());
+        assertEquals(
+                "Next time you sign in, you’ll need to use your authenticator app to get security codes.",
+                supportPage.getMfaResetConfirmTextnext());
+    }
+
+    @And("User sees updated text you can now continue to the service you were using for SMS")
+    public void userSeesUpdatedTextYouCanNowContinueToTheServiceYouWereUsingForSMS() {
+        assertEquals(
+                "You can now continue to the service you were using.",
+                supportPage.getMfaResetConfirmText());
+        assertEquals(
+                "Next time you sign in, we’ll send security codes to your phone number ending with 0000.",
+                supportPage.getMfaResetConfirmTextnextSMS());
+    }
 }

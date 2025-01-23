@@ -8,7 +8,7 @@ Feature: The MFA reset process.
   whether the user is classified as authentication-only or identity-verified.
 
 # ************************* SMS Section *************************
-  @AUT-3825
+  @AUT-3825 @AUT-4004
   Scenario: SMS User selects SMS OTP for MFA reset after successful identity verification
     Given a user with SMS MFA exists
     When the user comes from the stub relying party with default options and is taken to the "Create your GOV.UK One Login or sign in" page
@@ -24,10 +24,11 @@ Feature: The MFA reset process.
     And the user enters their mobile phone number
     And the user enters the six digit security code from their phone
     Then the user is taken to the "You’ve changed how you get security codes" page
+    And User sees updated text you can now continue to the service you were using for SMS
     When the user clicks the continue button
     Then the user is returned to the service
 
-  @AUT-3825
+  @AUT-3825 @AUT-4004
   Scenario: AUTH app User selects SMS OTP for MFA reset after successful identity verification
     Given a user with App MFA exists
     When the user comes from the stub relying party with default options and is taken to the "Create your GOV.UK One Login or sign in" page
@@ -43,11 +44,12 @@ Feature: The MFA reset process.
     And the user enters their mobile phone number
     And the user enters the six digit security code from their phone
     Then the user is taken to the "You’ve changed how you get security codes" page
+    And User sees updated text you can now continue to the service you were using for SMS
     When the user clicks the continue button
     Then the user is returned to the service
 
 # ************************* AUTH APP Section *************************
-  @AUT-3825
+  @AUT-3825 @AUT-4004
   Scenario: Auth app User selects Authenticate app for MFA reset after successful identity verification
     Given a user with App MFA exists
     When the user comes from the stub relying party with default options and is taken to the "Create your GOV.UK One Login or sign in" page
@@ -64,10 +66,11 @@ Feature: The MFA reset process.
     When the user adds the secret key on the screen to their auth app
     And the user enters the security code from the auth app
     Then the user is taken to the "You’ve changed how you get security codes" page
+    And User sees updated text you can now continue to the service you were using
     When the user clicks the continue button
     Then the user is returned to the service
 
-  @AUT-3825
+  @AUT-3825 @AUT-4004
   Scenario: SMS User selects Authenticate app for MFA reset after successful identity verification
     Given a user with SMS MFA exists
     When the user comes from the stub relying party with default options and is taken to the "Create your GOV.UK One Login or sign in" page
@@ -84,6 +87,7 @@ Feature: The MFA reset process.
     When the user adds the secret key on the screen to their auth app
     And the user enters the security code from the auth app
     Then the user is taken to the "You’ve changed how you get security codes" page
+    And User sees updated text you can now continue to the service you were using
     When the user clicks the continue button
     Then the user is returned to the service
 
