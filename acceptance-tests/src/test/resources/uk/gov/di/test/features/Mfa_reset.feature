@@ -16,7 +16,7 @@ Feature: The MFA reset process.
     And the user enters their email address
     And the user enters their password
     And the user selects "Problems with the code?" link
-    And the user selects "change how you get security codes" link
+    And the user selects "check if you can change how you get security codes" link
     Then the user is taken to the IPV stub page
     When the user clicks the continue button
     Then the user is taken to the "How do you want to get security codes" page
@@ -35,7 +35,7 @@ Feature: The MFA reset process.
     And the user enters their email address
     And the user enters their password
     And the user selects "I do not have access to the authenticator app" link
-    And the user selects "change how you get security codes" link
+    And the user selects "check if you can change how you get security codes" link
     Then the user is taken to the IPV stub page
     When the user clicks the continue button
     Then the user is taken to the "How do you want to get security codes" page
@@ -55,7 +55,7 @@ Feature: The MFA reset process.
     And the user enters their email address
     And the user enters their password
     And the user selects "I do not have access to the authenticator app" link
-    And the user selects "change how you get security codes" link
+    And the user selects "check if you can change how you get security codes" link
     Then the user is taken to the IPV stub page
     When the user clicks the continue button
     Then the user is taken to the "How do you want to get security codes" page
@@ -75,7 +75,7 @@ Feature: The MFA reset process.
     And the user enters their email address
     And the user enters their password
     And the user selects "Problems with the code?" link
-    And the user selects "change how you get security codes" link
+    And the user selects "check if you can change how you get security codes" link
     Then the user is taken to the IPV stub page
     When the user clicks the continue button
     Then the user is taken to the "How do you want to get security codes" page
@@ -97,11 +97,12 @@ Feature: The MFA reset process.
     And the user enters their email address
     And the user enters their password
     And the user selects "<Link Text>" link
-    And the user selects "change how you get security codes" link
+    And the user selects "check if you can change how you get security codes" link
     Then the user is taken to the IPV stub page
     When "<IPV Response>" radio option selected
     And the user clicks the continue button
-    Then the user is taken to the "There’s a problem with this service" page
+#    Then the user is taken to the "There’s a problem with this service" page
+    Then the user is taken to the "You cannot change how you get security codes" page
     Examples:
       | Mfa Type | Link Text                                     | IPV Response              |
       | App      | I do not have access to the authenticator app | No identity available     |
@@ -109,7 +110,7 @@ Feature: The MFA reset process.
       | App      | I do not have access to the authenticator app | Identity check failed     |
       | SMS      | Problems with the code?                       | Identity did not match    |
 
-    @under-development @AUT-3931
+    @under-development @AUT-3931 @old-mfa-without-ipv
   Scenario Outline: Mfa User Error scenario - get help to delete your account
     Given a user with "<Mfa Type>" MFA exists
     When the user comes from the stub relying party with default options and is taken to the "Create your GOV.UK One Login or sign in" page
