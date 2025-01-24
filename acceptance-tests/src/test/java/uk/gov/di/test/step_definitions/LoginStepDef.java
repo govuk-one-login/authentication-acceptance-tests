@@ -380,4 +380,38 @@ public class LoginStepDef extends BasePage {
         stubStartPage.useDefaultOptionsAndContinue();
         setAnalyticsCookieTo(false);
     }
+
+    @When("the user enters the six digit code for {string}")
+    public void theUserEntersTheDigitCodeFor(String mfaType) {
+        switch (mfaType.toLowerCase()) {
+            case "app":
+                if (authAppSecretKey == null) {
+                    authAppSecretKey = world.userCredentials.getMfaMethods().get(0).getCredentialValue();
+                }
+                setUpAnAuthenticatorAppPage.enterCorrectAuthAppCodeAndContinue(authAppSecretKey);
+                break;
+
+            case "sms":
+                checkYourPhonePage.enterCorrectPhoneCodeAndContinue();
+                break;
+            default:
+                throw new RuntimeException("Invalid mfa type: " + mfaType);
+        }
+    }
+
+    @When("the user enters an incorrect {string} code {int} times")
+    public void theUserEntersAnIncorrectCodeTimes(String mfaType, int attemptCount) {
+        switch (mfaType.toLowerCase()) {
+            case "app":
+                enterThe6DigitSecurityCodeShownInYourAuthenticatorAppPage
+                        .enterIncorrectAuthAppCodeNumberOfTimes(attemptCount);
+                break;
+
+            case "sms":
+                checkYourPhonePage.enterIncorrectPhoneSecurityCodeNumberOfTimes(attemptCount);
+                break;
+            default:
+                throw new RuntimeException("Invalid mfa type: " + mfaType);
+        }
+    }
 }
