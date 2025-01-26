@@ -16,6 +16,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static uk.gov.di.test.utils.Driver.getDriver;
 
 public class CommonStepDef extends BasePage {
     public CrossPageFlows crossPageFlows;
@@ -163,5 +164,12 @@ public class CommonStepDef extends BasePage {
     @Then("User is taken to {string}")
     public void userIsTakenTo(String pageTitle) {
         waitForPageLoad(pageTitle);
+    }
+
+    @Then("the URL is present with suffix {string}")
+    public void theUrlIsPresentWithSuffix(String expectedSuffix) {
+        String currentUrl = getDriver().getCurrentUrl();
+        assertTrue(currentUrl.contains(expectedSuffix));{
+        }
     }
 }

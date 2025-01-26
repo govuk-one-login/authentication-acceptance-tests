@@ -90,25 +90,33 @@ Feature: The MFA reset process.
 
 
 # ************************* Negative tests when for unsuccessful IPV responses **********************
-  Scenario Outline: Mfa User choose to reset their MFA but are unsuccessful in identity verification
+  @AUT-3930 @AUT-3920 @under-development
+  Scenario Outline: Mfa User choose to reset their MFA but are unsuccessful in identity verification test
     Given a user with "<Mfa Type>" MFA exists
     When the user comes from the stub relying party with default options and is taken to the "Create your GOV.UK One Login or sign in" page
     And the user selects sign in
     And the user enters their email address
     And the user enters their password
+    And the user enters an incorrect "<Mfa Type>" code 2 times
     And the user selects "<Link Text>" link
-    And the user selects "check if you can change how you get security codes" link
+    And the user selects "change how you get security codes" link
+    #And the user selects "check if you can change how you get security codes" link
     Then the user is taken to the IPV stub page
     When "<IPV Response>" radio option selected
     And the user clicks the continue button
-#    Then the user is taken to the "There’s a problem with this service" page
-    Then the user is taken to the "You cannot change how you get security codes" page
+    And the user is taken to the "You cannot change how you get security codes" page
+    Then the URL is present with suffix "cannot-change-security-codes-identity-fail"
+    When "Try entering a security code again with the method you already have set up" radio option selected
+    And the user clicks the continue button
+    Then the user is taken to the "<Page>" page
+    When the user enters the six digit code for "<Mfa Type>"
+    Then the user is returned to the service
     Examples:
-      | Mfa Type | Link Text                                     | IPV Response              |
-      | App      | I do not have access to the authenticator app | No identity available     |
-      | SMS      | Problems with the code?                       | Identity check incomplete |
-      | App      | I do not have access to the authenticator app | Identity check failed     |
-      | SMS      | Problems with the code?                       | Identity did not match    |
+      | Mfa Type | Link Text                                     | IPV Response           | Page                                                            |
+      | App      | I do not have access to the authenticator app | Identity check failed  | Enter the 6 digit security code shown in your authenticator app |
+      | SMS      | Problems with the code?                       | Identity did not match | Check your phone                                                |
+      | SMS      | Problems with the code?                       | Identity check failed  | Check your phone                                                |
+      | App      | I do not have access to the authenticator app | Identity did not match | Enter the 6 digit security code shown in your authenticator app |
 
     @under-development @AUT-3931
   Scenario Outline: Mfa User Error scenario - get help to delete your account
@@ -129,3 +137,4 @@ Feature: The MFA reset process.
     Examples:
       | Mfa Type | Link Text                                     | IPV Response          |
       | App      | I do not have access to the authenticator app | Identity check failed |
+
