@@ -137,4 +137,3 @@ Feature: The MFA reset process.
     Examples:
       | Mfa Type | Link Text                                     | IPV Response          |
       | App      | I do not have access to the authenticator app | Identity check failed |
-
