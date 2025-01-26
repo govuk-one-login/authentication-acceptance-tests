@@ -11,7 +11,8 @@ import uk.gov.di.test.pages.CreateOrSignInPage;
 import uk.gov.di.test.pages.StubStartPage;
 import uk.gov.di.test.pages.StubUserInfoPage;
 import uk.gov.di.test.utils.Driver;
-
+import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -160,10 +161,11 @@ public class CommonStepDef extends BasePage {
         selectRadioOptionWithText(value);
     }
 
-    @Then("^the URL is present with suffix \"([^\"]*)\"$")
+    @Then("the URL is present with suffix {string}")
     public void theUrlIsPresentWithSuffix(String expectedSuffix) {
         String currentUrl = getDriver().getCurrentUrl();
-
-        assertEquals(true, currentUrl.contains(expectedSuffix));
+        assertTrue(currentUrl.contains(expectedSuffix));
     }
+
 }
+
