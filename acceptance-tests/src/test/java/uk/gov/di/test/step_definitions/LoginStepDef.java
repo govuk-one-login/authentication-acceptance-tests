@@ -53,14 +53,14 @@ public class LoginStepDef extends BasePage {
     public CreateOrSignInPage createOrSignInPage = new CreateOrSignInPage();
     public YouAskedToResendTheSecurityCodeTooManyTimesPage
             youAskedToResendTheSecurityCodeTooManyTimesPage =
-            new YouAskedToResendTheSecurityCodeTooManyTimesPage();
+                    new YouAskedToResendTheSecurityCodeTooManyTimesPage();
     public EnterYourEmailAddressPage enterYourEmailAddressPage = new EnterYourEmailAddressPage();
     public SetUpAnAuthenticatorAppPage setUpAnAuthenticatorAppPage =
             new SetUpAnAuthenticatorAppPage();
     public ReenterYourSignInDetailsToContinuePage reenterYourSignInDetailsToContinuePage;
     public EnterThe6DigitSecurityCodeShownInYourAuthenticatorAppPage
             enterThe6DigitSecurityCodeShownInYourAuthenticatorAppPage =
-            new EnterThe6DigitSecurityCodeShownInYourAuthenticatorAppPage();
+                    new EnterThe6DigitSecurityCodeShownInYourAuthenticatorAppPage();
     public TabsStepDef tabsSteps = new TabsStepDef();
 
     public LoginStepDef(World world) {
@@ -401,7 +401,8 @@ public class LoginStepDef extends BasePage {
         switch (mfaType.toLowerCase()) {
             case "app":
                 if (authAppSecretKey == null) {
-                    authAppSecretKey = world.userCredentials.getMfaMethods().get(0).getCredentialValue();
+                    authAppSecretKey =
+                            world.userCredentials.getMfaMethods().get(0).getCredentialValue();
                 }
                 setUpAnAuthenticatorAppPage.enterCorrectAuthAppCodeAndContinue(authAppSecretKey);
                 break;
@@ -411,7 +412,6 @@ public class LoginStepDef extends BasePage {
                 break;
             default:
                 throw new RuntimeException("Invalid mfa type: " + mfaType);
-
-            }
         }
     }
+}

@@ -169,7 +169,6 @@ public class CommonStepDef extends BasePage {
     @Then("the URL is present with suffix {string}")
     public void theUrlIsPresentWithSuffix(String expectedSuffix) {
         String currentUrl = getDriver().getCurrentUrl();
-        assertTrue(currentUrl.contains(expectedSuffix));{
-        }
+        assertTrue(currentUrl.contains(expectedSuffix));
     }
 }
