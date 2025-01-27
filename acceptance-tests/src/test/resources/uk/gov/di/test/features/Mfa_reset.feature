@@ -99,8 +99,7 @@ Feature: The MFA reset process.
     And the user enters their password
     And the user enters an incorrect "<Mfa Type>" code 2 times
     And the user selects "<Link Text>" link
-    And the user selects "change how you get security codes" link
-    #And the user selects "check if you can change how you get security codes" link
+    And the user selects "check if you can change how you get security codes" link
     Then the user is taken to the IPV stub page
     When "<IPV Response>" radio option selected
     And the user clicks the continue button
