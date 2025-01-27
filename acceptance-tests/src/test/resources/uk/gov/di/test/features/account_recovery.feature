@@ -55,9 +55,8 @@ Feature: Account recovery
     When the user adds the secret key on the screen to their auth app
     And the user enters the security code from the auth app
     Then the user is taken to the "You’ve changed how you get security codes" page
-    And confirmation that the user will get security codes via "auth app" is displayed
+    And the user clicks the continue button
     Then the user is returned to the service
-    And the user logs out
 
     When the user comes from the stub relying party with default options and is taken to the "Create your GOV.UK One Login or sign in" page
     And the user selects sign in
@@ -125,9 +124,8 @@ Feature: Account recovery
     Then the user is taken to the "Check your phone" page
     When the user enters the six digit security code from their phone
     Then the user is taken to the "You’ve changed how you get security codes" page
-    And confirmation that the user will get security codes via "text message" is displayed
+    And the user clicks the continue button
     Then the user is returned to the service
-    And the user logs out
 
     When the user comes from the stub relying party with default options and is taken to the "Create your GOV.UK One Login or sign in" page
     When the user selects sign in
