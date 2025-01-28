@@ -117,7 +117,7 @@ Feature: The MFA reset process.
       | SMS      | Problems with the code?                       | Identity check failed  | Check your phone                                                |
       | App      | I do not have access to the authenticator app | Identity did not match | Enter the 6 digit security code shown in your authenticator app |
 
-  @under-development @AUT-3931
+  @does-not-work-from-pipeline @under-development @AUT-3931
   Scenario Outline: Mfa User Error scenario - get help to delete your account
     Given a user with "<Mfa Type>" MFA exists
     When the user comes from the stub relying party with default options and is taken to the "Create your GOV.UK One Login or sign in" page
