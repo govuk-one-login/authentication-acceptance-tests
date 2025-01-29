@@ -5,6 +5,7 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import uk.gov.di.test.pages.BasePage;
 import uk.gov.di.test.pages.CreateOrSignInPage;
@@ -171,4 +172,15 @@ public class CommonStepDef extends BasePage {
         String currentUrl = getDriver().getCurrentUrl();
         assertTrue(currentUrl.contains(expectedSuffix));
     }
+
+    @And("the use navigate to the previous page")
+    public void theUseNavigateToThePreviousPage() {
+    }
+
+    @And("the user navigates to the previous page")
+    public void theUserNavigatesToThePreviousPage() {
+        WebDriver driver = getDriver();
+        driver.navigate().back();
+    }
 }
+
