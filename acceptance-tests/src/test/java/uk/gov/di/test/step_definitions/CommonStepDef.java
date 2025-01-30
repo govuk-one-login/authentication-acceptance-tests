@@ -54,7 +54,7 @@ public class CommonStepDef extends BasePage {
     }
 
     @When("the user selects {string} link")
-    public void theUserSelectsProblemsWithTheCode(String text) {
+    public void theUserSelectsProblemsWithTheCode(String text) throws InterruptedException {
         selectLinkByText(text);
     }
 
@@ -183,4 +183,5 @@ public class CommonStepDef extends BasePage {
         driver.navigate().back();
     }
 }
+
 
