@@ -183,5 +183,3 @@ public class CommonStepDef extends BasePage {
         driver.navigate().back();
     }
 }
-
-

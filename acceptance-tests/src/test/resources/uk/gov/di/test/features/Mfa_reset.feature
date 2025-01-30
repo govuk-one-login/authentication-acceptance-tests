@@ -193,7 +193,6 @@ Feature: The MFA reset process.
     When the user enters the six digit code for "<Mfa Type>"
     Then the user is returned to the service
     Examples:
-
       | Mfa Type | Link Text                                     | IPV Response              | Page                                                            |
       | App      | I do not have access to the authenticator app | No identity available     | Enter the 6 digit security code shown in your authenticator app |
       | SMS      | Problems with the code?                       | Identity check incomplete | Check your phone                                                |
