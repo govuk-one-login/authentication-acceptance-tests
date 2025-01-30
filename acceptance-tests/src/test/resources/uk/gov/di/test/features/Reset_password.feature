@@ -36,4 +36,3 @@ Feature: Reset password
     Then the user is taken to the "Reset your password" page
     When the user enters valid new password and correctly retypes it
     Then the user is returned to the service
-

@@ -92,4 +92,3 @@ Feature: Registration Journey
     Then the user is taken to the "You’ve created your GOV.UK One Login" page
     When the user clicks the continue button
     Then the user is returned to the service
-
