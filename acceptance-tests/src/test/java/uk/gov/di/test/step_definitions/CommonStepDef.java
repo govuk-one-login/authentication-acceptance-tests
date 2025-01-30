@@ -173,10 +173,6 @@ public class CommonStepDef extends BasePage {
         assertTrue(currentUrl.contains(expectedSuffix));
     }
 
-    @And("the use navigate to the previous page")
-    public void theUseNavigateToThePreviousPage() {
-    }
-
     @And("the user navigates to the previous page")
     public void theUserNavigatesToThePreviousPage() {
         WebDriver driver = getDriver();
