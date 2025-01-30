@@ -54,7 +54,7 @@ public class CommonStepDef extends BasePage {
     }
 
     @When("the user selects {string} link")
-    public void theUserSelectsProblemsWithTheCode(String text) throws InterruptedException {
+    public void theUserSelectsProblemsWithTheCode(String text) {
         selectLinkByText(text);
     }
 
