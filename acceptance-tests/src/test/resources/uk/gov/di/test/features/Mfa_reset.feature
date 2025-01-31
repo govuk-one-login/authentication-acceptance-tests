@@ -287,7 +287,7 @@ Feature: The MFA reset process.
       | SMS      | Problems with the code? | Success      | Check your phone |
 
 
-  @AUT-3993
+  @AUT-3993 @old-mfa-without-ipv
   Scenario Outline: MFA reset is switched off and SMS user cannot reset their MFA method after resetting their password
     Given a user with "<Mfa Type>" MFA exists
     When the user comes from the stub relying party with default options and is taken to the "Create your GOV.UK One Login or sign in" page
@@ -318,7 +318,7 @@ Feature: The MFA reset process.
       | SMS      | Problems with the code? | Check your phone |
 
 
-  @AUT-3993
+  @AUT-3993 @old-mfa-without-ipv
   Scenario Outline: MFA reset is switched off and APP user cannot reset their MFA method after resetting their password
     Given a user with "<Mfa Type>" MFA exists
     When the user comes from the stub relying party with default options and is taken to the "Create your GOV.UK One Login or sign in" page
