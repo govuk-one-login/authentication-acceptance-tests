@@ -116,7 +116,7 @@ Feature: The MFA reset process.
       | App      | I do not have access to the authenticator app | Identity did not match | Enter the 6 digit security code shown in your authenticator app |
 
 
-  @AUT-3931 @under-development
+  @AUT-3931 @under-development @does-not-work-from-pipeline
   Scenario Outline: Mfa User Error scenario - get help to delete your account
     Given a user with "<Mfa Type>" MFA exists
     When the user comes from the stub relying party with default options and is taken to the "Create your GOV.UK One Login or sign in" page
@@ -144,7 +144,7 @@ Feature: The MFA reset process.
       | App      | I do not have access to the authenticator app | Identity check incomplete |
 
 # ************************* Additional tests for IPV MFA journey **********************
-  @AUT-3997 @under-development
+  @AUT-3997 @under-development @does-not-work-from-pipeline
   Scenario Outline: Mfa User choose to use Back button when choosing the ‘Try entering a security code again’ option
     Given a user with "<Mfa Type>" MFA exists
     When the user comes from the stub relying party with default options and is taken to the "Create your GOV.UK One Login or sign in" page
@@ -176,7 +176,7 @@ Feature: The MFA reset process.
       | App      | I do not have access to the authenticator app | Identity did not match | Enter the 6 digit security code shown in your authenticator app |
 
 
-  @AUT-3997 @under-development
+  @AUT-3997 @under-development @does-not-work-from-pipeline
   Scenario Outline: Mfa User choose to use Back-button from contact screen
     Given a user with "<Mfa Type>" MFA exists
     When the user comes from the stub relying party with default options and is taken to the "Create your GOV.UK One Login or sign in" page
