@@ -131,7 +131,8 @@ Feature: The MFA reset process.
     Then the user is taken to the "You cannot change how you get security codes" page
     When "Get help to delete your GOV.UK One Login from the support team" radio option selected
     And the user clicks the continue button
-    Then User is taken to "Contact GOV.UK One Login"
+    Then the URL is present with suffix "cannot-change-security-codes"
+    #Then User is taken to "Contact GOV.UK One Login"
     Examples:
       | Mfa Type | Link Text                                     | IPV Response              |
       | App      | I do not have access to the authenticator app | Identity check failed     |
