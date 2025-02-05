@@ -12,10 +12,10 @@ repositories {
 
 def dependencyVersions = [
     junit_version: '5.11.4',
-    cucumber_version: '7.20.1',
+    cucumber_version: '7.21.0',
     axe_version: '3.0',
-    selenium_java_version: '4.27.0',
-    aws_sdk_v2_version: "2.30.3",
+    selenium_java_version: '4.28.1',
+    aws_sdk_v2_version: "2.30.13",
     json_version: '20250107',
     rest_assured: '5.5.0'
 ]
@@ -46,7 +46,7 @@ dependencies {
 
     testImplementation("org.apache.commons:commons-text:1.13.0")
 
-    testImplementation("commons-codec:commons-codec:1.17.2")
+    testImplementation("commons-codec:commons-codec:1.18.0")
 
     testImplementation("com.google.guava:guava:33.4.0-jre")
 
