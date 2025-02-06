@@ -264,11 +264,8 @@ Feature: The MFA reset process.
     Then the user is returned to the service
     When the user comes from the stub relying party with default options and is taken to the "Create your GOV.UK One Login or sign in" page
     And the user selects sign in
-    Then the user is taken to the "Enter your email" page
-    When the user enters their email address
-    Then the user is taken to the "Enter your password" page
-    When the user enters their password
-    Then the user is taken to the "<Page>" page
+    And the user enters their email address
+    And the user enters their password
     And the user selects "<Link Text>" link
     And the user selects "check if you can change how you get security codes" link
     Then the user is taken to the IPV stub page
