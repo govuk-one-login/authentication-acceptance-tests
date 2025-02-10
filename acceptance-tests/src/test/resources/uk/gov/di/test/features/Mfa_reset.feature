@@ -1,5 +1,4 @@
 #https://govukverify.atlassian.net/browse/AUT-3825
-
 Feature: The MFA reset process.
   Begins in Authentication, when a user initiates an MFA reset,
   they are redirected to Identity to determine their verification status. Identity verifies
@@ -343,3 +342,71 @@ Feature: The MFA reset process.
     Examples:
       | Mfa Type | Page                                                            |
       | App      | Enter the 6 digit security code shown in your authenticator app |
+
+  @AUT-4051 @under-development
+  Scenario Outline: User is signing in via the one login v2 app
+    Given a user with "<Mfa Type>" MFA exists
+    When the user comes from the stub relying party with option channel-strategic-app and is taken to the "Sign in to GOV.UK One Login" page
+    And the user selects sign in
+    And the user enters their email address
+    And the user enters their password
+    And the user selects "<Link Text>" link
+    And the user selects "check if you can change how you get security codes" link
+    Then the user is taken to the "<Page>" page
+    Then the URL is present with suffix "open-one-login-in-web-browser"
+    Examples:
+      | Mfa Type | Link Text                                     | Page                                               |
+      | App      | I do not have access to the authenticator app | Open GOV.UK One Login in a web browser to continue |
+      | SMS      | Problems with the code?                       | Open GOV.UK One Login in a web browser to continue |
+
+
+  @AUT-4051 @under-development
+  Scenario Outline: User is signing in via a web browser(SMS)
+    Given a user with "<Mfa Type>" MFA exists
+    When the user comes from the stub relying party with option channel-web and is taken to the "Create your GOV.UK One Login or sign in" page
+    And the user selects sign in
+    And the user enters their email address
+    And the user enters their password
+    Then the user is taken to the "<Page>" page
+    And the user selects "<Link Text>" link
+    And the user selects "check if you can change how you get security codes" link
+    Then the user is taken to the IPV stub page
+    When "<IPV Response>" radio option selected
+    And the user clicks the continue button
+    Then the user is taken to the "How do you want to get security codes" page
+    When the user chooses auth app to get security codes
+    Then the user is taken to the "Set up an authenticator app" page
+    When the user adds the secret key on the screen to their auth app
+    And the user enters the security code from the auth app
+    Then the user is taken to the "You’ve changed how you get security codes" page
+    When the user clicks the continue button
+    Then the user is returned to the service
+    Examples:
+      | Mfa Type | Link Text               | IPV Response | Page             |
+      | SMS      | Problems with the code? | Success      | Check your phone |
+
+  @AUT-4051 @under-development
+  Scenario Outline: User is signing in via a web browser (APP)
+    Given a user with "<Mfa Type>" MFA exists
+    When the user comes from the stub relying party with option channel-web and is taken to the "Create your GOV.UK One Login or sign in" page
+    And the user selects sign in
+    And the user enters their email address
+    And the user enters their password
+    Then the user is taken to the "<Page>" page
+    And the user selects "<Link Text>" link
+    And the user selects "check if you can change how you get security codes" link
+    Then the user is taken to the IPV stub page
+    When "<IPV Response>" radio option selected
+    And the user clicks the continue button
+    Then the user is taken to the "How do you want to get security codes" page
+    When the user selects radio button "Text message"
+    Then the user is taken to the "Enter your mobile phone number" page
+    When the user enters their mobile phone number
+    Then the user is taken to the "Check your phone" page
+    When the user enters the six digit security code from their phone
+    Then the user is taken to the "You’ve changed how you get security codes" page
+    And the user clicks the continue button
+    Then the user is returned to the service
+    Examples:
+      | Mfa Type | Link Text                                     | IPV Response | Page                                                            |
+      | App      | I do not have access to the authenticator app | Success      | Enter the 6 digit security code shown in your authenticator app |
