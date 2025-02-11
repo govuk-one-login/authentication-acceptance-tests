@@ -346,3 +346,19 @@ Feature: The MFA reset process.
     Examples:
       | Mfa Type | Page                                                            |
       | App      | Enter the 6 digit security code shown in your authenticator app |
+
+  @AUT-4051 @under-development
+  Scenario Outline: User is signing in via the one login v2 app
+    Given a user with "<Mfa Type>" MFA exists
+    When the user comes from the stub relying party with option channel-strategic-app and is taken to the "Sign in to GOV.UK One Login" page
+    And the user selects sign in
+    And the user enters their email address
+    And the user enters their password
+    And the user selects "<Link Text>" link
+    And the user selects "check if you can change how you get security codes" link
+    Then the user is taken to the "<Page>" page
+    Then the URL is present with suffix "open-one-login-in-web-browser"
+    Examples:
+      | Mfa Type | Link Text                                     | Page                                               |
+      | App      | I do not have access to the authenticator app | Open GOV.UK One Login in a web browser to continue |
+      | SMS      | Problems with the code?                       | Open GOV.UK One Login in a web browser to continue |
