@@ -1,4 +1,4 @@
-#https://govukverify.atlassian.net/browse/AUT-3825
+@mfa-reset
 
 Feature: The MFA reset process.
   Begins in Authentication, when a user initiates an MFA reset,
@@ -131,7 +131,7 @@ Feature: The MFA reset process.
     Then the user is taken to the "You cannot change how you get security codes" page
     When "Get help to delete your GOV.UK One Login from the support team" radio option selected
     And the user clicks the continue button
-    Then User is taken to "Contact GOV.UK One Login"
+    Then the URL is present with suffix "cannot-change-security-codes"
     Examples:
       | Mfa Type | Link Text                                     | IPV Response              |
       | App      | I do not have access to the authenticator app | Identity check failed     |
@@ -191,7 +191,7 @@ Feature: The MFA reset process.
     Then the user is taken to the "You cannot change how you get security codes" page
     When "Get help to delete your GOV.UK One Login from the support team" radio option selected
     And the user clicks the continue button
-    Then User is taken to "Contact GOV.UK One Login"
+    Then the URL is present with suffix "cannot-change-security-codes"
     And the user navigates to the previous page
     And the user is taken to the "You cannot change how you get security codes" page
     Then "Try entering a security code again with the method you already have set up" radio option selected
@@ -287,7 +287,7 @@ Feature: The MFA reset process.
       | SMS      | Problems with the code? | Success      | Check your phone |
 
 
-  @AUT-3993 @old-mfa-without-ipv @under-development
+  @AUT-3993 @old-mfa-without-ipv
   Scenario Outline: MFA reset is switched off and SMS user cannot reset their MFA method after resetting their password
     Given a user with "<Mfa Type>" MFA exists
     When the user comes from the stub relying party with default options and is taken to the "Create your GOV.UK One Login or sign in" page
@@ -309,8 +309,8 @@ Feature: The MFA reset process.
     Then the user is taken to the "Enter your password" page
     When the user enters their password
     Then the user is taken to the "<Page>" page
-    And the user selects "<Link Text>" link
     Then the link "change how you get security codes" is not available
+    Then the link "<Link Text>" is not available
     When the user enters the six digit code for "<Mfa Type>"
     Then the user is returned to the service
     Examples:
@@ -318,7 +318,7 @@ Feature: The MFA reset process.
       | SMS      | Problems with the code? | Check your phone |
 
 
-  @AUT-3993 @old-mfa-without-ipv @under-development
+  @AUT-3993 @old-mfa-without-ipv
   Scenario Outline: MFA reset is switched off and APP user cannot reset their MFA method after resetting their password
     Given a user with "<Mfa Type>" MFA exists
     When the user comes from the stub relying party with default options and is taken to the "Create your GOV.UK One Login or sign in" page
@@ -340,7 +340,6 @@ Feature: The MFA reset process.
     When the user enters their password
     Then the user is taken to the "<Page>" page
     And the link "I do not have access to the authenticator app" is not available
-    And the link "change how you get security codes" is not available
     When the user enters the six digit code for "<Mfa Type>"
     Then the user is returned to the service
     Examples:
