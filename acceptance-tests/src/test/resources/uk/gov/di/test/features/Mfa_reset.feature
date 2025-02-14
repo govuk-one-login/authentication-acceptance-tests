@@ -302,6 +302,7 @@ Feature: The MFA reset process.
     Then the user is taken to the "Reset your password" page
     When the user enters valid new password and correctly retypes it
     Then the user is returned to the service
+    And the user logs out
     When the user comes from the stub relying party with default options and is taken to the "Create your GOV.UK One Login or sign in" page
     And the user selects sign in
     Then the user is taken to the "Enter your email" page
@@ -309,8 +310,8 @@ Feature: The MFA reset process.
     Then the user is taken to the "Enter your password" page
     When the user enters their password
     Then the user is taken to the "<Page>" page
+    And the user selects "<Link Text>" link
     Then the link "change how you get security codes" is not available
-    Then the link "<Link Text>" is not available
     When the user enters the six digit code for "<Mfa Type>"
     Then the user is returned to the service
     Examples:
@@ -332,6 +333,7 @@ Feature: The MFA reset process.
     Then the user is taken to the "Reset your password" page
     When the user enters valid new password and correctly retypes it
     Then the user is returned to the service
+    And the user logs out
     When the user comes from the stub relying party with default options and is taken to the "Create your GOV.UK One Login or sign in" page
     And the user selects sign in
     Then the user is taken to the "Enter your email" page
