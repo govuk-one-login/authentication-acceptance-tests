@@ -15,7 +15,7 @@ def dependencyVersions = [
     cucumber_version: '7.21.1',
     axe_version: '3.0',
     selenium_java_version: '4.28.1',
-    aws_sdk_v2_version: "2.30.22",
+    aws_sdk_v2_version: "2.30.24",
     json_version: '20250107',
     rest_assured: '5.5.1'
 ]
@@ -51,7 +51,7 @@ dependencies {
     testImplementation("com.google.guava:guava:33.4.0-jre")
 
     testImplementation("org.bouncycastle:bcpkix-jdk18on:1.80")
-    testImplementation("org.springframework.security:spring-security-crypto:6.4.2")
+    testImplementation("org.springframework.security:spring-security-crypto:6.4.3")
 
     testImplementation("org.json:json:${dependencyVersions.json_version}")
     testImplementation("io.rest-assured:rest-assured:${dependencyVersions.rest_assured}")
