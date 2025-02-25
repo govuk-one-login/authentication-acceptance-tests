@@ -34,7 +34,7 @@ Feature: Account recovery
     When the user enters the security code from the auth app
     Then the user is returned to the service
 
-  @AUT-3921
+  @under-development @AUT-3921
   Scenario: An sms user can change how they get security codes and log in with new method (Dev Test Only)
     Given a user with SMS MFA exists
     When the user comes from the stub relying party with default options and is taken to the "Create your GOV.UK One Login or sign in" page
@@ -100,7 +100,7 @@ Feature: Account recovery
     When the user enters the six digit security code from their phone
     Then the user is returned to the service
 
-  @AUT-3921
+  @under-development @AUT-3921
   Scenario: An auth app user can change how they get security codes and log in with new method (Dev Test Only)
     Given a user with App MFA exists
     When the user comes from the stub relying party with default options and is taken to the "Create your GOV.UK One Login or sign in" page
