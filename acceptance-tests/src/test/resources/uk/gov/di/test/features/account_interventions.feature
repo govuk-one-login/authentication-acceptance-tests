@@ -447,7 +447,7 @@ Feature: Account interventions
     When the user enters valid new password and correctly retypes it
     Then the user is returned to the service
 
-  @under-development @AUT-3921
+  @under-development @AUT-3921 @old-mfa-without-ipv
   Scenario: Auth app user cannot change the way they get security codes when they have a password reset intervention on their account (Dev Only Test)
     Given a user with App MFA exists
     And the user has a password reset intervention
