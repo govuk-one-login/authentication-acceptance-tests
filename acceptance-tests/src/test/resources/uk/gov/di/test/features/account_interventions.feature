@@ -424,7 +424,7 @@ Feature: Account interventions
     When the user enters valid new password and correctly retypes it
     Then the user is returned to the service
 
-  @reset_password @build-sp
+  @reset_password @build-sp @old-mfa-without-ipv
   Scenario: Auth app user cannot change the way they get security codes when they have a password reset intervention on their account
     Given a user with App MFA exists
     And the user has a password reset intervention
