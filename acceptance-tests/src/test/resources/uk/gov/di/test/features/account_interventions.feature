@@ -243,7 +243,7 @@ Feature: Account interventions
     When the user enters the six digit security code from their phone
     Then the user is taken to the "Your GOV.UK One Login has been permanently locked" page
 
-  @locked @build-sp
+  @locked @build-sp @old-mfa-without-ipv
   Scenario: Sms user cannot change the way they get security codes when they have a permanently locked account
     Given a user with SMS MFA exists
     And the user has a permanently locked intervention
@@ -282,7 +282,7 @@ Feature: Account interventions
       | Mfa Type | Link Text                                     | IPV Response              |
       | SMS      | I do not have access to the authenticator app | Identity check failed     |
 
-  @locked @build-sp
+  @locked @build-sp @old-mfa-without-ipv
   Scenario: Auth app user cannot change the way they get security codes when they have a permanently locked account
     Given a user with App MFA exists
     And the user has a permanently locked intervention
