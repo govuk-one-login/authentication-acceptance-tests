@@ -79,7 +79,7 @@ Feature: Account interventions
     And the user enters the security code from the auth app
     Then the user is taken to the "Sorry, there is a problem" page
 
-  @suspended @build-sp
+  @suspended @build-sp @old-mfa-without-ipv
   Scenario: Sms user cannot change the way they get security codes when they have a temporarily suspended account
     Given a user with SMS MFA exists
     And the user has a temporarily suspended intervention
@@ -113,7 +113,7 @@ Feature: Account interventions
     When the user clicks the continue button
     Then the user is taken to the "How do you want to get security codes" page
 
-  @suspended @build-sp
+  @suspended @build-sp @old-mfa-without-ipv
   Scenario: Auth app user cannot change the way they get security codes when they have a temporarily suspended account
     Given a user with App MFA exists
     And the user has a temporarily suspended intervention
