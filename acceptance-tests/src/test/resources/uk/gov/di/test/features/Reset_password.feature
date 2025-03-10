@@ -1,4 +1,4 @@
-@ResetPassword @build @staging @build-sp @staging-sp @dev
+@UI @ResetPassword @build @staging @build-sp @staging-sp @dev
 Feature: Reset password
 
   Scenario: An sms user can successfully reset their password

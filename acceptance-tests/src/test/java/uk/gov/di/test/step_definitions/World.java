@@ -5,6 +5,8 @@ import uk.gov.di.test.entity.UserInterventions;
 import uk.gov.di.test.entity.UserProfile;
 import uk.gov.di.test.utils.MFAType;
 
+import java.util.Map;
+
 /**
  * World class to store state between steps. An instance of this class is 'magically' created by
  * Cucumber and passed to each step definition which has a constructor with a single argument of
@@ -23,6 +25,9 @@ public class World {
     private UserCredentials otherUserCredentials;
     private UserInterventions otherUserInterventions;
     private String otherUserPassword;
+    private String token;
+    private String newPhoneNumber;
+    private Map<String, Object> authorizerContent;
 
     public UserCredentials getOtherUserCredentials() {
         return otherUserCredentials;
@@ -89,6 +94,30 @@ public class World {
         throwIfUserProfileDoesNotExist();
         throwIfUserCredentialsDoesNotExist();
         return userCredentials.getMfaMethods().get(0).getCredentialValue();
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+    public String getNewPhoneNumber() {
+        return newPhoneNumber;
+    }
+
+    public void setNewPhoneNumber(String newPhoneNumber) {
+        this.newPhoneNumber = newPhoneNumber;
+    }
+
+    public Map<String, Object> getAuthorizerContent() {
+        return authorizerContent;
+    }
+
+    public void setAuthorizerContent(Map<String, Object> authorizerContent) {
+        this.authorizerContent = authorizerContent;
     }
 
     public static class WorldException extends RuntimeException {
