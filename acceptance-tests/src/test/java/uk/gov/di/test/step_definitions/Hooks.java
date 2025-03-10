@@ -21,7 +21,7 @@ public class Hooks extends BasePage {
     protected static final Boolean FAIL_FAST_ENABLED =
             Boolean.parseBoolean(TEST_CONFIG_SERVICE.getOrDefault("FAIL_FAST_ENABLED", "false"));
 
-    @Before(order = 1)
+    @Before(value = "@UI", order = 1)
     public void setUpScenario(Scenario scenario) {
         BasePage.scenario = scenario;
         if (FAIL_FAST_ENABLED && failureCount > 0) {
@@ -29,12 +29,12 @@ public class Hooks extends BasePage {
         }
     }
 
-    @AfterStep
+    @AfterStep("@UI")
     public void checkAccessibility() {
         AxeStepDef.thereAreNoAccessibilityViolations();
     }
 
-    @After
+    @After("@UI")
     public void takeScreenshotOnFailure(Scenario scenario) {
         if (scenario.isFailed()) {
 

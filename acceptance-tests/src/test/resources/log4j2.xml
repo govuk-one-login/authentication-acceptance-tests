@@ -1,0 +1,15 @@
+<Configuration status="WARN">
+    <Appenders>
+        <Lambda name="Lambda">
+        </Lambda>
+    </Appenders>
+    <Loggers>
+        <Root level="INFO">
+            <AppenderRef ref="Lambda"/>
+        </Root>
+        <Logger name="software.amazon.awssdk" level="WARN" />
+        <Logger name="software.amazon.awssdk.request" level="DEBUG" />
+        <Logger name="uk.gov.di.test.step_definitions" level="DEBUG" />
+        <Logger name="uk.gov.di.test.services" level="DEBUG" />
+    </Loggers>
+</Configuration>

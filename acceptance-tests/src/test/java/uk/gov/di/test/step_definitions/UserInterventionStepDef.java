@@ -56,7 +56,7 @@ public class UserInterventionStepDef {
                 world.userInterventions);
     }
 
-    @After
+    @After("@UI")
     public void deleteIntervention() {
         if (world.userInterventions != null) {
             System.out.printf(

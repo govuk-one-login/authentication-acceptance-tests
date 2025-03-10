@@ -1,4 +1,4 @@
-@IPN @build @staging @build-sp @staging-sp @dev
+@UI @IPN @build @staging @build-sp @staging-sp @dev
 Feature: International Phone Numbers
 
   Scenario: User cannot register using an invalid UK mobile phone number
