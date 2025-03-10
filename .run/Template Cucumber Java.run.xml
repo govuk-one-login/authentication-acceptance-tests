@@ -1,5 +1,8 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="true" type="CucumberJavaRunConfigurationType" factoryName="Cucumber java">
+    <option name="envFilePaths">
+      <option value="$PROJECT_DIR$/.env" />
+    </option>
     <option name="FILE_PATH" value="src/test/resources" />
     <option name="GLUE" value="uk.gov.di.test.step_definitions" />
     <option name="MAIN_CLASS_NAME" value="io.cucumber.core.cli.Main" />
