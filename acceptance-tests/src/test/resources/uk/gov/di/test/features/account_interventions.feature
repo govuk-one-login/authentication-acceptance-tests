@@ -1,4 +1,4 @@
-@AccountInterventions @build
+@UI @AccountInterventions @build
 Feature: Account interventions
 
   @suspended @tw-test @focusme @build-sp-fail
