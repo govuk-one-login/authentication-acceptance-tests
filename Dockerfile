@@ -31,7 +31,7 @@ RUN apk update && apk add --update --no-cache \
     udev \
     xvfb \
     zlib-dev \
-    wget \
+    wget && \
     wget -q -O chrome-linux64.zip https://storage.googleapis.com/chrome-for-testing-public/133.0.6943.141/linux64/chrome-linux64.zip && \
     unzip chrome-linux64.zip && \
     rm chrome-linux64.zip && \
@@ -41,6 +41,7 @@ RUN apk update && apk add --update --no-cache \
     unzip -j chromedriver-linux64.zip chromedriver-linux64/chromedriver && \
     rm chromedriver-linux64.zip && \
     mv chromedriver /usr/bin/
+
 
 ENV PATH="/usr/bin/chromedriver:${PATH}"
 
