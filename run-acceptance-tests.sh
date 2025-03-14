@@ -50,14 +50,12 @@ function write_env_file() {
     echo "#"
     echo "# Rename to .env to use for testing"
     echo "#"
-  } >> "${envfile}"
+  } > "${envfile}"
 
-  envars="$(aws ssm get-parameters-by-path --with-decryption --path "/acceptance-tests/${ENVIRONMENT}" \
-    | jq -r '.Parameters[] | [(.Name|split("/")|last), .Value]|@tsv')"
-
-  while IFS=$'\t' read -r name value; do
-    echo "${name}='${value}'" >> "${envfile}"
-  done <<< "${envars}"
+  scripts/fetch_envars.sh "${ENVIRONMENT}" >> "${envfile}" || {
+    echo "Failed to export environment variables from SSM."
+    exit 1
+  }
   echo "Exporting SSM parameters completed."
   exit 0
 }
