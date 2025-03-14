@@ -10,7 +10,7 @@ services:
     networks:
       - op-net
   selenium-chrome:
-    image: selenium/standalone-chrome@sha256:36784cc22ea01886ac226146be343afe7d984d9fc69436e52c2c0f8fd0dc0f55
+    image: seleniarm/standalone-chromium:latest
     #USE THESE VALUES IF YOU HAVE A MAC M1/M2/M3 (ARM) chip
     #image: seleniarm/standalone-chromium:latest
     ports:
