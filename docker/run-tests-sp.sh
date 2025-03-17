@@ -8,7 +8,11 @@ if [[ -z ${CODEBUILD_BUILD_ID:-} ]]; then
   exit 1
 fi
 
-ENVIRONMENT=${TEST_ENVIRONMENT:-local}
+export ENVIRONMENT=${TEST_ENVIRONMENT:-local}
+
+if [ -z "${AWS_REGION:-}" ]; then
+  export AWS_REGION="eu-west-2"
+fi
 
 case $ENVIRONMENT in
   build)
@@ -23,6 +27,8 @@ case $ENVIRONMENT in
     ;;
 esac
 
+pushd /test > /dev/null || exit 1
+
 # shellcheck source=../scripts/fetch_envars.sh
 /test/scripts/fetch_envars.sh "${ENVIRONMENT}" | tee /test/.env
 
@@ -36,7 +42,8 @@ export AWS_SECRET_ACCESS_KEY="$(echo "$output" | jq -r '.Credentials.SecretAcces
 # shellcheck disable=SC2155
 export AWS_SESSION_TOKEN="$(echo "$output" | jq -r '.Credentials.SessionToken')"
 
-/test/run-acceptance-tests.sh -s "${ENVIRONMENT}"
+export USE_SSM=false
+./gradlew --no-daemon cucumber
 return_code=$?
 
 if [ -d "/test/acceptance-tests/target/cucumber-report/" ]; then
