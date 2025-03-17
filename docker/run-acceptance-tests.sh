@@ -8,5 +8,12 @@ if [ -z "${AWS_REGION:-}" ]; then
 fi
 
 pushd /test > /dev/null || exit 1
+
+if [ -f ".env" ]; then
+  # source .env file if it exists (as we're running in docker, it's definitely needed if it's there)
+  # shellcheck source=/dev/null
+  set -o allexport && source .env && set +o allexport
+fi
+
 ./gradlew --no-daemon cucumber
 popd > /dev/null || exit 1
