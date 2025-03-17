@@ -1,7 +1,7 @@
 #!/bin/bash
 # NOTE: this script only runs in codebuild in new secure pipeline
-
-set -u
+# This file is put in place during docker build, so paths to other scripts are relative to the docker context
+set -euo pipefail
 
 if [[ -z ${CODEBUILD_BUILD_ID:-} ]]; then
   echo 'This should only be run in codebuild'
@@ -23,9 +23,8 @@ case $ENVIRONMENT in
     ;;
 esac
 
-/test/run-acceptance-tests.sh -e "${ENVIRONMENT}"
-mv /test/*.env /test/.env
-cat /test/.env
+# shellcheck source=../scripts/fetch_envars.sh
+/test/scripts/fetch_envars.sh "${ENVIRONMENT}" | tee /test/.env
 
 echo "Assuming cross-account role"
 output=$(aws sts assume-role --role-arn "$CROSSACCOUNT_ROLEARN" --role-session-name "dynamo-db-access" --output json)
