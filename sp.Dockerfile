@@ -8,7 +8,7 @@ ARG SEL_USER=seluser
 ARG SEL_GROUP=${SEL_USER}
 
 COPY --chown=${SEL_USER}:${SEL_GROUP} scripts/fetch_envars.sh /test/scripts/fetch_envars.sh
-COPY --chown=${SEL_USER}:${SEL_GROUP} docker/run-tests-sp.sh /test/run-tests.sh
-RUN chmod 500 /test/scripts/fetch_envars.sh /test/run-tests.sh
+COPY --chown=${SEL_USER}:${SEL_GROUP} docker/run-tests-sp.sh /run-tests.sh
+RUN chmod 500 /test/scripts/fetch_envars.sh /run-tests.sh
 
-ENTRYPOINT ["/test/run-tests.sh"]
+ENTRYPOINT ["/run-tests.sh"]
