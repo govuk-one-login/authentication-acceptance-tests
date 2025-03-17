@@ -44,7 +44,6 @@ export AWS_SESSION_TOKEN="$(echo "$output" | jq -r '.Credentials.SessionToken')"
 
 # shellcheck source=/dev/null
 set -o allexport && source .env && set +o allexport
-export USE_SSM=false
 ./gradlew --no-daemon cucumber
 return_code=$?
 
