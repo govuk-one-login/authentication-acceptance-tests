@@ -6,7 +6,6 @@
 
 .gradle/
 .idea/
-.vscode/
 build/
 logs/
 .classpath
@@ -20,5 +19,12 @@ target/
 failures.json
 assets/*
 .LCKbuild.gradle~
-rundocker.sh
 *.env
+
+# Visual Studio Code
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+!.vscode/*.code-snippets

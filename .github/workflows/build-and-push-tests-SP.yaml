@@ -2,11 +2,16 @@ name: Build and Push Tests Secure Pipeline
 
 env:
   AWS_REGION: eu-west-2
+  SELENIUM_BASE: selenium/standalone-chromium:132.0
 
 on:
   push:
     branches:
       - main
+
+concurrency:
+  group: "build-and-push-tests-sp"
+  cancel-in-progress: false
 
 jobs:
   build:
@@ -34,15 +39,28 @@ jobs:
         with:
           cosign-release: "v1.9.0"
 
-      - name: Build, tag, and push acceptance tests image to Amazon ECR
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@b5ca514318bd6ebac0fb2aedd5d36ec1b5c232a2 # v3.10.0
+
+      - name: Build and push
+        uses: docker/build-push-action@471d1dc4e07e5cdedd4c2171150001c434f0b7a4 # v6.15.0
+        id: build-and-push
+        with:
+          context: .
+          push: true
+          target: secure-pipelines
+          build-args: |
+            SELENIUM_BASE=${{ env.SELENIUM_BASE }}
+          tags: "${{ steps.login-ecr.outputs.registry }}/${{ secrets.ACCEPTANCE_ECR_REPO_NEW_BUILD }}:latest"
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Sign image with Cosign
         env:
+          TAGS: "${{ steps.login-ecr.outputs.registry }}/${{ secrets.ACCEPTANCE_ECR_REPO_NEW_BUILD }}:latest"
           CONTAINER_SIGN_KMS_KEY: ${{ secrets.CONTAINER_SIGN_KMS_KEY }}
-          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          ECR_REPOSITORY: ${{ secrets.ACCEPTANCE_ECR_REPO_NEW_BUILD }}
-          IMAGE_TAG: latest
+          DIGEST: ${{ steps.build-and-push.outputs.digest }}
         run: |
-          BASE_IMAGE_TAG="at-base-image:${{ github.sha }}"
-          docker build -t "${BASE_IMAGE_TAG}" .
-          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG -f sp.Dockerfile . --build-arg BASE_IMAGE="${BASE_IMAGE_TAG}"
-          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-          cosign sign --key awskms:///${CONTAINER_SIGN_KMS_KEY} $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+          cosign sign --yes \
+            --key awskms:///${CONTAINER_SIGN_KMS_KEY} \
+            "${{ steps.login-ecr.outputs.registry }}/${{ secrets.ACCEPTANCE_ECR_REPO_NEW_BUILD }}:latest@${DIGEST}"
