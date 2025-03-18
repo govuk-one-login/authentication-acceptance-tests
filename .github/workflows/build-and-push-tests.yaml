@@ -49,6 +49,6 @@ jobs:
           target: base
           build-args: |
             SELENIUM_BASE=${{ env.SELENIUM_BASE }}
-          tags: "${{ steps.login-ecr.outputs.registry }}/${{ secrets.ACCEPTANCE_ECR_REPO_NEW_BUILD }}:latest"
+          tags: "${{ steps.login-ecr.outputs.registry }}/${{ secrets.ACCEPTANCE_ECR_REPO }}:latest"
           cache-from: type=gha
           cache-to: type=gha,mode=max
