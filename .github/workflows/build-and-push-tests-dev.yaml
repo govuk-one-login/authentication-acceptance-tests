@@ -4,9 +4,14 @@ env:
   AWS_REGION: eu-west-2
   DEV_GHA_DEPLOYER_ROLE: arn:aws:iam::653994557586:role/dev-auth-deploy-pipeline-GitHubActionsRole-QrtGginNnjDD
   DEV_ACCEPTANCE_ECR_REPO: acceptance-test-dev-testrunnerimagerepository-yh8assqv55do
+  SELENIUM_BASE: selenium/standalone-chromium:132.0
 
 on:
   workflow_dispatch:
+
+concurrency:
+  group: "build-and-push-tests-dev"
+  cancel-in-progress: false
 
 jobs:
   build:
@@ -35,5 +40,6 @@ jobs:
           ECR_REPOSITORY: ${{ env.DEV_ACCEPTANCE_ECR_REPO }}
           IMAGE_TAG: latest
         run: |
-          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG --target base \
+            --build-arg SELENIUM_BASE="${SELENIUM_BASE}" .
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG

@@ -15,5 +15,9 @@ if [ -f ".env" ]; then
   set -o allexport && source .env && set +o allexport
 fi
 
+SELENIUM_BROWSER="$(cat /opt/selenium/browser_name)"
+export SELENIUM_BROWSER
+
 ./gradlew --no-daemon cucumber
+
 popd > /dev/null || exit 1

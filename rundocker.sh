@@ -1,0 +1,57 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+ENVIRONMENT="${1:-}"
+if [ -z "${ENVIRONMENT}" ]; then
+  echo "Usage: $0 <environment> [<browser>]"
+  exit 1
+fi
+
+BROWSER="${2:-chromium}"
+
+SP=false
+case "${ENVIRONMENT}" in
+  build-sp)
+    SP=true
+    AWS_PROFILE=di-authentication-build-admin
+    ENVIRONMENT=build
+    ;;
+  staging-sp)
+    SP=true
+    AWS_PROFILE=di-authentication-staging-admin
+    ENVIRONMENT=staging
+    ;;
+  build)
+    AWS_PROFILE=gds-di-development-admin
+    ;;
+  staging)
+    AWS_PROFILE=di-auth-staging-admin
+    ;;
+  dev)
+    AWS_PROFILE=di-auth-development-admin
+    ;;
+  *)
+    echo "Unconfigured environment: $ENVIRONMENT"
+    exit 1
+    ;;
+esac
+
+export AWS_PROFILE
+source ./scripts/check_aws_creds.sh
+
+if [ "${SP}" = "true" ]; then
+  docker build . -t acceptance:latest --target secure-pipelines \
+    --build-arg "SELENIUM_BASE=selenium/standalone-${BROWSER}:132.0"
+  docker run -p 4442-4444:4442-4444 --privileged \
+    -e CODEBUILD_BUILD_ID=1 -e AWS_REGION="${AWS_REGION:-eu-west-2}" \
+    -e TEST_ENVIRONMENT="${ENVIRONMENT}" -e PARALLEL_BROWSERS=1 \
+    --env-file <(aws configure export-credentials --format env-no-export) \
+    -it --rm --entrypoint /bin/bash --shm-size="2g" acceptance:latest /run-tests.sh
+else
+  docker build . -t acceptance:latest --target base \
+    --build-arg "SELENIUM_BASE=selenium/standalone-${BROWSER}:132.0"
+  docker run -p 4442-4444:4442-4444 --privileged \
+    -e PARALLEL_BROWSERS=1 \
+    --env-file <(aws configure export-credentials --format env-no-export) \
+    -it --rm --entrypoint /bin/bash --shm-size="2g" acceptance:latest /test/run-acceptance-tests.sh -s "${ENVIRONMENT}"
+fi

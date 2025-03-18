@@ -105,3 +105,10 @@ task cucumber() {
         }
     }
 }
+
+task downloadCucumberDependencies {
+    doLast {
+        // Force download of all dependencies
+        configurations.cucumberRuntime.files
+    }
+}

@@ -2,11 +2,16 @@ name: Build and Push Tests Secure Pipeline
 
 env:
   AWS_REGION: eu-west-2
+  SELENIUM_BASE: selenium/standalone-chromium:132.0
 
 on:
   push:
     branches:
       - main
+
+concurrency:
+  group: "build-and-push-tests-sp"
+  cancel-in-progress: false
 
 jobs:
   build:
@@ -41,8 +46,7 @@ jobs:
           ECR_REPOSITORY: ${{ secrets.ACCEPTANCE_ECR_REPO_NEW_BUILD }}
           IMAGE_TAG: latest
         run: |
-          BASE_IMAGE_TAG="at-base-image:${{ github.sha }}"
-          docker build -t "${BASE_IMAGE_TAG}" .
-          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG -f sp.Dockerfile . --build-arg BASE_IMAGE="${BASE_IMAGE_TAG}"
+          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG --target secure-pipelines \
+            --build-arg SELENIUM_BASE="${SELENIUM_BASE}" .
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
           cosign sign --key awskms:///${CONTAINER_SIGN_KMS_KEY} $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG

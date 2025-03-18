@@ -2,6 +2,7 @@ name: Build and Push Acceptance Tests
 
 env:
   AWS_REGION: eu-west-2
+  SELENIUM_BASE: selenium/standalone-chromium:132.0
 
 #Role to Assume is  dev-auth-deploy-pipeline githubaction Role
 #ECR repo is acceptance test ECR repo
@@ -10,6 +11,10 @@ on:
   push:
     branches:
       - main
+
+concurrency:
+  group: "build-and-push-tests"
+  cancel-in-progress: false
 
 jobs:
   build:
@@ -38,5 +43,6 @@ jobs:
           ECR_REPOSITORY: ${{ secrets.ACCEPTANCE_ECR_REPO }}
           IMAGE_TAG: latest
         run: |
-          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG --target base \
+            --build-arg SELENIUM_BASE="${SELENIUM_BASE}" .
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
