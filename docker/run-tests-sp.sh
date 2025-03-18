@@ -36,6 +36,11 @@ export AWS_SECRET_ACCESS_KEY="$(echo "$output" | jq -r '.Credentials.SecretAcces
 # shellcheck disable=SC2155
 export AWS_SESSION_TOKEN="$(echo "$output" | jq -r '.Credentials.SessionToken')"
 
+PROCESSOR_CORES=$(nproc --all 2> /dev/null || echo 1)
+
+# run one more browser than we have cores
+export PARALLEL_BROWSERS=$((PROCESSOR_CORES + 1))
+
 /test/run-acceptance-tests.sh -s "${ENVIRONMENT}"
 return_code=$?
 
