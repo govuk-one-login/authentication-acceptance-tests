@@ -58,6 +58,9 @@ dependencies {
 
     testImplementation("org.json:json:${dependencyVersions.json_version}")
     testImplementation("io.rest-assured:rest-assured:${dependencyVersions.rest_assured}")
+
+    testImplementation("com.amazonaws:aws-lambda-java-log4j2:1.6.0")
+    testImplementation("org.slf4j:slf4j-nop:2.0.17")
 }
 
 group = 'acceptance-tests'
