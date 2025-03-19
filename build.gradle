@@ -45,7 +45,6 @@ dependencies {
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.11.4'
     testImplementation("com.nimbusds:oauth2-oidc-sdk:10.13.2")
     testImplementation("com.nimbusds:nimbus-jose-jwt:10.0.1")
-
 }
 
 test {

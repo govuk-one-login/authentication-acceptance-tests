@@ -37,10 +37,11 @@ public class MFAMethodsAPIStepdefs {
                             world.userProfile, world.getUserPassword());
 
             // calculate internal common subject id
-            var commonInternalSubjectId = calculatePairwiseIdentifier(
-                    world.userProfile.getSubjectID(),
-                    "https://rp-dev.build.stubs.account.gov.uk",
-                    world.userProfile.getSalt());
+            var commonInternalSubjectId =
+                    calculatePairwiseIdentifier(
+                            world.userProfile.getSubjectID(),
+                            "https://rp-dev.build.stubs.account.gov.uk",
+                            world.userProfile.getSalt());
 
             // create token
             var token = AuthTokenGenerator.createJwt(commonInternalSubjectId);
@@ -58,26 +59,31 @@ public class MFAMethodsAPIStepdefs {
         String body;
         io.restassured.response.ValidatableResponse response;
 
-        body = """
+        body =
+                """
                 {
                 "email": "%s",
                 "phoneNumber": "%s",
                 "otp": "111111"
                 }
-                """.formatted(world.userProfile.getEmail(), "07700900000");
+                """
+                        .formatted(world.userProfile.getEmail(), "07700900000");
 
         System.out.println("/update-phone-number request");
 
-        response = RestAssured.given()
-                .header("Authorization","Bearer " + token)
-                .body(body)
-                .when()
-                .post("https://91ttse4tee.execute-api.eu-west-2.amazonaws.com/dev/update-phone-number")
-                .then()
-                .assertThat()
-                .statusCode(400);
+        response =
+                RestAssured.given()
+                        .header("Authorization", "Bearer " + token)
+                        .body(body)
+                        .when()
+                        .post(
+                                "https://91ttse4tee.execute-api.eu-west-2.amazonaws.com/dev/update-phone-number")
+                        .then()
+                        .assertThat()
+                        .statusCode(400);
 
-        System.out.println("/update-phone-number response is: " + response.extract().asPrettyString());
+        System.out.println(
+                "/update-phone-number response is: " + response.extract().asPrettyString());
     }
 
     private static String calculatePairwiseIdentifier(
