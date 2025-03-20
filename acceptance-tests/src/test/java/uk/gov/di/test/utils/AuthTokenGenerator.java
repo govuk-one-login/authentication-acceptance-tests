@@ -35,10 +35,10 @@ public class AuthTokenGenerator {
                     .build();
 
     private static final String INTERNAL_COMMON_SUBJECT_ID =
-            "urn:fdc:gov.uk:2022:g4UkNSUxoliH1uYaVL7UEh45-pUdrGu2iPVeMz0pYvg";
-    private static final String CLIENT_ID = "J3tedNRsfssnsf4STuc2NNIV1C1gdxBB";
+            "urn:fdc:gov.uk:2022:IppaNFKCQBTAswXEq-qnVyxQ87X8hM_WH1qfepvVqQo";
+    private static final String CLIENT_ID = "P5OQvWV21U0OW7U5g27d6MU2LLznYYaM";
     private static final String KEY_ID =
-            "arn:aws:kms:eu-west-2:653994557586:alias/dev-id-token-signing-key-alias";
+            "arn:aws:kms:eu-west-2:761723964695:alias/build-id-token-signing-key-alias";
 
     private static String signWithKms(JWTClaimsSet claims) throws ParseException, JOSEException {
         JWSHeader header = new JWSHeader.Builder(JWSAlgorithm.ES256).keyID(KEY_ID).build();

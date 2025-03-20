@@ -93,7 +93,7 @@ public class UserLifecycleStepDef {
         world.setUserPassword(TOP_100K_PASSWORD);
     }
 
-    @After("@UI")
+    @After
     public void theUserIsDeleted() {
         if (world.userProfile != null) {
             System.out.printf(

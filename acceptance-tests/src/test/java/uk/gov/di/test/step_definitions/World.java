@@ -24,6 +24,8 @@ public class World {
     private UserInterventions otherUserInterventions;
     private String otherUserPassword;
 
+    public String apiGatewayResponse;
+
     public UserCredentials getOtherUserCredentials() {
         return otherUserCredentials;
     }
