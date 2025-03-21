@@ -26,6 +26,7 @@ public class UserLifecycleStepDef {
         world.setUserPassword(generateValidPassword());
     }
 
+    @Given("a User exists")
     @Given("a user exists")
     public void aUserExists() {
         aUserDoesNotYetExist();
@@ -93,7 +94,7 @@ public class UserLifecycleStepDef {
         world.setUserPassword(TOP_100K_PASSWORD);
     }
 
-    @After
+    @After("@UI or @API")
     public void theUserIsDeleted() {
         if (world.userProfile != null) {
             System.out.printf(
