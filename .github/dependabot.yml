@@ -10,9 +10,11 @@ updates:
       - dependency-name: "org.seleniumhq.selenium:selenium-java"
         versions: [ "> 4.11.0" ]
     groups:
-      gradle-all-dependencies:
+      gradle-most-dependencies:
         patterns:
           - "*"
+        exclude-patterns:
+          - "*selenium*"
     target-branch: main
     commit-message:
       prefix: BAU
