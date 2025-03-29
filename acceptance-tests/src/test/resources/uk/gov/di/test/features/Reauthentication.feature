@@ -1,4 +1,4 @@
-@Reauth @build @staging
+@UI @Reauth @build @staging
 Feature: Reauthentication of user
   @happy
   Scenario: Sms user successfully reauthenticates
