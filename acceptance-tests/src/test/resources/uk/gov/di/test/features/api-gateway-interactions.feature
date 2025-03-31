@@ -6,7 +6,7 @@ Feature: API Gateway Interactions
   @API
   Scenario: Test update-password endpoint
     Given a user exists
-    When I invoke the "h3909duiyi" API Gateway endpoint with path "/update-password" using method "POST"
+    When I invoke the "xvzewdo561" API Gateway endpoint with path "/update-password" using method "POST"
     Then the API Gateway status should be 204
 
 #  @API
