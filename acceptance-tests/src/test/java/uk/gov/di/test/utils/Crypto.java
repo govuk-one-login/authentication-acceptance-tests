@@ -2,10 +2,13 @@ package uk.gov.di.test.utils;
 
 import org.bouncycastle.crypto.generators.Argon2BytesGenerator;
 import org.bouncycastle.crypto.params.Argon2Parameters;
+import org.jose4j.base64url.Base64Url;
 import org.springframework.security.crypto.keygen.BytesKeyGenerator;
 import org.springframework.security.crypto.keygen.KeyGenerators;
 
+import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
 
 public class Crypto {
@@ -61,22 +64,21 @@ public class Crypto {
         return encodeArgon2Hash(hash, parameters);
     }
 
-    public static String generatePairwiseIdDigest(String sector, String subjectId, byte[] salt) {
-        byte[] sectorAndSubjectId = String.format("%s%s", sector, subjectId).getBytes();
-
-        byte[] rawDigest = new byte[sectorAndSubjectId.length + salt.length];
-        System.arraycopy(sectorAndSubjectId, 0, rawDigest, 0, sectorAndSubjectId.length);
-        System.arraycopy(salt, 0, rawDigest, sectorAndSubjectId.length, salt.length);
-
-        MessageDigest messageDigest;
+    public static String calculatePairwiseIdentifier(
+            String subjectID, String sectorHost, byte[] salt) {
         try {
-            messageDigest = MessageDigest.getInstance("SHA-256");
-        } catch (Exception e) {
+            var md = MessageDigest.getInstance("SHA-256");
+
+            md.update(sectorHost.getBytes(StandardCharsets.UTF_8));
+            md.update(subjectID.getBytes(StandardCharsets.UTF_8));
+
+            byte[] bytes = md.digest(salt);
+
+            var sb = Base64Url.encode(bytes);
+
+            return "urn:fdc:gov.uk:2022:" + sb;
+        } catch (NoSuchAlgorithmException e) {
             throw new RuntimeException(e);
         }
-        byte[] digestBytes = messageDigest.digest(rawDigest);
-        String b64Digest = Base64.getEncoder().encodeToString(digestBytes);
-        b64Digest = b64Digest.replace("/", "_").replace("+", "-").replace("=", "");
-        return b64Digest;
     }
 }

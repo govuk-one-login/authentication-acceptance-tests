@@ -27,12 +27,11 @@ public class UserInterventionLifecycleService {
     private static final DynamoDbService DYNAMO_DB_SERVICE = DynamoDbService.getInstance();
 
     public static UserInterventions buildBaseInterventions(UserProfile userProfile) {
-        String b64Digest =
-                Crypto.generatePairwiseIdDigest(
-                        TEST_CONFIG_SERVICE.get("SECTOR_HOST"),
+        String pairwiseID =
+                Crypto.calculatePairwiseIdentifier(
                         userProfile.getSubjectID(),
+                        TEST_CONFIG_SERVICE.get("SECTOR_HOST"),
                         userProfile.getSalt());
-        String pairwiseID = String.format("urn:fdc:gov.uk:2022:%s", b64Digest);
 
         return new UserInterventions()
                 .withInternalPairwiseID(pairwiseID)
