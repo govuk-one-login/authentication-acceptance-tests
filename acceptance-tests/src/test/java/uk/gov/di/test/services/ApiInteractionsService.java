@@ -7,6 +7,7 @@ import com.nimbusds.jose.JOSEException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jose4j.base64url.Base64Url;
+import org.openqa.selenium.remote.http.HttpMethod;
 import software.amazon.awssdk.auth.credentials.DefaultCredentialsProvider;
 import software.amazon.awssdk.core.SdkBytes;
 import software.amazon.awssdk.regions.Region;
@@ -62,7 +63,7 @@ public class ApiInteractionsService {
 
     public static void authenticate(World world) {
 
-        var functionName = getLambda(world.getMethodManagementApiId(), "/authenticate");
+        var functionName = getLambda(world.getMethodManagementApiId(), "/authenticate", HttpMethod.POST.toString());
 
         LOG.debug("Testing /authenticate integration function: {}", functionName);
 
@@ -75,7 +76,7 @@ public class ApiInteractionsService {
                         """
                         .formatted(world.userProfile.getEmail(), world.getUserPassword());
 
-        var event = createApiGatewayProxyRequestEvent(body, world.getAuthorizerContent());
+        var event = createApiGatewayProxyRequestEvent(body, null, world.getAuthorizerContent());
 
         InvokeRequest invokeRequest =
                 InvokeRequest.builder()
@@ -92,7 +93,7 @@ public class ApiInteractionsService {
 
     public static void sendOtpNotification(World world) {
 
-        var functionName = getLambda(world.getMethodManagementApiId(), "/send-otp-notification");
+        var functionName = getLambda(world.getMethodManagementApiId(), "/send-otp-notification", HttpMethod.POST.toString());
 
         var body =
                 """
@@ -109,7 +110,7 @@ public class ApiInteractionsService {
                 functionName,
                 body);
 
-        var event = createApiGatewayProxyRequestEvent(body, world.getAuthorizerContent());
+        var event = createApiGatewayProxyRequestEvent(body, null, world.getAuthorizerContent());
 
         InvokeRequest invokeRequest =
                 InvokeRequest.builder()
@@ -148,7 +149,9 @@ public class ApiInteractionsService {
 
     public static void updatePhoneNumber(World world) {
 
-        var functionName = getLambda(world.getMethodManagementApiId(), "/update-phone-number");
+        var functionName = getLambda(world.getMethodManagementApiId(), "/update-phone-number", HttpMethod.POST.toString());
+
+        LOG.debug("Testing /MFA Method: {}", functionName);
 
         var body =
                 """
@@ -163,7 +166,7 @@ public class ApiInteractionsService {
                                 world.getNewPhoneNumber(),
                                 world.getOtp());
 
-        var event = createApiGatewayProxyRequestEvent(body, world.getAuthorizerContent());
+        var event = createApiGatewayProxyRequestEvent(body,null,  world.getAuthorizerContent());
 
         InvokeRequest invokeRequest =
                 InvokeRequest.builder()
@@ -180,6 +183,83 @@ public class ApiInteractionsService {
         InvokeResponse invokeResponse = lambdaClient.invoke(invokeRequest);
 
         LOG.debug("/update-phone-number response: {}", invokeResponse.payload().asUtf8String());
+    }
+
+    public static void checkUserHasBackupMFA(World world) {
+        String mfaMethods = retrieveUsersMFAMethods(world);
+    }
+
+    private static String retrieveUsersMFAMethods(World world) {
+        LOG.debug("Testing /retrieve-users-mfa methods");
+        var functionName =
+                getLambda(world.getMethodManagementApiId(), "/mfa-methods/{publicSubjectId}", HttpMethod.GET.toString());
+
+
+        Map<String, String> pathParameters = new HashMap<>();
+        pathParameters.put("publicSubjectId", world.userProfile.getPublicSubjectID());
+
+        var event = createApiGatewayProxyRequestEvent("{}", pathParameters, world.getAuthorizerContent());
+
+        InvokeRequest invokeRequest =
+                InvokeRequest.builder()
+                        .functionName(functionName)
+                        .payload(SdkBytes.fromUtf8String(event))
+                        .build();
+
+        LambdaClient lambdaClient =
+                LambdaClient.builder()
+                        .region(Region.EU_WEST_2)
+                        .credentialsProvider(DefaultCredentialsProvider.create())
+                        .build();
+
+        InvokeResponse invokeResponse = lambdaClient.invoke(invokeRequest);
+
+        LOG.debug(
+                "/mfa-methods: handled by: {} response: {}",
+                functionName,
+                invokeResponse.payload().asUtf8String());
+        return invokeResponse.payload().asUtf8String();
+    }
+
+    public static void updateBackupPhoneno(World world) {
+
+        var functionName =
+                getLambda(world.getMethodManagementApiId(), "/mfa-methods/{publicSubjectId}", HttpMethod.POST.toString());
+
+        var body =
+                """
+                {
+                    "priorityIdentifier": "BACKUP",
+                    "method": {
+                        "mfaMethodType": "SMS",
+                        "credential": "%s"
+                    }
+                }
+                """
+                        .formatted(world.getNewPhoneNumber());
+
+        Map<String, String> pathParameters = new HashMap<>();
+        pathParameters.put("publicSubjectId", world.userProfile.getPublicSubjectID());
+
+        var event = createApiGatewayProxyRequestEvent(body, pathParameters, world.getAuthorizerContent());
+
+        InvokeRequest invokeRequest =
+                InvokeRequest.builder()
+                        .functionName(functionName)
+                        .payload(SdkBytes.fromUtf8String(event))
+                        .build();
+
+        LambdaClient lambdaClient =
+                LambdaClient.builder()
+                        .region(Region.EU_WEST_2)
+                        .credentialsProvider(DefaultCredentialsProvider.create())
+                        .build();
+
+        InvokeResponse invokeResponse = lambdaClient.invoke(invokeRequest);
+
+        LOG.debug(
+                "/update-backup-phone-number response: {}",
+                invokeResponse.payload().asUtf8String());
     }
 
     public static void authorizeApiGatewayUse(World world) throws ParseException, JOSEException {
@@ -304,7 +384,7 @@ public class ApiInteractionsService {
         }
     }
 
-    private static String getLambda(String restApiId, String apiPath) {
+    private static String getLambda(String restApiId, String apiPath, String httpMethod) {
         // Find the name of the lambda from the API
         GetResourcesRequest getResourcesRequest =
                 GetResourcesRequest.builder().restApiId(restApiId).build();
@@ -325,7 +405,7 @@ public class ApiInteractionsService {
                 GetMethodRequest.builder()
                         .restApiId(restApiId)
                         .resourceId(resourceId)
-                        .httpMethod("POST")
+                        .httpMethod(httpMethod)
                         .build();
 
         apiGatewayClient.getMethod(getMethodRequest);
@@ -334,7 +414,7 @@ public class ApiInteractionsService {
                 GetIntegrationRequest.builder()
                         .restApiId(restApiId)
                         .resourceId(resourceId)
-                        .httpMethod("POST")
+                        .httpMethod(httpMethod)
                         .build();
 
         GetIntegrationResponse getIntegrationResponse =
@@ -353,7 +433,7 @@ public class ApiInteractionsService {
     }
 
     private static String createApiGatewayProxyRequestEvent(
-            String body, Map<String, Object> authorizerContent) {
+            String body, Map<String, String> pathParams, Map<String, Object> authorizerContent) {
         Map<String, String> headers = new HashMap<>();
         headers.put("Content-Type", "application/json");
         headers.put("txma-audit-encoded", "encoded-string");
@@ -361,7 +441,9 @@ public class ApiInteractionsService {
 
         APIGatewayProxyRequestEvent event = new APIGatewayProxyRequestEvent();
         event.setHeaders(headers);
+        event.setPathParameters(pathParams);
         event.setBody(body);
+        event.setHttpMethod("GET");
 
         APIGatewayProxyRequestEvent.ProxyRequestContext proxyRequestContext =
                 new APIGatewayProxyRequestEvent.ProxyRequestContext();
