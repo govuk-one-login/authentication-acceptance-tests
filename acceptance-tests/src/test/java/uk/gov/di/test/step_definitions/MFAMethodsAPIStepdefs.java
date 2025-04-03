@@ -5,6 +5,7 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
 import static uk.gov.di.test.services.ApiInteractionsService.checkUserHasBackupMFA;
 import static uk.gov.di.test.services.ApiInteractionsService.updateBackupPhoneno;
 
@@ -29,10 +30,8 @@ public class MFAMethodsAPIStepdefs {
     @When("the User requests to add a backup MFA Phone Number {string}")
     public void theUserRequestsToAddABackupMFAPhoneNumber(String phoneNumber) {
         updateBackupPhoneno(world);
-
     }
 
     @Then("the User's back up MFA phoneNumber is updated to {string}")
-    public void theUserSBackUpMFAPhoneNumberIsUpdatedTo(String phoneNumber) {
-    }
+    public void theUserSBackUpMFAPhoneNumberIsUpdatedTo(String phoneNumber) {}
 }
