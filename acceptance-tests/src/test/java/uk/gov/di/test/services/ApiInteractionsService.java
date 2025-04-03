@@ -6,7 +6,6 @@ import com.nimbusds.jose.shaded.gson.Gson;
 import com.nimbusds.jose.shaded.gson.JsonObject;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.jose4j.base64url.Base64Url;
 import software.amazon.awssdk.auth.credentials.DefaultCredentialsProvider;
 import software.amazon.awssdk.core.SdkBytes;
 import software.amazon.awssdk.regions.Region;
@@ -27,19 +26,22 @@ import software.amazon.awssdk.services.lambda.model.InvokeRequest;
 import software.amazon.awssdk.services.lambda.model.InvokeResponse;
 import uk.gov.di.test.step_definitions.World;
 import uk.gov.di.test.utils.AuthTokenGenerator;
+import uk.gov.di.test.utils.Crypto;
 import uk.gov.di.test.utils.Environment;
 
-import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.text.ParseException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class ApiInteractionsService {
+    protected static final TestConfigurationService TEST_CONFIG_SERVICE =
+            TestConfigurationService.getInstance();
+
     private static final Logger LOG = LogManager.getLogger(ApiInteractionsService.class);
 
     private static final LambdaClient lambdaClient =
@@ -154,9 +156,9 @@ public class ApiInteractionsService {
     public static void authorizeApiGatewayUse(World world) throws ParseException, JOSEException {
         // calculate internal common subject id
         var commonInternalSubjectId =
-                calculatePairwiseIdentifier(
+                Crypto.calculatePairwiseIdentifier(
                         world.userProfile.getSubjectID(),
-                        "https://rp-authdev1.build.stubs.account.gov.uk",
+                        TEST_CONFIG_SERVICE.get("SECTOR_HOST"),
                         world.userProfile.getSalt());
 
         var token = AuthTokenGenerator.createJwt(commonInternalSubjectId);
@@ -170,7 +172,19 @@ public class ApiInteractionsService {
 
         LOG.debug("testing restApiId: {}", restApiId);
 
-        var context = executeAuthorizerToObtainAuthorizerContext(restApiId, token);
+        String authorizerLambdaArn = getAuthorizerLambdaARN(restApiId);
+
+        Pattern accountPattern = Pattern.compile("arn:aws:lambda:[^:]+:([0-9]+):function:");
+        Matcher accountMatcher = accountPattern.matcher(authorizerLambdaArn);
+        String accountId = accountMatcher.find() ? accountMatcher.group(1) : null;
+
+        String authorizerMethodArn =
+                "arn:aws:execute-api:eu-west-2:%s:%s/%s/*/*"
+                        .formatted(accountId, restApiId, Environment.getOrThrow("ENVIRONMENT"));
+
+        var context =
+                executeAuthorizerToObtainAuthorizerContext(
+                        authorizerLambdaArn, authorizerMethodArn, token);
 
         var contextAsMap = new HashMap<String, Object>();
         context.entrySet().forEach(entry -> contextAsMap.put(entry.getKey(), entry.getValue()));
@@ -207,35 +221,46 @@ public class ApiInteractionsService {
         return restApiId;
     }
 
-    public static JsonObject executeAuthorizerToObtainAuthorizerContext(
-            String restApiId, String token) {
+    public static String getAuthorizerLambdaARN(String restApiId) {
         GetAuthorizersRequest getAuthorizersRequest =
                 GetAuthorizersRequest.builder().restApiId(restApiId).build();
 
         GetAuthorizersResponse getAuthorizerResponse =
                 apiGatewayClient.getAuthorizers(getAuthorizersRequest);
 
-        JsonObject authorizerEvent = new JsonObject();
-        authorizerEvent.addProperty("type", "TOKEN");
-        authorizerEvent.addProperty("authorizationToken", "Bearer " + token);
-        authorizerEvent.addProperty("methodArn", "arn:aws:execute-api:eu-west-2:*:*/*/*/*");
-
-        Optional<String> lambdaName =
+        Optional<String> authorizerLambdaARN =
                 getAuthorizerResponse.items().stream()
                         .findFirst()
                         .map(Authorizer::authorizerUri)
-                        .map(uri -> uri.split(":")[11]);
+                        .flatMap(ApiInteractionsService::extractLambdaArnFromIntegrationUri);
 
-        if (lambdaName.isEmpty()) {
+        if (authorizerLambdaARN.isEmpty()) {
             LOG.error("Could not determine authorizer lambda name");
             throw new RuntimeException("Could not determine authorizer lambda name");
         }
+
+        return authorizerLambdaARN.get();
+    }
+
+    public static Optional<String> extractLambdaArnFromIntegrationUri(String uri) {
+        Pattern pattern =
+                Pattern.compile("arn:aws:lambda:[^:]+:[0-9]+:function:([^/]+)/invocations");
+        Matcher matcher = pattern.matcher(uri);
+        return matcher.find() ? Optional.of(matcher.group(1)) : Optional.empty();
+    }
+
+    public static JsonObject executeAuthorizerToObtainAuthorizerContext(
+            String authorizerLambdaArn, String authorizerMethodArn, String token) {
+        JsonObject authorizerEvent = new JsonObject();
+        authorizerEvent.addProperty("type", "TOKEN");
+        authorizerEvent.addProperty("authorizationToken", "Bearer " + token);
+        authorizerEvent.addProperty("methodArn", authorizerMethodArn);
 
         Gson gson = new Gson();
 
         InvokeRequest invokeRequest =
                 InvokeRequest.builder()
-                        .functionName(lambdaName.get())
+                        .functionName(authorizerLambdaArn)
                         .payload(SdkBytes.fromUtf8String(gson.toJson(authorizerEvent)))
                         .build();
 
@@ -253,24 +278,6 @@ public class ApiInteractionsService {
         var authResponseJSONObject = gson.fromJson(authorizerResponseAsJson, JsonObject.class);
 
         return authResponseJSONObject.getAsJsonObject("context");
-    }
-
-    private static String calculatePairwiseIdentifier(
-            String subjectID, String sectorHost, byte[] salt) {
-        try {
-            var md = MessageDigest.getInstance("SHA-256");
-
-            md.update(sectorHost.getBytes(StandardCharsets.UTF_8));
-            md.update(subjectID.getBytes(StandardCharsets.UTF_8));
-
-            byte[] bytes = md.digest(salt);
-
-            var sb = Base64Url.encode(bytes);
-
-            return "urn:fdc:gov.uk:2022:" + sb;
-        } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException(e);
-        }
     }
 
     private static String getLambda(String restApiId, String apiPath) {
@@ -311,12 +318,13 @@ public class ApiInteractionsService {
 
         if ("AWS".equals(getIntegrationResponse.typeAsString())
                 || "AWS_PROXY".equals(getIntegrationResponse.typeAsString())) {
-            String uri = getIntegrationResponse.uri();
-            if (uri != null && uri.contains("arn:aws:lambda:")) {
-                return uri.split(":")[11];
-            } else {
+
+            Optional<String> uri = extractLambdaArnFromIntegrationUri(getIntegrationResponse.uri());
+
+            if (uri.isEmpty()) {
                 LOG.error("Could not find AWS Lambda function");
             }
+            return uri.orElse("");
         }
         return "";
     }
