@@ -119,6 +119,8 @@ public class ApiInteractionsService {
 
         var functionName = getLambda(world.getMethodManagementApiId(), "/update-phone-number");
 
+        LOG.debug("Testing /MFA Method: {}", functionName);
+
         var body =
                 """
                         {
@@ -149,6 +151,80 @@ public class ApiInteractionsService {
         InvokeResponse invokeResponse = lambdaClient.invoke(invokeRequest);
 
         LOG.debug("/update-phone-number response: {}", invokeResponse.payload().asUtf8String());
+
+
+    }
+
+    public static void checkUserHasBackupMFA(World world) {
+
+        var functionName = getLambda(world.getMethodManagementApiId(), "/mfa-methods-retrieve");
+
+        var body =
+                """
+                        {
+                        "priorityIdentifier": "BACKUP"
+                        """
+                        .formatted(
+
+                                world.getNewPhoneNumber());
+
+        var event = createApiGatewayProxyRequestEvent(body, world.getAuthorizerContent());
+
+        InvokeRequest invokeRequest =
+                InvokeRequest.builder()
+                        .functionName(functionName)
+                        .payload(SdkBytes.fromUtf8String(event))
+                        .build();
+
+        LambdaClient lambdaClient =
+                LambdaClient.builder()
+                        .region(Region.EU_WEST_2)
+                        .credentialsProvider(DefaultCredentialsProvider.create())
+                        .build();
+
+        InvokeResponse invokeResponse = lambdaClient.invoke(invokeRequest);
+
+        LOG.debug("/mfa-methods-retrieve response: {}", invokeResponse.payload().asUtf8String());
+
+
+    }
+
+    public static void updateBackupPhoneno(World world) {
+
+        var functionName = getLambda(world.getMethodManagementApiId(), "/mfa-methods");
+
+        var body =
+                """
+                        {
+                        "priorityIdentifier": "BACKUP",
+                                                "method": {
+                                                  "mfaMethodType": "SMS",
+                                                  "credential": "%s"}
+                        }
+                        """
+                        .formatted(
+
+                                world.getNewPhoneNumber());
+
+        var event = createApiGatewayProxyRequestEvent(body, world.getAuthorizerContent());
+
+        InvokeRequest invokeRequest =
+                InvokeRequest.builder()
+                        .functionName(functionName)
+                        .payload(SdkBytes.fromUtf8String(event))
+                        .build();
+
+        LambdaClient lambdaClient =
+                LambdaClient.builder()
+                        .region(Region.EU_WEST_2)
+                        .credentialsProvider(DefaultCredentialsProvider.create())
+                        .build();
+
+        InvokeResponse invokeResponse = lambdaClient.invoke(invokeRequest);
+
+        LOG.debug("/update-backup-phone-number response: {}", invokeResponse.payload().asUtf8String());
+
+
     }
 
     public static void authorizeApiGatewayUse(World world) throws ParseException, JOSEException {
@@ -303,7 +379,8 @@ public class ApiInteractionsService {
                 GetIntegrationRequest.builder()
                         .restApiId(restApiId)
                         .resourceId(resourceId)
-                        .httpMethod("POST")
+//                        .httpMethod("POST")
+                        .httpMethod("PUT")
                         .build();
 
         GetIntegrationResponse getIntegrationResponse =
