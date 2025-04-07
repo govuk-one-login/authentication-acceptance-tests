@@ -2,6 +2,7 @@ package uk.gov.di.test.services;
 
 import org.apache.commons.text.StringSubstitutor;
 import uk.gov.di.test.entity.MFAMethod;
+import uk.gov.di.test.entity.PriorityIdentifier;
 import uk.gov.di.test.entity.TermsAndConditions;
 import uk.gov.di.test.entity.UserCredentials;
 import uk.gov.di.test.entity.UserProfile;
@@ -11,6 +12,7 @@ import uk.gov.di.test.utils.Environment;
 import uk.gov.di.test.utils.PasswordGenerator;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicLong;
@@ -124,6 +126,16 @@ public class UserLifecycleService {
                 .withTermsAndConditions(buildTermsAndConditions());
     }
 
+    public UserProfile buildNewMigratedUserProfile() {
+        return new UserProfile()
+                .withTestUser(1)
+                .withEmail(generateNewUniqueEmailAddress())
+                .withPublicSubjectID(UUID.randomUUID().toString())
+                .withSubjectID(UUID.randomUUID().toString())
+                .withSalt(Crypto.generateSalt())
+                .withTermsAndConditions(buildTermsAndConditions());
+    }
+
     public UserProfile buildNewUserProfileAndPutToDynamodb() {
         UserProfile userProfile = buildNewUserProfile();
         putUserProfileToDynamodb(userProfile);
@@ -172,6 +184,34 @@ public class UserLifecycleService {
     public UserCredentials buildNewUserCredentialsAndPutToDynamodb(
             UserProfile userProfile, String userPassword) {
         UserCredentials userCredentials = buildNewUserCredentials(userProfile, userPassword);
+        putUserCredentialsToDynamodb(userCredentials);
+        return userCredentials;
+    }
+
+    public UserCredentials buildNewMigratedUserCredentials(
+            UserProfile userProfile, String userPassword) {
+        String encodedPassword = Crypto.encodePassword(userPassword, userProfile.getSalt());
+        return new UserCredentials()
+                .withTestUser(1)
+                .withEmail(userProfile.getEmail())
+                .withPassword(encodedPassword)
+                .withSubjectID(userProfile.getSubjectID())
+                .withMfaMethods(
+                        List.of(
+                                new MFAMethod(
+                                        "AUTH_APP",
+                                        "credential",
+                                        true,
+                                        true,
+                                        "test",
+                                        PriorityIdentifier.DEFAULT,
+                                        1)));
+    }
+
+    public UserCredentials buildNewMigratedUserCredentialsAndPutToDynamodb(
+            UserProfile userProfile, String userPassword) {
+        UserCredentials userCredentials =
+                buildNewMigratedUserCredentials(userProfile, userPassword);
         putUserCredentialsToDynamodb(userCredentials);
         return userCredentials;
     }

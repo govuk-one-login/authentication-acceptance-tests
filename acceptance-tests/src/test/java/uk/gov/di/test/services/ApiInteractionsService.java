@@ -63,7 +63,11 @@ public class ApiInteractionsService {
 
     public static void authenticate(World world) {
 
-        var functionName = getLambda(world.getMethodManagementApiId(), "/authenticate", HttpMethod.POST.toString());
+        var functionName =
+                getLambda(
+                        world.getMethodManagementApiId(),
+                        "/authenticate",
+                        HttpMethod.POST.toString());
 
         LOG.debug("Testing /authenticate integration function: {}", functionName);
 
@@ -93,7 +97,11 @@ public class ApiInteractionsService {
 
     public static void sendOtpNotification(World world) {
 
-        var functionName = getLambda(world.getMethodManagementApiId(), "/send-otp-notification", HttpMethod.POST.toString());
+        var functionName =
+                getLambda(
+                        world.getMethodManagementApiId(),
+                        "/send-otp-notification",
+                        HttpMethod.POST.toString());
 
         var body =
                 """
@@ -149,7 +157,11 @@ public class ApiInteractionsService {
 
     public static void updatePhoneNumber(World world) {
 
-        var functionName = getLambda(world.getMethodManagementApiId(), "/update-phone-number", HttpMethod.POST.toString());
+        var functionName =
+                getLambda(
+                        world.getMethodManagementApiId(),
+                        "/update-phone-number",
+                        HttpMethod.POST.toString());
 
         LOG.debug("Testing /MFA Method: {}", functionName);
 
@@ -166,7 +178,7 @@ public class ApiInteractionsService {
                                 world.getNewPhoneNumber(),
                                 world.getOtp());
 
-        var event = createApiGatewayProxyRequestEvent(body,null,  world.getAuthorizerContent());
+        var event = createApiGatewayProxyRequestEvent(body, null, world.getAuthorizerContent());
 
         InvokeRequest invokeRequest =
                 InvokeRequest.builder()
@@ -192,13 +204,17 @@ public class ApiInteractionsService {
     private static String retrieveUsersMFAMethods(World world) {
         LOG.debug("Testing /retrieve-users-mfa methods");
         var functionName =
-                getLambda(world.getMethodManagementApiId(), "/mfa-methods/{publicSubjectId}", HttpMethod.GET.toString());
-
+                getLambda(
+                        world.getMethodManagementApiId(),
+                        "/mfa-methods/{publicSubjectId}",
+                        HttpMethod.GET.toString());
 
         Map<String, String> pathParameters = new HashMap<>();
         pathParameters.put("publicSubjectId", world.userProfile.getPublicSubjectID());
 
-        var event = createApiGatewayProxyRequestEvent("{}", pathParameters, world.getAuthorizerContent());
+        var event =
+                createApiGatewayProxyRequestEvent(
+                        "{}", pathParameters, world.getAuthorizerContent());
 
         InvokeRequest invokeRequest =
                 InvokeRequest.builder()
@@ -224,7 +240,10 @@ public class ApiInteractionsService {
     public static void updateBackupPhoneno(World world) {
 
         var functionName =
-                getLambda(world.getMethodManagementApiId(), "/mfa-methods/{publicSubjectId}", HttpMethod.POST.toString());
+                getLambda(
+                        world.getMethodManagementApiId(),
+                        "/mfa-methods/{publicSubjectId}",
+                        HttpMethod.POST.toString());
 
         var body =
                 """
@@ -241,7 +260,9 @@ public class ApiInteractionsService {
         Map<String, String> pathParameters = new HashMap<>();
         pathParameters.put("publicSubjectId", world.userProfile.getPublicSubjectID());
 
-        var event = createApiGatewayProxyRequestEvent(body, pathParameters, world.getAuthorizerContent());
+        var event =
+                createApiGatewayProxyRequestEvent(
+                        body, pathParameters, world.getAuthorizerContent());
 
         InvokeRequest invokeRequest =
                 InvokeRequest.builder()
