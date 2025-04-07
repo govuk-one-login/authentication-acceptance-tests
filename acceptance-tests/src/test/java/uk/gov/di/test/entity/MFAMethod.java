@@ -49,6 +49,7 @@ public class MFAMethod {
             boolean enabled,
             String updated,
             PriorityIdentifier priority,
+            //            todo: this should be a string
             int mfaIdentifier) {
         this.mfaMethodType = mfaMethodType;
         this.credentialValue = credentialValue;

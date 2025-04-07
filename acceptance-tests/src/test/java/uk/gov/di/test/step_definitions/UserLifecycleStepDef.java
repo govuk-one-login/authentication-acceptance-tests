@@ -1,9 +1,10 @@
 package uk.gov.di.test.step_definitions;
 
-import io.cucumber.java.After;
 import io.cucumber.java.ParameterType;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import uk.gov.di.test.services.UserLifecycleService;
 
 import static uk.gov.di.test.services.UserLifecycleService.generateValidPassword;
@@ -11,6 +12,7 @@ import static uk.gov.di.test.utils.Constants.TOP_100K_PASSWORD;
 
 public class UserLifecycleStepDef {
     private final World world;
+    private static final Logger LOG = LogManager.getLogger(UserLifecycleStepDef.class);
 
     private static final UserLifecycleService userLifecycleService =
             UserLifecycleService.getInstance();
@@ -24,6 +26,18 @@ public class UserLifecycleStepDef {
         world.throwIfUserProfileExists().throwIfUserCredentialsExists();
         world.userProfile = userLifecycleService.buildNewUserProfile();
         world.setUserPassword(generateValidPassword());
+    }
+
+    @Given("a Migrated User exists")
+    public void aMigratedUserExists() {
+        world.throwIfUserProfileExists().throwIfUserCredentialsExists();
+        world.userProfile = userLifecycleService.buildNewMigratedUserProfile();
+        world.setUserPassword(generateValidPassword());
+        world.userCredentials =
+                userLifecycleService.buildNewMigratedUserCredentialsAndPutToDynamodb(
+                        world.userProfile, world.getUserPassword());
+
+        LOG.info(world.getUserEmailAddress());
     }
 
     @Given("a User exists")
@@ -94,7 +108,7 @@ public class UserLifecycleStepDef {
         world.setUserPassword(TOP_100K_PASSWORD);
     }
 
-    @After("@UI or @API")
+    //    @After("@UI or @API")
     public void theUserIsDeleted() {
         if (world.userProfile != null) {
             System.out.printf(
