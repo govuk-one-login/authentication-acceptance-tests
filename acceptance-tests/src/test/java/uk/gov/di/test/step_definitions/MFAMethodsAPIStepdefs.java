@@ -13,6 +13,7 @@ import static uk.gov.di.test.services.ApiInteractionsService.addBackupAuthApp;
 import static uk.gov.di.test.services.ApiInteractionsService.updateBackupPhoneno;
 import static uk.gov.di.test.services.ApiInteractionsService.updateBackupAuthApp;
 import static uk.gov.di.test.services.ApiInteractionsService.backupMFAPhoneAdded;
+import static uk.gov.di.test.services.ApiInteractionsService.deleteBackupMFA;
 
 public class MFAMethodsAPIStepdefs {
     private static final Logger LOG = LogManager.getLogger(MFAMethodsAPIStepdefs.class);
@@ -60,5 +61,14 @@ public class MFAMethodsAPIStepdefs {
     @When("the User requests to update a backup MFA Auth App")
     public void theUserRequestsToUpdateABackupMFAAuthApp() {
         updateBackupPhoneno(world);
+    }
+
+    @When("the User requests to delete backup MFA Method")
+    public void theUserRequestsToDeleteBackupMFAMethod() {
+        deleteBackupMFA(world);
+    }
+
+    @Then("the User's backup MFA Method is deleted")
+    public void theUserSBackupMFAMethodIsDeleted() {
     }
 }

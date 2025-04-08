@@ -471,6 +471,43 @@ public class ApiInteractionsService {
 //        return functionName;
     }
 
+    public static String deleteBackupMFA(World world) {
+        LOG.debug("Testing /Delete-users-mfa method");
+        var functionName =
+                getLambda(
+                        world.getMethodManagementApiId(),
+                        "/mfa-methods/{priorityIdentifier}/{publicSubjectId}",
+                        HttpMethod.DELETE.toString());
+
+        Map<String, String> pathParameters = new HashMap<>();
+        pathParameters.put("publicSubjectId", world.userProfile.getPublicSubjectID());
+
+        var event =
+                createApiGatewayProxyRequestEvent(
+                        "{}", pathParameters, world.getAuthorizerContent());
+
+        InvokeRequest invokeRequest =
+                InvokeRequest.builder()
+                        .functionName(functionName)
+                        .payload(SdkBytes.fromUtf8String(event))
+                        .build();
+
+        LambdaClient lambdaClient =
+                LambdaClient.builder()
+                        .region(Region.EU_WEST_2)
+                        .credentialsProvider(DefaultCredentialsProvider.create())
+                        .build();
+
+        InvokeResponse invokeResponse = lambdaClient.invoke(invokeRequest);
+
+        LOG.debug(
+                "/mfa-method: Deleted: {} response: {}",
+                functionName,
+                invokeResponse.payload().asUtf8String());
+        return invokeResponse.payload().asUtf8String();
+
+    }
+
     public static void authorizeApiGatewayUse(World world) throws ParseException, JOSEException {
         // calculate internal common subject id
         var commonInternalSubjectId =
