@@ -1,5 +1,6 @@
 package uk.gov.di.test.step_definitions;
 
+import io.cucumber.core.internal.com.fasterxml.jackson.core.JsonProcessingException;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -7,7 +8,11 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import static uk.gov.di.test.services.ApiInteractionsService.checkUserHasBackupMFA;
-import static uk.gov.di.test.services.ApiInteractionsService.updateBackupPhoneno;
+import static uk.gov.di.test.services.ApiInteractionsService.addBackupSMS;
+import static uk.gov.di.test.services.ApiInteractionsService.addBackupAuthApp;
+import static uk.gov.di.test.services.ApiInteractionsService.updateBackupPhoneNumber;
+import static uk.gov.di.test.services.ApiInteractionsService.backupSMSMFAAdded;
+import static uk.gov.di.test.services.ApiInteractionsService.deleteBackupMFA;
 
 public class MFAMethodsAPIStepdefs {
     private static final Logger LOG = LogManager.getLogger(MFAMethodsAPIStepdefs.class);
@@ -23,15 +28,46 @@ public class MFAMethodsAPIStepdefs {
     }
 
     @And("the user has no backup MFA method")
-    public void theUserHasNoBackupMFAMethod() {
+    public void theUserHasNoBackupMFAMethod() throws JsonProcessingException {
         checkUserHasBackupMFA(world);
     }
 
     @When("the User requests to add a backup MFA Phone Number {string}")
     public void theUserRequestsToAddABackupMFAPhoneNumber(String phoneNumber) {
-        updateBackupPhoneno(world);
+        addBackupSMS(world);
     }
 
     @Then("the User's back up MFA phoneNumber is updated to {string}")
-    public void theUserSBackUpMFAPhoneNumberIsUpdatedTo(String phoneNumber) {}
+    public void theUserSBackUpMFAPhoneNumberIsUpdatedTo(String phoneNumber) throws JsonProcessingException {
+        backupSMSMFAAdded(world);
+    }
+
+    @When("the User requests to add a backup MFA Auth App")
+    public void theUserRequestsToAddABackupMFAAuthApp() {
+        addBackupAuthApp(world);
+    }
+
+    @Then("the User's back up MFA Auth App is updated")
+    public void theUserSBackUpMFAAuthAppIsUpdated() {
+
+    }
+
+    @When("the User request to update back up MFA as phone number {string}")
+    public void theUserRequestToUpdateBackUpMFAAsPhoneNumber(String phoneNumber) {
+        updateBackupPhoneNumber(world);
+    }
+
+    @When("the User requests to update a backup MFA Auth App")
+    public void theUserRequestsToUpdateABackupMFAAuthApp() {
+        updateBackupPhoneNumber(world);
+    }
+
+    @When("the User requests to delete backup MFA Method")
+    public void theUserRequestsToDeleteBackupMFAMethod() {
+        deleteBackupMFA(world);
+    }
+
+    @Then("the User's backup MFA Method is deleted")
+    public void theUserSBackupMFAMethodIsDeleted() {
+    }
 }
