@@ -4,9 +4,15 @@ import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent;
 import com.nimbusds.jose.JOSEException;
 import com.nimbusds.jose.shaded.gson.Gson;
 import com.nimbusds.jose.shaded.gson.JsonObject;
+import io.cucumber.core.internal.com.fasterxml.jackson.core.JsonProcessingException;
+import io.cucumber.core.internal.com.fasterxml.jackson.databind.JsonNode;
+import io.cucumber.core.internal.com.fasterxml.jackson.databind.ObjectMapper;
+import net.minidev.json.JSONArray;
+import net.minidev.json.JSONObject;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jose4j.base64url.Base64Url;
+import org.json.JSONException;
 import org.openqa.selenium.remote.http.HttpMethod;
 import software.amazon.awssdk.auth.credentials.DefaultCredentialsProvider;
 import software.amazon.awssdk.core.SdkBytes;
@@ -39,6 +45,7 @@ import java.util.Map;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 public class ApiInteractionsService {
     private static final Logger LOG = LogManager.getLogger(ApiInteractionsService.class);
@@ -166,11 +173,11 @@ public class ApiInteractionsService {
         LOG.debug("/update-phone-number response: {}", invokeResponse.payload().asUtf8String());
     }
 
-    public static void checkUserHasBackupMFA(World world) {
+    public static void checkUserHasBackupMFA(World world) throws JsonProcessingException {
         String mfaMethods = retrieveUsersMFAMethods(world);
     }
 
-    private static String retrieveUsersMFAMethods(World world) {
+    private static String retrieveUsersMFAMethods(World world) throws JsonProcessingException {
         LOG.debug("Testing /retrieve-users-mfa methods");
         var functionName =
                 getLambda(
@@ -198,15 +205,32 @@ public class ApiInteractionsService {
                         .build();
 
         InvokeResponse invokeResponse = lambdaClient.invoke(invokeRequest);
+        String responseBody = invokeResponse.payload().asUtf8String();
+        ObjectMapper objectMapper = new ObjectMapper();
+        JsonNode rootNode = objectMapper.readTree(responseBody);
+        JsonNode bodyArray = objectMapper.readTree(rootNode.path("body").asText());
 
-        LOG.debug(
-                "/mfa-methods: handled by: {} response: {}",
-                functionName,
-                invokeResponse.payload().asUtf8String());
-        return invokeResponse.payload().asUtf8String();
+        if (bodyArray.isArray() && bodyArray.size() > 0) {
+            JsonNode firstElement = bodyArray.get(0);
+            String apriorityIdentifier = firstElement.path("priorityIdentifier").asText();
+            assertNotEquals("BACKUP", apriorityIdentifier);
+        } else {
+            System.err.println("Error: 'body' is not a valid array or is empty.");
+            return null;
+        }
+//     catch (Exception Throwable e) {
+//        e.printStackTrace();
+//        return null;
+//    }
+//        LOG.debug(
+//                "/mfa-methods: handled by: {} response: {}",
+//                functionName,
+//                invokeResponse.payload().asUtf8String());
+//        return invokeResponse.payload().asUtf8String();
+        return functionName;
     }
 
-    public static void updateBackupPhoneno(World world) {
+    public static void addBackupPhoneno(World world) {
 
         var functionName =
                 getLambda(
@@ -250,6 +274,201 @@ public class ApiInteractionsService {
         LOG.debug(
                 "/update-backup-phone-number response: {}",
                 invokeResponse.payload().asUtf8String());
+    }
+
+    public static void updateBackupPhoneno(World world) {
+
+        var functionName =
+                getLambda(
+                        world.getMethodManagementApiId(),
+                        "/mfa-methods/{publicSubjectId}",
+                        HttpMethod.PUT.toString());
+
+        var body =
+                """
+                {
+                    "priorityIdentifier": "BACKUP",
+                    "method": {
+                        "mfaMethodType": "SMS",
+                        "credential": "%s"
+                    }
+                }
+                """
+                        .formatted(world.getNewPhoneNumber());
+
+        Map<String, String> pathParameters = new HashMap<>();
+        pathParameters.put("publicSubjectId", world.userProfile.getPublicSubjectID());
+
+        var event =
+                createApiGatewayProxyRequestEvent(
+                        body, pathParameters, world.getAuthorizerContent());
+
+        InvokeRequest invokeRequest =
+                InvokeRequest.builder()
+                        .functionName(functionName)
+                        .payload(SdkBytes.fromUtf8String(event))
+                        .build();
+
+        LambdaClient lambdaClient =
+                LambdaClient.builder()
+                        .region(Region.EU_WEST_2)
+                        .credentialsProvider(DefaultCredentialsProvider.create())
+                        .build();
+
+        InvokeResponse invokeResponse = lambdaClient.invoke(invokeRequest);
+
+        LOG.debug(
+                "/update-backup-phone-number response: {}",
+                invokeResponse.payload().asUtf8String());
+    }
+
+    public static void addBackupAuthApp(World world) {
+
+        var functionName =
+                getLambda(
+                        world.getMethodManagementApiId(),
+                        "/mfa-methods/{publicSubjectId}",
+                        HttpMethod.POST.toString());
+
+        var body =
+                """
+                {
+                    "priorityIdentifier": "BACKUP",
+                    "method": {
+                        "mfaMethodType": "AUTH_APP",
+                        "credential": "%s"
+                    }
+                }
+                """
+                        .formatted(world.getNewPhoneNumber());
+
+        Map<String, String> pathParameters = new HashMap<>();
+        pathParameters.put("publicSubjectId", world.userProfile.getPublicSubjectID());
+
+        var event =
+                createApiGatewayProxyRequestEvent(
+                        body, pathParameters, world.getAuthorizerContent());
+
+        InvokeRequest invokeRequest =
+                InvokeRequest.builder()
+                        .functionName(functionName)
+                        .payload(SdkBytes.fromUtf8String(event))
+                        .build();
+
+        LambdaClient lambdaClient =
+                LambdaClient.builder()
+                        .region(Region.EU_WEST_2)
+                        .credentialsProvider(DefaultCredentialsProvider.create())
+                        .build();
+
+        InvokeResponse invokeResponse = lambdaClient.invoke(invokeRequest);
+
+        LOG.debug(
+                "/update-backup-phone-number response: {}",
+                invokeResponse.payload().asUtf8String());
+    }
+
+    public static void updateBackupAuthApp(World world) {
+
+        var functionName =
+                getLambda(
+                        world.getMethodManagementApiId(),
+                        "/mfa-methods/{publicSubjectId}",
+                        HttpMethod.PUT.toString());
+
+        var body =
+                """
+                {
+                    "priorityIdentifier": "BACKUP",
+                    "method": {
+                        "mfaMethodType": "AUTH_APP",
+                        "credential": "%s"
+                    }
+                }
+                """
+                        .formatted(world.getNewPhoneNumber());
+
+        Map<String, String> pathParameters = new HashMap<>();
+        pathParameters.put("publicSubjectId", world.userProfile.getPublicSubjectID());
+
+        var event =
+                createApiGatewayProxyRequestEvent(
+                        body, pathParameters, world.getAuthorizerContent());
+
+        InvokeRequest invokeRequest =
+                InvokeRequest.builder()
+                        .functionName(functionName)
+                        .payload(SdkBytes.fromUtf8String(event))
+                        .build();
+
+        LambdaClient lambdaClient =
+                LambdaClient.builder()
+                        .region(Region.EU_WEST_2)
+                        .credentialsProvider(DefaultCredentialsProvider.create())
+                        .build();
+
+        InvokeResponse invokeResponse = lambdaClient.invoke(invokeRequest);
+
+        LOG.debug(
+                "/update-backup-phone-number response: {}",
+                invokeResponse.payload().asUtf8String());
+    }
+
+    public static String backupMFAPhoneAdded(World world) throws JsonProcessingException {
+        LOG.debug("Testing /retrieve-updated-mfa methods");
+        var functionName =
+                getLambda(
+                        world.getMethodManagementApiId(),
+                        "/mfa-methods/{publicSubjectId}",
+                        HttpMethod.GET.toString());
+
+        Map<String, String> pathParameters = new HashMap<>();
+        pathParameters.put("publicSubjectId", world.userProfile.getPublicSubjectID());
+
+        var event =
+                createApiGatewayProxyRequestEvent(
+                        "{}", pathParameters, world.getAuthorizerContent());
+
+        InvokeRequest invokeRequest =
+                InvokeRequest.builder()
+                        .functionName(functionName)
+                        .payload(SdkBytes.fromUtf8String(event))
+                        .build();
+
+        LambdaClient lambdaClient =
+                LambdaClient.builder()
+                        .region(Region.EU_WEST_2)
+                        .credentialsProvider(DefaultCredentialsProvider.create())
+                        .build();
+
+//        InvokeResponse invokeResponse = lambdaClient.invoke(invokeRequest);
+//        String responseBody = invokeResponse.payload().asUtf8String();
+//        ObjectMapper objectMapper = new ObjectMapper();
+//        JsonNode rootNode = objectMapper.readTree(responseBody);
+//        JsonNode bodyArray = objectMapper.readTree(rootNode.path("body").asText());
+//
+//        if (bodyArray.isArray() && bodyArray.size() > 0) {
+//            JsonNode firstElement = bodyArray.get(0);
+//            JsonNode secondElement = bodyArray.get(1);
+//            String firstpriorityIdentifier = firstElement.path("priorityIdentifier").asText();
+//            String secondpriorityIdentifier = secondElement.path("priorityIdentifier").asText();
+//            assertEquals("DEFAULT", firstpriorityIdentifier);
+//            assertEquals("BAACKUP", secondpriorityIdentifier);
+//        } else {
+//            System.err.println("Error: 'body' is not a valid array or is empty.");
+//            return null;
+//        }
+//     catch (Exception Throwable e) {
+//        e.printStackTrace();
+//        return null;
+//    }
+        InvokeResponse invokeResponse = lambdaClient.invoke(invokeRequest);
+        LOG.debug(
+                "/mfa-methods: Updated: {} response: {}",
+                functionName,
+                invokeResponse.payload().asUtf8String());
+        return invokeResponse.payload().asUtf8String();
+//        return functionName;
     }
 
     public static void authorizeApiGatewayUse(World world) throws ParseException, JOSEException {
