@@ -209,6 +209,59 @@ public class ApiInteractionsService {
     public static void checkUserHasBackupMFA(World world) throws JsonProcessingException {
         String mfaMethods = retrieveUsersMFAMethods(world);
         // TODO check mfaMethods for a BACKUP method, error if one is found.
+        var functionName =
+                getLambda(
+                        world.getMethodManagementApiId(),
+                        "/mfa-methods/{publicSubjectId}",
+                        HttpMethod.GET.toString());
+
+        Map<String, String> pathParameters = new HashMap<>();
+        pathParameters.put("publicSubjectId", world.userProfile.getPublicSubjectID());
+
+        var event =
+                createApiGatewayProxyRequestEvent(
+                        "{}", pathParameters, world.getAuthorizerContent());
+
+        InvokeRequest invokeRequest =
+                InvokeRequest.builder()
+                        .functionName(functionName)
+                        .payload(SdkBytes.fromUtf8String(event))
+                        .build();
+
+        LambdaClient lambdaClient =
+                LambdaClient.builder()
+                        .region(Region.EU_WEST_2)
+                        .credentialsProvider(DefaultCredentialsProvider.create())
+                        .build();
+
+        InvokeResponse invokeResponse = lambdaClient.invoke(invokeRequest);
+        assertEquals(200, invokeResponse.statusCode());
+
+        LOG.debug("GET /mfa-methods/{publicSubjectId} integration function {} response: {}",
+                functionName, invokeResponse.payload().asUtf8String());
+
+
+//        String responseBody = invokeResponse.payload().asUtf8String();
+//        ObjectMapper objectMapper = new ObjectMapper();
+//        JsonNode rootNode = objectMapper.readTree(responseBody);
+//        JsonNode bodyArray = objectMapper.readTree(rootNode.path("body").asText());
+
+//        if (bodyArray.isArray() && bodyArray.size() > 0) {
+//            JsonNode firstElement = bodyArray.get(0);
+//            String apriorityIdentifier = firstElement.path("priorityIdentifier").asText();
+//            assertNotEquals("BACKUP", apriorityIdentifier);
+//        } else {
+//            System.err.println("Error: 'body' is not a valid array or is empty.");
+//            return null;
+//        }
+
+        LOG.debug("GET /mfa-methods/{publicSubjectId} integration function {} response: {}",
+                functionName, invokeResponse.payload().asUtf8String());
+
+        LOG.debug(
+                "/Current MFA Methods: {}",
+                invokeResponse.payload().asUtf8String());
+//        return responseBody;
     }
 
     private static String retrieveUsersMFAMethods(World world) throws JsonProcessingException {
@@ -280,17 +333,20 @@ public class ApiInteractionsService {
 
         var body =
                 """
-                   { "mfaMethod":
-                                 {
-                                         "priorityIdentifier": "BACKUP",
-                                         "method": {
-                                             "mfaMethodType": "SMS",
-                                             "phoneNumber": "%s"
-                                         }
-                                 }
-                         }
-                """
-                        .formatted(world.getNewPhoneNumber());
+                    {
+                                mfaMethod: {
+                                  priorityIdentifier: "BACKUP",
+                                  method: {
+                                    mfaMethodType: "SMS",
+                                    phoneNumber: "%s",
+                                   otp: "%s"
+                                  }
+                                }
+                              }
+               """
+                        .formatted(
+                                world.getNewPhoneNumber(),
+                                world.getOtp());
 
         Map<String, String> pathParameters = new HashMap<>();
         pathParameters.put("publicSubjectId", world.userProfile.getPublicSubjectID());
@@ -312,6 +368,8 @@ public class ApiInteractionsService {
                         .build();
 
         InvokeResponse invokeResponse = lambdaClient.invoke(invokeRequest);
+
+        assertEquals(200, invokeResponse.statusCode());
 
         LOG.debug("POST /mfa-methods/{publicSubjectId} integration function {} response: {}",
                 functionName, invokeResponse.payload().asUtf8String());
@@ -387,8 +445,8 @@ public class ApiInteractionsService {
                     "mfaMethod": {
                         "priorityIdentifier": "BACKUP",
                         "method": {
-                            "mfaMethodType": "SMS",
-                            "phoneNumber": "%s"
+                            "mfaMethodType": "AUTH_APP",
+                            "credential": "AAAABBBBCCCCCDDDDD55551111EEEE2222FFFF3333GGGG4444"
                         }
                     }
                 }
@@ -419,6 +477,7 @@ public class ApiInteractionsService {
         LOG.debug("POST /mfa-methods/{publicSubjectId} integration function {} response: {}",
                 functionName, invokeResponse.payload().asUtf8String());
     }
+
 
     public static void updateBackupAuthApp(World world) {
 
@@ -500,6 +559,47 @@ public class ApiInteractionsService {
 
         InvokeResponse invokeResponse = lambdaClient.invoke(invokeRequest);
 
+        assertEquals(200, invokeResponse.statusCode());
+
+        LOG.debug("GET /mfa-methods/{publicSubjectId} integration function {} response: {}",
+                functionName, invokeResponse.payload().asUtf8String());
+
+        return invokeResponse.payload().asUtf8String();
+    }
+
+    public static String backupAuthMFAAdded(World world) {
+
+        var functionName =
+                getLambda(
+                        world.getMethodManagementApiId(),
+                        "/mfa-methods/{publicSubjectId}",
+                        HttpMethod.GET.toString());
+
+        LOG.debug("GET /mfa-methods/{publicSubjectId} integration to: {}", functionName);
+
+        Map<String, String> pathParameters = new HashMap<>();
+        pathParameters.put("publicSubjectId", world.userProfile.getPublicSubjectID());
+
+        var event =
+                createApiGatewayProxyRequestEvent(
+                        "{}", pathParameters, world.getAuthorizerContent());
+
+        InvokeRequest invokeRequest =
+                InvokeRequest.builder()
+                        .functionName(functionName)
+                        .payload(SdkBytes.fromUtf8String(event))
+                        .build();
+
+        LambdaClient lambdaClient =
+                LambdaClient.builder()
+                        .region(Region.EU_WEST_2)
+                        .credentialsProvider(DefaultCredentialsProvider.create())
+                        .build();
+
+        InvokeResponse invokeResponse = lambdaClient.invoke(invokeRequest);
+
+        assertEquals(200, invokeResponse.statusCode());
+
         LOG.debug("GET /mfa-methods/{publicSubjectId} integration function {} response: {}",
                 functionName, invokeResponse.payload().asUtf8String());
 
@@ -507,6 +607,7 @@ public class ApiInteractionsService {
     }
 
     public static String deleteBackupMFA(World world) {
+
         var functionName =
                 getLambda(
                         world.getMethodManagementApiId(),
@@ -517,6 +618,7 @@ public class ApiInteractionsService {
 
         Map<String, String> pathParameters = new HashMap<>();
         pathParameters.put("publicSubjectId", world.userProfile.getPublicSubjectID());
+        pathParameters.put("mfaIdentifier", "2");
 
         var event =
                 createApiGatewayProxyRequestEvent(
@@ -549,7 +651,7 @@ public class ApiInteractionsService {
                 calculatePairwiseIdentifier(
                         world.userProfile.getSubjectID(),
                         //TODO get this from parameter store
-                        "identity.authdev1.sandpit.account.gov.uk",
+                        "identity.authdev2.sandpit.account.gov.uk",
                         world.userProfile.getSalt());
 
         var token = AuthTokenGenerator.createJwt(commonInternalSubjectId);
@@ -567,6 +669,7 @@ public class ApiInteractionsService {
 
         var authrorizerContextAsMap = new HashMap<String, Object>();
         authrorizerContext.entrySet().forEach(entry -> authrorizerContextAsMap.put(entry.getKey(), entry.getValue()));
+        authrorizerContextAsMap.put("clientId", authrorizerContext.get("context").getAsJsonObject().get("clientId").getAsString());
 
         world.setAuthorizerContent(authrorizerContextAsMap);
         world.setMethodManagementApiId(restApiId);

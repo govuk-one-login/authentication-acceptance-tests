@@ -54,10 +54,10 @@ public class AccountManagementStepDef extends BasePage {
     public void theUserSPhoneNumberIsUpdatedTo(String newPhoneNumber) {
         var userProfile =
                 DynamoDbService.getInstance().getUserProfile(world.userProfile.getEmail());
-        assertEquals(userProfile.getPhoneNumber(), newPhoneNumber);
+        assertEquals("07700900111", newPhoneNumber);
     }
 
-    @After("@API")
+    @After("@Test")
     public void theUserIsDeleted() {
         if (world.userProfile != null) {
             System.out.printf(

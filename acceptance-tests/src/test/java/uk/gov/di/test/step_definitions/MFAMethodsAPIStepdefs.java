@@ -1,5 +1,6 @@
 package uk.gov.di.test.step_definitions;
 
+import com.nimbusds.jose.JOSEException;
 import io.cucumber.core.internal.com.fasterxml.jackson.core.JsonProcessingException;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Then;
@@ -7,12 +8,9 @@ import io.cucumber.java.en.When;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import static uk.gov.di.test.services.ApiInteractionsService.checkUserHasBackupMFA;
-import static uk.gov.di.test.services.ApiInteractionsService.addBackupSMS;
-import static uk.gov.di.test.services.ApiInteractionsService.addBackupAuthApp;
-import static uk.gov.di.test.services.ApiInteractionsService.updateBackupPhoneNumber;
-import static uk.gov.di.test.services.ApiInteractionsService.backupSMSMFAAdded;
-import static uk.gov.di.test.services.ApiInteractionsService.deleteBackupMFA;
+import java.text.ParseException;
+
+import static uk.gov.di.test.services.ApiInteractionsService.*;
 
 public class MFAMethodsAPIStepdefs {
     private static final Logger LOG = LogManager.getLogger(MFAMethodsAPIStepdefs.class);
@@ -28,17 +26,17 @@ public class MFAMethodsAPIStepdefs {
     }
 
     @And("the user has no backup MFA method")
-    public void theUserHasNoBackupMFAMethod() throws JsonProcessingException {
+    public void theUserHasNoBackupMFAMethod() throws JsonProcessingException, ParseException, JOSEException {
         checkUserHasBackupMFA(world);
     }
 
     @When("the User requests to add a backup MFA Phone Number {string}")
-    public void theUserRequestsToAddABackupMFAPhoneNumber(String phoneNumber) {
+    public void theUserRequestsToAddABackupMFAPhoneNumber(String phoneNumber) throws ParseException, JOSEException {
         addBackupSMS(world);
     }
 
     @Then("the User's back up MFA phoneNumber is updated to {string}")
-    public void theUserSBackUpMFAPhoneNumberIsUpdatedTo(String phoneNumber) throws JsonProcessingException {
+    public void theUserSBackUpMFAPhoneNumberIsUpdatedTo(String phoneNumber) throws JsonProcessingException, ParseException, JOSEException {
         backupSMSMFAAdded(world);
     }
 
@@ -49,7 +47,7 @@ public class MFAMethodsAPIStepdefs {
 
     @Then("the User's back up MFA Auth App is updated")
     public void theUserSBackUpMFAAuthAppIsUpdated() {
-
+        backupAuthMFAAdded(world);
     }
 
     @When("the User request to update back up MFA as phone number {string}")
