@@ -476,7 +476,7 @@ public class ApiInteractionsService {
         var functionName =
                 getLambda(
                         world.getMethodManagementApiId(),
-                        "/mfa-methods/{priorityIdentifier}/{publicSubjectId}",
+                        "/mfa-methods/{publicSubjectId}/{mfaIdentifier}",
                         HttpMethod.DELETE.toString());
 
         Map<String, String> pathParameters = new HashMap<>();
