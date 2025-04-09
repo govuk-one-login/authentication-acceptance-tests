@@ -227,6 +227,9 @@ public class ApiInteractionsService {
 //                functionName,
 //                invokeResponse.payload().asUtf8String());
 //        return invokeResponse.payload().asUtf8String();
+        LOG.debug(
+                "/Current MFA Methods: {}",
+                invokeResponse.payload().asUtf8String());
         return functionName;
     }
 
@@ -240,12 +243,14 @@ public class ApiInteractionsService {
 
         var body =
                 """
+                { "mfaMethod":
                 {
                     "priorityIdentifier": "BACKUP",
                     "method": {
                         "mfaMethodType": "SMS",
-                        "credential": "%s"
+                        "phoneNumber": "%s"
                     }
+                }
                 }
                 """
                         .formatted(world.getNewPhoneNumber());
@@ -272,7 +277,7 @@ public class ApiInteractionsService {
         InvokeResponse invokeResponse = lambdaClient.invoke(invokeRequest);
 
         LOG.debug(
-                "/update-backup-phone-number response: {}",
+                "/Add-backup-phone-number response: {}",
                 invokeResponse.payload().asUtf8String());
     }
 
@@ -281,27 +286,34 @@ public class ApiInteractionsService {
         var functionName =
                 getLambda(
                         world.getMethodManagementApiId(),
-                        "/mfa-methods/{publicSubjectId}",
+                        "/mfa-methods/{publicSubjectId}/{mfaIdentifier}",
                         HttpMethod.PUT.toString());
 
         var body =
                 """
-                {
-                    "priorityIdentifier": "BACKUP",
-                    "method": {
-                        "mfaMethodType": "SMS",
-                        "credential": "%s"
+                    {
+                          "mfaMethod": {
+                            "priorityIdentifier": "BACKUP",
+                            "method": {
+                              "mfaMethodType": "SMS",
+                              "phoneNumber": "%s"
+                            }
+                          }
                     }
-                }
                 """
                         .formatted(world.getNewPhoneNumber());
 
         Map<String, String> pathParameters = new HashMap<>();
         pathParameters.put("publicSubjectId", world.userProfile.getPublicSubjectID());
+        pathParameters.put("mfaIdentifier", "2");
+
 
         var event =
                 createApiGatewayProxyRequestEvent(
                         body, pathParameters, world.getAuthorizerContent());
+        LOG.debug(
+                "/Check Update Request: {}",
+                event);
 
         InvokeRequest invokeRequest =
                 InvokeRequest.builder()
@@ -364,7 +376,7 @@ public class ApiInteractionsService {
         InvokeResponse invokeResponse = lambdaClient.invoke(invokeRequest);
 
         LOG.debug(
-                "/update-backup-phone-number response: {}",
+                "/Add-backup-phone-number response: {}",
                 invokeResponse.payload().asUtf8String());
     }
 
@@ -410,7 +422,7 @@ public class ApiInteractionsService {
         InvokeResponse invokeResponse = lambdaClient.invoke(invokeRequest);
 
         LOG.debug(
-                "/update-backup-phone-number response: {}",
+                "/update-backup-Auth App response: {}",
                 invokeResponse.payload().asUtf8String());
     }
 
