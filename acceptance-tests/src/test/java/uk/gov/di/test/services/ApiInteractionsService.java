@@ -25,10 +25,15 @@ import software.amazon.awssdk.services.apigateway.model.RestApi;
 import software.amazon.awssdk.services.lambda.LambdaClient;
 import software.amazon.awssdk.services.lambda.model.InvokeRequest;
 import software.amazon.awssdk.services.lambda.model.InvokeResponse;
+import software.amazon.awssdk.services.s3.S3Client;
+import software.amazon.awssdk.services.s3.model.DeleteObjectRequest;
+import software.amazon.awssdk.services.s3.model.GetObjectRequest;
 import uk.gov.di.test.step_definitions.World;
 import uk.gov.di.test.utils.AuthTokenGenerator;
 import uk.gov.di.test.utils.Environment;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -36,6 +41,7 @@ import java.text.ParseException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -98,7 +104,10 @@ public class ApiInteractionsService {
                 """
                         .formatted(world.userProfile.getEmail(), world.getNewPhoneNumber());
 
-        LOG.debug("Testing /send-otp-notification integration function: {}", functionName);
+        LOG.debug(
+                "Testing /send-otp-notification integration function: {} with {}",
+                functionName,
+                body);
 
         var event = createApiGatewayProxyRequestEvent(body, world.getAuthorizerContent());
 
@@ -113,6 +122,28 @@ public class ApiInteractionsService {
         LOG.debug("/send-otp-notification response: {}", invokeResponse.payload().asUtf8String());
 
         assertEquals(200, invokeResponse.statusCode());
+    }
+
+    public static String getOtp(String email) {
+        var s3client = S3Client.builder().region(Region.of(Region.EU_WEST_2.toString())).build();
+
+        var bucketName = Environment.getOrThrow("ENVIRONMENT") + "-am-api-acceptance-tests-otp";
+
+        var getObjectRequest = GetObjectRequest.builder().bucket(bucketName).key(email).build();
+
+        var response = s3client.getObject(getObjectRequest);
+
+        var code =
+                new BufferedReader(new InputStreamReader(response, StandardCharsets.UTF_8))
+                        .lines()
+                        .collect(Collectors.joining("\n"));
+
+        DeleteObjectRequest deleteObjectRequest =
+                DeleteObjectRequest.builder().bucket(bucketName).key(email).build();
+
+        s3client.deleteObject(deleteObjectRequest);
+
+        return code;
     }
 
     public static void updatePhoneNumber(World world) {
