@@ -8,11 +8,10 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import static uk.gov.di.test.services.ApiInteractionsService.checkUserHasBackupMFA;
-import static uk.gov.di.test.services.ApiInteractionsService.addBackupPhoneno;
+import static uk.gov.di.test.services.ApiInteractionsService.addBackupSMS;
 import static uk.gov.di.test.services.ApiInteractionsService.addBackupAuthApp;
-import static uk.gov.di.test.services.ApiInteractionsService.updateBackupPhoneno;
-import static uk.gov.di.test.services.ApiInteractionsService.updateBackupAuthApp;
-import static uk.gov.di.test.services.ApiInteractionsService.backupMFAPhoneAdded;
+import static uk.gov.di.test.services.ApiInteractionsService.updateBackupPhoneNumber;
+import static uk.gov.di.test.services.ApiInteractionsService.backupSMSMFAAdded;
 import static uk.gov.di.test.services.ApiInteractionsService.deleteBackupMFA;
 
 public class MFAMethodsAPIStepdefs {
@@ -35,12 +34,12 @@ public class MFAMethodsAPIStepdefs {
 
     @When("the User requests to add a backup MFA Phone Number {string}")
     public void theUserRequestsToAddABackupMFAPhoneNumber(String phoneNumber) {
-        addBackupPhoneno(world);
+        addBackupSMS(world);
     }
 
     @Then("the User's back up MFA phoneNumber is updated to {string}")
     public void theUserSBackUpMFAPhoneNumberIsUpdatedTo(String phoneNumber) throws JsonProcessingException {
-        backupMFAPhoneAdded(world);
+        backupSMSMFAAdded(world);
     }
 
     @When("the User requests to add a backup MFA Auth App")
@@ -55,12 +54,12 @@ public class MFAMethodsAPIStepdefs {
 
     @When("the User request to update back up MFA as phone number {string}")
     public void theUserRequestToUpdateBackUpMFAAsPhoneNumber(String phoneNumber) {
-        updateBackupPhoneno(world);
+        updateBackupPhoneNumber(world);
     }
 
     @When("the User requests to update a backup MFA Auth App")
     public void theUserRequestsToUpdateABackupMFAAuthApp() {
-        updateBackupPhoneno(world);
+        updateBackupPhoneNumber(world);
     }
 
     @When("the User requests to delete backup MFA Method")

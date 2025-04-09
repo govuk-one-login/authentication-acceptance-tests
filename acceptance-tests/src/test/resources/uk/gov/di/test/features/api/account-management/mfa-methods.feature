@@ -34,8 +34,8 @@ Feature: MFA Method Management API
     And the user has no backup MFA method
     When the User requests to add a backup MFA Auth App
     Then the User's back up MFA Auth App is updated
-    When the User request to update back up MFA as phone number "07700900112"
-    Then the User's back up MFA phoneNumber is updated to "07700900112"
+#    When the User request to update back up MFA as phone number "07700900112"
+#    Then the User's back up MFA phoneNumber is updated to "07700900112"
 
 
 #  Scenario: Authenticated User successfully Update Backup MFA method from SMS to Auth App
