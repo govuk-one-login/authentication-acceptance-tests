@@ -247,17 +247,15 @@ public class ApiInteractionsService {
 
         var body =
                 """
-                "mfaMethod":
-                    { "mfaMethod":
-                {
-                        "priorityIdentifier": "BACKUP",
-                        "method": {
-                            "mfaMethodType": "SMS",
-                            "phoneNumber": "%s"
-                        }
-                    }
-                }
-                }
+                   { "mfaMethod":
+                                 {
+                                         "priorityIdentifier": "BACKUP",
+                                         "method": {
+                                             "mfaMethodType": "SMS",
+                                             "phoneNumber": "%s"
+                                         }
+                                 }
+                         }
                 """
                         .formatted(world.getNewPhoneNumber());
 
