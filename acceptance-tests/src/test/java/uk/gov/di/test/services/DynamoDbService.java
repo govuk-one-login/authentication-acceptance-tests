@@ -2,6 +2,7 @@ package uk.gov.di.test.services;
 
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbEnhancedClient;
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbTable;
+import software.amazon.awssdk.enhanced.dynamodb.Key;
 import software.amazon.awssdk.enhanced.dynamodb.TableSchema;
 import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
 import uk.gov.di.test.entity.UserCredentials;
@@ -59,6 +60,11 @@ public class DynamoDbService {
 
     public void deleteUserProfile(UserProfile userProfile) {
         userProfileTable.deleteItem(userProfile);
+    }
+
+    public UserProfile getUserProfile(String key) {
+        Key dbkey = Key.builder().partitionValue(key).build();
+        return userProfileTable.getItem(dbkey);
     }
 
     public void putUserCredentials(UserCredentials userCredentials) {
