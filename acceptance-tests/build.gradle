@@ -34,6 +34,7 @@ dependencies {
     testImplementation("software.amazon.awssdk:ssm")
     testImplementation("software.amazon.awssdk:kms")
     testImplementation("software.amazon.awssdk:lambda")
+    testImplementation("software.amazon.awssdk:s3")
     testImplementation("com.nimbusds:oauth2-oidc-sdk:10.13.2")
     testImplementation("com.nimbusds:nimbus-jose-jwt:10.0.1")
     testImplementation("org.bitbucket.b_c:jose4j:0.9.6")
