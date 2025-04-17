@@ -11,11 +11,11 @@ repositories {
 }
 
 def dependencyVersions = [
-    junit_version: '5.11.4',
-    cucumber_version: '7.21.1',
+    junit_version: '5.12.2',
+    cucumber_version: '7.22.0',
     axe_version: '3.0',
     selenium_java_version: '4.28.1',
-    aws_sdk_v2_version: "2.30.22",
+    aws_sdk_v2_version: "2.31.23",
     json_version: '20250107',
     rest_assured: '5.5.1'
 ]
@@ -35,8 +35,8 @@ dependencies {
     testImplementation("software.amazon.awssdk:kms")
     testImplementation("software.amazon.awssdk:lambda")
     testImplementation("software.amazon.awssdk:s3")
-    testImplementation("com.nimbusds:oauth2-oidc-sdk:10.13.2")
-    testImplementation("com.nimbusds:nimbus-jose-jwt:10.0.1")
+    testImplementation("com.nimbusds:oauth2-oidc-sdk:11.23.1")
+    testImplementation("com.nimbusds:nimbus-jose-jwt:10.2")
     testImplementation("org.bitbucket.b_c:jose4j:0.9.6")
     testImplementation("io.cucumber:cucumber-java")
     testImplementation("io.cucumber:cucumber-junit")
@@ -49,14 +49,14 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter-api")
     testImplementation("org.junit.jupiter:junit-jupiter-engine")
 
-    testImplementation("org.apache.commons:commons-text:1.13.0")
+    testImplementation("org.apache.commons:commons-text:1.13.1")
 
     testImplementation("commons-codec:commons-codec:1.18.0")
 
-    testImplementation("com.google.guava:guava:33.4.0-jre")
+    testImplementation("com.google.guava:guava:33.4.8-jre")
 
     testImplementation("org.bouncycastle:bcpkix-jdk18on:1.80")
-    testImplementation("org.springframework.security:spring-security-crypto:6.4.2")
+    testImplementation("org.springframework.security:spring-security-crypto:6.4.4")
 
     testImplementation("org.json:json:${dependencyVersions.json_version}")
     testImplementation("io.rest-assured:rest-assured:${dependencyVersions.rest_assured}")
@@ -65,7 +65,7 @@ dependencies {
     testImplementation("com.amazonaws:aws-lambda-java-core:1.2.3")
     testImplementation("com.amazonaws:aws-lambda-java-events:3.15.0")
 
-    testImplementation("software.amazon.awssdk:apigateway:2.31.0")
+    testImplementation("software.amazon.awssdk:apigateway:2.31.23")
 
     testImplementation("org.slf4j:slf4j-nop:2.0.17")
 }
