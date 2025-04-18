@@ -515,7 +515,8 @@ public class ApiInteractionsService {
         var commonInternalSubjectId =
                 calculatePairwiseIdentifier(
                         world.userProfile.getSubjectID(),
-                        "https://rp-authdev1.build.stubs.account.gov.uk",
+                        //TODO get this from parameter store
+                        "identity.authdev1.sandpit.account.gov.uk",
                         world.userProfile.getSalt());
 
         var token = AuthTokenGenerator.createJwt(commonInternalSubjectId);
@@ -529,12 +530,12 @@ public class ApiInteractionsService {
 
         LOG.debug("testing restApiId: {}", restApiId);
 
-        var context = executeAuthorizerToObtainAuthorizerContext(restApiId, token);
+        var authrorizerContext = executeAuthorizerToObtainAuthorizerContext(restApiId, token);
 
-        var contextAsMap = new HashMap<String, Object>();
-        context.entrySet().forEach(entry -> contextAsMap.put(entry.getKey(), entry.getValue()));
+        var authrorizerContextAsMap = new HashMap<String, Object>();
+        authrorizerContext.entrySet().forEach(entry -> authrorizerContextAsMap.put(entry.getKey(), entry.getValue()));
 
-        world.setAuthorizerContent(contextAsMap);
+        world.setAuthorizerContent(authrorizerContextAsMap);
         world.setMethodManagementApiId(restApiId);
     }
 
@@ -611,7 +612,7 @@ public class ApiInteractionsService {
         var authorizerResponseAsJson = invokeResponse.payload().asUtf8String();
         var authResponseJSONObject = gson.fromJson(authorizerResponseAsJson, JsonObject.class);
 
-        return authResponseJSONObject.getAsJsonObject("context");
+        return authResponseJSONObject;
     }
 
     private static String calculatePairwiseIdentifier(
