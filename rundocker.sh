@@ -30,6 +30,11 @@ case "${ENVIRONMENT}" in
   dev)
     AWS_PROFILE=di-auth-development-admin
     ;;
+  dev-sp)
+    SP=true
+    AWS_PROFILE=di-authentication-development-admin
+    ENVIRONMENT=dev
+    ;;
   *)
     echo "Unconfigured environment: $ENVIRONMENT"
     exit 1
