@@ -11,6 +11,9 @@ fi
 ENVIRONMENT=${TEST_ENVIRONMENT:-local}
 
 case $ENVIRONMENT in
+  dev)
+    CROSSACCOUNT_ROLEARN="arn:aws:iam::653994557586:role/CrossAccountRole-new-dev"
+    ;;
   build)
     CROSSACCOUNT_ROLEARN="arn:aws:iam::761723964695:role/CrossAccountRole-new-build"
     ;;
