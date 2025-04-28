@@ -25,7 +25,7 @@ public class MFAMethod {
     private String updated;
     private String destination;
     private String priority;
-    private Integer mfaIdentifier;
+    private String mfaIdentifier;
 
     public MFAMethod() {}
 
@@ -49,7 +49,7 @@ public class MFAMethod {
             boolean enabled,
             String updated,
             PriorityIdentifier priority,
-            int mfaIdentifier) {
+            String mfaIdentifier) {
         this.mfaMethodType = mfaMethodType;
         this.credentialValue = credentialValue;
         this.methodVerified = methodVerified;
@@ -66,7 +66,7 @@ public class MFAMethod {
             String destination,
             String updated,
             PriorityIdentifier priority,
-            int mfaIdentifier) {
+            String mfaIdentifier) {
         this.mfaMethodType = mfaMethodType;
         this.methodVerified = methodVerified;
         this.enabled = enabled;
@@ -177,15 +177,15 @@ public class MFAMethod {
     }
 
     @DynamoDbAttribute(ATTRIBUTE_MFA_IDENTIFIER)
-    public Integer getMfaIdentifier() {
+    public String getMfaIdentifier() {
         return mfaIdentifier;
     }
 
-    public void setMfaIdentifier(Integer mfaIdentifier) {
+    public void setMfaIdentifier(String mfaIdentifier) {
         this.mfaIdentifier = mfaIdentifier;
     }
 
-    public MFAMethod withMfaIdentifier(Integer mfaIdentifier) {
+    public MFAMethod withMfaIdentifier(String mfaIdentifier) {
         this.mfaIdentifier = mfaIdentifier;
         return this;
     }
