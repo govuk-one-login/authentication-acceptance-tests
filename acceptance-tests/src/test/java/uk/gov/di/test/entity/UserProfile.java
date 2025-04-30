@@ -18,6 +18,7 @@ public class UserProfile {
     public static final String ATTRIBUTE_SALT = "salt";
     public static final String ATTRIBUTE_ACCOUNT_VERIFIED = "accountVerified";
     public static final String ATTRIBUTE_TEST_USER = "testUser";
+    public static final String ATTRIBUTE_MFA_IDENTIFIER = "MFAIdentifier";
 
     private String email;
     private String subjectID;
@@ -28,6 +29,7 @@ public class UserProfile {
     private String updated;
     private TermsAndConditions termsAndConditions;
     private String publicSubjectID;
+    private String getmfaIdentifier;
     private String legacySubjectID;
     private byte[] salt;
     private int accountVerified;
@@ -155,6 +157,12 @@ public class UserProfile {
     @DynamoDbAttribute(ATTRIBUTE_PUBLIC_SUBJECT_ID)
     public String getPublicSubjectID() {
         return publicSubjectID;
+    }
+
+    @DynamoDbSecondaryPartitionKey(indexNames = {"MFAIdentifierIndex"})
+    @DynamoDbAttribute(ATTRIBUTE_MFA_IDENTIFIER)
+    public String getmfaIdentifier() {
+        return getmfaIdentifier;
     }
 
     public void setPublicSubjectID(String publicSubjectID) {

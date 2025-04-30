@@ -1,15 +1,17 @@
 package uk.gov.di.test.step_definitions;
 
-import com.nimbusds.jose.JOSEException;
 import io.cucumber.core.internal.com.fasterxml.jackson.core.JsonProcessingException;
+import io.cucumber.core.internal.com.fasterxml.jackson.databind.JsonNode;
+import io.cucumber.core.internal.com.fasterxml.jackson.databind.ObjectMapper;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.text.ParseException;
-
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 import static uk.gov.di.test.services.ApiInteractionsService.*;
 
 public class MFAMethodsAPIStepdefs {
@@ -25,22 +27,43 @@ public class MFAMethodsAPIStepdefs {
         LOG.info("Retrieving request is made to the API not implemented yet");
     }
 
-    @And("the user has no backup MFA method")
-    public void theUserHasNoBackupMFAMethod()
-            throws JsonProcessingException, ParseException, JOSEException {
+    @And("the User does not have a Backup MFA method")
+    public void theUserHasNoBackupMFAMethod() throws JsonProcessingException {
         checkUserHasBackupMFA(world);
     }
 
-    @When("the User requests to add a backup MFA Phone Number {string}")
-    public void theUserRequestsToAddABackupMFAPhoneNumber(String phoneNumber)
-            throws ParseException, JOSEException {
+    @Then("the Users Default MFA is an Auth App")
+    public void theUserHasADefaultAuthApp() {
+        assertTrue(userHasAuthAppAsDefault(world));
+    }
+
+    @When("the User provides the correct otp")
+    public void theUserRequestsToAddABackupMFAPhoneNumber() {
         addBackupSMS(world);
     }
 
-    @Then("the User's back up MFA phoneNumber is updated to {string}")
-    public void theUserSBackUpMFAPhoneNumberIsUpdatedTo(String phoneNumber)
-            throws JsonProcessingException, ParseException, JOSEException {
+    @When("the User request to update back up MFA as phone number {string}")
+    public void theUserRequestToUpdateBackUpMFAAsPhoneNumber(String phoneNumber) {
+        updateDefaultPhoneNumber(world);
+    }
+
+    @When("the User updates their Default MFA to an Auth App")
+    public void theUserRequestsToUpdateBackupMFAAuthApp() {
+        updateDefaultMfaToAuthApp(world);
+    }
+
+    @Then("{string} is added as a verified Backup MFA Method")
+    public void theUserSBackUpMFAPhoneNumberIsUpdatedTo(String phoneNumber) {
         backupSMSMFAAdded(world);
+        String jsonResponse = backupAuthMFAAdded(world);
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            JsonNode payloadJson = objectMapper.readTree(jsonResponse);
+            int actualStatusCode = payloadJson.get("statusCode").asInt();
+            assertEquals(200, actualStatusCode);
+        } catch (JsonProcessingException e) {
+            fail("Error parsing JSON response: " + e.getMessage());
+        }
     }
 
     @When("the User requests to add a backup MFA Auth App")
@@ -53,14 +76,16 @@ public class MFAMethodsAPIStepdefs {
         backupAuthMFAAdded(world);
     }
 
-    @When("the User request to update back up MFA as phone number {string}")
-    public void theUserRequestToUpdateBackUpMFAAsPhoneNumber(String phoneNumber) {
-        updateBackupPhoneNumber(world);
+    @When("the User updates their Default MFA to SMS of {string}")
+    public void theUserRequestsToUpdateABackupMFAAuthApp(String phoneNumber) {
+        // put new mfa in world
+        world.setNewPhoneNumber(phoneNumber);
+        sendOtpNotification(world);
     }
 
-    @When("the User requests to update a backup MFA Auth App")
-    public void theUserRequestsToUpdateABackupMFAAuthApp() {
-        updateBackupPhoneNumber(world);
+    @When("{string} is the new verified Default MFA")
+    public void updateDefaultMfa(String phoneNumber) {
+        updateDefaultPhoneNumber(world);
     }
 
     @When("the User requests to delete backup MFA Method")
@@ -69,5 +94,26 @@ public class MFAMethodsAPIStepdefs {
     }
 
     @Then("the User's backup MFA Method is deleted")
-    public void theUserSBackupMFAMethodIsDeleted() {}
+    public void theUserSBackupMFAMethodIsDeleted() {
+        /* TODO document why this method is empty */
+    }
+
+    @And("the User swaps their BACKUP and DEFAULT methods")
+    public void theUserSwapsTheirBACKUPAndDEFAULTMethods() {
+        switchMFAMethods(world);
+    }
+
+    @When("the User cannot to add Auth App as Backup MFA")
+    public void theUserCannotToAddAuthAppAsBackupMFA() {
+        addBackupAuthApp(world);
+        String jsonResponse = backupAuthMFAAdded(world);
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            JsonNode payloadJson = objectMapper.readTree(jsonResponse);
+            int actualStatusCode = payloadJson.get("statusCode").asInt();
+            assertEquals(200, actualStatusCode);
+        } catch (JsonProcessingException e) {
+            fail("Error parsing JSON response: " + e.getMessage());
+        }
+    }
 }
