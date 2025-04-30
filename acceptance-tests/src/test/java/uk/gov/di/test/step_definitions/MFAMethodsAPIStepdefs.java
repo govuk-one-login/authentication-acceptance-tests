@@ -26,17 +26,20 @@ public class MFAMethodsAPIStepdefs {
     }
 
     @And("the user has no backup MFA method")
-    public void theUserHasNoBackupMFAMethod() throws JsonProcessingException, ParseException, JOSEException {
+    public void theUserHasNoBackupMFAMethod()
+            throws JsonProcessingException, ParseException, JOSEException {
         checkUserHasBackupMFA(world);
     }
 
     @When("the User requests to add a backup MFA Phone Number {string}")
-    public void theUserRequestsToAddABackupMFAPhoneNumber(String phoneNumber) throws ParseException, JOSEException {
+    public void theUserRequestsToAddABackupMFAPhoneNumber(String phoneNumber)
+            throws ParseException, JOSEException {
         addBackupSMS(world);
     }
 
     @Then("the User's back up MFA phoneNumber is updated to {string}")
-    public void theUserSBackUpMFAPhoneNumberIsUpdatedTo(String phoneNumber) throws JsonProcessingException, ParseException, JOSEException {
+    public void theUserSBackUpMFAPhoneNumberIsUpdatedTo(String phoneNumber)
+            throws JsonProcessingException, ParseException, JOSEException {
         backupSMSMFAAdded(world);
     }
 
@@ -66,6 +69,5 @@ public class MFAMethodsAPIStepdefs {
     }
 
     @Then("the User's backup MFA Method is deleted")
-    public void theUserSBackupMFAMethodIsDeleted() {
-    }
+    public void theUserSBackupMFAMethodIsDeleted() {}
 }

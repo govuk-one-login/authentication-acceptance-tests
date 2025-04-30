@@ -46,6 +46,8 @@ Feature: MFA Method Management API
     Given a Migrated User exists
     And the User is Authenticated
     And the user has no backup MFA method
+    When the User requests an OTP to change their Phone Number to "07700900111"
+    And the User receives the OTP code
     When the User requests to add a backup MFA Phone Number "07700900112"
     Then the User's back up MFA phoneNumber is updated to "07700900112"
     When the User requests to update a backup MFA Auth App

@@ -7,11 +7,13 @@ import com.nimbusds.jose.shaded.gson.JsonObject;
 import io.cucumber.core.internal.com.fasterxml.jackson.core.JsonProcessingException;
 import io.cucumber.core.internal.com.fasterxml.jackson.databind.JsonNode;
 import io.cucumber.core.internal.com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.http.client.utils.URIUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jose4j.base64url.Base64Url;
 import org.openqa.selenium.remote.http.HttpMethod;
 import software.amazon.awssdk.auth.credentials.DefaultCredentialsProvider;
+import software.amazon.awssdk.core.ResponseInputStream;
 import software.amazon.awssdk.core.SdkBytes;
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.apigateway.ApiGatewayClient;
@@ -32,12 +34,16 @@ import software.amazon.awssdk.services.lambda.model.InvokeResponse;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.DeleteObjectRequest;
 import software.amazon.awssdk.services.s3.model.GetObjectRequest;
+import software.amazon.awssdk.services.s3.model.GetObjectResponse;
+import software.amazon.awssdk.services.s3.model.NoSuchKeyException;
 import uk.gov.di.test.step_definitions.World;
 import uk.gov.di.test.utils.AuthTokenGenerator;
 import uk.gov.di.test.utils.Environment;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -52,6 +58,9 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 public class ApiInteractionsService {
     private static final Logger LOG = LogManager.getLogger(ApiInteractionsService.class);
+
+    private static final TestConfigurationService TEST_CONFIG_SERVICE =
+            TestConfigurationService.getInstance();
 
     private static final LambdaClient lambdaClient =
             LambdaClient.builder()
@@ -94,8 +103,10 @@ public class ApiInteractionsService {
 
         InvokeResponse invokeResponse = lambdaClient.invoke(invokeRequest);
 
-        LOG.debug("POST to /authenticate endpoint integration function {} response: {}",
-                functionName, invokeResponse.payload().asUtf8String());
+        LOG.debug(
+                "POST to /authenticate endpoint integration function {} response: {}",
+                functionName,
+                invokeResponse.payload().asUtf8String());
 
         assertEquals(200, invokeResponse.statusCode());
     }
@@ -135,8 +146,10 @@ public class ApiInteractionsService {
 
         InvokeResponse invokeResponse = lambdaClient.invoke(invokeRequest);
 
-        LOG.debug("POST to /send-otp-notification endpoint integration function {} response: {}",
-                functionName, invokeResponse.payload().asUtf8String());
+        LOG.debug(
+                "POST to /send-otp-notification endpoint integration function {} response: {}",
+                functionName,
+                invokeResponse.payload().asUtf8String());
 
         assertEquals(200, invokeResponse.statusCode());
     }
@@ -148,7 +161,25 @@ public class ApiInteractionsService {
 
         var getObjectRequest = GetObjectRequest.builder().bucket(bucketName).key(email).build();
 
-        var response = s3client.getObject(getObjectRequest);
+        ResponseInputStream<GetObjectResponse> response = null;
+
+        for (int attempts = 0; attempts < 10; attempts++) {
+            try {
+                response = s3client.getObject(getObjectRequest);
+            } catch (NoSuchKeyException nsk) {
+                try {
+                    LOG.info(
+                            "Waiting for otp to be written to bucket, should only see this in authdevs where there is no provisioned concurency.");
+                    Thread.sleep(1000);
+                } catch (InterruptedException ie) {
+                    throw new RuntimeException(ie);
+                }
+            }
+        }
+
+        if (response == null) {
+            throw new RuntimeException("Couldn't get object from S3");
+        }
 
         var code =
                 new BufferedReader(new InputStreamReader(response, StandardCharsets.UTF_8))
@@ -202,8 +233,10 @@ public class ApiInteractionsService {
 
         InvokeResponse invokeResponse = lambdaClient.invoke(invokeRequest);
 
-        LOG.debug("POST to /update-phone-number integration function {} response: {}",
-                functionName, invokeResponse.payload().asUtf8String());
+        LOG.debug(
+                "POST to /update-phone-number integration function {} response: {}",
+                functionName,
+                invokeResponse.payload().asUtf8String());
     }
 
     public static void checkUserHasBackupMFA(World world) throws JsonProcessingException {
@@ -237,31 +270,32 @@ public class ApiInteractionsService {
         InvokeResponse invokeResponse = lambdaClient.invoke(invokeRequest);
         assertEquals(200, invokeResponse.statusCode());
 
-        LOG.debug("GET /mfa-methods/{publicSubjectId} integration function {} response: {}",
-                functionName, invokeResponse.payload().asUtf8String());
+        LOG.debug(
+                "GET /mfa-methods/{publicSubjectId} integration function {} response: {}",
+                functionName,
+                invokeResponse.payload().asUtf8String());
 
+        //        String responseBody = invokeResponse.payload().asUtf8String();
+        //        ObjectMapper objectMapper = new ObjectMapper();
+        //        JsonNode rootNode = objectMapper.readTree(responseBody);
+        //        JsonNode bodyArray = objectMapper.readTree(rootNode.path("body").asText());
 
-//        String responseBody = invokeResponse.payload().asUtf8String();
-//        ObjectMapper objectMapper = new ObjectMapper();
-//        JsonNode rootNode = objectMapper.readTree(responseBody);
-//        JsonNode bodyArray = objectMapper.readTree(rootNode.path("body").asText());
-
-//        if (bodyArray.isArray() && bodyArray.size() > 0) {
-//            JsonNode firstElement = bodyArray.get(0);
-//            String apriorityIdentifier = firstElement.path("priorityIdentifier").asText();
-//            assertNotEquals("BACKUP", apriorityIdentifier);
-//        } else {
-//            System.err.println("Error: 'body' is not a valid array or is empty.");
-//            return null;
-//        }
-
-        LOG.debug("GET /mfa-methods/{publicSubjectId} integration function {} response: {}",
-                functionName, invokeResponse.payload().asUtf8String());
+        //        if (bodyArray.isArray() && bodyArray.size() > 0) {
+        //            JsonNode firstElement = bodyArray.get(0);
+        //            String apriorityIdentifier = firstElement.path("priorityIdentifier").asText();
+        //            assertNotEquals("BACKUP", apriorityIdentifier);
+        //        } else {
+        //            System.err.println("Error: 'body' is not a valid array or is empty.");
+        //            return null;
+        //        }
 
         LOG.debug(
-                "/Current MFA Methods: {}",
+                "GET /mfa-methods/{publicSubjectId} integration function {} response: {}",
+                functionName,
                 invokeResponse.payload().asUtf8String());
-//        return responseBody;
+
+        LOG.debug("/Current MFA Methods: {}", invokeResponse.payload().asUtf8String());
+        //        return responseBody;
     }
 
     private static String retrieveUsersMFAMethods(World world) throws JsonProcessingException {
@@ -294,9 +328,10 @@ public class ApiInteractionsService {
 
         InvokeResponse invokeResponse = lambdaClient.invoke(invokeRequest);
 
-        LOG.debug("GET /mfa-methods/{publicSubjectId} integration function {} response: {}",
-                functionName, invokeResponse.payload().asUtf8String());
-
+        LOG.debug(
+                "GET /mfa-methods/{publicSubjectId} integration function {} response: {}",
+                functionName,
+                invokeResponse.payload().asUtf8String());
 
         String responseBody = invokeResponse.payload().asUtf8String();
         ObjectMapper objectMapper = new ObjectMapper();
@@ -312,12 +347,12 @@ public class ApiInteractionsService {
             return null;
         }
 
-        LOG.debug("GET /mfa-methods/{publicSubjectId} integration function {} response: {}",
-                functionName, invokeResponse.payload().asUtf8String());
-
         LOG.debug(
-                "/Current MFA Methods: {}",
+                "GET /mfa-methods/{publicSubjectId} integration function {} response: {}",
+                functionName,
                 invokeResponse.payload().asUtf8String());
+
+        LOG.debug("/Current MFA Methods: {}", invokeResponse.payload().asUtf8String());
         return responseBody;
     }
 
@@ -344,9 +379,7 @@ public class ApiInteractionsService {
                                 }
                               }
                """
-                        .formatted(
-                                world.getNewPhoneNumber(),
-                                world.getOtp());
+                        .formatted(world.getNewPhoneNumber(), world.getOtp());
 
         Map<String, String> pathParameters = new HashMap<>();
         pathParameters.put("publicSubjectId", world.userProfile.getPublicSubjectID());
@@ -371,8 +404,10 @@ public class ApiInteractionsService {
 
         assertEquals(200, invokeResponse.statusCode());
 
-        LOG.debug("POST /mfa-methods/{publicSubjectId} integration function {} response: {}",
-                functionName, invokeResponse.payload().asUtf8String());
+        LOG.debug(
+                "POST /mfa-methods/{publicSubjectId} integration function {} response: {}",
+                functionName,
+                invokeResponse.payload().asUtf8String());
     }
 
     public static void updateBackupPhoneNumber(World world) {
@@ -407,9 +442,7 @@ public class ApiInteractionsService {
         var event =
                 createApiGatewayProxyRequestEvent(
                         body, pathParameters, world.getAuthorizerContent());
-        LOG.debug(
-                "/Check Update Request: {}",
-                event);
+        LOG.debug("/Check Update Request: {}", event);
 
         InvokeRequest invokeRequest =
                 InvokeRequest.builder()
@@ -425,8 +458,10 @@ public class ApiInteractionsService {
 
         InvokeResponse invokeResponse = lambdaClient.invoke(invokeRequest);
 
-        LOG.debug("PUT /mfa-methods/{publicSubjectId} integration function {} response: {}",
-                functionName, invokeResponse.payload().asUtf8String());
+        LOG.debug(
+                "PUT /mfa-methods/{publicSubjectId} integration function {} response: {}",
+                functionName,
+                invokeResponse.payload().asUtf8String());
     }
 
     public static void addBackupAuthApp(World world) {
@@ -474,8 +509,10 @@ public class ApiInteractionsService {
 
         InvokeResponse invokeResponse = lambdaClient.invoke(invokeRequest);
 
-        LOG.debug("POST /mfa-methods/{publicSubjectId} integration function {} response: {}",
-                functionName, invokeResponse.payload().asUtf8String());
+        LOG.debug(
+                "POST /mfa-methods/{publicSubjectId} integration function {} response: {}",
+                functionName,
+                invokeResponse.payload().asUtf8String());
     }
 
 
@@ -524,8 +561,10 @@ public class ApiInteractionsService {
 
         InvokeResponse invokeResponse = lambdaClient.invoke(invokeRequest);
 
-        LOG.debug("PUT /mfa-methods/{publicSubjectId} integration function {} response: {}",
-                functionName, invokeResponse.payload().asUtf8String());
+        LOG.debug(
+                "PUT /mfa-methods/{publicSubjectId} integration function {} response: {}",
+                functionName,
+                invokeResponse.payload().asUtf8String());
     }
 
     public static String backupSMSMFAAdded(World world) {
@@ -561,8 +600,10 @@ public class ApiInteractionsService {
 
         assertEquals(200, invokeResponse.statusCode());
 
-        LOG.debug("GET /mfa-methods/{publicSubjectId} integration function {} response: {}",
-                functionName, invokeResponse.payload().asUtf8String());
+        LOG.debug(
+                "GET /mfa-methods/{publicSubjectId} integration function {} response: {}",
+                functionName,
+                invokeResponse.payload().asUtf8String());
 
         return invokeResponse.payload().asUtf8String();
     }
@@ -600,8 +641,10 @@ public class ApiInteractionsService {
 
         assertEquals(200, invokeResponse.statusCode());
 
-        LOG.debug("GET /mfa-methods/{publicSubjectId} integration function {} response: {}",
-                functionName, invokeResponse.payload().asUtf8String());
+        LOG.debug(
+                "GET /mfa-methods/{publicSubjectId} integration function {} response: {}",
+                functionName,
+                invokeResponse.payload().asUtf8String());
 
         return invokeResponse.payload().asUtf8String();
     }
@@ -638,25 +681,35 @@ public class ApiInteractionsService {
 
         InvokeResponse invokeResponse = lambdaClient.invoke(invokeRequest);
 
-        LOG.debug("DELETE /mfa-methods/{publicSubjectId} integration function {} response: {}",
-                functionName, invokeResponse.payload().asUtf8String());
+        LOG.debug(
+                "DELETE /mfa-methods/{publicSubjectId} integration function {} response: {}",
+                functionName,
+                invokeResponse.payload().asUtf8String());
 
         return invokeResponse.payload().asUtf8String();
-
     }
 
-    public static void authorizeApiGatewayUse(World world) throws ParseException, JOSEException {
-        // calculate internal common subject id
+    public static void authorizeApiGatewayUse(World world) {
+        String sectorHost;
+
+        try {
+            sectorHost =
+                    URIUtils.extractHost(new URI(TEST_CONFIG_SERVICE.get("INTERNAL_SECTOR_URI")))
+                            .getHostName();
+        } catch (URISyntaxException e) {
+            throw new RuntimeException(e);
+        }
+
         var commonInternalSubjectId =
                 calculatePairwiseIdentifier(
-                        world.userProfile.getSubjectID(),
-                        //TODO get this from parameter store
-                        "identity.authdev2.sandpit.account.gov.uk",
-                        world.userProfile.getSalt());
+                        world.userProfile.getSubjectID(), sectorHost, world.userProfile.getSalt());
 
-        var token = AuthTokenGenerator.createJwt(commonInternalSubjectId);
-
-        world.setToken(token);
+        try {
+            var token = AuthTokenGenerator.createJwt(commonInternalSubjectId);
+            world.setToken(token);
+        } catch (JOSEException | ParseException e) {
+            throw new RuntimeException(e);
+        }
 
         var env = Environment.getOrThrow("ENVIRONMENT");
         var restApiName = "%s-di-account-management-api-method-management".formatted(env);
@@ -665,13 +718,18 @@ public class ApiInteractionsService {
 
         LOG.debug("testing restApiId: {}", restApiId);
 
-        var authrorizerContext = executeAuthorizerToObtainAuthorizerContext(restApiId, token);
+        var authorizerContext =
+                executeAuthorizerToObtainAuthorizerContext(restApiId, world.getToken());
 
-        var authrorizerContextAsMap = new HashMap<String, Object>();
-        authrorizerContext.entrySet().forEach(entry -> authrorizerContextAsMap.put(entry.getKey(), entry.getValue()));
-        authrorizerContextAsMap.put("clientId", authrorizerContext.get("context").getAsJsonObject().get("clientId").getAsString());
+        var authorizerContextAsMap = new HashMap<String, Object>();
+        authorizerContext
+                .entrySet()
+                .forEach(entry -> authorizerContextAsMap.put(entry.getKey(), entry.getValue()));
+        authorizerContextAsMap.put(
+                "clientId",
+                authorizerContext.get("context").getAsJsonObject().get("clientId").getAsString());
 
-        world.setAuthorizerContent(authrorizerContextAsMap);
+        world.setAuthorizerContent(authorizerContextAsMap);
         world.setMethodManagementApiId(restApiId);
     }
 
