@@ -15,8 +15,7 @@ import uk.gov.di.test.utils.Driver;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static uk.gov.di.test.utils.Driver.getDriver;
 
 public class CommonStepDef extends BasePage {
@@ -177,5 +176,11 @@ public class CommonStepDef extends BasePage {
     public void theUserNavigatesToThePreviousPage() {
         WebDriver driver = getDriver();
         driver.navigate().back();
+    }
+
+    @Then("the {string} cookie has been set")
+    public void theCookieHasBeenSet(String cookieName) {
+        var cookie = Driver.get().manage().getCookieNamed(cookieName);
+        assertNotNull(cookie);
     }
 }
