@@ -62,4 +62,4 @@ Feature: Auth App MFA User manages their MFA methods via the Method Management A
 
   Scenario: Prevented from adding backup method to Auth App when Default is Auth App
     And the User does not have a Backup MFA method
-    When the User cannot to add Auth App as Backup MFA
+    When the User cannot add an Auth App as Backup
