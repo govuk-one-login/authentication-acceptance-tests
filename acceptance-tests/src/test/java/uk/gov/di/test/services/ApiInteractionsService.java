@@ -55,7 +55,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
-
+import static org.junit.jupiter.api.Assertions.assertEquals;
 public class ApiInteractionsService {
     private static final Logger LOG = LogManager.getLogger(ApiInteractionsService.class);
 
@@ -99,6 +99,10 @@ public class ApiInteractionsService {
                         .build();
 
         InvokeResponse invokeResponse = lambdaClient.invoke(invokeRequest);
+
+        LOG.debug("/authenticate response: {}", invokeResponse);
+
+        assertEquals(200, invokeResponse.statusCode());
     }
 
     public static void sendOtpNotification(World world) {
@@ -127,6 +131,10 @@ public class ApiInteractionsService {
                         .build();
 
         InvokeResponse invokeResponse = lambdaClient.invoke(invokeRequest);
+
+        LOG.debug("/send-otp-notification response: {}", invokeResponse.payload().asUtf8String());
+
+        assertEquals(200, invokeResponse.statusCode());
     }
 
     public static String getOtp(String email) {
