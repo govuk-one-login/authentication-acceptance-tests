@@ -1,10 +1,10 @@
 package uk.gov.di.test.services;
 
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.nimbusds.jose.JOSEException;
-import com.nimbusds.jose.shaded.gson.Gson;
-import com.nimbusds.jose.shaded.gson.JsonObject;
-import com.nimbusds.jose.shaded.gson.JsonParser;
 import io.cucumber.core.internal.com.fasterxml.jackson.core.JsonProcessingException;
 import io.cucumber.core.internal.com.fasterxml.jackson.databind.JsonNode;
 import io.cucumber.core.internal.com.fasterxml.jackson.databind.ObjectMapper;
