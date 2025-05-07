@@ -105,13 +105,12 @@ public class MFAMethodsAPIStepdefs {
 
     @When("the User cannot to add Auth App as Backup MFA")
     public void theUserCannotToAddAuthAppAsBackupMFA() {
-        addBackupAuthApp(world);
-        String jsonResponse = backupAuthMFAAdded(world);
+        String jsonResponse = addBackupAuthApp(world);
         ObjectMapper objectMapper = new ObjectMapper();
         try {
             JsonNode payloadJson = objectMapper.readTree(jsonResponse);
             int actualStatusCode = payloadJson.get("statusCode").asInt();
-            assertEquals(200, actualStatusCode);
+            assertEquals(400, actualStatusCode);
         } catch (JsonProcessingException e) {
             fail("Error parsing JSON response: " + e.getMessage());
         }

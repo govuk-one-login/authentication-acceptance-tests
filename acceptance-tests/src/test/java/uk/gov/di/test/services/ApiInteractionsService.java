@@ -485,7 +485,7 @@ public class ApiInteractionsService {
         }
     }
 
-    public static void addBackupAuthApp(World world) {
+    public static String addBackupAuthApp(World world) {
         var functionName =
                 getLambda(
                         world.getMethodManagementApiId(),
@@ -532,6 +532,8 @@ public class ApiInteractionsService {
             LOG.error("Error from lambda {}.", invokeResponse.statusCode());
             throw new RuntimeException("Error from lambda: " + invokeResponse.statusCode());
         }
+
+        return invokeResponse.payload().asUtf8String();
     }
 
     public static void switchMFAMethods(World world) {
