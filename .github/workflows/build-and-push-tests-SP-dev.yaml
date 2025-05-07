@@ -56,7 +56,7 @@ jobs:
       - name: Sign image with Cosign
         env:
           TAGS: "${{ steps.login-ecr.outputs.registry }}/${{ secrets.ACCEPTANCE_ECR_REPO_NEW_DEV }}:latest"
-          CONTAINER_SIGN_KMS_KEY: ${{ secrets.CONTAINER_SIGN_KMS_KEY }}
+          CONTAINER_SIGN_KMS_KEY: ${{ secrets.CONTAINER_SIGN_KMS_KEY_NEW_DEV }}
           DIGEST: ${{ steps.build-and-push.outputs.digest }}
         run: |
           cosign sign --yes \
