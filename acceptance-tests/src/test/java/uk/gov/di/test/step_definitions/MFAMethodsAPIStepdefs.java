@@ -28,7 +28,7 @@ public class MFAMethodsAPIStepdefs {
     }
 
     @And("the User does not have a Backup MFA method")
-    public void theUserHasNoBackupMFAMethod() throws JsonProcessingException {
+    public void theUserHasNoBackupMFAMethod() {
         checkUserHasBackupMFA(world);
     }
 

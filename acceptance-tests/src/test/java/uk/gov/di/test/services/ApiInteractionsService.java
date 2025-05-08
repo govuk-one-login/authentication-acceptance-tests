@@ -203,7 +203,6 @@ public class ApiInteractionsService {
 
         InvokeResponse invokeResponse = lambdaClient.invoke(invokeRequest);
 
-        //        throwIfApplicationError(invokeResponse);
         if (invokeResponse.statusCode() != 200) {
             LOG.error("Error from lambda {}.", invokeResponse.statusCode());
             throw new RuntimeException("Error from lambda: " + invokeResponse.statusCode());
@@ -234,10 +233,7 @@ public class ApiInteractionsService {
         return false;
     }
 
-    public static void checkUserHasBackupMFA(World world) throws JsonProcessingException {
-        String mfaMethods = retrieveUsersMFAMethods(world);
-
-        // TODO check mfaMethods for a BACKUP method, error if one is found.
+    public static void checkUserHasBackupMFA(World world) {
         var functionName =
                 getLambda(
                         world.getMethodManagementApiId(),
@@ -265,7 +261,6 @@ public class ApiInteractionsService {
 
         InvokeResponse invokeResponse = lambdaClient.invoke(invokeRequest);
 
-        //        throwIfApplicationError(invokeResponse);
         if (invokeResponse.statusCode() != 200) {
             LOG.error("Error from lambda {}.", invokeResponse.statusCode());
             throw new RuntimeException("Error from lambda: " + invokeResponse.statusCode());
@@ -300,7 +295,6 @@ public class ApiInteractionsService {
 
         InvokeResponse invokeResponse = lambdaClient.invoke(invokeRequest);
 
-        //        throwIfApplicationError(invokeResponse);
         if (invokeResponse.statusCode() != 200) {
             LOG.error("Error from lambda {}.", invokeResponse.statusCode());
             throw new RuntimeException("Error from lambda: " + invokeResponse.statusCode());
@@ -369,7 +363,6 @@ public class ApiInteractionsService {
         world.userCredentials =
                 DynamoDbService.getInstance().getUserCredentials(world.userProfile.getEmail());
 
-        //        throwIfApplicationError(invokeResponse);
         if (invokeResponse.statusCode() != 200) {
             LOG.error("Error from lambda {}.", invokeResponse.statusCode());
             throw new RuntimeException("Error from lambda: " + invokeResponse.statusCode());
@@ -467,7 +460,6 @@ public class ApiInteractionsService {
 
         InvokeResponse invokeResponse = lambdaClient.invoke(invokeRequest);
 
-        //        throwIfApplicationError(invokeResponse);
         if (invokeResponse.statusCode() != 200) {
             LOG.error("Error from lambda {}.", invokeResponse.statusCode());
             throw new RuntimeException("Error from lambda: " + invokeResponse.statusCode());
@@ -516,7 +508,6 @@ public class ApiInteractionsService {
 
         InvokeResponse invokeResponse = lambdaClient.invoke(invokeRequest);
 
-        //        throwIfApplicationError(invokeResponse);
         if (invokeResponse.statusCode() != 200) {
             LOG.error("Error from lambda {}.", invokeResponse.statusCode());
             throw new RuntimeException("Error from lambda: " + invokeResponse.statusCode());
@@ -575,26 +566,10 @@ public class ApiInteractionsService {
         InvokeResponse invokeResponse = lambdaClient.invoke(invokeRequest);
         LOG.debug("/Backup Auth is not updated: {}", invokeResponse.payload().asUtf8String());
 
-        //        throwIfApplicationError(invokeResponse);
         if (invokeResponse.statusCode() != 200) {
             LOG.error("Error from lambda {}.", invokeResponse.statusCode());
             throw new RuntimeException("Error from lambda: " + invokeResponse.statusCode());
         }
-    }
-
-    private static void throwIfApplicationError(InvokeResponse invokeResponse) {
-        String payload = invokeResponse.payload().asUtf8String();
-        JsonObject payloadJson = JsonParser.parseString(payload).getAsJsonObject();
-
-        if (payloadJson.has("statusCode") && payloadJson.get("statusCode").getAsInt() != 200) {
-            LOG.error("Error from lambda {}.", payloadJson.get("body").getAsString());
-            throw new RuntimeException(
-                    "Error from lambda: " + payloadJson.get("body").getAsString());
-        }
-    }
-
-    public static int getStatusCode(int actualStatusCode) {
-        return actualStatusCode;
     }
 
     public static void updateBackupAuthApp(World world) {
@@ -639,7 +614,6 @@ public class ApiInteractionsService {
 
         InvokeResponse invokeResponse = lambdaClient.invoke(invokeRequest);
 
-        //        throwIfApplicationError(invokeResponse);
         if (invokeResponse.statusCode() != 200) {
             LOG.error("Error from lambda {}.", invokeResponse.statusCode());
             throw new RuntimeException("Error from lambda: " + invokeResponse.statusCode());
@@ -679,8 +653,7 @@ public class ApiInteractionsService {
             throw new RuntimeException("Error from lambda: " + invokeResponse.statusCode());
         }
         String payload = invokeResponse.payload().asUtf8String();
-        JsonObject payloadJson = JsonParser.parseString(payload).getAsJsonObject();
-        return payloadJson;
+        return JsonParser.parseString(payload).getAsJsonObject();
     }
 
     public static String backupAuthMFAAdded(World world) {
@@ -711,7 +684,6 @@ public class ApiInteractionsService {
 
         InvokeResponse invokeResponse = lambdaClient.invoke(invokeRequest);
 
-        //        throwIfApplicationError(invokeResponse);
         if (invokeResponse.statusCode() != 200) {
             LOG.error("Error from lambda {}.", invokeResponse.statusCode());
             throw new RuntimeException("Error from lambda: " + invokeResponse.statusCode());
@@ -749,7 +721,6 @@ public class ApiInteractionsService {
 
         InvokeResponse invokeResponse = lambdaClient.invoke(invokeRequest);
 
-        //        throwIfApplicationError(invokeResponse);
         if (invokeResponse.statusCode() != 200) {
             LOG.error("Error from lambda {}.", invokeResponse.statusCode());
             throw new RuntimeException("Error from lambda: " + invokeResponse.statusCode());
