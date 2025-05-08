@@ -14,7 +14,7 @@ import org.apache.logging.log4j.Logger;
 import org.jose4j.base64url.Base64Url;
 import org.openqa.selenium.remote.http.HttpMethod;
 import software.amazon.awssdk.auth.credentials.DefaultCredentialsProvider;
-import software.amazon.awssdk.core.ResponseInputStream;
+import software.amazon.awssdk.core.ResponseBytes;
 import software.amazon.awssdk.core.SdkBytes;
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.apigateway.ApiGatewayClient;
@@ -41,19 +41,19 @@ import uk.gov.di.test.step_definitions.World;
 import uk.gov.di.test.utils.AuthTokenGenerator;
 import uk.gov.di.test.utils.Environment;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.ParseException;
+import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
+import static org.awaitility.Awaitility.await;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
@@ -140,35 +140,24 @@ public class ApiInteractionsService {
 
     public static String getOtp(String email) {
         var s3client = S3Client.builder().region(Region.of(Region.EU_WEST_2.toString())).build();
-
         var bucketName = Environment.getOrThrow("ENVIRONMENT") + "-am-api-acceptance-tests-otp";
-
         var getObjectRequest = GetObjectRequest.builder().bucket(bucketName).key(email).build();
 
-        ResponseInputStream<GetObjectResponse> response = null;
+        ResponseBytes<GetObjectResponse> response =
+                await().atMost(Duration.ofSeconds(10))
+                        .pollInterval(Duration.ofSeconds(1))
+                        .until(
+                                () -> {
+                                    try {
+                                        return s3client.getObjectAsBytes(getObjectRequest);
+                                    } catch (NoSuchKeyException nsk) {
+                                        LOG.info("OTP not written to S3 yet.");
+                                        return null;
+                                    }
+                                },
+                                Objects::nonNull);
 
-        for (int attempts = 0; attempts < 10; attempts++) {
-            try {
-                response = s3client.getObject(getObjectRequest);
-            } catch (NoSuchKeyException nsk) {
-                try {
-                    LOG.info(
-                            "Waiting for otp to be written to bucket, should only see this in authdevs where there is no provisioned concurency.");
-                    Thread.sleep(1000);
-                } catch (InterruptedException ie) {
-                    throw new RuntimeException(ie);
-                }
-            }
-        }
-
-        if (response == null) {
-            throw new RuntimeException("Couldn't get object from S3");
-        }
-
-        var code =
-                new BufferedReader(new InputStreamReader(response, StandardCharsets.UTF_8))
-                        .lines()
-                        .collect(Collectors.joining("\n"));
+        var code = response.asUtf8String();
 
         DeleteObjectRequest deleteObjectRequest =
                 DeleteObjectRequest.builder().bucket(bucketName).key(email).build();
