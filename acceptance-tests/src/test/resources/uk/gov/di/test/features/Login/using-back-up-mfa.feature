@@ -2,7 +2,7 @@
 Feature: Login Using Back Up MFA
 
   Scenario Outline: Mfa User choose a Back Up Phone Number when they choose ‘Try another way to get security code’ option
-    Given a Migrated User with a Auth App Default MFA
+    Given a Migrated User with an Auth App Default MFA
     And the User is Authenticated
     When the User adds "07700900111" as their SMS Backup MFA
     Then the system sends an OTP to "07700900111"

@@ -4,8 +4,6 @@ import io.cucumber.java.After;
 import io.cucumber.java.ParameterType;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import uk.gov.di.test.entity.MFAMethodType;
 import uk.gov.di.test.services.UserLifecycleService;
 
@@ -14,7 +12,6 @@ import static uk.gov.di.test.utils.Constants.TOP_100K_PASSWORD;
 
 public class UserLifecycleStepDef {
     private final World world;
-    private static final Logger LOG = LogManager.getLogger(UserLifecycleStepDef.class);
 
     private static final UserLifecycleService userLifecycleService =
             UserLifecycleService.getInstance();

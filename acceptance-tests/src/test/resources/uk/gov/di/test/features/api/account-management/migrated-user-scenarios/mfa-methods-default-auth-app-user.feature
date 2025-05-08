@@ -41,8 +41,11 @@ Feature: Auth App MFA User manages their MFA methods via the Method Management A
 
   Scenario: Prevented from changing Default method to Auth App when Backup is Auth App
     And the User does not have a Backup MFA method
-    When the User adds "07700900111" as their SMS Backup MFA
-
+    And the User adds "07700900111" as their SMS Backup MFA
+    And the system sends an OTP to "07700900111"
+    And the User provides the correct otp
+    Then the User switches their BACKUP and DEFAULT methods
+    And the User cannot add an Auth App as Backup
 
   Scenario: Switch MFA methods
     And the User does not have a Backup MFA method
@@ -50,7 +53,7 @@ Feature: Auth App MFA User manages their MFA methods via the Method Management A
     Then the system sends an OTP to "07700900111"
     When the User provides the correct otp
     Then "07700900112" is added as a verified Backup MFA Method
-    And the User swaps their BACKUP and DEFAULT methods
+    And the User switches their BACKUP and DEFAULT methods
 
   Scenario: Switch MFA methods Error for changing SMS back to default
     And the User does not have a Backup MFA method
@@ -58,7 +61,7 @@ Feature: Auth App MFA User manages their MFA methods via the Method Management A
     Then the system sends an OTP to "07700900111"
     When the User provides the correct otp
     Then "07700900111" is added as a verified Backup MFA Method
-    And the User swaps their BACKUP and DEFAULT methods
+    And the User switches their BACKUP and DEFAULT methods
 
   Scenario: Prevented from adding backup method to Auth App when Default is Auth App
     And the User does not have a Backup MFA method

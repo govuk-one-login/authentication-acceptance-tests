@@ -5,7 +5,6 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import uk.gov.di.test.pages.BasePage;
-import uk.gov.di.test.services.DynamoDbService;
 import uk.gov.di.test.services.UserLifecycleService;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -49,8 +48,6 @@ public class AccountManagementStepDef extends BasePage {
 
     @Then("the User's Phone Number is updated to {string}")
     public void theUserSPhoneNumberIsUpdatedTo(String newPhoneNumber) {
-        var userProfile =
-                DynamoDbService.getInstance().getUserProfile(world.userProfile.getEmail());
         assertEquals("07700900111", newPhoneNumber);
     }
 
