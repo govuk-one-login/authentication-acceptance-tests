@@ -50,6 +50,11 @@ public class DynamoDbService {
                     TEST_CONFIG_SERVICE.get("ACCOUNT_INTERVENTIONS_TABLE"),
                     TableSchema.fromBean(UserInterventions.class));
 
+    public UserProfile getUserProfile(String key) {
+        Key dbkey = Key.builder().partitionValue(key).build();
+        return userProfileTable.getItem(dbkey);
+    }
+
     public void putUserProfile(UserProfile userProfile) {
         userProfileTable.putItem(userProfile);
     }
@@ -62,9 +67,9 @@ public class DynamoDbService {
         userProfileTable.deleteItem(userProfile);
     }
 
-    public UserProfile getUserProfile(String key) {
+    public UserCredentials getUserCredentials(String key) {
         Key dbkey = Key.builder().partitionValue(key).build();
-        return userProfileTable.getItem(dbkey);
+        return userCredentialsTable.getItem(dbkey);
     }
 
     public void putUserCredentials(UserCredentials userCredentials) {

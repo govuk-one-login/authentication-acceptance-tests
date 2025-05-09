@@ -191,6 +191,21 @@ public class MFAMethod {
     }
 
     @Override
+    public String toString() {
+        final StringBuffer sb = new StringBuffer("MFAMethod{");
+        sb.append("credentialValue='").append(credentialValue).append('\'');
+        sb.append(", mfaMethodType='").append(mfaMethodType).append('\'');
+        sb.append(", methodVerified=").append(methodVerified);
+        sb.append(", enabled=").append(enabled);
+        sb.append(", updated='").append(updated).append('\'');
+        sb.append(", destination='").append(destination).append('\'');
+        sb.append(", priority='").append(priority).append('\'');
+        sb.append(", mfaIdentifier=").append(mfaIdentifier);
+        sb.append('}');
+        return sb.toString();
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;

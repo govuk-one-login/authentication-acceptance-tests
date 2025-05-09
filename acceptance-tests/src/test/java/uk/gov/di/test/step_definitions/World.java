@@ -29,6 +29,7 @@ public class World {
     private String newPhoneNumber;
     private Map<String, Object> authorizerContent;
     private String otp;
+    private String invokeResponse;
 
     public String getMethodManagementApiId() {
         return methodManagementApiId;
@@ -187,5 +188,9 @@ public class World {
             throw new WorldException("User interventions do not exist");
         }
         return this;
+    }
+
+    public String invokeResponse() {
+        return invokeResponse;
     }
 }

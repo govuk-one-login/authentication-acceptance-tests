@@ -1,8 +1,12 @@
 package uk.gov.di.test.services;
 
+import org.apache.http.client.utils.URIUtils;
 import uk.gov.di.test.entity.UserInterventions;
 import uk.gov.di.test.entity.UserProfile;
 import uk.gov.di.test.utils.Crypto;
+
+import java.net.URI;
+import java.net.URISyntaxException;
 
 public class UserInterventionLifecycleService {
     protected static final TestConfigurationService TEST_CONFIG_SERVICE =
@@ -27,11 +31,18 @@ public class UserInterventionLifecycleService {
     private static final DynamoDbService DYNAMO_DB_SERVICE = DynamoDbService.getInstance();
 
     public static UserInterventions buildBaseInterventions(UserProfile userProfile) {
+        String sectorHost = null;
+        try {
+            sectorHost =
+                    URIUtils.extractHost(new URI(TEST_CONFIG_SERVICE.get("INTERNAL_SECTOR_URI")))
+                            .getHostName();
+        } catch (URISyntaxException e) {
+            throw new RuntimeException(e);
+        }
+
         String b64Digest =
                 Crypto.generatePairwiseIdDigest(
-                        TEST_CONFIG_SERVICE.get("SECTOR_HOST"),
-                        userProfile.getSubjectID(),
-                        userProfile.getSalt());
+                        sectorHost, userProfile.getSubjectID(), userProfile.getSalt());
         String pairwiseID = String.format("urn:fdc:gov.uk:2022:%s", b64Digest);
 
         return new UserInterventions()

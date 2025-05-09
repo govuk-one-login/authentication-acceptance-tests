@@ -4,6 +4,7 @@ import io.cucumber.java.After;
 import io.cucumber.java.ParameterType;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
+import uk.gov.di.test.entity.MFAMethodType;
 import uk.gov.di.test.services.UserLifecycleService;
 
 import static uk.gov.di.test.services.UserLifecycleService.generateValidPassword;
@@ -24,6 +25,31 @@ public class UserLifecycleStepDef {
         world.throwIfUserProfileExists().throwIfUserCredentialsExists();
         world.userProfile = userLifecycleService.buildNewUserProfile();
         world.setUserPassword(generateValidPassword());
+    }
+
+    @Given("a Migrated User does not yet exist")
+    public void aMigratedUserDoesNotYetExist() {
+        world.throwIfUserProfileExists().throwIfUserCredentialsExists();
+        world.userProfile = userLifecycleService.buildNewMigratedUserProfile();
+        world.setUserPassword(generateValidPassword());
+    }
+
+    @Given("a Migrated User with an Auth App Default MFA")
+    public void aMigratedUserExists() {
+        aMigratedUserDoesNotYetExist();
+        userLifecycleService.putUserProfileToDynamodb(world.userProfile);
+        world.userCredentials =
+                userLifecycleService.createUserCredentials(
+                        world.userProfile, world.getUserPassword(), MFAMethodType.AUTH_APP);
+    }
+
+    @Given("a Migrated User with a Default MFA of SMS")
+    public void aMigratedUserWithSMSExists() {
+        aMigratedUserDoesNotYetExist();
+        userLifecycleService.putUserProfileToDynamodb(world.userProfile);
+        world.userCredentials =
+                userLifecycleService.createUserCredentials(
+                        world.userProfile, world.getUserPassword(), MFAMethodType.SMS);
     }
 
     @Given("a User exists")
@@ -94,7 +120,8 @@ public class UserLifecycleStepDef {
         world.setUserPassword(TOP_100K_PASSWORD);
     }
 
-    @After("@UI or @API")
+    //    @After("@UI or @API")
+    @After("@UI")
     public void theUserIsDeleted() {
         if (world.userProfile != null) {
             System.out.printf(
