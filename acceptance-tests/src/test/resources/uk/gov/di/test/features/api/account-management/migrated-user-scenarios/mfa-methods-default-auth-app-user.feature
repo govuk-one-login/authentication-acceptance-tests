@@ -45,7 +45,7 @@ Feature: Auth App MFA User manages their MFA methods via the Method Management A
     And the system sends an OTP to "07700900111"
     And the User provides the correct otp
     Then the User switches their BACKUP and DEFAULT methods
-    And the User cannot add an Auth App as Backup
+    And the User is prevented from updating the Default MFA to an Auth App
 
   Scenario: Switch MFA methods
     And the User does not have a Backup MFA method
@@ -66,3 +66,5 @@ Feature: Auth App MFA User manages their MFA methods via the Method Management A
   Scenario: Prevented from adding backup method to Auth App when Default is Auth App
     And the User does not have a Backup MFA method
     When the User cannot add an Auth App as Backup
+
+  Scenario: Rejects invalid request format
