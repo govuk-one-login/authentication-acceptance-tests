@@ -2,6 +2,8 @@ package uk.gov.di.test.services;
 
 import org.apache.commons.text.StringSubstitutor;
 import uk.gov.di.test.entity.MFAMethod;
+import uk.gov.di.test.entity.MFAMethodType;
+import uk.gov.di.test.entity.PriorityIdentifier;
 import uk.gov.di.test.entity.TermsAndConditions;
 import uk.gov.di.test.entity.UserCredentials;
 import uk.gov.di.test.entity.UserProfile;
@@ -11,6 +13,7 @@ import uk.gov.di.test.utils.Environment;
 import uk.gov.di.test.utils.PasswordGenerator;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicLong;
@@ -124,6 +127,16 @@ public class UserLifecycleService {
                 .withTermsAndConditions(buildTermsAndConditions());
     }
 
+    public UserProfile buildNewMigratedUserProfile() {
+        return new UserProfile()
+                .withTestUser(1)
+                .withEmail(generateNewUniqueEmailAddress())
+                .withPublicSubjectID(UUID.randomUUID().toString())
+                .withSubjectID(UUID.randomUUID().toString())
+                .withSalt(Crypto.generateSalt())
+                .withTermsAndConditions(buildTermsAndConditions());
+    }
+
     public UserProfile buildNewUserProfileAndPutToDynamodb() {
         UserProfile userProfile = buildNewUserProfile();
         putUserProfileToDynamodb(userProfile);
@@ -172,6 +185,53 @@ public class UserLifecycleService {
     public UserCredentials buildNewUserCredentialsAndPutToDynamodb(
             UserProfile userProfile, String userPassword) {
         UserCredentials userCredentials = buildNewUserCredentials(userProfile, userPassword);
+        putUserCredentialsToDynamodb(userCredentials);
+        return userCredentials;
+    }
+
+    public UserCredentials buildNewMigratedUserCredentials(
+            UserProfile userProfile, String userPassword, MFAMethodType methodType) {
+        String encodedPassword = Crypto.encodePassword(userPassword, userProfile.getSalt());
+        MFAMethod methodToAdd = getMfaMethod(methodType);
+
+        return new UserCredentials()
+                .withTestUser(1)
+                .withEmail(userProfile.getEmail())
+                .withPassword(encodedPassword)
+                .withSubjectID(userProfile.getSubjectID())
+                .withMfaMethods(List.of(methodToAdd));
+    }
+
+    private static MFAMethod getMfaMethod(MFAMethodType methodType) {
+        MFAMethod methodToAdd;
+        if (methodType == MFAMethodType.AUTH_APP) {
+            methodToAdd =
+                    new MFAMethod(
+                            MFAMethodType.AUTH_APP.name(),
+                            "credential",
+                            true,
+                            true,
+                            "test",
+                            PriorityIdentifier.DEFAULT,
+                            "1");
+        } else {
+            methodToAdd =
+                    new MFAMethod(
+                            MFAMethodType.SMS.name(),
+                            true,
+                            true,
+                            "07700900111",
+                            "date",
+                            PriorityIdentifier.DEFAULT,
+                            "1");
+        }
+        return methodToAdd;
+    }
+
+    public UserCredentials createUserCredentials(
+            UserProfile userProfile, String userPassword, MFAMethodType methodType) {
+        UserCredentials userCredentials =
+                buildNewMigratedUserCredentials(userProfile, userPassword, methodType);
         putUserCredentialsToDynamodb(userCredentials);
         return userCredentials;
     }

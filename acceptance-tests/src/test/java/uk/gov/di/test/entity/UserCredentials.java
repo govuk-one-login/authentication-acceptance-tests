@@ -178,4 +178,19 @@ public class UserCredentials {
         this.testUser = isTestUser;
         return this;
     }
+
+    @Override
+    public String toString() {
+        final StringBuffer sb = new StringBuffer("UserCredentials{");
+        sb.append("created='").append(created).append('\'');
+        sb.append(", email='").append(email).append('\'');
+        sb.append(", subjectID='").append(subjectID).append('\'');
+        sb.append(", password='").append(password).append('\'');
+        sb.append(", updated='").append(updated).append('\'');
+        sb.append(", migratedPassword='").append(migratedPassword).append('\'');
+        sb.append(", mfaMethods=").append(mfaMethods);
+        sb.append(", testUser=").append(testUser);
+        sb.append('}');
+        return sb.toString();
+    }
 }
