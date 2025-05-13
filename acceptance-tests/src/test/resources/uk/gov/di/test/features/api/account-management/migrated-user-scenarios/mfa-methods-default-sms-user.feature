@@ -37,4 +37,4 @@ Feature: SMS MFA User manages their MFA methods via the Method Management API
   Scenario: Prevented from changing Default method to Auth App when Backup is Auth App
     Given the User does not have a Backup MFA method
     And the User requests to add a backup MFA Auth App
-    When the User cannot add an Auth App as Backup
+    When the User cannot update their Default MFA to an Auth App
