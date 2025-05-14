@@ -43,8 +43,8 @@ dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.12.2'
     testImplementation 'io.rest-assured:rest-assured:5.5.1'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.12.2'
-    testImplementation("com.nimbusds:oauth2-oidc-sdk:11.23.1")
-    testImplementation("com.nimbusds:nimbus-jose-jwt:10.2")
+    testImplementation("com.nimbusds:oauth2-oidc-sdk:11.24")
+    testImplementation("com.nimbusds:nimbus-jose-jwt:10.3")
 }
 
 test {
