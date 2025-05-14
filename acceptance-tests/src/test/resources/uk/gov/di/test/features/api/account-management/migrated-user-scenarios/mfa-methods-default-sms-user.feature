@@ -38,7 +38,4 @@ Feature: SMS MFA User manages their MFA methods via the Method Management API
     Given the User does not have a Backup MFA method
     And the User requests to add a backup MFA Auth App
     When the User cannot update their Default MFA to an Auth App
-<<<<<<< Updated upstream
-=======
 
->>>>>>> Stashed changes
