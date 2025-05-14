@@ -220,7 +220,7 @@ public class UserLifecycleService {
                             MFAMethodType.SMS.name(),
                             true,
                             true,
-                            "07700900111",
+                            "+447700900000",
                             "date",
                             PriorityIdentifier.DEFAULT,
                             "1");

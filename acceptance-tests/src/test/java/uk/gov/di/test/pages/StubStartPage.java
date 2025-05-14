@@ -15,6 +15,7 @@ public abstract class StubStartPage extends BasePage {
     protected static final String RP_URL = TEST_CONFIG_SERVICE.get("RP_URL");
 
     public void goToRpStub() {
+        System.out.println("Go to RP stub page: " + RP_URL);
         Driver.get().get(RP_URL);
         waitForStubToLoad();
     }
