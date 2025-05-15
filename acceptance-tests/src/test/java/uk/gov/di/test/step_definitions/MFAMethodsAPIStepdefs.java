@@ -81,7 +81,7 @@ public class MFAMethodsAPIStepdefs {
             if (actualStatusCode != 200) {
                 LOG.info("Error response: {}", payloadJson.get("body"));
             }
-            assertEquals(500, actualStatusCode);
+            assertEquals(400, actualStatusCode);
         } catch (JsonProcessingException e) {
             fail("Error parsing JSON response: " + e.getMessage());
         }
