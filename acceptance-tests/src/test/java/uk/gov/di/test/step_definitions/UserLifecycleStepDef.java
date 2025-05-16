@@ -13,7 +13,7 @@ import static uk.gov.di.test.utils.Constants.TOP_100K_PASSWORD;
 public class UserLifecycleStepDef {
     private final World world;
 
-    private static final UserLifecycleService userLifecycleService =
+    public static final UserLifecycleService userLifecycleService =
             UserLifecycleService.getInstance();
 
     public UserLifecycleStepDef(World world) {
