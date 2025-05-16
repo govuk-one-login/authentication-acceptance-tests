@@ -76,6 +76,3 @@ Feature: Auth App MFA User manages their MFA methods via the Method Management A
     When the user comes from the stub relying party with default options and is taken to the "Create your GOV.UK One Login or sign in" page
     And the user clicks logout
     Then appropriate error is returned for invalid request Unauthorized user credentials for adding backup SMS method
-
-
-
