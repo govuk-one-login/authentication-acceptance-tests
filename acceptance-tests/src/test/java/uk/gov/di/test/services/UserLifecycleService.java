@@ -235,6 +235,4 @@ public class UserLifecycleService {
         return userCredentials;
     }
 
-    public void updateUserBackupMfaSms() {
-    }
 }
