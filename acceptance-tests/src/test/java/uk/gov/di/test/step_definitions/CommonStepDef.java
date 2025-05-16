@@ -183,4 +183,9 @@ public class CommonStepDef extends BasePage {
         var cookie = Driver.get().manage().getCookieNamed(cookieName);
         assertNotNull(cookie);
     }
+
+    @When("the user clicks the continue button without selecting any radio button option")
+    public void theUserClicksTheContinueButtonWithoutSelectingAnyRadioButtonOption() {
+        findAndClickContinue();
+    }
 }
