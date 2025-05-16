@@ -74,4 +74,3 @@ Feature: Auth App MFA User manages their MFA methods via the Method Management A
   Scenario: Appropiate Response code Unauthorized - user credentials
     And the User does not have a Backup MFA method
     Then the user will not be able to add Backup MFA
-
