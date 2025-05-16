@@ -188,4 +188,5 @@ public class CommonStepDef extends BasePage {
     public void theUserClicksTheContinueButtonWithoutSelectingAnyRadioButtonOption() {
         findAndClickContinue();
     }
+
 }
