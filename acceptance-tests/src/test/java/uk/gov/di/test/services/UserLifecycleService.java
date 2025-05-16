@@ -126,11 +126,6 @@ public class UserLifecycleService {
                 .withTermsAndConditions(buildTermsAndConditions());
     }
 
-//    public UserProfile setBackupPhoneNumber(String backupPhoneNumber) {
-////        return new UserProfile().setBackupPhoneNumber(BACKUP_UK_MOBILE_PHONE_NUMBER);
-//        backupPhoneNumber = "07700900111";
-//    }
-
     public UserProfile buildNewMigratedUserProfile() {
         return new UserProfile()
                 .withTestUser(1)

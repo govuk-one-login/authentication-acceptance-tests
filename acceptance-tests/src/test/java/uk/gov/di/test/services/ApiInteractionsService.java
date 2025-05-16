@@ -56,7 +56,6 @@ import java.util.Optional;
 import static org.awaitility.Awaitility.await;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static uk.gov.di.test.step_definitions.UserLifecycleStepDef.userLifecycleService;
 
 public class ApiInteractionsService {
     private static final Logger LOG = LogManager.getLogger(ApiInteractionsService.class);
@@ -114,7 +113,6 @@ public class ApiInteractionsService {
                         "/send-otp-notification",
                         HttpMethod.POST.toString());
 
-        String backupPhoneNumber = null;
         var body =
                 """
                 {
@@ -123,8 +121,9 @@ public class ApiInteractionsService {
                     "phoneNumber": "%s"
                 }
                 """
-                        .formatted(world.userProfile.getEmail(), world.userProfile.getBackupPhoneNumber());
-        LOG.debug("Backup Phone Number:" +  world.userProfile.getBackupPhoneNumber());
+                        .formatted(
+                                world.userProfile.getEmail(),
+                                world.userProfile.getBackupPhoneNumber());
 
         var event = createApiGatewayProxyRequestEvent(body, null, world.getAuthorizerContent());
 
@@ -372,7 +371,6 @@ public class ApiInteractionsService {
             throw new RuntimeException("Error from lambda: " + invokeResponse.statusCode());
         }
 
-        LOG.debug("Response" + invokeResponse.payload().asUtf8String());
         return invokeResponse.payload().asUtf8String();
     }
 

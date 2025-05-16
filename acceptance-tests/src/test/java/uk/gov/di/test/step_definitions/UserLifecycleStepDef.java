@@ -44,7 +44,7 @@ public class UserLifecycleStepDef {
     }
 
     @Given("a Migrated User with a Default MFA of SMS")
-    public void  aMigratedUserWithSMSExists() {
+    public void aMigratedUserWithSMSExists() {
         aMigratedUserDoesNotYetExist();
         userLifecycleService.putUserProfileToDynamodb(world.userProfile);
         world.userCredentials =
