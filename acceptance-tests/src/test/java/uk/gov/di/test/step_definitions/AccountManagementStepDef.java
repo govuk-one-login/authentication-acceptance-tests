@@ -63,5 +63,4 @@ public class AccountManagementStepDef extends BasePage {
             userLifecycleService.deleteUserCredentialsFromDynamodb(world.userCredentials);
         }
     }
-
 }

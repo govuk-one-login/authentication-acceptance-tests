@@ -186,7 +186,7 @@ public class MFAMethodsAPIStepdefs {
     }
 
     @Then(
-             "appropriate error is returned for invalid request Unauthorized user credentials for adding backup SMS method")
+            "appropriate error is returned for invalid request Unauthorized user credentials for adding backup SMS method")
     public void
             appropriateErrorIsReturnedForInvalidRequestUnauthorizedUserCredentialsForAddingBackupSMSMethod() {
         String jsonResponse = addBackupSMS(world);

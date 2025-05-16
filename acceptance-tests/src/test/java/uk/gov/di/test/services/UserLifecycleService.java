@@ -234,5 +234,4 @@ public class UserLifecycleService {
         putUserCredentialsToDynamodb(userCredentials);
         return userCredentials;
     }
-
 }
