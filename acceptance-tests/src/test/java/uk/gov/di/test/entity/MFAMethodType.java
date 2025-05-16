@@ -8,8 +8,7 @@ public enum MFAMethodType {
 
     private String value;
 
-    MFAMethodType(String value) {
-        this.value = value;
+    MFAMethodType(String value) {this.value = value;
     }
 
     public String getValue() {

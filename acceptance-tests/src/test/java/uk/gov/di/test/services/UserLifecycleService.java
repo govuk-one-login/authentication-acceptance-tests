@@ -18,8 +18,7 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicLong;
 
-import static uk.gov.di.test.utils.Constants.DEFAULT_TIMESTAMP;
-import static uk.gov.di.test.utils.Constants.UK_MOBILE_PHONE_NUMBER;
+import static uk.gov.di.test.utils.Constants.*;
 
 public class UserLifecycleService {
     private static volatile UserLifecycleService instance;
@@ -126,6 +125,11 @@ public class UserLifecycleService {
                 .withSalt(Crypto.generateSalt())
                 .withTermsAndConditions(buildTermsAndConditions());
     }
+
+//    public UserProfile setBackupPhoneNumber(String backupPhoneNumber) {
+////        return new UserProfile().setBackupPhoneNumber(BACKUP_UK_MOBILE_PHONE_NUMBER);
+//        backupPhoneNumber = "07700900111";
+//    }
 
     public UserProfile buildNewMigratedUserProfile() {
         return new UserProfile()
@@ -234,5 +238,8 @@ public class UserLifecycleService {
                 buildNewMigratedUserCredentials(userProfile, userPassword, methodType);
         putUserCredentialsToDynamodb(userCredentials);
         return userCredentials;
+    }
+
+    public void updateUserBackupMfaSms() {
     }
 }

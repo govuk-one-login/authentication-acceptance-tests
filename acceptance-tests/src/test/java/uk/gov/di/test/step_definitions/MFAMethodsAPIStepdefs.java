@@ -100,8 +100,8 @@ public class MFAMethodsAPIStepdefs {
         }
     }
 
-    @Then("{string} is added as a verified Backup MFA Method")
-    public void theUserSBackUpMFAPhoneNumberIsUpdatedTo(String phoneNumber) {
+    @Then("Phone Number is added as a verified Backup MFA Method")
+    public void phoneNumberIsAddedAsAVerifiedBackupMFAMethod() {
         backupSMSMFAAdded(world);
         String jsonResponse = backupAuthMFAAdded(world);
         ObjectMapper objectMapper = new ObjectMapper();
@@ -162,6 +162,32 @@ public class MFAMethodsAPIStepdefs {
     @When("the User cannot add an Auth App as Backup")
     public void theUserCannotToAddAuthAppAsBackupMFA() {
         String jsonResponse = addBackupAuthApp(world);
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            JsonNode payloadJson = objectMapper.readTree(jsonResponse);
+            int actualStatusCode = payloadJson.get("statusCode").asInt();
+            assertEquals(400, actualStatusCode);
+        } catch (JsonProcessingException e) {
+            fail("Error parsing JSON response: " + e.getMessage());
+        }
+    }
+
+    @Then("appropriate error is returned for invalid request to add Phone Number as SMS Backup MFA")
+    public void appropriateErrorIsReturnedForInvalidRequestToAddPhoneNumberAsSMSBackupMFA() {
+        String jsonResponse = addBackupSMSInvalidReq(world);
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            JsonNode payloadJson = objectMapper.readTree(jsonResponse);
+            int actualStatusCode = payloadJson.get("statusCode").asInt();
+            assertEquals(400, actualStatusCode);
+        } catch (JsonProcessingException e) {
+            fail("Error parsing JSON response: " + e.getMessage());
+        }
+    }
+
+    @Then("appropriate error is returned for invalid request Unauthorized user credentials for adding backup SMS method")
+    public void appropriateErrorIsReturnedForInvalidRequestUnauthorizedUserCredentialsForAddingBackupSMSMethod() {
+        String jsonResponse = addBackupSMS(world);
         ObjectMapper objectMapper = new ObjectMapper();
         try {
             JsonNode payloadJson = objectMapper.readTree(jsonResponse);

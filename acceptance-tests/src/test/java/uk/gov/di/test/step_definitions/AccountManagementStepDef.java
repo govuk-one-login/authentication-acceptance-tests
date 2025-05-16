@@ -29,14 +29,13 @@ public class AccountManagementStepDef extends BasePage {
         authenticateUser(world);
     }
 
-    @When("the User adds {string} as their SMS Backup MFA")
-    public void userUpdatesDefaultMfaToSmsAndSystemSendsAnOTP(String newPhoneNumber) {
-        world.setNewPhoneNumber(newPhoneNumber);
+    @When("the User adds Backup Phone as their SMS Backup MFA")
+    public void theUserAddsBackupPhoneAsTheirSMSBackupMFA() {
         sendOtpNotification(world);
     }
 
-    @When("^the system sends an OTP to \".+\"$")
-    public void theUserReceivesTheOTPCode() {
+    @Then("the system sends an OTP to backup Phone Number")
+    public void theSystemSendsAnOTPToBackupPhoneNumber() {
         var code = getOtp(world.userProfile.getEmail());
         world.setOtp(code);
     }
@@ -64,4 +63,5 @@ public class AccountManagementStepDef extends BasePage {
             userLifecycleService.deleteUserCredentialsFromDynamodb(world.userCredentials);
         }
     }
+
 }

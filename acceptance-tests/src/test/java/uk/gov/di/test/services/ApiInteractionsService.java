@@ -56,6 +56,7 @@ import java.util.Optional;
 import static org.awaitility.Awaitility.await;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static uk.gov.di.test.step_definitions.UserLifecycleStepDef.userLifecycleService;
 
 public class ApiInteractionsService {
     private static final Logger LOG = LogManager.getLogger(ApiInteractionsService.class);
@@ -113,6 +114,7 @@ public class ApiInteractionsService {
                         "/send-otp-notification",
                         HttpMethod.POST.toString());
 
+        String backupPhoneNumber = null;
         var body =
                 """
                 {
@@ -121,7 +123,8 @@ public class ApiInteractionsService {
                     "phoneNumber": "%s"
                 }
                 """
-                        .formatted(world.userProfile.getEmail(), world.getNewPhoneNumber());
+                        .formatted(world.userProfile.getEmail(), world.userProfile.getBackupPhoneNumber());
+        LOG.debug("Backup Phone Number:" +  world.userProfile.getBackupPhoneNumber());
 
         var event = createApiGatewayProxyRequestEvent(body, null, world.getAuthorizerContent());
 
@@ -233,7 +236,7 @@ public class ApiInteractionsService {
         return false;
     }
 
-    public static void checkUserHasBackupMFA(World world) {
+    public static String checkUserHasBackupMFA(World world) {
         var functionName =
                 getLambda(
                         world.getMethodManagementApiId(),
@@ -265,6 +268,7 @@ public class ApiInteractionsService {
             LOG.error("Error from lambda {}.", invokeResponse.statusCode());
             throw new RuntimeException("Error from lambda: " + invokeResponse.statusCode());
         }
+        return invokeResponse.payload().asUtf8String();
     }
 
     private static String retrieveUsersMFAMethods(World world) throws JsonProcessingException {
@@ -333,6 +337,60 @@ public class ApiInteractionsService {
                                     mfaMethodType: "SMS",
                                     phoneNumber: "%s",
                                    otp: "%s"
+                                  }
+                                }
+                              }
+               """
+                        .formatted(world.userProfile.getBackupPhoneNumber(), world.getOtp());
+
+        Map<String, String> pathParameters = new HashMap<>();
+        pathParameters.put("publicSubjectId", world.userProfile.getPublicSubjectID());
+
+        var event =
+                createApiGatewayProxyRequestEvent(
+                        body, pathParameters, world.getAuthorizerContent());
+
+        InvokeRequest invokeRequest =
+                InvokeRequest.builder()
+                        .functionName(functionName)
+                        .payload(SdkBytes.fromUtf8String(event))
+                        .build();
+
+        LambdaClient lambdaClient =
+                LambdaClient.builder()
+                        .region(Region.EU_WEST_2)
+                        .credentialsProvider(DefaultCredentialsProvider.create())
+                        .build();
+
+        InvokeResponse invokeResponse = lambdaClient.invoke(invokeRequest);
+
+        world.userCredentials =
+                DynamoDbService.getInstance().getUserCredentials(world.userProfile.getEmail());
+
+        if (invokeResponse.statusCode() != 200) {
+            LOG.error("Error from lambda {}.", invokeResponse.statusCode());
+            throw new RuntimeException("Error from lambda: " + invokeResponse.statusCode());
+        }
+
+        LOG.debug("Response" + invokeResponse.payload().asUtf8String());
+        return invokeResponse.payload().asUtf8String();
+    }
+
+    public static String addBackupSMSInvalidReq(World world) {
+        var functionName =
+                getLambda(
+                        world.getMethodManagementApiId(),
+                        "/v1/mfa-methods/{publicSubjectId}",
+                        HttpMethod.POST.toString());
+
+        var body =
+                """
+                    {
+                                mfaMethod: {
+                                  priorityIdentifier: "BACKUP",
+                                  method: {
+                                    mfaMethodType: "SMS",
+                                    phoneNumber: "%s"
                                   }
                                 }
                               }

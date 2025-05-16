@@ -49,4 +49,5 @@ public class RpStubStepDef extends BasePage {
         waitForThisText("Error: login_required");
         waitForThisText("Error description: Login required");
     }
+
 }
