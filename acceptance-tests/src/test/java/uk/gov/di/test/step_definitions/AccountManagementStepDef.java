@@ -29,13 +29,14 @@ public class AccountManagementStepDef extends BasePage {
         authenticateUser(world);
     }
 
-    @When("the User adds Backup Phone as their SMS Backup MFA")
-    public void theUserAddsBackupPhoneAsTheirSMSBackupMFA() {
+    @When("the User adds {string} as their SMS Backup MFA")
+    public void userUpdatesDefaultMfaToSmsAndSystemSendsAnOTP(String newPhoneNumber) {
+        world.setNewPhoneNumber(newPhoneNumber);
         sendOtpNotification(world);
     }
 
-    @Then("the system sends an OTP to backup Phone Number")
-    public void theSystemSendsAnOTPToBackupPhoneNumber() {
+    @When("^the system sends an OTP to \".+\"$")
+    public void theUserReceivesTheOTPCode() {
         var code = getOtp(world.userProfile.getEmail());
         world.setOtp(code);
     }

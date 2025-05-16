@@ -22,15 +22,15 @@ Feature: SMS MFA User manages their MFA methods via the Method Management API
 
   Scenario: Adds a Backup SMS
     And the User does not have a Backup MFA method
-    When the User adds Backup Phone as their SMS Backup MFA
-    Then the system sends an OTP to backup Phone Number
+    When the User adds "07700900111" as their SMS Backup MFA
+    Then the system sends an OTP to "07700900111"
     When the User provides the correct otp
-    Then Phone Number is added as a verified Backup MFA Method
+    Then "07700900111" is added as a verified Backup MFA Method
 
   Scenario: Switches SMS MFA
     And the User does not have a Backup MFA method
-    When the User adds Backup Phone as their SMS Backup MFA
-    Then the system sends an OTP to backup Phone Number
+    When the User adds "07700900111" as their SMS Backup MFA
+    Then the system sends an OTP to "07700900111"
     When the User provides the correct otp
     And the User switches their BACKUP and DEFAULT methods
 

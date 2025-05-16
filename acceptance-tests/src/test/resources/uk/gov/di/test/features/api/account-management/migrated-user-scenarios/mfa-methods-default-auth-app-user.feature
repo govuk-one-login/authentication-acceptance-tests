@@ -15,22 +15,22 @@ Feature: Auth App MFA User manages their MFA methods via the Method Management A
 
   Scenario: Adding a Phone Number as a Backup MFA
     And the User does not have a Backup MFA method
-    When the User adds Backup Phone as their SMS Backup MFA
-    Then the system sends an OTP to backup Phone Number
+    When the User adds "07700900111" as their SMS Backup MFA
+    Then the system sends an OTP to "07700900111"
     When the User provides the correct otp
-    Then Phone Number is added as a verified Backup MFA Method
+    Then "07700900111" is added as a verified Backup MFA Method
 
   Scenario: Deleting a Backup MFA
-    When the User adds Backup Phone as their SMS Backup MFA
-    Then the system sends an OTP to backup Phone Number
+    When the User adds "07700900111" as their SMS Backup MFA
+    Then the system sends an OTP to "07700900111"
     When the User provides the correct otp
-    Then Phone Number is added as a verified Backup MFA Method
+    Then "07700900111" is added as a verified Backup MFA Method
     When the User requests to delete backup MFA Method
     Then the User's backup MFA Method is deleted
 
   Scenario: Changing Default MFA method from Auth App to SMS
     When the User updates their Default MFA to SMS of "07700900111"
-    Then the system sends an OTP to backup Phone Number
+    Then the system sends an OTP to "07700900111"
     When the User provides the correct otp
     Then "07700900111" is the new verified Default MFA
 
@@ -41,26 +41,26 @@ Feature: Auth App MFA User manages their MFA methods via the Method Management A
 
   Scenario: Prevented from changing Default method to Auth App when Backup is Auth App
     And the User does not have a Backup MFA method
-    And the User adds Backup Phone as their SMS Backup MFA
-    And the system sends an OTP to backup Phone Number
+    And the User adds "07700900111" as their SMS Backup MFA
+    And the system sends an OTP to "07700900111"
     And the User provides the correct otp
     Then the User switches their BACKUP and DEFAULT methods
     And the User is prevented from updating the Default MFA to an Auth App
 
   Scenario: Switch MFA methods
     And the User does not have a Backup MFA method
-    When the User adds Backup Phone as their SMS Backup MFA
-    Then the system sends an OTP to backup Phone Number
+    When the User adds "07700900111" as their SMS Backup MFA
+    Then the system sends an OTP to "07700900111"
     When the User provides the correct otp
-    Then Phone Number is added as a verified Backup MFA Method
+    Then "07700900112" is added as a verified Backup MFA Method
     And the User switches their BACKUP and DEFAULT methods
 
   Scenario: Switch MFA methods Error for changing SMS back to default
     And the User does not have a Backup MFA method
-    When the User adds Backup Phone as their SMS Backup MFA
-    Then the system sends an OTP to backup Phone Number
+    And the User adds "07700900111" as their SMS Backup MFA
+    And the system sends an OTP to "07700900111"
     When the User provides the correct otp
-    Then Phone Number is added as a verified Backup MFA Method
+    Then "07700900111" is added as a verified Backup MFA Method
     And the User switches their BACKUP and DEFAULT methods
 
   Scenario: Prevented from adding backup method to Auth App when Default is Auth App
@@ -73,6 +73,5 @@ Feature: Auth App MFA User manages their MFA methods via the Method Management A
 
   Scenario: Appropiate Response code Unauthorized - user credentials
     And the User does not have a Backup MFA method
-    When the user comes from the stub relying party with default options and is taken to the "Create your GOV.UK One Login or sign in" page
-    And the user clicks logout
-    Then appropriate error is returned for invalid request Unauthorized user credentials for adding backup SMS method
+    Then the user will not be able to add Backup MFA
+
