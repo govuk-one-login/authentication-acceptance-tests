@@ -24,6 +24,7 @@ public class UserProfile {
     private String subjectID;
     private boolean emailVerified;
     private String phoneNumber;
+    private String backupPhoneNumber;
     private boolean phoneNumberVerified;
     private String created;
     private String updated;
@@ -41,6 +42,10 @@ public class UserProfile {
     @DynamoDbAttribute(ATTRIBUTE_EMAIL)
     public String getEmail() {
         return email;
+    }
+
+    public String getBackupPhoneNumber() {
+        return backupPhoneNumber = "07700900111";
     }
 
     public void setEmail(String email) {
@@ -89,6 +94,11 @@ public class UserProfile {
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
+    }
+
+    public UserProfile setBackupPhoneNumber(String backupPhoneNumber) {
+        this.backupPhoneNumber = backupPhoneNumber;
+        return this;
     }
 
     public UserProfile withPhoneNumber(String phoneNumber) {

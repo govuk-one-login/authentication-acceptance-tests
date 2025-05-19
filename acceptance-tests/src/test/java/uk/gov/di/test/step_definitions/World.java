@@ -3,6 +3,7 @@ package uk.gov.di.test.step_definitions;
 import uk.gov.di.test.entity.UserCredentials;
 import uk.gov.di.test.entity.UserInterventions;
 import uk.gov.di.test.entity.UserProfile;
+import uk.gov.di.test.services.UserLifecycleService;
 import uk.gov.di.test.utils.MFAType;
 
 import java.util.Map;
@@ -17,6 +18,7 @@ import java.util.Map;
  */
 public class World {
     public UserProfile userProfile;
+    public UserLifecycleService userLifecycleService;
     public UserCredentials userCredentials;
     public UserInterventions userInterventions;
     private String userPassword;

@@ -50,6 +50,20 @@ public class MFAMethodsAPIStepdefs {
         }
     }
 
+    @Then("{string} is added as a verified Backup MFA Method")
+    public void theUserSBackUpMFAPhoneNumberIsUpdatedTo(String phoneNumber) {
+        backupSMSMFAAdded(world);
+        String jsonResponse = backupAuthMFAAdded(world);
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            JsonNode payloadJson = objectMapper.readTree(jsonResponse);
+            int actualStatusCode = payloadJson.get("statusCode").asInt();
+            assertEquals(200, actualStatusCode);
+        } catch (JsonProcessingException e) {
+            fail("Error parsing JSON response: " + e.getMessage());
+        }
+    }
+
     @When("the User request to update back up MFA as phone number {string}")
     public void theUserRequestToUpdateBackUpMFAAsPhoneNumber(String phoneNumber) {
         updateDefaultPhoneNumber(world);
@@ -100,8 +114,8 @@ public class MFAMethodsAPIStepdefs {
         }
     }
 
-    @Then("{string} is added as a verified Backup MFA Method")
-    public void theUserSBackUpMFAPhoneNumberIsUpdatedTo(String phoneNumber) {
+    @Then("Phone Number is added as a verified Backup MFA Method")
+    public void phoneNumberIsAddedAsAVerifiedBackupMFAMethod() {
         backupSMSMFAAdded(world);
         String jsonResponse = backupAuthMFAAdded(world);
         ObjectMapper objectMapper = new ObjectMapper();
@@ -167,6 +181,32 @@ public class MFAMethodsAPIStepdefs {
             JsonNode payloadJson = objectMapper.readTree(jsonResponse);
             int actualStatusCode = payloadJson.get("statusCode").asInt();
             assertEquals(400, actualStatusCode);
+        } catch (JsonProcessingException e) {
+            fail("Error parsing JSON response: " + e.getMessage());
+        }
+    }
+
+    @Then("appropriate error is returned for invalid request to add Phone Number as SMS Backup MFA")
+    public void appropriateErrorIsReturnedForInvalidRequestToAddPhoneNumberAsSMSBackupMFA() {
+        String jsonResponse = addBackupSMSInvalidReq(world);
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            JsonNode payloadJson = objectMapper.readTree(jsonResponse);
+            int actualStatusCode = payloadJson.get("statusCode").asInt();
+            assertEquals(400, actualStatusCode);
+        } catch (JsonProcessingException e) {
+            fail("Error parsing JSON response: " + e.getMessage());
+        }
+    }
+
+    @Then("the user will not be able to add Backup MFA")
+    public void theUserWillNotBeAbleToAddBackupMFA() {
+        String jsonResponse = addBackupSMSUserNotFound(world);
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            JsonNode payloadJson = objectMapper.readTree(jsonResponse);
+            int actualStatusCode = payloadJson.get("statusCode").asInt();
+            assertEquals(404, actualStatusCode);
         } catch (JsonProcessingException e) {
             fail("Error parsing JSON response: " + e.getMessage());
         }

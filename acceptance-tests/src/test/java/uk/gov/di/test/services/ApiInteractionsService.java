@@ -121,7 +121,9 @@ public class ApiInteractionsService {
                     "phoneNumber": "%s"
                 }
                 """
-                        .formatted(world.userProfile.getEmail(), world.getNewPhoneNumber());
+                        .formatted(
+                                world.userProfile.getEmail(),
+                                world.userProfile.getBackupPhoneNumber());
 
         var event = createApiGatewayProxyRequestEvent(body, null, world.getAuthorizerContent());
 
@@ -233,7 +235,7 @@ public class ApiInteractionsService {
         return false;
     }
 
-    public static void checkUserHasBackupMFA(World world) {
+    public static String checkUserHasBackupMFA(World world) {
         var functionName =
                 getLambda(
                         world.getMethodManagementApiId(),
@@ -265,6 +267,7 @@ public class ApiInteractionsService {
             LOG.error("Error from lambda {}.", invokeResponse.statusCode());
             throw new RuntimeException("Error from lambda: " + invokeResponse.statusCode());
         }
+        return invokeResponse.payload().asUtf8String();
     }
 
     private static String retrieveUsersMFAMethods(World world) throws JsonProcessingException {
@@ -337,10 +340,117 @@ public class ApiInteractionsService {
                                 }
                               }
                """
+                        .formatted(world.userProfile.getBackupPhoneNumber(), world.getOtp());
+
+        Map<String, String> pathParameters = new HashMap<>();
+        pathParameters.put("publicSubjectId", world.userProfile.getPublicSubjectID());
+
+        var event =
+                createApiGatewayProxyRequestEvent(
+                        body, pathParameters, world.getAuthorizerContent());
+
+        InvokeRequest invokeRequest =
+                InvokeRequest.builder()
+                        .functionName(functionName)
+                        .payload(SdkBytes.fromUtf8String(event))
+                        .build();
+
+        LambdaClient lambdaClient =
+                LambdaClient.builder()
+                        .region(Region.EU_WEST_2)
+                        .credentialsProvider(DefaultCredentialsProvider.create())
+                        .build();
+
+        InvokeResponse invokeResponse = lambdaClient.invoke(invokeRequest);
+
+        world.userCredentials =
+                DynamoDbService.getInstance().getUserCredentials(world.userProfile.getEmail());
+
+        if (invokeResponse.statusCode() != 200) {
+            LOG.error("Error from lambda {}.", invokeResponse.statusCode());
+            throw new RuntimeException("Error from lambda: " + invokeResponse.statusCode());
+        }
+
+        return invokeResponse.payload().asUtf8String();
+    }
+
+    public static String addBackupSMSInvalidReq(World world) {
+        var functionName =
+                getLambda(
+                        world.getMethodManagementApiId(),
+                        "/v1/mfa-methods/{publicSubjectId}",
+                        HttpMethod.POST.toString());
+
+        var body =
+                """
+                    {
+                                mfaMethod: {
+                                  priorityIdentifier: "BACKUP",
+                                  method: {
+                                    mfaMethodType: "SMS",
+                                    phoneNumber: "%s"
+                                  }
+                                }
+                              }
+               """
                         .formatted(world.getNewPhoneNumber(), world.getOtp());
 
         Map<String, String> pathParameters = new HashMap<>();
         pathParameters.put("publicSubjectId", world.userProfile.getPublicSubjectID());
+
+        var event =
+                createApiGatewayProxyRequestEvent(
+                        body, pathParameters, world.getAuthorizerContent());
+
+        InvokeRequest invokeRequest =
+                InvokeRequest.builder()
+                        .functionName(functionName)
+                        .payload(SdkBytes.fromUtf8String(event))
+                        .build();
+
+        LambdaClient lambdaClient =
+                LambdaClient.builder()
+                        .region(Region.EU_WEST_2)
+                        .credentialsProvider(DefaultCredentialsProvider.create())
+                        .build();
+
+        InvokeResponse invokeResponse = lambdaClient.invoke(invokeRequest);
+
+        world.userCredentials =
+                DynamoDbService.getInstance().getUserCredentials(world.userProfile.getEmail());
+
+        if (invokeResponse.statusCode() != 200) {
+            LOG.error("Error from lambda {}.", invokeResponse.statusCode());
+            throw new RuntimeException("Error from lambda: " + invokeResponse.statusCode());
+        }
+
+        return invokeResponse.payload().asUtf8String();
+    }
+
+    public static String addBackupSMSUserNotFound(World world) {
+        var functionName =
+                getLambda(
+                        world.getMethodManagementApiId(),
+                        "/v1/mfa-methods/{publicSubjectId}",
+                        HttpMethod.POST.toString());
+
+        var body =
+                """
+                    {
+                                mfaMethod: {
+                                  priorityIdentifier: "BACKUP",
+                                  method: {
+                                    mfaMethodType: "SMS",
+                                    phoneNumber: "%s",
+                                    otp: "%s"
+                                  }
+                                }
+                              }
+               """
+                        .formatted(world.getNewPhoneNumber(), world.getOtp());
+
+        Map<String, String> pathParameters = new HashMap<>();
+        pathParameters.put("publicSubjectId", "ABCDFERGH");
 
         var event =
                 createApiGatewayProxyRequestEvent(

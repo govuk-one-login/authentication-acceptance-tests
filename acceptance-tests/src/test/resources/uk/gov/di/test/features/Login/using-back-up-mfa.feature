@@ -9,7 +9,7 @@ Feature: Login Using Back Up MFA
     When the User adds "07700900111" as their SMS Backup MFA
     Then the system sends an OTP to "07700900111"
     When the User provides the correct otp
-    Then "07700900111" is added as a verified Backup MFA Method
+    Then Phone Number is added as a verified Backup MFA Method
     When the user comes from the stub relying party with default options and is taken to the "Create your GOV.UK One Login or sign in" page
     When the user selects sign in
     Then the user is taken to the "Enter your email" page

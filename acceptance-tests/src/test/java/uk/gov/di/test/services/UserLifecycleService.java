@@ -18,8 +18,7 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicLong;
 
-import static uk.gov.di.test.utils.Constants.DEFAULT_TIMESTAMP;
-import static uk.gov.di.test.utils.Constants.UK_MOBILE_PHONE_NUMBER;
+import static uk.gov.di.test.utils.Constants.*;
 
 public class UserLifecycleService {
     private static volatile UserLifecycleService instance;
