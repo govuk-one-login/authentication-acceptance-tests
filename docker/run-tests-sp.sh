@@ -29,6 +29,17 @@ esac
 # shellcheck source=../scripts/fetch_envars.sh
 /test/scripts/fetch_envars.sh "${ENVIRONMENT}" | tee /test/.env
 
+if [ "${SAM_STACK_NAME:-}" == "authentication-api" ]; then
+  if grep -qE '^API_RP_URL=' /test/.env; then
+    API_RP_URL=$(grep ^API_RP_URL= /test/.env | cut -d= -f2-)
+
+    if grep -qE '^RP_URL=' /test/.env; then
+      sed -i '/^RP_URL=.*/d' /test/.env
+    fi
+    echo -e "RP_URL=${API_RP_URL}" | tee --append /test/.env
+  fi
+fi
+
 echo "Assuming cross-account role"
 output=$(aws sts assume-role --role-arn "$CROSSACCOUNT_ROLEARN" --role-session-name "dynamo-db-access" --output json)
 
