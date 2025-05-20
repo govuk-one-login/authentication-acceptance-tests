@@ -30,6 +30,7 @@ esac
 /test/scripts/fetch_envars.sh "${ENVIRONMENT}" | tee /test/.env
 
 if [ "${SAM_STACK_NAME:-}" == "authentication-api" ]; then
+  echo -e "\nEnvironment configuration overrides for ${SAM_STACK_NAME}:"
   if grep -qE '^API_RP_URL=' /test/.env; then
     API_RP_URL=$(grep ^API_RP_URL= /test/.env | cut -d= -f2-)
 
@@ -37,6 +38,24 @@ if [ "${SAM_STACK_NAME:-}" == "authentication-api" ]; then
       sed -i '/^RP_URL=.*/d' /test/.env
     fi
     echo -e "RP_URL=${API_RP_URL}" | tee --append /test/.env
+  fi
+
+  if grep -qE '^API_STUB_RP_TYPE=' /test/.env; then
+    API_STUB_RP_TYPE=$(grep ^API_STUB_RP_TYPE= /test/.env | cut -d= -f2-)
+
+    if grep -qE '^STUB_RP_TYPE=' /test/.env; then
+      sed -i '/^STUB_RP_TYPE=.*/d' /test/.env
+    fi
+    echo -e "STUB_RP_TYPE=${API_STUB_RP_TYPE}" | tee --append /test/.env
+  fi
+
+  if grep -qE '^API_CUCUMBER_FILTER_TAGS=' /test/.env; then
+    API_CUCUMBER_FILTER_TAGS=$(grep ^API_CUCUMBER_FILTER_TAGS= /test/.env | cut -d= -f2-)
+
+    if grep -qE '^CUCUMBER_FILTER_TAGS=' /test/.env; then
+      sed -i '/^CUCUMBER_FILTER_TAGS=.*/d' /test/.env
+    fi
+    echo -e "CUCUMBER_FILTER_TAGS=${API_CUCUMBER_FILTER_TAGS}" | tee --append /test/.env
   fi
 fi
 
