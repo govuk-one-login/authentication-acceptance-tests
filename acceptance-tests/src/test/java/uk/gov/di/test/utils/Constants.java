@@ -23,8 +23,7 @@ public final class Constants {
 
     public static final String UK_MOBILE_PHONE_NUMBER =
             "07700900000"; // Ofcom reserved fictitious number
-    public static final String BACKUP_UK_MOBILE_PHONE_NUMBER =
-            "07700900111"; // Ofcom reserved fictitious number
+
     public static final String UK_MOBILE_PHONE_NUMBER_WITH_INTERNATIONAL_DIALING_CODE =
             "+447700900000";
     public static final String UK_MOBILE_PHONE_NUMBER_INCORRECT_FORMAT = "077009000000000";

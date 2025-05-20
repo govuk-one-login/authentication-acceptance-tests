@@ -6,8 +6,8 @@ Feature: Login Using Back Up MFA
     Given a Migrated User with a Default MFA of SMS
     And the User is Authenticated
     And the User does not have a Backup MFA method
-    When the User adds "07700900111" as their SMS Backup MFA
-    Then the system sends an OTP to "07700900111"
+    When the User adds "<Mobile Number>" as their SMS Backup MFA
+    Then the system sends an OTP to "<Mobile Number>"
     When the User provides the correct otp
     Then Phone Number is added as a verified Backup MFA Method
     When the user comes from the stub relying party with default options and is taken to the "Create your GOV.UK One Login or sign in" page
@@ -20,6 +20,11 @@ Feature: Login Using Back Up MFA
     And the user selects "Problems with the code?" link
     And the user selects "try another way to get a security code" link
     Then the user is taken to the "How do you want to get a security code?" page
+
+  Examples:
+    | Mobile Number |
+    | 07700900111   |
+    | +61412123123  |
 
   Scenario: User with SMS as default MFA attempts alternative MFA journey but submits without choosing a method
     Given a Migrated User with a Default MFA of SMS
