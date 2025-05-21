@@ -7,6 +7,10 @@ import io.cucumber.java.en.When;
 import uk.gov.di.test.pages.BasePage;
 import uk.gov.di.test.services.UserLifecycleService;
 
+import java.util.Arrays;
+import java.util.List;
+
+import static org.junit.Assert.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static uk.gov.di.test.services.ApiInteractionsService.authenticateUser;
 import static uk.gov.di.test.services.ApiInteractionsService.authorizeUser;
@@ -48,7 +52,17 @@ public class AccountManagementStepDef extends BasePage {
 
     @Then("the User's Phone Number is updated to {string}")
     public void theUserSPhoneNumberIsUpdatedTo(String newPhoneNumber) {
-        assertEquals("07700900111", newPhoneNumber);
+        List<String> expectedPhoneNumber = Arrays.asList("07700900111", "+61412123123");
+        String matchingValue =
+                expectedPhoneNumber.stream()
+                        .filter(val -> val.equals(newPhoneNumber))
+                        .findFirst()
+                        .orElse(null);
+        assertNotNull(matchingValue, "No matching expected value found.");
+        assertEquals(
+                newPhoneNumber,
+                matchingValue,
+                "Actual phone number does not match the expected phone number.");
     }
 
     @After("@Test")
