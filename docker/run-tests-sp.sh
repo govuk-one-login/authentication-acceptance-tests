@@ -1,7 +1,7 @@
 #!/bin/bash
 # NOTE: this script only runs in codebuild in new secure pipeline
 # This file is put in place during docker build, so paths to other scripts are relative to the docker context
-set -euo pipefail
+set -uo pipefail
 
 if [[ -z ${CODEBUILD_BUILD_ID:-} ]]; then
   echo 'This should only be run in codebuild'
