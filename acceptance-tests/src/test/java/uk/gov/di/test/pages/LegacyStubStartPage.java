@@ -8,9 +8,7 @@ import java.util.List;
 
 public class LegacyStubStartPage extends StubStartPage {
     List<String> ignoredOptions =
-            List.of(
-                    "authenticated-2",
-                    "authenticated-level"); // Options only used by orchestration stub
+            List.of("authenticated-2"); // Options only used by orchestration stub
 
     protected LegacyStubStartPage() {
         // protected constructor to prevent direct instantiation
