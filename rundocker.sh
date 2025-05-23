@@ -56,8 +56,11 @@ if [ "${SP}" = "true" ]; then
     --env-file <(aws configure export-credentials --format env-no-export) \
     -it --rm --entrypoint /bin/bash --shm-size="2g" acceptance:latest /run-tests.sh
 else
+  ./run-acceptance-tests.sh -e ${ENVIRONMENT}
+
   docker build . -t acceptance:latest --target base \
     --build-arg "SELENIUM_BASE=selenium/standalone-${BROWSER}:132.0"
+
   docker run -p 4442-4444:4442-4444 --privileged \
     -e PARALLEL_BROWSERS=1 \
     -v "${results_dir}":/test/acceptance-tests/target/cucumber-report \
