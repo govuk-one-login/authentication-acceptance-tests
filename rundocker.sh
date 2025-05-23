@@ -56,7 +56,7 @@ if [ "${SP}" = "true" ]; then
     --env-file <(aws configure export-credentials --format env-no-export) \
     -it --rm --entrypoint /bin/bash --shm-size="2g" acceptance:latest /run-tests.sh
 else
-  ./run-acceptance-tests.sh -e ${ENVIRONMENT}
+  ./run-acceptance-tests.sh -e "${ENVIRONMENT}"
 
   docker build . -t acceptance:latest --target base \
     --build-arg "SELENIUM_BASE=selenium/standalone-${BROWSER}:132.0"
