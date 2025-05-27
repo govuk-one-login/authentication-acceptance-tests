@@ -9,7 +9,6 @@ COPY gradle ./gradle
 RUN chmod u+x ./gradlew && ./gradlew --no-daemon --console=plain clean
 
 COPY acceptance-tests ./acceptance-tests
-COPY generated.env .env
 
 RUN chmod u+x ./gradlew \
     && ./gradlew --no-daemon --console=plain \
@@ -47,14 +46,12 @@ ENV GRADLE_USER_HOME=/home/${SEL_USER}/.gradle
 COPY --chown=${SEL_USER}:${SEL_GROUP} --from=builder /root/.gradle /home/${SEL_USER}/.gradle
 
 WORKDIR /test
-COPY generated.env .env
 
 COPY --chown=${SEL_USER}:${SEL_GROUP} --from=builder /test/build.gradle /test/settings.gradle /test/gradlew /test/gradle.properties ./
 COPY --chown=${SEL_USER}:${SEL_GROUP} --from=builder /test/.gradle /test/.gradle
 COPY --chown=${SEL_USER}:${SEL_GROUP} --from=builder /test/gradle ./gradle
 COPY --chown=${SEL_USER}:${SEL_GROUP} --from=builder /test/build /test/build
 COPY --chown=${SEL_USER}:${SEL_GROUP} --from=builder /test/acceptance-tests /test/acceptance-tests
-COPY --chown=${SEL_USER}:${SEL_GROUP} --from=builder /test/.env .env
 
 RUN chmod u+x ./gradlew
 

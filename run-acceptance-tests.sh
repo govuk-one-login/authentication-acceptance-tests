@@ -41,13 +41,12 @@ function write_env_file() {
 
   echo "Getting environment variables from SSM ... "
 
-  dt="$(date "+%Y%m%d-%H%M%S")"
   envfile=generated.env
 
   echo "Exporting environment variables from SSM to file ${envfile} ... "
   {
     echo "#"
-    echo "# Acceptance test config exported from ${SSM_VARS_PATH} at ${dt}"
+    echo "# Acceptance test config exported from ${SSM_VARS_PATH}"
     echo "#"
     echo "# Rename to generated.env to use for testing"
     echo "#"
