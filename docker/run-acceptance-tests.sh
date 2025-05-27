@@ -13,6 +13,13 @@ if [ -f ".env" ]; then
   # source .env file if it exists (as we're running in docker, it's definitely needed if it's there)
   # shellcheck source=/dev/null
   set -o allexport && source .env && set +o allexport
+  echo
+  echo "********************************************************************************************"
+  echo "CUCUMBER FILTER TAGS: ${CUCUMBER_FILTER_TAGS}"
+  echo "********************************************************************************************"
+  echo
+else
+  echo "No .env file found"
 fi
 
 SELENIUM_BROWSER="$(cat /opt/selenium/browser_name)"

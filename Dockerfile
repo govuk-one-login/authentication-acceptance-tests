@@ -5,6 +5,9 @@ WORKDIR /test
 
 COPY build.gradle settings.gradle gradlew gradle.properties ./
 COPY gradle ./gradle
+
+RUN chmod u+x ./gradlew && ./gradlew --no-daemon --console=plain clean
+
 COPY acceptance-tests ./acceptance-tests
 
 RUN chmod u+x ./gradlew \
@@ -16,7 +19,7 @@ RUN chmod u+x ./gradlew \
         downloadCucumberDependencies \
         -x :acceptance-tests:test -x spotlessApply -x spotlessCheck
 
-FROM "${SELENIUM_BASE}" AS base
+FROM ${SELENIUM_BASE} AS base
 ARG SEL_USER=seluser
 ARG SEL_GROUP=${SEL_USER}
 
