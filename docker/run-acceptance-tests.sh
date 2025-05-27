@@ -15,7 +15,7 @@ if [ -f ".env" ]; then
   set -o allexport && source .env && set +o allexport
   echo
   echo "********************************************************************************************"
-  grep CUCUMBER < .env
+  Echo echo "CUCUMBER FILTER TAGS: ${CUCUMBER_FILTER_TAGS}"
   echo "********************************************************************************************"
   echo
 else
