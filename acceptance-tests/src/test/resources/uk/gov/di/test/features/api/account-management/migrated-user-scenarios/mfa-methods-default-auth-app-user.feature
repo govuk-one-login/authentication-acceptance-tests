@@ -49,7 +49,7 @@ Feature: Auth App MFA User manages their MFA methods via the Method Management A
       | 07700900111   |
       | +61412123123  |
 
-  Scenario : Changing Default MFA method from Auth App to new Auth App
+  Scenario: Changing Default MFA method from Auth App to new Auth App
     Given the User does not have a Backup MFA method
     When the User updates their Default MFA to an Auth App
     Then the Users Default MFA is an Auth App
