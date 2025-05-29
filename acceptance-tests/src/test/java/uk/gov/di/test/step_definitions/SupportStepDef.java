@@ -87,6 +87,6 @@ public class SupportStepDef extends BasePage {
 
     @And("the user selects radio button {string} and {string}")
     public void theUserSelectsRadioButtonAnd(String text, String mobilenumber) {
-        supportPage.selectRadioButtonForPhoneAndProceed(text,mobilenumber);
+        supportPage.selectRadioButtonForPhoneAndProceed(text, mobilenumber);
     }
 }
