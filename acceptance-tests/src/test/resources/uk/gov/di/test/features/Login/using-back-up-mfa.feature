@@ -141,6 +141,81 @@ Feature: Login Using Back Up MFA
     And the user selects "try another way to get a security code" link
     Then the user is taken to the "How do you want to get a security code?" page
 
+  @AUT-4247
+  Scenario: User with SMS as the default MFA method attempts authentication using correct OTP sent to a backup SMS number
+    Given a Migrated User with a Default MFA of SMS
+    And the User is Authenticated
+    And the User does not have a Backup MFA method
+    When the User adds "07700900111" as their SMS Backup MFA
+    Then the system sends an OTP to "07700900111"
+    When the User provides the correct otp
+    Then "07700900111" is added as a verified Backup MFA Method
+    When the user comes from the stub relying party with default options and is taken to the "Create your GOV.UK One Login or sign in" page
+    When the user selects sign in
+    Then the user is taken to the "Enter your email" page
+    When the user enters their email address
+    Then the user is taken to the "Enter your password" page
+    When the user enters their password
+    Then the user is taken to the "Check your phone" page
+    And the user selects "Problems with the code?" link
+    And the user selects "try another way to get a security code" link
+    Then the user is taken to the "How do you want to get a security code?" page
+    And the user selects radio button "Text message to your phone number ending with" and "111"
+    When the user clicks the continue button
+    Then the user is taken to the "Check your phone" page
+    When the user enters the six digit security code from their phone
+    Then the user is returned to the service
+
+  @AUT-4247
+  Scenario: User with SMS as the default MFA method attempts authentication and request OTP more than five times
+    Given a Migrated User with a Default MFA of SMS
+    And the User is Authenticated
+    And the User does not have a Backup MFA method
+    When the User adds "07700900111" as their SMS Backup MFA
+    Then the system sends an OTP to "07700900111"
+    When the User provides the correct otp
+    Then "07700900111" is added as a verified Backup MFA Method
+    When the user comes from the stub relying party with default options and is taken to the "Create your GOV.UK One Login or sign in" page
+    When the user selects sign in
+    Then the user is taken to the "Enter your email" page
+    When the user enters their email address
+    Then the user is taken to the "Enter your password" page
+    When the user enters their password
+    Then the user is taken to the "Check your phone" page
+    And the user selects "Problems with the code?" link
+    And the user selects "try another way to get a security code" link
+    Then the user is taken to the "How do you want to get a security code?" page
+    And the user selects radio button "Text message to your phone number ending with" and "111"
+    When the user clicks the continue button
+    Then the user is taken to the "Check your phone" page
+    When the user requests the phone otp code a further 5 times
+    Then the user is taken to the "You asked to resend the security code too many times" page
+
+  @AUT-4247
+  Scenario: User with SMS as the default MFA method attempts authentication and enters incorrect OTP more than five times
+    Given a Migrated User with a Default MFA of SMS
+    And the User is Authenticated
+    And the User does not have a Backup MFA method
+    When the User adds "07700900111" as their SMS Backup MFA
+    Then the system sends an OTP to "07700900111"
+    When the User provides the correct otp
+    Then "07700900111" is added as a verified Backup MFA Method
+    When the user comes from the stub relying party with default options and is taken to the "Create your GOV.UK One Login or sign in" page
+    When the user selects sign in
+    Then the user is taken to the "Enter your email" page
+    When the user enters their email address
+    Then the user is taken to the "Enter your password" page
+    When the user enters their password
+    Then the user is taken to the "Check your phone" page
+    And the user selects "Problems with the code?" link
+    And the user selects "try another way to get a security code" link
+    Then the user is taken to the "How do you want to get a security code?" page
+    And the user selects radio button "Text message to your phone number ending with" and "111"
+    When the user clicks the continue button
+    Then the user is taken to the "Check your phone" page
+    When the user enters an incorrect phone security code 6 times
+    Then the user is taken to the "You entered the wrong security code too many times" page
+
   @AUT-4248
   Scenario: User with Auth App as the default MFA method attempts authentication using correct OTP sent to a backup SMS number
     Given a Migrated User with an Auth App Default MFA
