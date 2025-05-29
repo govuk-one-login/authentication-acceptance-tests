@@ -1,7 +1,7 @@
 @API @under-development
 Feature: Account Management
 
-  Scenario: Authenticated User successfully changes their Phone Number
+  Scenario Outline: Authenticated User successfully changes their Phone Number
     Given a User exists
     And the User is Authenticated
     When the User adds "<Mobile Number>" as their SMS Backup MFA

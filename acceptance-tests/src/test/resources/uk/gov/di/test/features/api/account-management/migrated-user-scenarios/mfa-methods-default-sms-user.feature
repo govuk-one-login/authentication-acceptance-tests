@@ -20,7 +20,7 @@ Feature: SMS MFA User manages their MFA methods via the Method Management API
     Then the User's back up MFA Auth App is updated
     And the User switches their BACKUP and DEFAULT methods
 
-  Scenario: Adds a Backup SMS
+  Scenario Outline: Adds a Backup SMS
     And the User does not have a Backup MFA method
     When the User adds "<Mobile Number>" as their SMS Backup MFA
     Then the system sends an OTP to "<Mobile Number>"
@@ -32,7 +32,7 @@ Feature: SMS MFA User manages their MFA methods via the Method Management API
       | 07700900111   |
       | +61412123123  |
 
-  Scenario: Switches SMS MFA
+  Scenario Outline: Switches SMS MFA
     And the User does not have a Backup MFA method
     When the User adds "<Mobile Number>" as their SMS Backup MFA
     Then the system sends an OTP to "<Mobile Number>"

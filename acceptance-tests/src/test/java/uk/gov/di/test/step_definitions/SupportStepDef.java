@@ -84,4 +84,9 @@ public class SupportStepDef extends BasePage {
                 "If you no longer have access to your authenticator app, check if you can change how you get security codes.",
                 supportPage.getLinkAppText());
     }
+
+    @And("the user selects radio button {string} and {string}")
+    public void theUserSelectsRadioButtonAnd(String text, String mobilenumber) {
+        supportPage.selectRadioButtonForPhoneAndProceed(text,mobilenumber);
+    }
 }
