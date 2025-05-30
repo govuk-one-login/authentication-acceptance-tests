@@ -1,114 +1,156 @@
-# di-authentication-acceptance-tests
+# GOV.UK One Login Acceptance Tests
 
-This repo contains automated browser based [Cucumber](https://cucumber.io/) tests for [GOV.UK Sign In](https://auth-tech-docs.london.cloudapps.digital/).
+A comprehensive automated testing suite for validating the GOV.UK One Login authentication and account management functionality through both UI and API acceptance tests using Cucumber.
 
- The acceptance tests runs against the build environment in the di-authentication-deployment pipeline. The [acceptance-tests](https://cd.gds-reliability.engineering/teams/verify/pipelines/di-authentication-deployment/jobs/acceptance-tests) job must pass before any code is deployed to the production and integration environments. They can also be run locally in order to build and make changes to the test suite.
+The test suite consists of two main types of tests:
+- UI Tests: Browser-based end-to-end tests using Selenium WebDriver to validate user journeys through the web interface
+- API Tests: Direct validation of account management functionality by interacting with AWS services that back the private APIs
 
-## How to run the tests
+The API tests work around the limitation of not being able to directly call the private APIs by interacting with the underlying AWS services (DynamoDB, Lambda, etc.) through the AWS SDK. This approach allows testing of account management features like MFA method updates and user profile changes by manipulating the same backend services that the APIs use.
 
-The tests can be run either in debug mode, where the tests will pause to accept entry of one-time password (OTP) codes before continuing, or in fully automated mode, where a test client is used to handle OTP.  The tests run in fully automated mode in the build pipeline.
+Key features include:
+- End-to-end testing of user registration and authentication flows
+- Multi-factor authentication testing via both UI and API (SMS and authenticator app)
+- Account recovery and password reset validation
+- Security features testing (lockouts, interventions)
+- Accessibility testing using axe-core
+- Multi-browser support (Chrome, Firefox)
+- Docker-based test execution
+- AWS integration for test data management
+- Welsh language support testing
 
+TODO:
+- Add details of running in the authdev environment.
+- Add details about ad-hoc test runs via the AWS Console
 
+## Repository Structure
+```
+.
+├── acceptance-tests/          # Main test implementation directory
+│   ├── src/test/
+│   │   ├── java/             # Test implementation in Java
+│   │   │   └── uk/gov/di/test/
+│   │   │       ├── entity/   # Data model classes for DynamoDB entities
+│   │   │       ├── pages/    # Page objects for web UI interaction
+│   │   │       ├── services/ # Service layer for AWS interactions
+│   │   │       └── utils/    # Utility classes and helpers
+│   │   └── resources/        # Test resources and feature files
+│   └── build.gradle          # Gradle build configuration for tests
+├── docker/                   # Docker configuration for test execution
+├── nginx/                    # Nginx configuration for routing
+└── scripts/                  # Utility scripts for running tests
+```
 
-### Test configuration
-
-There are two different ways to retrieve configuration environment variables to run the tests:
-
-1. Use the ready-made configuration in AWS SSM Parameter Store
-2. Create a local .env file, either by exporting from SSM, or if required by hand.
-
-#### AWS SSM Parameter Store Configuration
-
-This is the default option if running the tests using `./run-acceptance-tests.sh`.  You need to have access to the `digital-identity-dev` AWS account and be on the VPN for it to work.  You do not need to create a local .env file to use this option.
-
-The configuration provided will connect to the build environment.
-
-If you need to run against another environment, use the 's' flag e.g. `./run-acceptance-tests.sh -s sandpit`.
-
-Note that you need to export the aws profile required before running this, e.g. `export AWS_PROFILE=[some-aws-profile-with-sufficient-access-to-the-selected-env]`
-
-#### Local .env Configuration
-
-To create a .env file based on the values in AWS SSM Parameter Store:
-
-- Run `./run-acceptance-tests.sh -e`.  This will export a .env file with a timestamp.
-- Rename this file to `.env` before use.
-- Run `./run-acceptance-tests.sh -l` to make use of the local .env file.
-
-You do not need to be on the VPN to run the tests using an .env file.
+## Usage Instructions
 
 ### Prerequisites
+- Java 17 JDK
+- Docker and Docker Compose
+- AWS CLI configured with appropriate credentials
+- Gradle 7.x
+- Chrome or Firefox browser
 
-1. Clone the repo
-2. Install Java 16+
-3. Install Docker Desktop
-4. Choose your configuration method as described in the previous section.
+### Installation
 
-### Clean up
+1. Clone the repository:
+```bash
+git clone <repository-url>
+cd gov-uk-one-login-acceptance-tests
+```
 
-The `./run-acceptance-tests.sh` script will clean up the test data state after a test run by calling `./reset-test-data.sh`.
+2. Install dependencies:
+```bash
+./gradlew build
+```
 
-### Test Clients
+3. Configure AWS credentials:
+```bash
+aws configure
+```
 
-A test client is needed to run in fully automated mode.  A test client:
+### Quick Start
 
--   Suppresses sending OTP codes and allows usage of known, secret codes
--   Suppresses emails from the [Frontend](https://github.com/alphagov/di-authentication-frontend) application but not from [Account Management](https://github.com/alphagov/di-authentication-account-management)
--   Has an allowlist of known users for whom emails and OTP are suppressed
--   Is only available in test environments
--   Requires database access to setup
--   Cannot be setup using any API
+The preferred way to run the tests is using the rundocker.sh script. Due to the two-account structure per environment, `UI` and `API` tests must be run separately against their respective accounts:
 
-### Debug mode
+For UI Tests (run against the -sp accounts):
+```bash
+# Run UI tests against dev environment (dev-sp account)
+./rundocker.sh dev-sp
+# Run UI tests against build environment (build-sp account)
+./rundocker.sh build-sp
+# Run UI tests against staging environment (staging-sp account)
+./rundocker.sh staging-sp
+```
 
-Using debug mode avoids the need to configure a test client, but means the UI will pause to allow OTP entry.
+For API Tests (run against the core accounts):
+```bash
+# Run API tests against dev environment (dev account)
+./rundocker.sh dev
+# Run API tests against build environment (build account)
+./rundocker.sh build
+# Run API tests against staging environment (staging account)
+./rundocker.sh staging
+```
 
-1.  In `.env` or `./run-acceptance-tests.sh` set:
-    - SELENIUM_HEADLESS=false
-    - DEBUG_MODE=true
-1.  Run: [./run-acceptance-tests.sh](run-acceptance-tests.sh)
 
-Email and SMS OTP notifications will be sent to the email address and phone number configured as long as they have been added to the test [Notify](https://www.notifications.service.gov.uk/) team.
+The script supports running tests with either Chrome or Firefox browsers by specifying the browser as a second argument (e.g., `./rundocker.sh dev chrome`).
 
-### Fully automated mode
+### AWS Account Structure
 
-1.  Find a test client in a test environment
-1.  Add the test email address to `TestClientEmailAllowlist` in the client-registry database table for the test client
-1.  Configure secret email and phone OTP codes for testing
-1.  In `.env` or `./run-acceptance-tests.sh` set:
-    - SELENIUM_HEADLESS=true
-    - DEBUG_MODE=false
-1.  Run: [./run-acceptance-tests.sh](run-acceptance-tests.sh)
+The deployment infrastructure uses separate AWS accounts for API and UI components in each environment:
 
-Email and SMS OTP notifications will be suppressed for [Frontend](https://github.com/alphagov/di-authentication-frontend), but not for [Account Management](https://github.com/alphagov/di-authentication-account-management).
+- Development Environment:
+    - API deployment: dev account
+    - UI deployment: dev-sp account
 
-NOTES for now until further implementation (Ability to interact with the DB from the framework) takes place when debugging locally:
-- the TermsAndConditions version value for the tc test user will need to be reset to 1.0 in DynamoDB after running the test suite
-- the +lock2 test user will need deleting after running the test suite
+- Build Environment:
+    - API deployment: build account
+    - UI deployment: build-sp account
 
-## Making changes
+- Staging Environment:
+    - API deployment: staging account
+    - UI deployment: staging-sp account
 
-Cucumber feature files live in the acceptance-tests [resources](acceptance-tests/src/test/resources/uk/gov/di/test/acceptance/) directory.
+The CUCUMBER_FILTER_TAGS define in each environment broadly focus on features tagged `@UI` or `@API`.
 
-Java classes backing the tests live in the acceptance-tests java [acceptance](acceptance-tests/src/test/java/uk/gov/di/test/step_definitions/) directory.
+### Environment Variables
 
-If new configuration environment variables or seed test data has been added remember to:
+The acceptance tests require various environment variables that are stored in AWS Systems Manager (SSM) Parameter Store.
+These variables are downloaded when running the tests:
 
-1. Update the configuration under `/acceptance-tests/local` in AWS SSM Parameter Store.
-2. Create new test data if required in the [build pipeline](https://github.com/alphagov/di-infrastructure/blob/main/ci/tasks/generate-test-users-seed-data.yml).
-3. Pass any new environment variables to the tests for execution in the [build pipeline](https://github.com/alphagov/di-infrastructure/blob/9b1ae3c9a3114790ac758d7ac5cf4a28a470112b/ci/di-deployment-pipeline.yml#L1824).
-4. Change the cleanup script `./reset-test-data.sh` to reset any new test data if required.
-5. Do the same for the cleanup script in the [build pipeline](https://github.com/alphagov/di-infrastructure/blob/main/ci/tasks/reset-test-data.yml).
+1. For the API tests `rundocker.sh` executes `run-acceptance-test.sh` with the `-e` option which executes the `fetch_enthat downloads the parameters from SSM.
+2. For the UI tests the `fetch_envars.sh` script is run when building the docker image
 
-## Reporting
+The script retrieves all parameters from the "/acceptance-tests/${ENVIRONMENT}" path in SSM Parameter Store and exports them as environment variables. This ensures consistent configuration across different environments and secure storage of sensitive values.
 
-Local report:
+## Deployment
 
-Report is generated automatically - target/cucumber-report/index.html
+The acceptance tests are deployed using GitHub Actions workflows. To deploy the tests to the development environment:
 
-## Fail fast
+1. Use the "Build and Push Acceptance Tests to DEV" workflow to deploy them to the API environment
+2. Use the "Build and Push Acceptance Tests to DEV" workflow to deploy them to the UI environment
 
-A fail fast mechanism has been added and can be toggled by setting the FAIL_FAST_ENABLED option to true or false as required.
-For local runs this variable lives in the .env file.
-For a pipeline run this variable can be set/changed in AWS Param Store as required. The default is 'false'.
-When tests have been skipped due to the fail fast mechanism being triggered they will show up as PendingExceptions.
+The workflow will:
+- Build the test containers for both Chrome and Firefox browsers
+- Push the images to the development ECR repository
+- Tag the images appropriately for use in the development environment
+
+## Data Flow
+The acceptance tests interact with multiple components to validate the GOV.UK One Login service functionality.
+
+```ascii
+[Test Runner] --> [Selenium WebDriver] --> [Browser] --> [GOV.UK One Login UI]
+       |                                                         |
+       v                                                         v
+[AWS Services] <------------------------------------------> [Backend APIs]
+(DynamoDB, SSM)
+```
+
+Component Interactions:
+- Test Runner executes Cucumber feature files
+- Selenium WebDriver controls browser interactions
+- Page Objects abstract UI interactions
+- Service layer manages AWS resource interactions
+- DynamoDB stores test user data and state
+- AWS Systems Manager provides environment configuration
+- Nginx handles request routing and access control
