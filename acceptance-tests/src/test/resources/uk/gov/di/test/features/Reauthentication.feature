@@ -142,6 +142,8 @@ Feature: Reauthentication of user
     And the user logs out
     And the user switches back to the second tab
     And the user enters their email address for reauth
+    And the user enters the correct password
+    And the user enters the six digit security code from their phone
     Then the user is taken to the "There’s a problem with this service" page
 
 
@@ -155,7 +157,8 @@ Feature: Reauthentication of user
     And the user switches back to the first tab
     And the user logs out
     And the user switches back to the second tab
-    When the user enters their password
+    And the user enters the correct password
+    And the user enters the six digit security code from their phone
     Then the user is taken to the "There’s a problem with this service" page
 
 
