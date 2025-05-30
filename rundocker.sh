@@ -43,29 +43,26 @@ esac
 
 export AWS_PROFILE
 source ./scripts/check_aws_creds.sh
-results_dir=/tmp/results/$(date +%Y-%m-%d-%H-%M-%S)
+results_dir=./tmp/results/$(date +%Y-%m-%d-%H-%M-%S)
 mkdir -p "${results_dir}"
 
 if [ "${SP}" = "true" ]; then
-  docker build . -t acceptance:latest --target secure-pipelines \
+  docker build . -t acceptance:latest --target ui \
     --build-arg "SELENIUM_BASE=selenium/standalone-${BROWSER}:132.0"
   docker run -p 4442-4444:4442-4444 --privileged \
     -e CODEBUILD_BUILD_ID=1 -e AWS_REGION="${AWS_REGION:-eu-west-2}" \
     -e TEST_ENVIRONMENT="${ENVIRONMENT}" -e PARALLEL_BROWSERS=1 \
     -v "${results_dir}":/test/results \
     --env-file <(aws configure export-credentials --format env-no-export) \
-    -it --rm --entrypoint /bin/bash --shm-size="2g" acceptance:latest /run-tests.sh
+    -it --rm --entrypoint /bin/bash --shm-size="2g" acceptance:latest /run-ui-tests.sh
 else
-  ./run-acceptance-tests.sh -e "${ENVIRONMENT}"
-
-  docker build . -t acceptance:latest --target base \
+  docker build . -t acceptance:latest --target api \
     --build-arg "SELENIUM_BASE=selenium/standalone-${BROWSER}:132.0"
 
   docker run -p 4442-4444:4442-4444 --privileged \
     -e PARALLEL_BROWSERS=1 \
     -v "${results_dir}":/test/acceptance-tests/target/cucumber-report \
-    -v "$(pwd)/generated.env:/test/.env" \
     --env-file <(aws configure export-credentials --format env-no-export) \
     -it --rm --entrypoint /bin/bash --shm-size="2g" \
-    acceptance:latest /test/run-acceptance-tests.sh -s "${ENVIRONMENT}"
+    acceptance:latest /run-api-tests.sh -s "${ENVIRONMENT}"
 fi

@@ -27,7 +27,17 @@ case $ENVIRONMENT in
 esac
 
 # shellcheck source=../scripts/fetch_envars.sh
+echo "Fetching environment variables for ${ENVIRONMENT} environment"
+
 /test/scripts/fetch_envars.sh "${ENVIRONMENT}" | tee /test/.env
+
+if [[ -f ui-env-override ]]; then
+  echo "Adding local over-rides to env file:"
+  cat ui-env-override
+  cat ui-env-override >> .env
+else
+  echo "No local over-rides found"
+fi
 
 if [ "${SAM_STACK_NAME:-}" == "authentication-api" ]; then
   echo -e "\nEnvironment configuration overrides for ${SAM_STACK_NAME}:"
@@ -59,7 +69,10 @@ if [ "${SAM_STACK_NAME:-}" == "authentication-api" ]; then
   fi
 fi
 
+echo
 echo "Assuming cross-account role"
+echo
+
 output=$(aws sts assume-role --role-arn "$CROSSACCOUNT_ROLEARN" --role-session-name "dynamo-db-access" --output json)
 
 # shellcheck disable=SC2155
@@ -74,7 +87,7 @@ PROCESSOR_CORES=$(nproc --all 2> /dev/null || echo 1)
 # run one more browser than we have cores
 export PARALLEL_BROWSERS=$((PROCESSOR_CORES + 1))
 
-/test/run-acceptance-tests.sh -s "${ENVIRONMENT}"
+/test/run-tests.sh -s "${ENVIRONMENT}"
 return_code=$?
 
 if [ -d "/test/acceptance-tests/target/cucumber-report/" ]; then
