@@ -58,4 +58,16 @@ public class SupportPage extends BasePage {
     public String getLinkAppText() {
         return Driver.get().findElement(mfaSupportLinkAppText).getText();
     }
+
+    public void selectRadioButtonForPhoneAndProceed(String text, String mobilenumber) {
+        Driver.get()
+                .findElement(
+                        By.xpath(
+                                "//label[contains(., '"
+                                        + text
+                                        + "')and span[contains(text(), '"
+                                        + mobilenumber
+                                        + "')]]/preceding-sibling::input"))
+                .click();
+    }
 }
