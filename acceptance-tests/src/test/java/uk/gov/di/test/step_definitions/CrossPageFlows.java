@@ -307,7 +307,7 @@ public class CrossPageFlows extends BasePage {
     }
 
     public void requestAuthSecurityCodeResendNumberOfTimes(
-        Integer numberOfTimes, Boolean isReauth) {
+                Integer numberOfTimes, Boolean isReauth) {
             for (int i = 0; i < numberOfTimes; i++) {
                 checkYourPhonePage.clickProblemsWithTheCodeLink();
                 checkYourPhonePage.clickSendTheCodeAgainLink();
