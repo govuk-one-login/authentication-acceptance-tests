@@ -34,6 +34,11 @@ public class Hooks extends BasePage {
         AxeStepDef.thereAreNoAccessibilityViolations();
     }
 
+    @After
+    public void afterEach() {
+        Driver.get().manage().deleteAllCookies();
+    }
+
     @After("@UI")
     public void takeScreenshotOnFailure(Scenario scenario) {
         if (scenario.isFailed()) {
