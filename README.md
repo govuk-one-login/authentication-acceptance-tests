@@ -134,10 +134,12 @@ You can override any environment variable downloaded from parameter store using 
 For example if you want to run a sub-set of tests:
 
 ```shell
-CUCUMBER_FILTER_TAGS="@MY_TAG"
+CUCUMBER_FILTER_TAGS="not (@AccountInterventions or @Reauth or @old-mfa-without-ipv)"
 ```
 
-Or if you want to run with additonal con-currency:
+Note.  See the [cucumber docs](https://cucumber.io/docs/cucumber/api/#tags) for how tom define multiple filter tags.
+
+Or if you want to run with additional con-currency:
 
 ```shell
 PARALLEL_BROWSERS=2

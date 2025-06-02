@@ -41,6 +41,9 @@ case "${ENVIRONMENT}" in
     ;;
 esac
 
+[ -f api-env-override ] || touch api-env-override
+[ -f ui-env-override ] || touch ui-env-override
+
 export AWS_PROFILE
 source ./scripts/check_aws_creds.sh
 results_dir=./tmp/results/$(date +%Y-%m-%d-%H-%M-%S)
