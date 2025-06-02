@@ -414,4 +414,17 @@ public class LoginStepDef extends BasePage {
                 throw new RuntimeException("Invalid mfa type: " + mfaType);
         }
     }
+
+    @When("the user requests the auth otp code a further {int} times")
+    public void theUserRequestsTheAuthOtpCodeAFurtherTimes(Integer timesCodeIncorrect) {
+        crossPageFlows.requestAuthSecurityCodeResendNumberOfTimes(timesCodeIncorrect, false);
+    }
+
+    @And("the user enters the security code from backup MFA auth app")
+    public void theUserEntersTheSecurityCodeFromBackupMFAAuthApp() {
+        if (authAppSecretKey == null) {
+            authAppSecretKey = world.userCredentials.getMfaMethods().get(1).getCredentialValue();
+        }
+        setUpAnAuthenticatorAppPage.enterCorrectAuthAppCodeAndContinue(authAppSecretKey);
+    }
 }
