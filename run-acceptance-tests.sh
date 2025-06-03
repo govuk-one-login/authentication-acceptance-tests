@@ -41,7 +41,7 @@ function write_env_file() {
 
   echo "Getting environment variables from SSM ... "
 
-  envfile=downloaded.env
+  envfile=generated.env
 
   echo "Exporting environment variables from SSM to file ${envfile} ... "
   {

@@ -60,21 +60,14 @@ ENV SELENIUM_LOCAL=true
 ENV SELENIUM_HEADLESS=true
 ENV DEBUG_MODE=false
 
-COPY --chown=${SEL_USER}:${SEL_GROUP} docker/run-tests.sh /test/run-tests.sh
+COPY --chown=${SEL_USER}:${SEL_GROUP} docker/run-acceptance-tests.sh /test/run-acceptance-tests.sh
+RUN chmod 500 /test/run-acceptance-tests.sh
+
+ENTRYPOINT ["/test/run-acceptance-tests.sh"]
+
+FROM base AS secure-pipelines
 COPY --chown=${SEL_USER}:${SEL_GROUP} scripts/fetch_envars.sh /test/scripts/fetch_envars.sh
+COPY --chown=${SEL_USER}:${SEL_GROUP} docker/run-tests-sp.sh /run-tests.sh
+RUN chmod 500 /test/scripts/fetch_envars.sh /run-tests.sh
 
-RUN chmod 500 /test/run-tests.sh /test/scripts/fetch_envars.sh
-
-FROM base AS api
-COPY --chown=${SEL_USER}:${SEL_GROUP} api-env-override /test/api-env-override
-COPY --chown=${SEL_USER}:${SEL_GROUP} docker/run-api-tests.sh /run-api-tests.sh
-RUN chmod 500 /run-api-tests.sh
-
-ENTRYPOINT ["/run-api-tests.sh"]
-
-FROM base AS ui
-COPY --chown=${SEL_USER}:${SEL_GROUP} ui-env-override /test/ui-env-override
-COPY --chown=${SEL_USER}:${SEL_GROUP} docker/run-ui-tests.sh /run-ui-tests.sh
-RUN chmod 500 /run-ui-tests.sh
-
-ENTRYPOINT ["/run-ui-tests.sh"]
+ENTRYPOINT ["/run-tests.sh"]
