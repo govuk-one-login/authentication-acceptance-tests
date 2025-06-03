@@ -60,21 +60,39 @@ ENV SELENIUM_LOCAL=true
 ENV SELENIUM_HEADLESS=true
 ENV DEBUG_MODE=false
 
-COPY --chown=${SEL_USER}:${SEL_GROUP} docker/run-tests.sh /test/run-tests.sh
 COPY --chown=${SEL_USER}:${SEL_GROUP} scripts/fetch_envars.sh /test/scripts/fetch_envars.sh
 
-RUN chmod 500 /test/run-tests.sh /test/scripts/fetch_envars.sh
+RUN chmod 555 /test/scripts/fetch_envars.sh
 
-FROM base AS api
+#
+# The API tests are run on the old pipeline which expects a file called run-acceptance-tests.sh in
+# the root directory of the docker image.
+#
+FROM base AS auth-api
+COPY --chown=${SEL_USER}:${SEL_GROUP} docker/run-tests-api.sh /test/run-acceptance-tests.sh
+RUN chmod 555 /test/run-acceptance-tests.sh
+
+ENTRYPOINT ["/test/run-acceptance-tests.sh"]
+
+#
+# The UI tests are run on the secure pipeline which expects a file called run-tests.sh in the root
+# directory of the docker image.
+#
+FROM base AS auth-ui
+COPY --chown=${SEL_USER}:${SEL_GROUP} docker/run-tests-ui.sh /run-tests.sh
+RUN chmod 555 /run-tests.sh
+
+ENTRYPOINT ["/run-tests.sh"]
+
+#
+# The following images are for local use only to allow sub-sets of the tests
+# to be run by over-riding the environment variables.
+#
+
+FROM auth-api AS auth-api-local
 COPY --chown=${SEL_USER}:${SEL_GROUP} api-env-override /test/api-env-override
-COPY --chown=${SEL_USER}:${SEL_GROUP} docker/run-api-tests.sh /run-api-tests.sh
-RUN chmod 500 /run-api-tests.sh
+RUN chmod 444 /test/api-env-override
 
-ENTRYPOINT ["/run-api-tests.sh"]
-
-FROM base AS ui
+FROM auth-ui AS auth-ui-local
 COPY --chown=${SEL_USER}:${SEL_GROUP} ui-env-override /test/ui-env-override
-COPY --chown=${SEL_USER}:${SEL_GROUP} docker/run-ui-tests.sh /run-ui-tests.sh
-RUN chmod 500 /run-ui-tests.sh
-
-ENTRYPOINT ["/run-ui-tests.sh"]
+RUN chmod 444 /test/ui-env-override

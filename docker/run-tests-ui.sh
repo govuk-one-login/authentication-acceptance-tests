@@ -31,14 +31,6 @@ echo "Fetching environment variables for ${ENVIRONMENT} environment"
 
 /test/scripts/fetch_envars.sh "${ENVIRONMENT}" | tee /test/.env
 
-if [[ -f ui-env-override ]]; then
-  echo "Adding local over-rides to env file:"
-  cat ui-env-override
-  cat ui-env-override >> .env
-else
-  echo "No local over-rides found"
-fi
-
 if [ "${SAM_STACK_NAME:-}" == "authentication-api" ]; then
   echo -e "\nEnvironment configuration overrides for ${SAM_STACK_NAME}:"
   if grep -qE '^API_RP_URL=' /test/.env; then
@@ -87,7 +79,43 @@ PROCESSOR_CORES=$(nproc --all 2> /dev/null || echo 1)
 # run one more browser than we have cores
 export PARALLEL_BROWSERS=$((PROCESSOR_CORES + 1))
 
-/test/run-tests.sh -s "${ENVIRONMENT}"
+export ENVIRONMENT="${ENVIRONMENT}"
+
+if [ -z "${AWS_REGION:-}" ]; then
+  export AWS_REGION="eu-west-2"
+fi
+
+pushd /test > /dev/null || exit 1
+
+if [[ -f ui-env-override ]]; then
+  echo "Adding local over-rides to env file:"
+  cat ui-env-override
+  cat ui-env-override >> .env
+else
+  echo "No local over-rides found"
+fi
+
+if [ -f ".env" ]; then
+  # source .env file if it exists (as we're running in docker, it's definitely needed if it's there)
+  # shellcheck source=/dev/null
+  set -o allexport && source .env && set +o allexport
+else
+  echo "No .env file found"
+fi
+
+echo
+echo "********************************************************************************************"
+echo "CUCUMBER FILTER TAGS: ${CUCUMBER_FILTER_TAGS}"
+echo "********************************************************************************************"
+echo
+
+SELENIUM_BROWSER="$(cat /opt/selenium/browser_name)"
+export SELENIUM_BROWSER
+
+./gradlew --no-daemon cucumber
+
+popd > /dev/null || exit 1
+
 return_code=$?
 
 if [ -d "/test/acceptance-tests/target/cucumber-report/" ]; then
