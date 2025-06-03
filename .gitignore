@@ -4,7 +4,6 @@
 .LSOverride
 ._*
 
-tmp/
 .gradle/
 .idea/
 build/
@@ -21,9 +20,6 @@ failures.json
 assets/*
 .LCKbuild.gradle~
 *.env
-api-env-override
-ui-env-override
-downloaded.env
 
 # Visual Studio Code
 .vscode/*
