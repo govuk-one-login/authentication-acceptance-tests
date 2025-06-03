@@ -74,42 +74,43 @@ The preferred way to run the tests is using the rundocker.sh script. Due to the 
 
 For UI Tests (run against the -sp accounts):
 ```bash
-# Run UI tests against dev environment (dev-sp account)
-./rundocker.sh dev-sp
-# Run UI tests against build environment (build-sp account)
-./rundocker.sh build-sp
-# Run UI tests against staging environment (staging-sp account)
-./rundocker.sh staging-sp
+# Run UI tests against dev environment
+./rundocker.sh dev-ui
+# Run UI tests against build environment
+./rundocker.sh build-ui
+# Run UI tests against staging environment
+./rundocker.sh staging-ui
 ```
 
 For API Tests (run against the core accounts):
 ```bash
-# Run API tests against dev environment (dev account)
-./rundocker.sh dev
-# Run API tests against build environment (build account)
-./rundocker.sh build
-# Run API tests against staging environment (staging account)
-./rundocker.sh staging
+# Run API tests against dev environment
+./rundocker.sh dev-api
+# Run API tests against build environment
+./rundocker.sh build-api
+# Run API tests against staging environment
+./rundocker.sh staging-api
 ```
 
+The script supports running tests with either Chrome or Firefox browsers by specifying the browser as a second argument (e.g., `./rundocker.sh dev-ui chrome`).
 
-The script supports running tests with either Chrome or Firefox browsers by specifying the browser as a second argument (e.g., `./rundocker.sh dev chrome`).
+Test reports can be found in the tmp folder within the project.  Note: this folder can fill up quickly so regular purging is recommended.
 
 ### AWS Account Structure
 
 The deployment infrastructure uses separate AWS accounts for API and UI components in each environment:
 
 - Development Environment:
-    - API deployment: dev account
-    - UI deployment: dev-sp account
+    - API deployment: di-auth-development account
+    - UI deployment: di-authentication-development account
 
 - Build Environment:
-    - API deployment: build account
-    - UI deployment: build-sp account
+    - API deployment: gds-di-development account
+    - UI deployment: di-authentication-build account
 
 - Staging Environment:
-    - API deployment: staging account
-    - UI deployment: staging-sp account
+    - API deployment: di-auth-staging account
+    - UI deployment: di-authentication-staging account
 
 The CUCUMBER_FILTER_TAGS define in each environment broadly focus on features tagged `@UI` or `@API`.
 
@@ -122,6 +123,29 @@ These variables are downloaded when running the tests:
 2. For the UI tests the `fetch_envars.sh` script is run when building the docker image
 
 The script retrieves all parameters from the "/acceptance-tests/${ENVIRONMENT}" path in SSM Parameter Store and exports them as environment variables. This ensures consistent configuration across different environments and secure storage of sensitive values.
+
+#### Over-riding Environment Variables
+
+You can override any environment variable downloaded from parameter store using a local override file:
+
+1. api-env-override
+2. ui-env-override
+
+For example if you want to run a sub-set of tests:
+
+```shell
+CUCUMBER_FILTER_TAGS="not (@AccountInterventions or @Reauth or @old-mfa-without-ipv)"
+```
+
+Note.  See the [cucumber docs](https://cucumber.io/docs/cucumber/api/#tags) for how tom define multiple filter tags.
+
+Or if you want to run with additional con-currency:
+
+```shell
+PARALLEL_BROWSERS=2
+```
+
+Note.  For the UI tests be cautious when overriding PARALLEL_BROWSERS as the number to use is already calculated dynamically in the scripts.
 
 ## Deployment
 
