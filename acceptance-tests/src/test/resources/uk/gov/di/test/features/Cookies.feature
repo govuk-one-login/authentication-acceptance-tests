@@ -5,4 +5,4 @@ Feature: Cookies
   @under-development @AUT-4233
   Scenario: User views the start page
     Given the user comes from the stub relying party with default options and is taken to the "Create your GOV.UK One Login or sign in" page
-    Then the di-device-intelligence cookie has been set
+    Then the "di-device-intelligence" cookie has been set
