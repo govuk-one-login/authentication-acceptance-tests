@@ -83,16 +83,3 @@ COPY --chown=${SEL_USER}:${SEL_GROUP} docker/run-tests-ui.sh /run-tests.sh
 RUN chmod 555 /run-tests.sh
 
 ENTRYPOINT ["/run-tests.sh"]
-
-#
-# The following images are for local use only to allow sub-sets of the tests
-# to be run by over-riding the environment variables.
-#
-
-FROM auth-api AS auth-api-local
-COPY --chown=${SEL_USER}:${SEL_GROUP} api-env-override /test/api-env-override
-RUN chmod 444 /test/api-env-override
-
-FROM auth-ui AS auth-ui-local
-COPY --chown=${SEL_USER}:${SEL_GROUP} ui-env-override /test/ui-env-override
-RUN chmod 444 /test/ui-env-override

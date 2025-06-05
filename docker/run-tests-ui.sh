@@ -26,9 +26,6 @@ case $ENVIRONMENT in
     ;;
 esac
 
-# shellcheck source=../scripts/fetch_envars.sh
-/test/scripts/fetch_envars.sh "${ENVIRONMENT}" | tee /test/.env
-
 if [ "${SAM_STACK_NAME:-}" == "authentication-api" ]; then
   echo -e "\nEnvironment configuration overrides for ${SAM_STACK_NAME}:"
   if grep -qE '^API_RP_URL=' /test/.env; then
@@ -82,14 +79,6 @@ fi
 
 pushd /test > /dev/null || exit 1
 
-if [[ -f ui-env-override ]]; then
-  echo "Adding local over-rides to env file:"
-  cat ui-env-override
-  cat ui-env-override >> .env
-else
-  echo "No local over-rides found"
-fi
-
 if [ -f ".env" ]; then
   # source .env file if it exists (as we're running in docker, it's definitely needed if it's there)
   # shellcheck source=/dev/null
@@ -98,11 +87,15 @@ else
   echo "No .env file found"
 fi
 
-echo
-echo "********************************************************************************************"
-echo "CUCUMBER FILTER TAGS: ${CUCUMBER_FILTER_TAGS}"
-echo "********************************************************************************************"
-echo
+
+if [ -n "${CUCUMBER_FILTER_TAGS:-}" ]; then
+  echo
+  echo "********************************************************************************************"
+  echo "CUCUMBER FILTER TAGS: ${CUCUMBER_FILTER_TAGS}"
+  echo "********************************************************************************************"
+  echo
+fi
+
 
 SELENIUM_BROWSER="$(cat /opt/selenium/browser_name)"
 export SELENIUM_BROWSER

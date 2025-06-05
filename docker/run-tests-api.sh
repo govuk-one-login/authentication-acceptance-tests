@@ -9,16 +9,6 @@ fi
 
 pushd /test > /dev/null || exit 1
 
-/test/scripts/fetch_envars.sh "${ENVIRONMENT}" | tee /test/.env
-
-if [[ -f api-env-override ]]; then
-  printf "\nAdding local over-rides to env file:\n"
-  cat api-env-override
-  cat api-env-override >> .env
-else
-  printf "\nNo local over-rides found\n"
-fi
-
 if [ -f ".env" ]; then
   # source .env file if it exists (as we're running in docker, it's definitely needed if it's there)
   # shellcheck source=/dev/null

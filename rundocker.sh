@@ -46,8 +46,21 @@ case "${ENVIRONMENT}" in
     ;;
 esac
 
-[ -f api-env-override ] || touch api-env-override
-[ -f ui-env-override ] || touch ui-env-override
+
+create_local_env_file() {
+  local override_file="$1"
+  [ -f "${override_file}" ] || touch "${override_file}"
+
+  scripts/fetch_envars.sh "${ENVIRONMENT}" | tee generated.env
+
+  if [[ -f ${override_file} ]]; then
+    printf "\nAdding local over-rides to env file:\n"
+    cat "${override_file}"
+    cat "${override_file}" >> generated.env
+  else
+    printf "\nNo local over-rides found\n"
+  fi
+}
 
 export AWS_PROFILE
 source ./scripts/check_aws_creds.sh
@@ -55,24 +68,35 @@ results_dir=./tmp/results/$(date +%Y-%m-%d-%H-%M-%S)
 mkdir -p "${results_dir}"
 
 if [ "${TEST_MODE}" = "UI" ]; then
-  docker build . -t acceptance:latest --target auth-ui-local \
+  docker build . -t ui-acceptance-tests:latest --target auth-ui \
     --build-arg "SELENIUM_BASE=selenium/standalone-${BROWSER}:132.0"
+
+  create_local_env_file "ui-env-override"
+
   docker run -p 4442-4444:4442-4444 --privileged \
-    -e CODEBUILD_BUILD_ID=1 -e AWS_REGION="${AWS_REGION:-eu-west-2}" \
-    -e TEST_ENVIRONMENT="${ENVIRONMENT}" -e PARALLEL_BROWSERS=1 \
+    -e CODEBUILD_BUILD_ID=1 \
+    -e AWS_REGION="${AWS_REGION:-eu-west-2}" \
+    -e TEST_ENVIRONMENT="${ENVIRONMENT}" \
+    -e PARALLEL_BROWSERS=1 \
+    -e USE_SSM=false \
+    -v "$(pwd)/generated.env:/test/.env" \
     -v "${results_dir}":/test/results \
     --env-file <(aws configure export-credentials --format env-no-export) \
-    -it --rm --entrypoint /bin/bash --shm-size="2g" acceptance:latest /run-tests.sh
+    -it --rm --entrypoint /bin/bash --shm-size="2g" ui-acceptance-tests:latest /run-tests.sh
 fi
 
 if [ "${TEST_MODE}" = "API" ]; then
-  docker build . -t acceptance:latest --target auth-api-local \
+  docker build . -t api-acceptance-tests:latest --target auth-api \
     --build-arg "SELENIUM_BASE=selenium/standalone-${BROWSER}:132.0"
+
+  create_local_env_file "api-env-override"
 
   docker run -p 4442-4444:4442-4444 --privileged \
     -e PARALLEL_BROWSERS=1 \
+    -e USE_SSM=false \
+    -v "$(pwd)/generated.env:/test/.env" \
     -v "${results_dir}":/test/acceptance-tests/target/cucumber-report \
     --env-file <(aws configure export-credentials --format env-no-export) \
     -it --rm --entrypoint /bin/bash --shm-size="2g" \
-    acceptance:latest /test/run-acceptance-tests.sh -s "${ENVIRONMENT}"
+    api-acceptance-tests:latest /test/run-acceptance-tests.sh -s "${ENVIRONMENT}"
 fi
