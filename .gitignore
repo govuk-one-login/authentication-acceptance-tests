@@ -4,6 +4,7 @@
 .LSOverride
 ._*
 
+tmp/
 .gradle/
 .idea/
 build/

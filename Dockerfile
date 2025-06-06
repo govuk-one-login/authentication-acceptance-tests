@@ -60,14 +60,26 @@ ENV SELENIUM_LOCAL=true
 ENV SELENIUM_HEADLESS=true
 ENV DEBUG_MODE=false
 
-COPY --chown=${SEL_USER}:${SEL_GROUP} docker/run-acceptance-tests.sh /test/run-acceptance-tests.sh
+COPY --chown=${SEL_USER}:${SEL_GROUP} scripts/fetch_envars.sh /test/scripts/fetch_envars.sh
+
+RUN chmod 500 /test/scripts/fetch_envars.sh
+
+#
+# The API tests are run on the old pipeline which expects a file called run-acceptance-tests.sh in
+# the root directory of the docker image.
+#
+FROM base AS auth-api
+COPY --chown=${SEL_USER}:${SEL_GROUP} docker/run-tests-api.sh /test/run-acceptance-tests.sh
 RUN chmod 500 /test/run-acceptance-tests.sh
 
 ENTRYPOINT ["/test/run-acceptance-tests.sh"]
 
-FROM base AS secure-pipelines
-COPY --chown=${SEL_USER}:${SEL_GROUP} scripts/fetch_envars.sh /test/scripts/fetch_envars.sh
-COPY --chown=${SEL_USER}:${SEL_GROUP} docker/run-tests-sp.sh /run-tests.sh
-RUN chmod 500 /test/scripts/fetch_envars.sh /run-tests.sh
+#
+# The UI tests are run on the secure pipeline which expects a file called run-tests.sh in the root
+# directory of the docker image.
+#
+FROM base AS auth-ui
+COPY --chown=${SEL_USER}:${SEL_GROUP} docker/run-tests-ui.sh /run-tests.sh
+RUN chmod 500 /run-tests.sh
 
 ENTRYPOINT ["/run-tests.sh"]

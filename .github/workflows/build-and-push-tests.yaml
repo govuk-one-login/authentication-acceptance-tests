@@ -46,7 +46,7 @@ jobs:
         with:
           context: .
           push: true
-          target: base
+          target: auth-api
           build-args: |
             SELENIUM_BASE=${{ env.SELENIUM_BASE }}
           tags: "${{ steps.login-ecr.outputs.registry }}/${{ secrets.ACCEPTANCE_ECR_REPO }}:latest"

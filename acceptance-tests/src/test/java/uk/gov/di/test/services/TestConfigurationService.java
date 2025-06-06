@@ -21,7 +21,7 @@ public class TestConfigurationService {
     }
 
     private TestConfigurationService() {
-        boolean useSsm = Boolean.parseBoolean(System.getenv().getOrDefault("USE_SSM", "true"));
+        boolean useSsm = Boolean.parseBoolean(System.getenv().getOrDefault("USE_SSM", "false"));
         System.out.printf("Using SSM for configuration: %s%n", useSsm ? "Yes" : "No");
         if (useSsm) {
             ssmClient = SsmClient.builder().build();
