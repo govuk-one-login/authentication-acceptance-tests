@@ -77,7 +77,6 @@ if [ "${TEST_MODE}" = "UI" ]; then
     -e AWS_REGION="${AWS_REGION:-eu-west-2}" \
     -e TEST_ENVIRONMENT="${ENVIRONMENT}" \
     -e PARALLEL_BROWSERS=1 \
-    -e USE_SSM=false \
     -v "$(pwd)/env-generated.env:/test/.env" \
     -v "${results_dir}":/test/results \
     --env-file <(aws configure export-credentials --format env-no-export) \
@@ -92,7 +91,6 @@ if [ "${TEST_MODE}" = "API" ]; then
 
   docker run -p 4442-4444:4442-4444 --privileged \
     -e PARALLEL_BROWSERS=1 \
-    -e USE_SSM=false \
     -v "$(pwd)/env-generated.env:/test/.env" \
     -v "${results_dir}":/test/acceptance-tests/target/cucumber-report \
     --env-file <(aws configure export-credentials --format env-no-export) \

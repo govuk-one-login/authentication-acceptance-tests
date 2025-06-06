@@ -3,39 +3,61 @@ set -euo pipefail
 
 export ENVIRONMENT="${2}"
 
-if [ -z "${AWS_REGION:-}" ]; then
-  export AWS_REGION="eu-west-2"
-fi
+check_guard_conditions() {
+  if [ -z "${AWS_REGION:-}" ]; then
+    export AWS_REGION="eu-west-2"
+  fi
 
-pushd /test > /dev/null || exit 1
+}
 
-if [ -f ".env" ]; then
-  # source .env file if it exists (as we're running in docker, it's definitely needed if it's there)
+setup_environment_variables() {
+  if [ ! -f /test/.env ]; then
+    echo "No .env file provided so creating one from SSM."
+    # shellcheck source=../scripts/fetch_envars.sh
+    /test/scripts/fetch_envars.sh "${ENVIRONMENT}" | tee /test/.env
+  fi
   # shellcheck source=/dev/null
-  set -o allexport && source .env && set +o allexport
-else
-  echo "No .env file found"
-fi
+  set -o allexport && source /test/.env && set +o allexport
+}
 
-echo
-echo "********************************************************************************************"
+log_run_configuration() {
+  if [ -n "${CUCUMBER_FILTER_TAGS:-}" ]; then
+    echo
+    echo "********************************************************************************************"
+    echo "CUCUMBER FILTER TAGS: ${CUCUMBER_FILTER_TAGS}"
+    echo "********************************************************************************************"
+    echo
+  else
+    echo "CUCUMBER_FILTER_TAGS not defined, cannot run tests"
+    exit 1
+  fi
+}
 
-if [ -n "${USE_SSM:-}" ] && [ "${USE_SSM,,}" = "false" ]; then
-  echo "Using .env file"
-else
-  echo "Using Parameter Store"
-fi
+setup_cucumber_run_parameters() {
+  SELENIUM_BROWSER="$(cat /opt/selenium/browser_name)"
+  export SELENIUM_BROWSER
+}
 
-if [ -n "${CUCUMBER_FILTER_TAGS:-}" ]; then
-  echo "CUCUMBER FILTER TAGS: ${CUCUMBER_FILTER_TAGS}"
-fi
+copy_test_reports() {
+  if [ -d "/test/acceptance-tests/target/cucumber-report/" ]; then
+    cp -r /test/acceptance-tests/target/cucumber-report/* "$(pwd)"/results/
+  fi
+}
 
-echo "********************************************************************************************"
-echo
+execute_tests() {
+  local acceptance_tests_exit_status
+  trap 'exit $acceptance_tests_exit_status' EXIT
 
-SELENIUM_BROWSER="$(cat /opt/selenium/browser_name)"
-export SELENIUM_BROWSER
+  pushd /test > /dev/null || exit 1
+  ./gradlew --no-daemon cucumber
+  acceptance_tests_exit_status=$?
+  popd > /dev/null || exit 1
 
-./gradlew --no-daemon cucumber
+  copy_test_reports
+}
 
-popd > /dev/null || exit 1
+check_guard_conditions
+setup_cucumber_run_parameters
+setup_environment_variables
+log_run_configuration
+execute_tests
