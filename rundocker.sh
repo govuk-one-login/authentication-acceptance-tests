@@ -50,14 +50,14 @@ create_local_env_file() {
   local override_file="$1"
   [ -f "${override_file}" ] || touch "${override_file}"
 
-  scripts/fetch_envars.sh "${ENVIRONMENT}" | tee generated.env
+  scripts/fetch_envars.sh "${ENVIRONMENT}" | tee env-generated.env
 
   if [[ -f ${override_file} ]]; then
-    printf "\nAdding local over-rides to env file:\n"
+    printf "\nAdding local overrides to env file:\n"
     cat "${override_file}"
-    cat "${override_file}" >> generated.env
+    cat "${override_file}" >> env-generated.env
   else
-    printf "\nNo local over-rides found\n"
+    printf "\nNo local overrides found\n"
   fi
 }
 
@@ -70,7 +70,7 @@ if [ "${TEST_MODE}" = "UI" ]; then
   docker build . -t ui-acceptance-tests:latest --target auth-ui \
     --build-arg "SELENIUM_BASE=selenium/standalone-${BROWSER}:132.0"
 
-  create_local_env_file "ui-env-override"
+  create_local_env_file "env-override-ui.env"
 
   docker run -p 4442-4444:4442-4444 --privileged \
     -e CODEBUILD_BUILD_ID=1 \
@@ -78,7 +78,7 @@ if [ "${TEST_MODE}" = "UI" ]; then
     -e TEST_ENVIRONMENT="${ENVIRONMENT}" \
     -e PARALLEL_BROWSERS=1 \
     -e USE_SSM=false \
-    -v "$(pwd)/generated.env:/test/.env" \
+    -v "$(pwd)/env-generated.env:/test/.env" \
     -v "${results_dir}":/test/results \
     --env-file <(aws configure export-credentials --format env-no-export) \
     -it --rm --entrypoint /bin/bash --shm-size="2g" ui-acceptance-tests:latest /run-tests.sh
@@ -88,12 +88,12 @@ if [ "${TEST_MODE}" = "API" ]; then
   docker build . -t api-acceptance-tests:latest --target auth-api \
     --build-arg "SELENIUM_BASE=selenium/standalone-${BROWSER}:132.0"
 
-  create_local_env_file "api-env-override"
+  create_local_env_file "env-override-api.env"
 
   docker run -p 4442-4444:4442-4444 --privileged \
     -e PARALLEL_BROWSERS=1 \
     -e USE_SSM=false \
-    -v "$(pwd)/generated.env:/test/.env" \
+    -v "$(pwd)/env-generated.env:/test/.env" \
     -v "${results_dir}":/test/acceptance-tests/target/cucumber-report \
     --env-file <(aws configure export-credentials --format env-no-export) \
     -it --rm --entrypoint /bin/bash --shm-size="2g" \

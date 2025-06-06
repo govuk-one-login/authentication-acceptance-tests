@@ -124,7 +124,7 @@ These variables are downloaded when running the tests:
 
 The script retrieves all parameters from the "/acceptance-tests/${ENVIRONMENT}" path in SSM Parameter Store and exports them as environment variables. This ensures consistent configuration across different environments and secure storage of sensitive values.
 
-#### Over-riding Environment Variables
+#### Overriding Environment Variables
 
 You can override any environment variable downloaded from parameter store using a local override file:
 

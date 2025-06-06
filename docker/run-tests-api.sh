@@ -19,7 +19,17 @@ fi
 
 echo
 echo "********************************************************************************************"
-echo "CUCUMBER FILTER TAGS: ${CUCUMBER_FILTER_TAGS}"
+
+if [ -n "${USE_SSM:-}" ] && [ "${USE_SSM,,}" = "false" ]; then
+  echo "Using .env file"
+else
+  echo "Using Parameter Store"
+fi
+
+if [ -n "${CUCUMBER_FILTER_TAGS:-}" ]; then
+  echo "CUCUMBER FILTER TAGS: ${CUCUMBER_FILTER_TAGS}"
+fi
+
 echo "********************************************************************************************"
 echo
 

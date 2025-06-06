@@ -26,6 +26,9 @@ case $ENVIRONMENT in
     ;;
 esac
 
+# shellcheck source=../scripts/fetch_envars.sh
+/test/scripts/fetch_envars.sh "${ENVIRONMENT}" | tee /test/.env
+
 if [ "${SAM_STACK_NAME:-}" == "authentication-api" ]; then
   echo -e "\nEnvironment configuration overrides for ${SAM_STACK_NAME}:"
   if grep -qE '^API_RP_URL=' /test/.env; then
@@ -87,13 +90,21 @@ else
   echo "No .env file found"
 fi
 
-if [ -n "${CUCUMBER_FILTER_TAGS:-}" ]; then
-  echo
-  echo "********************************************************************************************"
-  echo "CUCUMBER FILTER TAGS: ${CUCUMBER_FILTER_TAGS}"
-  echo "********************************************************************************************"
-  echo
+echo
+echo "********************************************************************************************"
+
+if [ -n "${USE_SSM:-}" ] && [ "${USE_SSM,,}" = "false" ]; then
+  echo "Using .env file"
+else
+  echo "Using Parameter Store"
 fi
+
+if [ -n "${CUCUMBER_FILTER_TAGS:-}" ]; then
+  echo "CUCUMBER FILTER TAGS: ${CUCUMBER_FILTER_TAGS}"
+fi
+
+echo "********************************************************************************************"
+echo
 
 SELENIUM_BROWSER="$(cat /opt/selenium/browser_name)"
 export SELENIUM_BROWSER
