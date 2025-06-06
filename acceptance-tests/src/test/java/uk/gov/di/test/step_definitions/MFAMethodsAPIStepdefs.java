@@ -39,6 +39,7 @@ public class MFAMethodsAPIStepdefs {
 
     @When("the User provides the correct otp")
     public void theUserRequestsToAddABackupMFAPhoneNumber() {
+        world.setOtp(getOtp(world.getUserEmailAddress()));
         String jsonResponse = addBackupSMS(world);
         ObjectMapper objectMapper = new ObjectMapper();
         try {

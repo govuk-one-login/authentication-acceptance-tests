@@ -121,9 +121,7 @@ public class ApiInteractionsService {
                     "phoneNumber": "%s"
                 }
                 """
-                        .formatted(
-                                world.userProfile.getEmail(),
-                                world.userProfile.getBackupPhoneNumber());
+                        .formatted(world.userProfile.getEmail(), world.getNewPhoneNumber());
 
         var event = createApiGatewayProxyRequestEvent(body, null, world.getAuthorizerContent());
 
@@ -136,7 +134,7 @@ public class ApiInteractionsService {
         InvokeResponse invokeResponse = lambdaClient.invoke(invokeRequest);
 
         LOG.debug("/send-otp-notification response: {}", invokeResponse.payload().asUtf8String());
-
+        LOG.debug("payloas: {}", invokeResponse.payload().asUtf8String());
         assertEquals(200, invokeResponse.statusCode());
     }
 
@@ -340,7 +338,7 @@ public class ApiInteractionsService {
                                 }
                               }
                """
-                        .formatted(world.userProfile.getBackupPhoneNumber(), world.getOtp());
+                        .formatted(world.getNewPhoneNumber(), world.getOtp());
 
         Map<String, String> pathParameters = new HashMap<>();
         pathParameters.put("publicSubjectId", world.userProfile.getPublicSubjectID());

@@ -36,17 +36,17 @@ public class AccountManagementStepDef extends BasePage {
     @When("the User adds {string} as their SMS Backup MFA")
     public void userUpdatesDefaultMfaToSmsAndSystemSendsAnOTP(String newPhoneNumber) {
         world.setNewPhoneNumber(newPhoneNumber);
-        sendOtpNotification(world);
     }
 
     @When("^the system sends an OTP to \".+\"$")
     public void theUserReceivesTheOTPCode() {
-        var code = getOtp(world.userProfile.getEmail());
-        world.setOtp(code);
+        sendOtpNotification(world);
     }
 
     @When("the User submits the OTP code to confirm the Phone Number change")
     public void theUserSubmitsTheOTPCodeToConfirmThePhoneNumberChange() {
+        var code = getOtp(world.userProfile.getEmail());
+        world.setOtp(code);
         updatePhoneNumber(world);
     }
 
