@@ -1,4 +1,4 @@
-name: Build and Push Acceptance Tests to DEV
+name: Build and Push to API DEV account
 
 env:
   AWS_REGION: eu-west-2

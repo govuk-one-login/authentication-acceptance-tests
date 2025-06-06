@@ -46,7 +46,6 @@ case "${ENVIRONMENT}" in
     ;;
 esac
 
-
 create_local_env_file() {
   local override_file="$1"
   [ -f "${override_file}" ] || touch "${override_file}"

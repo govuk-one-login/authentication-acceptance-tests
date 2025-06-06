@@ -1,4 +1,4 @@
-name: Build and Push Tests DEV Secure Pipeline
+name: Build and Push to UI DEV account
 
 env:
   AWS_REGION: eu-west-2

@@ -87,7 +87,6 @@ else
   echo "No .env file found"
 fi
 
-
 if [ -n "${CUCUMBER_FILTER_TAGS:-}" ]; then
   echo
   echo "********************************************************************************************"
@@ -95,7 +94,6 @@ if [ -n "${CUCUMBER_FILTER_TAGS:-}" ]; then
   echo "********************************************************************************************"
   echo
 fi
-
 
 SELENIUM_BROWSER="$(cat /opt/selenium/browser_name)"
 export SELENIUM_BROWSER
