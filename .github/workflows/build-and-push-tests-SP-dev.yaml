@@ -1,4 +1,4 @@
-name: Build and Push Tests DEV Secure Pipeline
+name: Build and Push to UI DEV account
 
 env:
   AWS_REGION: eu-west-2
@@ -46,7 +46,7 @@ jobs:
         with:
           context: .
           push: true
-          target: secure-pipelines
+          target: auth-ui
           build-args: |
             SELENIUM_BASE=${{ env.SELENIUM_BASE }}
           tags: "${{ steps.login-ecr.outputs.registry }}/${{ secrets.ACCEPTANCE_ECR_REPO_NEW_DEV }}:latest"
