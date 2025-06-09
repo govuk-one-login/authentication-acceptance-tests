@@ -3,7 +3,6 @@ package uk.gov.di.test.services;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import com.nimbusds.jose.JOSEException;
 import io.cucumber.core.internal.com.fasterxml.jackson.core.JsonProcessingException;
 import io.cucumber.core.internal.com.fasterxml.jackson.databind.JsonNode;
@@ -204,7 +203,6 @@ public class ApiInteractionsService {
         InvokeResponse invokeResponse = lambdaClient.invoke(invokeRequest);
 
         if (invokeResponse.statusCode() != 200) {
-            LOG.error("Error from lambda {}.", invokeResponse.statusCode());
             throw new RuntimeException("Error from lambda: " + invokeResponse.statusCode());
         }
     }
@@ -217,7 +215,7 @@ public class ApiInteractionsService {
             JsonNode rootNode = objectMapper.readTree(mfaMethods);
             JsonNode bodyArray = objectMapper.readTree(rootNode.path("body").asText());
 
-            if (bodyArray.isArray() && bodyArray.size() > 0) {
+            if (bodyArray.isArray() && !bodyArray.isEmpty()) {
                 JsonNode firstElement = bodyArray.get(0);
                 String apriorityIdentifier = firstElement.path("priorityIdentifier").asText();
                 if (apriorityIdentifier.equalsIgnoreCase("DEFAULT")) {
@@ -262,7 +260,6 @@ public class ApiInteractionsService {
         InvokeResponse invokeResponse = lambdaClient.invoke(invokeRequest);
 
         if (invokeResponse.statusCode() != 200) {
-            LOG.error("Error from lambda {}.", invokeResponse.statusCode());
             throw new RuntimeException("Error from lambda: " + invokeResponse.statusCode());
         }
         return invokeResponse.payload().asUtf8String();
@@ -734,7 +731,7 @@ public class ApiInteractionsService {
         }
     }
 
-    public static JsonObject backupSMSMFAAdded(World world) {
+    public static String backupSMSMFAAdded(World world) {
         var functionName =
                 getLambda(
                         world.getMethodManagementApiId(),
@@ -767,7 +764,8 @@ public class ApiInteractionsService {
             throw new RuntimeException("Error from lambda: " + invokeResponse.statusCode());
         }
         String payload = invokeResponse.payload().asUtf8String();
-        return JsonParser.parseString(payload).getAsJsonObject();
+        return payload;
+//        return JsonParser.parseString(payload).getAsJsonObject();
     }
 
     public static String backupAuthMFAAdded(World world) {

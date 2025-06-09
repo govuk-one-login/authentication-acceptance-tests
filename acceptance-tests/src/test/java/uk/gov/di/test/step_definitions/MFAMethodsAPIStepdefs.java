@@ -3,9 +3,11 @@ package uk.gov.di.test.step_definitions;
 import io.cucumber.core.internal.com.fasterxml.jackson.core.JsonProcessingException;
 import io.cucumber.core.internal.com.fasterxml.jackson.databind.JsonNode;
 import io.cucumber.core.internal.com.fasterxml.jackson.databind.ObjectMapper;
+import io.cucumber.core.internal.com.fasterxml.jackson.databind.node.ArrayNode;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import net.minidev.json.JSONObject;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -52,17 +54,78 @@ public class MFAMethodsAPIStepdefs {
     }
 
     @Then("{string} is added as a verified Backup MFA Method")
-    public void theUserSBackUpMFAPhoneNumberIsUpdatedTo(String phoneNumber) {
-        backupSMSMFAAdded(world);
+    public void theUserSBackUpMFAPhoneNumberIsUpdatedTo(String expectedPhoneNumber) {
         String jsonResponse = backupAuthMFAAdded(world);
         ObjectMapper objectMapper = new ObjectMapper();
         try {
             JsonNode payloadJson = objectMapper.readTree(jsonResponse);
             int actualStatusCode = payloadJson.get("statusCode").asInt();
-            assertEquals(200, actualStatusCode);
+
+            if (actualStatusCode != 200) {
+                LOG.error("Error response: Status code {}, Body: {}", actualStatusCode, payloadJson.get("body"));
+                fail("Expected status code 200, but got " + actualStatusCode);
+            }
+            JsonNode mfaMethods = payloadJson.get("body");
+            if (mfaMethods.isTextual()) {
+                ArrayNode mfaMethodsArray = (ArrayNode) objectMapper.readTree(mfaMethods.asText());
+                findAndAssertBackupPhoneNumber(mfaMethodsArray, expectedPhoneNumber);
+
+            } else if (mfaMethods.isArray()) {
+                findAndAssertBackupPhoneNumber((ArrayNode) mfaMethods, expectedPhoneNumber); // Cast to ArrayNode
+
+            } else {
+                LOG.error("Unexpected response body format: Expected a JSON string or array, but got {}", mfaMethods.getNodeType());
+                fail("The 'body' field is neither a JSON string nor an array. Type: " + mfaMethods.getNodeType());
+            }
+
         } catch (JsonProcessingException e) {
-            fail("Error parsing JSON response: " + e.getMessage());
+            LOG.error("Error parsing JSON: {}", e.getMessage(), e);
+            fail("Error parsing JSON: " + e.getMessage());
         }
+    }
+
+//    @Then("{string} is added as a verified Backup MFA Method")
+//    public void isAddedAsAVerifiedBackupMFAMethod(String expectedPhoneNumber) throws Throwable {
+//        String jsonResponse = backupAuthMFAAdded(world);
+//        ObjectMapper objectMapper = new ObjectMapper();
+//        try {
+//            JsonNode payloadJson = objectMapper.readTree(jsonResponse);
+//            int actualStatusCode = payloadJson.get("statusCode").asInt();
+//
+//            if (actualStatusCode != 200) {
+//                LOG.error("Error response: Status code {}, Body: {}", actualStatusCode, payloadJson.get("body"));
+//                fail("Expected status code 200, but got " + actualStatusCode);
+//            }
+//            JsonNode mfaMethods = payloadJson.get("body");
+//            if (mfaMethods.isTextual()) {
+//                ArrayNode mfaMethodsArray = (ArrayNode) objectMapper.readTree(mfaMethods.asText());
+//                findAndAssertBackupPhoneNumber(mfaMethodsArray, expectedPhoneNumber);
+//
+//            } else if (mfaMethods.isArray()) {
+//                findAndAssertBackupPhoneNumber((ArrayNode) mfaMethods, expectedPhoneNumber); // Cast to ArrayNode
+//
+//            } else {
+//                LOG.error("Unexpected response body format: Expected a JSON string or array, but got {}", mfaMethods.getNodeType());
+//                fail("The 'body' field is neither a JSON string nor an array. Type: " + mfaMethods.getNodeType());
+//            }
+//
+//        } catch (JsonProcessingException e) {
+//            LOG.error("Error parsing JSON: {}", e.getMessage(), e);
+//            fail("Error parsing JSON: " + e.getMessage());
+//        }
+//        // Write code here that turns the phrase above into concrete actions    throw new cucumber.api.PendingException();}
+//    }
+
+    private void findAndAssertBackupPhoneNumber(ArrayNode mfaMethodsArray, String expectedPhoneNumber) {
+        for (JsonNode mfaMethod : mfaMethodsArray) {
+            String priorityIdentifier = mfaMethod.get("priorityIdentifier").asText();
+            if ("BACKUP".equals(priorityIdentifier)) {
+                String actualBackupPhoneNumber = mfaMethod.get("method").get("phoneNumber").asText();
+                assertEquals(expectedPhoneNumber, actualBackupPhoneNumber);
+                return;
+            }
+        }
+        fail("BACKUP MFA method not found in the response");
     }
 
     @When("the User request to update back up MFA as phone number {string}")
@@ -211,5 +274,9 @@ public class MFAMethodsAPIStepdefs {
         } catch (JsonProcessingException e) {
             fail("Error parsing JSON response: " + e.getMessage());
         }
+    }
+
+    @Then("{string} is added as a verified Backup MFA Method\"")
+    public void isAddedAsAVerifiedBackupMFAMethod(String arg0) throws Throwable {    // Write code here that turns the phrase above into concrete actions    throw new cucumber.api.PendingException();}
     }
 }

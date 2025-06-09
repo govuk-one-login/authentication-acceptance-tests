@@ -9,7 +9,7 @@ Feature: Login Using Back Up MFA
     When the User adds "<Mobile Number>" as their SMS Backup MFA
     Then the system sends an OTP to "<Mobile Number>"
     When the User provides the correct otp
-    Then Phone Number is added as a verified Backup MFA Method
+    Then "<Updated Mobile Number>" is added as a verified Backup MFA Method"
     When the user comes from the stub relying party with default options and is taken to the "Create your GOV.UK One Login or sign in" page
     When the user selects sign in
     Then the user is taken to the "Enter your email" page
@@ -22,9 +22,9 @@ Feature: Login Using Back Up MFA
     Then the user is taken to the "How do you want to get a security code?" page
 
   Examples:
-    | Mobile Number |
-    | 07700900111   |
-    | +61412123123  |
+    | Mobile Number | Updated Mobile Number |
+    | 07700900111   | +447700900111         |
+    | +61412123123  | +61412123123          |
 
   Scenario: User with SMS as default MFA attempts alternative MFA journey but submits without choosing a method
     Given a Migrated User with a Default MFA of SMS
@@ -33,7 +33,7 @@ Feature: Login Using Back Up MFA
     When the User adds "07700900111" as their SMS Backup MFA
     Then the system sends an OTP to "07700900111"
     When the User provides the correct otp
-    Then "07700900111" is added as a verified Backup MFA Method
+    Then "+447700900111" is added as a verified Backup MFA Method
     When the user comes from the stub relying party with default options and is taken to the "Create your GOV.UK One Login or sign in" page
     When the user selects sign in
     Then the user is taken to the "Enter your email" page
@@ -55,7 +55,7 @@ Feature: Login Using Back Up MFA
     When the User adds "07700900111" as their SMS Backup MFA
     Then the system sends an OTP to "07700900111"
     When the User provides the correct otp
-    Then "07700900111" is added as a verified Backup MFA Method
+    Then "+447700900111" is added as a verified Backup MFA Method
     When the user comes from the stub relying party with default options and is taken to the "Create your GOV.UK One Login or sign in" page
     When the user selects sign in
     Then the user is taken to the "Enter your email" page
@@ -97,10 +97,10 @@ Feature: Login Using Back Up MFA
     Given a Migrated User with a Default MFA of SMS
     And the User is Authenticated
     And the User does not have a Backup MFA method
-    When the User adds "<Mobile Number>" as their SMS Backup MFA
+    When the User adds "07700900111" as their SMS Backup MFA
     Then the system sends an OTP to "<Mobile Number>"
     When the User provides the correct otp
-    Then Phone Number is added as a verified Backup MFA Method
+    Then "+447700900111" is added as a verified Backup MFA Method
     When the user comes from the stub relying party with default options and is taken to the "Create your GOV.UK One Login or sign in" page
     When the user selects sign in
     Then the user is taken to the "Enter your email" page
@@ -124,10 +124,10 @@ Feature: Login Using Back Up MFA
     Given a Migrated User with an Auth App Default MFA
     And the User is Authenticated
     And the User does not have a Backup MFA method
-    When the User adds "<Mobile Number>" as their SMS Backup MFA
-    Then the system sends an OTP to "<Mobile Number>"
+    When the User adds "07700900111" as their SMS Backup MFA
+    Then the system sends an OTP to "07700900111"
     When the User provides the correct otp
-    Then Phone Number is added as a verified Backup MFA Method
+    Then "+447700900111" is added as a verified Backup MFA Method
     When the user comes from the stub relying party with default options and is taken to the "Create your GOV.UK One Login or sign in" page
     When the user selects sign in
     Then the user is taken to the "Enter your email" page
@@ -142,7 +142,7 @@ Feature: Login Using Back Up MFA
     Then the user is taken to the "How do you want to get a security code?" page
 
   @AUT-4247
-  Scenario: User with SMS as the default MFA method attempts authentication using correct OTP sent to a backup SMS number
+  Scenario: User successfully authenticate with their backup MFA SMS
     Given a Migrated User with a Default MFA of SMS
     And the User is Authenticated
     And the User does not have a Backup MFA method
@@ -167,14 +167,14 @@ Feature: Login Using Back Up MFA
     Then the user is returned to the service
 
   @AUT-4247
-  Scenario: User with SMS as the default MFA method attempts authentication and request OTP more than five times
+  Scenario: User authenticate with their backup MFA SMS requests OTP too many times
     Given a Migrated User with a Default MFA of SMS
     And the User is Authenticated
     And the User does not have a Backup MFA method
     When the User adds "07700900111" as their SMS Backup MFA
     Then the system sends an OTP to "07700900111"
     When the User provides the correct otp
-    Then "07700900111" is added as a verified Backup MFA Method
+    Then "+447700900111" is added as a verified Backup MFA Method
     When the user comes from the stub relying party with default options and is taken to the "Create your GOV.UK One Login or sign in" page
     When the user selects sign in
     Then the user is taken to the "Enter your email" page
@@ -192,14 +192,14 @@ Feature: Login Using Back Up MFA
     Then the user is taken to the "You asked to resend the security code too many times" page
 
   @AUT-4247
-  Scenario: User with SMS as the default MFA method attempts authentication and enters incorrect OTP more than five times
+  Scenario: User authenticate with their backup MFA SMS enters incorrect OTP too many times
     Given a Migrated User with a Default MFA of SMS
     And the User is Authenticated
     And the User does not have a Backup MFA method
     When the User adds "07700900111" as their SMS Backup MFA
     Then the system sends an OTP to "07700900111"
     When the User provides the correct otp
-    Then "07700900111" is added as a verified Backup MFA Method
+    Then "+447700900111" is added as a verified Backup MFA Method
     When the user comes from the stub relying party with default options and is taken to the "Create your GOV.UK One Login or sign in" page
     When the user selects sign in
     Then the user is taken to the "Enter your email" page
@@ -217,14 +217,14 @@ Feature: Login Using Back Up MFA
     Then the user is taken to the "You entered the wrong security code too many times" page
 
   @AUT-4248
-  Scenario: User with Auth App as the default MFA method attempts authentication using correct OTP sent to a backup SMS number
+  Scenario: User successfully authenticate with their backup MFA SMS
     Given a Migrated User with an Auth App Default MFA
     And the User is Authenticated
     And the User does not have a Backup MFA method
     When the User adds "07700900111" as their SMS Backup MFA
     Then the system sends an OTP to "07700900111"
     When the User provides the correct otp
-    Then "07700900111" is added as a verified Backup MFA Method
+    Then "+447700900111" is added as a verified Backup MFA Method
     When the user comes from the stub relying party with default options and is taken to the "Create your GOV.UK One Login or sign in" page
     When the user selects sign in
     Then the user is taken to the "Enter your email" page
@@ -242,14 +242,14 @@ Feature: Login Using Back Up MFA
     Then the user is returned to the service
 
   @AUT-4248
-  Scenario: User with Auth App as the default MFA method attempts authentication and request OTP more than five times
+  Scenario: User authenticate with their backup MFA SMS requests OTP too many times
     Given a Migrated User with an Auth App Default MFA
     And the User is Authenticated
     And the User does not have a Backup MFA method
     When the User adds "07700900111" as their SMS Backup MFA
     Then the system sends an OTP to "07700900111"
     When the User provides the correct otp
-    Then "07700900111" is added as a verified Backup MFA Method
+    Then "+447700900111" is added as a verified Backup MFA Method
     When the user comes from the stub relying party with default options and is taken to the "Create your GOV.UK One Login or sign in" page
     When the user selects sign in
     Then the user is taken to the "Enter your email" page
@@ -267,14 +267,14 @@ Feature: Login Using Back Up MFA
     Then the user is taken to the "You asked to resend the security code too many times" page
 
   @AUT-4248.
-  Scenario: User with Auth App as the default MFA method attempts authentication and enters incorrect OTP more than five times
+  Scenario: User authenticate with their backup MFA SMS enters incorrect OTP too many times
     Given a Migrated User with an Auth App Default MFA
     And the User is Authenticated
     And the User does not have a Backup MFA method
     When the User adds "07700900111" as their SMS Backup MFA
     Then the system sends an OTP to "07700900111"
     When the User provides the correct otp
-    Then "07700900111" is added as a verified Backup MFA Method
+    Then "+447700900111" is added as a verified Backup MFA Method
     When the user comes from the stub relying party with default options and is taken to the "Create your GOV.UK One Login or sign in" page
     When the user selects sign in
     Then the user is taken to the "Enter your email" page
@@ -292,7 +292,7 @@ Feature: Login Using Back Up MFA
     Then the user is taken to the "You entered the wrong security code too many times" page
 
   @AUT-4183
-  Scenario: User with SMS as the default MFA method attempts password reset authentication using correct OTP sent an backup Auth App
+  Scenario: User is successfully resetting their password with their backup MFA Auth App
     Given a Migrated User with a Default MFA of SMS
     And the User is Authenticated
     And the User does not have a Backup MFA method
@@ -318,14 +318,14 @@ Feature: Login Using Back Up MFA
     Then the user is returned to the service
 
   @AUT-4183
-  Scenario: User with Auth App as the default MFA method attempts password reset authentication using correct OTP sent an backup SMS
+  Scenario: User is successfully resetting their password with their backup MFA SMS
     Given a Migrated User with an Auth App Default MFA
     And the User is Authenticated
     And the User does not have a Backup MFA method
     When the User adds "07700900111" as their SMS Backup MFA
     Then the system sends an OTP to "07700900111"
     When the User provides the correct otp
-    Then "07700900111" is added as a verified Backup MFA Method
+    Then "+447700900111" is added as a verified Backup MFA Method
     When the user comes from the stub relying party with default options and is taken to the "Create your GOV.UK One Login or sign in" page
     When the user selects sign in
     Then the user is taken to the "Enter your email" page
@@ -347,14 +347,14 @@ Feature: Login Using Back Up MFA
     Then the user is returned to the service
 
   @AUT-4183
-  Scenario: User with Auth App as the default MFA method attempts reset password authentication with backup SMS MFA and request OTP more than five times
+  Scenario: User resetting their password with their backup MFA SMS request OTP too many times
     Given a Migrated User with an Auth App Default MFA
     And the User is Authenticated
     And the User does not have a Backup MFA method
     When the User adds "07700900111" as their SMS Backup MFA
     Then the system sends an OTP to "07700900111"
     When the User provides the correct otp
-    Then "07700900111" is added as a verified Backup MFA Method
+    Then "+447700900111" is added as a verified Backup MFA Method
     When the user comes from the stub relying party with default options and is taken to the "Create your GOV.UK One Login or sign in" page
     When the user selects sign in
     Then the user is taken to the "Enter your email" page
@@ -374,7 +374,7 @@ Feature: Login Using Back Up MFA
     Then the user is taken to the "You asked to resend the security code too many times" page
 
   @AUT-4183
-  Scenario: User with SMS as the default MFA method attempts password reset authentication with Auth App and enters incorrect OTP more than five times
+  Scenario: User resetting their password with their backup MFA Auth App enters incorrect OTP too many times
     Given a Migrated User with a Default MFA of SMS
     And the User is Authenticated
     And the User does not have a Backup MFA method
