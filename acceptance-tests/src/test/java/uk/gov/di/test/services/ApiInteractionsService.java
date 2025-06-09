@@ -11,6 +11,7 @@ import org.apache.http.client.utils.URIUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jose4j.base64url.Base64Url;
+import org.junit.Assert;
 import org.openqa.selenium.remote.http.HttpMethod;
 import software.amazon.awssdk.auth.credentials.DefaultCredentialsProvider;
 import software.amazon.awssdk.core.ResponseBytes;
@@ -55,6 +56,7 @@ import java.util.Optional;
 import static org.awaitility.Awaitility.await;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 
 public class ApiInteractionsService {
     private static final Logger LOG = LogManager.getLogger(ApiInteractionsService.class);
@@ -106,6 +108,30 @@ public class ApiInteractionsService {
     }
 
     public static void sendOtpNotification(World world) {
+        InvokeResponse invokeResponse = invokeSendOtpLambda(world);
+
+        LOG.debug("/send-otp-notification response: {}", invokeResponse.payload().asUtf8String());
+        LOG.debug("payload: {}", invokeResponse.payload().asUtf8String());
+        assertEquals(200, invokeResponse.statusCode());
+    }
+
+    public static void cannotSendOtpNotification(World world) {
+        InvokeResponse invokeResponse = invokeSendOtpLambda(world);
+
+        LOG.debug("/send-otp-notification response: {}", invokeResponse.payload().asUtf8String());
+        LOG.debug("payload: {}", invokeResponse.payload().asUtf8String());
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            JsonNode payloadJson = objectMapper.readTree(invokeResponse.payload().asUtf8String());
+            int actualStatusCode = payloadJson.get("statusCode").asInt();
+            Assert.assertEquals(400, actualStatusCode);
+        } catch (JsonProcessingException e) {
+            fail("Error parsing JSON response: " + e.getMessage());
+        }
+    }
+
+    private static InvokeResponse invokeSendOtpLambda(World world) {
         var functionName =
                 getLambda(
                         world.getMethodManagementApiId(),
@@ -130,11 +156,7 @@ public class ApiInteractionsService {
                         .payload(SdkBytes.fromUtf8String(event))
                         .build();
 
-        InvokeResponse invokeResponse = lambdaClient.invoke(invokeRequest);
-
-        LOG.debug("/send-otp-notification response: {}", invokeResponse.payload().asUtf8String());
-        LOG.debug("payloas: {}", invokeResponse.payload().asUtf8String());
-        assertEquals(200, invokeResponse.statusCode());
+        return lambdaClient.invoke(invokeRequest);
     }
 
     public static String getOtp(String email) {

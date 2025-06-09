@@ -78,6 +78,9 @@ public class UserLifecycleStepDef {
                 userLifecycleService.updateUserMfaSms(world.userProfile);
                 break;
             case "App":
+                world.userProfile.setPhoneNumber(null);
+                world.userProfile.setPhoneNumberVerified(false);
+                userLifecycleService.putUserProfileToDynamodb(world.userProfile);
                 userLifecycleService.updateUserMfaApp(world.userCredentials);
                 break;
             default:
