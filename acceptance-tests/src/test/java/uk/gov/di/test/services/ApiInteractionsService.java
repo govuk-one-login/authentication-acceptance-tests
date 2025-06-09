@@ -763,8 +763,7 @@ public class ApiInteractionsService {
             LOG.error("Error from lambda {}.", invokeResponse.statusCode());
             throw new RuntimeException("Error from lambda: " + invokeResponse.statusCode());
         }
-        String payload = invokeResponse.payload().asUtf8String();
-        return payload;
+        return invokeResponse.payload().asUtf8String();
     }
 
     public static String backupAuthMFAAdded(World world) {

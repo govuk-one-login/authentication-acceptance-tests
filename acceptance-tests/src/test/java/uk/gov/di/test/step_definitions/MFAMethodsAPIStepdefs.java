@@ -7,7 +7,6 @@ import io.cucumber.core.internal.com.fasterxml.jackson.databind.node.ArrayNode;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import net.minidev.json.JSONObject;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -74,12 +73,15 @@ public class MFAMethodsAPIStepdefs {
                 findAndAssertBackupPhoneNumber(mfaMethodsArray, expectedPhoneNumber);
 
             } else if (mfaMethods.isArray()) {
-                findAndAssertBackupPhoneNumber(
-                        (ArrayNode) mfaMethods, expectedPhoneNumber);
+                findAndAssertBackupPhoneNumber((ArrayNode) mfaMethods, expectedPhoneNumber);
 
             } else {
-                LOG.error("Unexpected response body format: Expected a JSON string or array, but got {}", mfaMethods.getNodeType());
-                fail("The 'body' field is neither a JSON string nor an array. Type: " + mfaMethods.getNodeType());
+                LOG.error(
+                        "Unexpected response body format: Expected a JSON string or array, but got {}",
+                        mfaMethods.getNodeType());
+                fail(
+                        "The 'body' field is neither a JSON string nor an array. Type: "
+                                + mfaMethods.getNodeType());
             }
 
         } catch (JsonProcessingException e) {
