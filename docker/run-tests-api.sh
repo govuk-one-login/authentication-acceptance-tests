@@ -46,7 +46,6 @@ copy_test_reports() {
 
 execute_tests() {
   local acceptance_tests_exit_status
-  trap 'exit $acceptance_tests_exit_status' EXIT
 
   pushd /test > /dev/null || exit 1
   ./gradlew --no-daemon cucumber
@@ -54,6 +53,8 @@ execute_tests() {
   popd > /dev/null || exit 1
 
   copy_test_reports
+
+  return $acceptance_tests_exit_status
 }
 
 check_guard_conditions
