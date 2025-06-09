@@ -62,7 +62,10 @@ public class MFAMethodsAPIStepdefs {
             int actualStatusCode = payloadJson.get("statusCode").asInt();
 
             if (actualStatusCode != 200) {
-                LOG.error("Error response: Status code {}, Body: {}", actualStatusCode, payloadJson.get("body"));
+                LOG.error(
+                        "Error response: Status code {}, Body: {}",
+                        actualStatusCode,
+                        payloadJson.get("body"));
                 fail("Expected status code 200, but got " + actualStatusCode);
             }
             JsonNode mfaMethods = payloadJson.get("body");
@@ -83,38 +86,6 @@ public class MFAMethodsAPIStepdefs {
             fail("Error parsing JSON: " + e.getMessage());
         }
     }
-
-//    @Then("{string} is added as a verified Backup MFA Method")
-//    public void isAddedAsAVerifiedBackupMFAMethod(String expectedPhoneNumber) throws Throwable {
-//        String jsonResponse = backupAuthMFAAdded(world);
-//        ObjectMapper objectMapper = new ObjectMapper();
-//        try {
-//            JsonNode payloadJson = objectMapper.readTree(jsonResponse);
-//            int actualStatusCode = payloadJson.get("statusCode").asInt();
-//
-//            if (actualStatusCode != 200) {
-//                LOG.error("Error response: Status code {}, Body: {}", actualStatusCode, payloadJson.get("body"));
-//                fail("Expected status code 200, but got " + actualStatusCode);
-//            }
-//            JsonNode mfaMethods = payloadJson.get("body");
-//            if (mfaMethods.isTextual()) {
-//                ArrayNode mfaMethodsArray = (ArrayNode) objectMapper.readTree(mfaMethods.asText());
-//                findAndAssertBackupPhoneNumber(mfaMethodsArray, expectedPhoneNumber);
-//
-//            } else if (mfaMethods.isArray()) {
-//                findAndAssertBackupPhoneNumber((ArrayNode) mfaMethods, expectedPhoneNumber); // Cast to ArrayNode
-//
-//            } else {
-//                LOG.error("Unexpected response body format: Expected a JSON string or array, but got {}", mfaMethods.getNodeType());
-//                fail("The 'body' field is neither a JSON string nor an array. Type: " + mfaMethods.getNodeType());
-//            }
-//
-//        } catch (JsonProcessingException e) {
-//            LOG.error("Error parsing JSON: {}", e.getMessage(), e);
-//            fail("Error parsing JSON: " + e.getMessage());
-//        }
-//        // Write code here that turns the phrase above into concrete actions    throw new cucumber.api.PendingException();}
-//    }
 
     private void findAndAssertBackupPhoneNumber(ArrayNode mfaMethodsArray, String expectedPhoneNumber) {
         for (JsonNode mfaMethod : mfaMethodsArray) {
@@ -274,9 +245,5 @@ public class MFAMethodsAPIStepdefs {
         } catch (JsonProcessingException e) {
             fail("Error parsing JSON response: " + e.getMessage());
         }
-    }
-
-    @Then("{string} is added as a verified Backup MFA Method\"")
-    public void isAddedAsAVerifiedBackupMFAMethod(String arg0) throws Throwable {    // Write code here that turns the phrase above into concrete actions    throw new cucumber.api.PendingException();}
     }
 }
