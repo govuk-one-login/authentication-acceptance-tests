@@ -765,7 +765,6 @@ public class ApiInteractionsService {
         }
         String payload = invokeResponse.payload().asUtf8String();
         return payload;
-//        return JsonParser.parseString(payload).getAsJsonObject();
     }
 
     public static String backupAuthMFAAdded(World world) {

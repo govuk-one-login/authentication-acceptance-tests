@@ -74,7 +74,8 @@ public class MFAMethodsAPIStepdefs {
                 findAndAssertBackupPhoneNumber(mfaMethodsArray, expectedPhoneNumber);
 
             } else if (mfaMethods.isArray()) {
-                findAndAssertBackupPhoneNumber((ArrayNode) mfaMethods, expectedPhoneNumber); // Cast to ArrayNode
+                findAndAssertBackupPhoneNumber(
+                        (ArrayNode) mfaMethods, expectedPhoneNumber);
 
             } else {
                 LOG.error("Unexpected response body format: Expected a JSON string or array, but got {}", mfaMethods.getNodeType());
@@ -87,11 +88,13 @@ public class MFAMethodsAPIStepdefs {
         }
     }
 
-    private void findAndAssertBackupPhoneNumber(ArrayNode mfaMethodsArray, String expectedPhoneNumber) {
+    private void findAndAssertBackupPhoneNumber(
+            ArrayNode mfaMethodsArray, String expectedPhoneNumber) {
         for (JsonNode mfaMethod : mfaMethodsArray) {
             String priorityIdentifier = mfaMethod.get("priorityIdentifier").asText();
             if ("BACKUP".equals(priorityIdentifier)) {
-                String actualBackupPhoneNumber = mfaMethod.get("method").get("phoneNumber").asText();
+                String actualBackupPhoneNumber =
+                        mfaMethod.get("method").get("phoneNumber").asText();
                 assertEquals(expectedPhoneNumber, actualBackupPhoneNumber);
                 return;
             }
