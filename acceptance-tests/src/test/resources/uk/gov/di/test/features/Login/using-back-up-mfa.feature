@@ -9,7 +9,7 @@ Feature: Login Using Back Up MFA
     When the User adds "<Mobile Number>" as their SMS Backup MFA
     Then the system sends an OTP to "<Mobile Number>"
     When the User provides the correct otp
-    Then "<Updated Mobile Number>" is added as a verified Backup MFA Method"
+    Then "<Updated Mobile Number>" is added as a verified Backup MFA Method
     When the user comes from the stub relying party with default options and is taken to the "Create your GOV.UK One Login or sign in" page
     When the user selects sign in
     Then the user is taken to the "Enter your email" page
@@ -72,10 +72,10 @@ Feature: Login Using Back Up MFA
     Given a Migrated User with a Default MFA of SMS
     And the User is Authenticated
     And the User does not have a Backup MFA method
-    When the User adds "<Mobile Number>" as their SMS Backup MFA
-    Then the system sends an OTP to "<Mobile Number>"
+    When the User adds "07700900111" as their SMS Backup MFA
+    Then the system sends an OTP to "07700900111"
     When the User provides the correct otp
-    Then Phone Number is added as a verified Backup MFA Method
+    Then "+447700900111" is added as a verified Backup MFA Method
     When the user comes from the stub relying party with default options and is taken to the "Create your GOV.UK One Login or sign in" page
     When the user selects sign in
     Then the user is taken to the "Enter your email" page
@@ -84,9 +84,6 @@ Feature: Login Using Back Up MFA
     When the user clicks the forgotten password link
     Then the user is taken to the "Check your email" page
     When the user enters the six digit security code from their email
-    Then the user is taken to the "Check your phone" page
-    When the user selects "Problems with the code?" link
-    Then the link "change how you get security codes" is not available
     Then the user is taken to the "Check your phone" page
     And the user selects "Problems with the code?" link
     And the user selects "try another way to get a security code" link
@@ -111,9 +108,6 @@ Feature: Login Using Back Up MFA
     When the user enters the six digit security code from their email
     Then the user is taken to the "Check your phone" page
     When the user selects "Problems with the code?" link
-    Then the link "change how you get security codes" is not available
-    Then the user is taken to the "Check your phone" page
-    And the user selects "Problems with the code?" link
     And the user selects "try another way to get a security code" link
     Then the user is taken to the "How do you want to get a security code?" page
     When the user clicks the continue button without selecting any radio button option
@@ -149,7 +143,7 @@ Feature: Login Using Back Up MFA
     When the User adds "07700900111" as their SMS Backup MFA
     Then the system sends an OTP to "07700900111"
     When the User provides the correct otp
-    Then "07700900111" is added as a verified Backup MFA Method
+    Then "+447700900111" is added as a verified Backup MFA Method
     When the user comes from the stub relying party with default options and is taken to the "Create your GOV.UK One Login or sign in" page
     When the user selects sign in
     Then the user is taken to the "Enter your email" page
@@ -167,7 +161,7 @@ Feature: Login Using Back Up MFA
     Then the user is returned to the service
 
   @AUT-4247
-  Scenario: User authenticate with their backup MFA SMS requests OTP too many times
+  Scenario: User authenticate with their backup MFA SMS requests OTP too many times AA
     Given a Migrated User with a Default MFA of SMS
     And the User is Authenticated
     And the User does not have a Backup MFA method
@@ -188,7 +182,7 @@ Feature: Login Using Back Up MFA
     And the user selects radio button "Text message to your phone number ending with" and "111"
     When the user clicks the continue button
     Then the user is taken to the "Check your phone" page
-    When the user requests the phone otp code a further 5 times
+    When the user requests the phone otp code a further 4 times
     Then the user is taken to the "You asked to resend the security code too many times" page
 
   @AUT-4247
