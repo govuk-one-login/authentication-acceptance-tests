@@ -70,10 +70,10 @@ public class MFAMethodsAPIStepdefs {
             JsonNode mfaMethods = payloadJson.get("body");
             if (mfaMethods.isTextual()) {
                 ArrayNode mfaMethodsArray = (ArrayNode) objectMapper.readTree(mfaMethods.asText());
-                findAndAssertBackupPhoneNumber(mfaMethodsArray, expectedPhoneNumber);
+                isPhoneNumberInUseAsBackupMFA(mfaMethodsArray, expectedPhoneNumber);
 
             } else if (mfaMethods.isArray()) {
-                findAndAssertBackupPhoneNumber((ArrayNode) mfaMethods, expectedPhoneNumber);
+                isPhoneNumberInUseAsBackupMFA((ArrayNode) mfaMethods, expectedPhoneNumber);
 
             } else {
                 LOG.error(
@@ -90,7 +90,7 @@ public class MFAMethodsAPIStepdefs {
         }
     }
 
-    private void findAndAssertBackupPhoneNumber(
+    private void isPhoneNumberInUseAsBackupMFA(
             ArrayNode mfaMethodsArray, String expectedPhoneNumber) {
         for (JsonNode mfaMethod : mfaMethodsArray) {
             String priorityIdentifier = mfaMethod.get("priorityIdentifier").asText();
@@ -101,7 +101,7 @@ public class MFAMethodsAPIStepdefs {
                 return;
             }
         }
-        fail("BACKUP MFA method not found in the response");
+        fail("User does not have a Backup MFA Method.");
     }
 
     @When("the User request to update back up MFA as phone number {string}")

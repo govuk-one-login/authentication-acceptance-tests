@@ -30,7 +30,7 @@ Feature: Login Using Back Up MFA
     Given a Migrated User with a Default MFA of SMS
     And the User is Authenticated
     And the User does not have a Backup MFA method
-    When the User adds "07700900111" as their SMS Backup MFA
+    When the User adds "07700900111" as the Backup MFA
     Then the system sends an OTP to "07700900111"
     When the User provides the correct otp
     Then "+447700900111" is added as a verified Backup MFA Method
@@ -52,7 +52,7 @@ Feature: Login Using Back Up MFA
     Given a Migrated User with an Auth App Default MFA
     And the User is Authenticated
     And the User does not have a Backup MFA method
-    When the User adds "07700900111" as their SMS Backup MFA
+    When the User adds "07700900111" as the Backup MFA
     Then the system sends an OTP to "07700900111"
     When the User provides the correct otp
     Then "+447700900111" is added as a verified Backup MFA Method
@@ -72,7 +72,7 @@ Feature: Login Using Back Up MFA
     Given a Migrated User with a Default MFA of SMS
     And the User is Authenticated
     And the User does not have a Backup MFA method
-    When the User adds "07700900111" as their SMS Backup MFA
+    When the User adds "07700900111" as the Backup MFA
     Then the system sends an OTP to "07700900111"
     When the User provides the correct otp
     Then "+447700900111" is added as a verified Backup MFA Method
@@ -94,7 +94,7 @@ Feature: Login Using Back Up MFA
     Given a Migrated User with a Default MFA of SMS
     And the User is Authenticated
     And the User does not have a Backup MFA method
-    When the User adds "07700900111" as their SMS Backup MFA
+    When the User adds "07700900111" as the Backup MFA
     Then the system sends an OTP to "<Mobile Number>"
     When the User provides the correct otp
     Then "+447700900111" is added as a verified Backup MFA Method
@@ -118,7 +118,7 @@ Feature: Login Using Back Up MFA
     Given a Migrated User with an Auth App Default MFA
     And the User is Authenticated
     And the User does not have a Backup MFA method
-    When the User adds "07700900111" as their SMS Backup MFA
+    When the User adds "07700900111" as the Backup MFA
     Then the system sends an OTP to "07700900111"
     When the User provides the correct otp
     Then "+447700900111" is added as a verified Backup MFA Method
@@ -140,7 +140,7 @@ Feature: Login Using Back Up MFA
     Given a Migrated User with a Default MFA of SMS
     And the User is Authenticated
     And the User does not have a Backup MFA method
-    When the User adds "07700900111" as their SMS Backup MFA
+    When the User adds "07700900111" as the Backup MFA
     Then the system sends an OTP to "07700900111"
     When the User provides the correct otp
     Then "+447700900111" is added as a verified Backup MFA Method
@@ -161,11 +161,11 @@ Feature: Login Using Back Up MFA
     Then the user is returned to the service
 
   @AUT-4247
-  Scenario: User authenticate with their backup MFA SMS requests OTP too many times AA
+  Scenario: User requests too many OTPs when authenticating with a Backup SMS MFA
     Given a Migrated User with a Default MFA of SMS
     And the User is Authenticated
     And the User does not have a Backup MFA method
-    When the User adds "07700900111" as their SMS Backup MFA
+    When the User adds "07700900111" as the Backup MFA
     Then the system sends an OTP to "07700900111"
     When the User provides the correct otp
     Then "+447700900111" is added as a verified Backup MFA Method
@@ -186,11 +186,11 @@ Feature: Login Using Back Up MFA
     Then the user is taken to the "You asked to resend the security code too many times" page
 
   @AUT-4247
-  Scenario: User authenticate with their backup MFA SMS enters incorrect OTP too many times
+  Scenario: User enters too many incorrect OTPs when authenticating with a Backup SMS MFA
     Given a Migrated User with a Default MFA of SMS
     And the User is Authenticated
     And the User does not have a Backup MFA method
-    When the User adds "07700900111" as their SMS Backup MFA
+    When the User adds "07700900111" as the Backup MFA
     Then the system sends an OTP to "07700900111"
     When the User provides the correct otp
     Then "+447700900111" is added as a verified Backup MFA Method
@@ -211,11 +211,11 @@ Feature: Login Using Back Up MFA
     Then the user is taken to the "You entered the wrong security code too many times" page
 
   @AUT-4248
-  Scenario: User successfully authenticate with their backup MFA SMS
+  Scenario: User authenticates using a Backup SMS MFA
     Given a Migrated User with an Auth App Default MFA
     And the User is Authenticated
     And the User does not have a Backup MFA method
-    When the User adds "07700900111" as their SMS Backup MFA
+    When the User adds "07700900111" as the Backup MFA
     Then the system sends an OTP to "07700900111"
     When the User provides the correct otp
     Then "+447700900111" is added as a verified Backup MFA Method
@@ -236,11 +236,11 @@ Feature: Login Using Back Up MFA
     Then the user is returned to the service
 
   @AUT-4248
-  Scenario: User authenticate with their backup MFA SMS requests OTP too many times
+  Scenario: User requests too many OTPs when authenticating with a Backup SMS MFA
     Given a Migrated User with an Auth App Default MFA
     And the User is Authenticated
     And the User does not have a Backup MFA method
-    When the User adds "07700900111" as their SMS Backup MFA
+    When the User adds "07700900111" as the Backup MFA
     Then the system sends an OTP to "07700900111"
     When the User provides the correct otp
     Then "+447700900111" is added as a verified Backup MFA Method
@@ -265,7 +265,7 @@ Feature: Login Using Back Up MFA
     Given a Migrated User with an Auth App Default MFA
     And the User is Authenticated
     And the User does not have a Backup MFA method
-    When the User adds "07700900111" as their SMS Backup MFA
+    When the User adds "07700900111" as the Backup MFA
     Then the system sends an OTP to "07700900111"
     When the User provides the correct otp
     Then "+447700900111" is added as a verified Backup MFA Method
@@ -286,7 +286,7 @@ Feature: Login Using Back Up MFA
     Then the user is taken to the "You entered the wrong security code too many times" page
 
   @AUT-4183
-  Scenario: User is successfully resetting their password with their backup MFA Auth App
+  Scenario: User resets password using a Backup Auth App MFA
     Given a Migrated User with a Default MFA of SMS
     And the User is Authenticated
     And the User does not have a Backup MFA method
@@ -312,11 +312,11 @@ Feature: Login Using Back Up MFA
     Then the user is returned to the service
 
   @AUT-4183
-  Scenario: User is successfully resetting their password with their backup MFA SMS
+  Scenario: User resets password using a Backup SMS MFA
     Given a Migrated User with an Auth App Default MFA
     And the User is Authenticated
     And the User does not have a Backup MFA method
-    When the User adds "07700900111" as their SMS Backup MFA
+    When the User adds "07700900111" as the Backup MFA
     Then the system sends an OTP to "07700900111"
     When the User provides the correct otp
     Then "+447700900111" is added as a verified Backup MFA Method
@@ -341,11 +341,11 @@ Feature: Login Using Back Up MFA
     Then the user is returned to the service
 
   @AUT-4183
-  Scenario: User resetting their password with their backup MFA SMS request OTP too many times
+  Scenario: User requests too many OTPs when resetting their password with a Backup SMS MFA
     Given a Migrated User with an Auth App Default MFA
     And the User is Authenticated
     And the User does not have a Backup MFA method
-    When the User adds "07700900111" as their SMS Backup MFA
+    When the User adds "07700900111" as the Backup MFA
     Then the system sends an OTP to "07700900111"
     When the User provides the correct otp
     Then "+447700900111" is added as a verified Backup MFA Method
@@ -368,7 +368,7 @@ Feature: Login Using Back Up MFA
     Then the user is taken to the "You asked to resend the security code too many times" page
 
   @AUT-4183
-  Scenario: User resetting their password with their backup MFA Auth App enters incorrect OTP too many times
+  Scenario: User enters too many incorrect OTPs resetting their password using a Backup Auth App MFA
     Given a Migrated User with a Default MFA of SMS
     And the User is Authenticated
     And the User does not have a Backup MFA method
