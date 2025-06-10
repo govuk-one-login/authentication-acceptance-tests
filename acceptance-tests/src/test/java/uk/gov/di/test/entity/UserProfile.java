@@ -228,7 +228,7 @@ public class UserProfile {
         return this;
     }
 
-    @DynamoDbAttribute(ATTRIBUTE_ACCOUNT_VERIFIED)
+    @DynamoDbAttribute(ATTRIBUTE_MFA_METHODS_MIGRATED)
     public boolean isMigratedUser() {
         return mfaMethodsMigrated;
     }
