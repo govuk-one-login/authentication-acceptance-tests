@@ -18,36 +18,36 @@ Feature: Auth App MFA User manages their MFA methods via the Method Management A
     When the User adds "<Mobile Number>" as their SMS Backup MFA
     Then the system sends an OTP to "<Mobile Number>"
     When the User provides the correct otp
-    Then "<Mobile Number>" is added as a verified Backup MFA Method
+    Then "<Updated Mobile Number>" is added as a verified Backup MFA Method
 
     Examples:
-      | Mobile Number |
-      | 07700900111   |
-      | +61412123123  |
+      | Mobile Number | Updated Mobile Number |
+      | 07700900111   | +447700900111         |
+      | +61412123123  | +61412123123          |
 
   Scenario Outline: Deleting a Backup MFA
     When the User adds "<Mobile Number>" as their SMS Backup MFA
     Then the system sends an OTP to "<Mobile Number>"
     When the User provides the correct otp
-    Then "<Mobile Number>" is added as a verified Backup MFA Method
+    Then "<Updated Mobile Number>" is added as a verified Backup MFA Method
     When the User requests to delete backup MFA Method
     Then the User's backup MFA Method is deleted
 
     Examples:
-      | Mobile Number |
-      | 07700900111   |
-      | +61412123123  |
+      | Mobile Number | Updated Mobile Number |
+      | 07700900111   | +447700900111         |
+      | +61412123123  | +61412123123          |
 
   Scenario Outline: Changing Default MFA method from Auth App to SMS
     When the User updates their Default MFA to SMS of "<Mobile Number>"
     Then the system sends an OTP to "<Mobile Number>"
     When the User provides the correct otp
-    Then "<Mobile Number>" is the new verified Default MFA
+    Then "<Updated Mobile Number>" is the new verified Default MFA
 
     Examples:
-      | Mobile Number |
-      | 07700900111   |
-      | +61412123123  |
+      | Mobile Number | Updated Mobile Number |
+      | 07700900111   | +447700900111         |
+      | +61412123123  | +61412123123          |
 
   Scenario: Changing Default MFA method from Auth App to new Auth App
     Given the User does not have a Backup MFA method
@@ -72,26 +72,26 @@ Feature: Auth App MFA User manages their MFA methods via the Method Management A
     When the User adds "<Mobile Number>" as their SMS Backup MFA
     Then the system sends an OTP to "<Mobile Number>"
     When the User provides the correct otp
-    Then "<Mobile Number>" is added as a verified Backup MFA Method
+    Then "<Updated Mobile Number>" is added as a verified Backup MFA Method
     And the User switches their BACKUP and DEFAULT methods
 
     Examples:
-      | Mobile Number |
-      | 07700900111   |
-      | +61412123123  |
+      | Mobile Number | Updated Mobile Number |
+      | 07700900111   | +447700900111         |
+      | +61412123123  | +61412123123          |
 
   Scenario Outline: Switch MFA methods Error for changing SMS back to default
     And the User does not have a Backup MFA method
     And the User adds "<Mobile Number>" as their SMS Backup MFA
     And the system sends an OTP to "<Mobile Number>"
     When the User provides the correct otp
-    Then "<Mobile Number>" is added as a verified Backup MFA Method
+    Then "<Updated Mobile Number>" is added as a verified Backup MFA Method
     And the User switches their BACKUP and DEFAULT methods
 
     Examples:
-      | Mobile Number |
-      | 07700900111   |
-      | +61412123123  |
+      | Mobile Number | Updated Mobile Number |
+      | 07700900111   | +447700900111         |
+      | +61412123123  | +61412123123          |
 
   Scenario: Prevented from adding backup method to Auth App when Default is Auth App
     And the User does not have a Backup MFA method

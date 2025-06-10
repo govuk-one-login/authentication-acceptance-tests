@@ -25,12 +25,12 @@ Feature: SMS MFA User manages their MFA methods via the Method Management API
     When the User adds "<Mobile Number>" as their SMS Backup MFA
     Then the system sends an OTP to "<Mobile Number>"
     When the User provides the correct otp
-    Then "<Mobile Number>" is added as a verified Backup MFA Method
+    Then "<Updated Mobile Number>" is added as a verified Backup MFA Method
 
     Examples:
-      | Mobile Number |
-      | 07700900111   |
-      | +61412123123  |
+      | Mobile Number | Updated Mobile Number |
+      | 07700900111   | +447700900111         |
+      | +61412123123  | +61412123123          |
 
   Scenario Outline: Switches SMS MFA
     And the User does not have a Backup MFA method
