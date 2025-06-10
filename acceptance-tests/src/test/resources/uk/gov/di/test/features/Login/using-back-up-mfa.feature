@@ -136,7 +136,7 @@ Feature: Login Using Back Up MFA
     Then the user is taken to the "How do you want to get a security code?" page
 
   @AUT-4247
-  Scenario: User successfully authenticate with their backup MFA SMS
+  Scenario: User authenticates with their Backup SMS MFA
     Given a Migrated User with a Default MFA of SMS
     And the User is Authenticated
     And the User does not have a Backup MFA method
@@ -261,7 +261,7 @@ Feature: Login Using Back Up MFA
     Then the user is taken to the "You asked to resend the security code too many times" page
 
   @AUT-4248.
-  Scenario: User authenticate with their backup MFA SMS enters incorrect OTP too many times
+  Scenario: User requests too many OTPs when authenticating with a Backup SMS MFA
     Given a Migrated User with an Auth App Default MFA
     And the User is Authenticated
     And the User does not have a Backup MFA method
