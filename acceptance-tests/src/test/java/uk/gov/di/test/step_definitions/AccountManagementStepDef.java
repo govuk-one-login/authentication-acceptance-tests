@@ -33,7 +33,7 @@ public class AccountManagementStepDef extends BasePage {
         authenticateUser(world);
     }
 
-    @When("the User adds {string} as the Backup MFA")
+    @When("the User adds {string} as their SMS Backup MFA")
     public void userUpdatesDefaultMfaToSmsAndSystemSendsAnOTP(String newPhoneNumber) {
         world.setNewPhoneNumber(newPhoneNumber);
     }
