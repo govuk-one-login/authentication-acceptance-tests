@@ -119,7 +119,8 @@ public class UserLifecycleService {
         return new UserProfile()
                 .withTestUser(1)
                 .withEmail(generateNewUniqueEmailAddress())
-                .withPhoneNumber(UK_MOBILE_PHONE_NUMBER)
+                .withPhoneNumber(UK_MOBILE_PHONE_NUMBER_WITH_INTERNATIONAL_DIALING_CODE)
+                .withPhoneNumberVerified(true)
                 .withPublicSubjectID(UUID.randomUUID().toString())
                 .withSubjectID(UUID.randomUUID().toString())
                 .withSalt(Crypto.generateSalt())
@@ -133,6 +134,7 @@ public class UserLifecycleService {
                 .withPublicSubjectID(UUID.randomUUID().toString())
                 .withSubjectID(UUID.randomUUID().toString())
                 .withSalt(Crypto.generateSalt())
+                .withMfaMigratedUser(true)
                 .withTermsAndConditions(buildTermsAndConditions());
     }
 

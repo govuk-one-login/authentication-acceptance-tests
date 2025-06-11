@@ -14,6 +14,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static uk.gov.di.test.services.ApiInteractionsService.authenticateUser;
 import static uk.gov.di.test.services.ApiInteractionsService.authorizeUser;
+import static uk.gov.di.test.services.ApiInteractionsService.cannotSendOtpNotification;
 import static uk.gov.di.test.services.ApiInteractionsService.getOtp;
 import static uk.gov.di.test.services.ApiInteractionsService.sendOtpNotification;
 import static uk.gov.di.test.services.ApiInteractionsService.updatePhoneNumber;
@@ -41,6 +42,11 @@ public class AccountManagementStepDef extends BasePage {
     @When("^the system sends an OTP to \".+\"$")
     public void theUserReceivesTheOTPCode() {
         sendOtpNotification(world);
+    }
+
+    @When("^the system rejects the request to send an OTP to \".+\"$")
+    public void theSystemRejectsSendOtpRequest() {
+        cannotSendOtpNotification(world);
     }
 
     @When("the User submits the OTP code to confirm the Phone Number change")

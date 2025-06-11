@@ -17,6 +17,7 @@ public class UserProfile {
     public static final String ATTRIBUTE_LEGACY_SUBJECT_ID = "LegacySubjectID";
     public static final String ATTRIBUTE_SALT = "salt";
     public static final String ATTRIBUTE_ACCOUNT_VERIFIED = "accountVerified";
+    public static final String ATTRIBUTE_MFA_METHODS_MIGRATED = "mfaMethodsMigrated";
     public static final String ATTRIBUTE_TEST_USER = "testUser";
     public static final String ATTRIBUTE_MFA_IDENTIFIER = "MFAIdentifier";
 
@@ -35,6 +36,7 @@ public class UserProfile {
     private byte[] salt;
     private int accountVerified;
     private int testUser;
+    private boolean mfaMethodsMigrated;
 
     public UserProfile() {}
 
@@ -223,6 +225,20 @@ public class UserProfile {
 
     public UserProfile withAccountVerified(int accountVerified) {
         this.accountVerified = accountVerified;
+        return this;
+    }
+
+    @DynamoDbAttribute(ATTRIBUTE_MFA_METHODS_MIGRATED)
+    public boolean isMigratedUser() {
+        return mfaMethodsMigrated;
+    }
+
+    public void setMfaMigratedUser(boolean isMigrated) {
+        this.mfaMethodsMigrated = isMigrated;
+    }
+
+    public UserProfile withMfaMigratedUser(boolean isMigrated) {
+        this.mfaMethodsMigrated = isMigrated;
         return this;
     }
 
