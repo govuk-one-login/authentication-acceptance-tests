@@ -30,7 +30,7 @@ Feature: Login Using Back Up MFA
     Given a Migrated User with a Default MFA of SMS
     And the User is Authenticated
     And the User does not have a Backup MFA method
-    When the User adds "07700900111" as the Backup MFA
+    When the User adds "07700900111" as their SMS Backup MFA
     Then the system sends an OTP to "07700900111"
     When the User provides the correct otp
     Then "+447700900111" is added as a verified Backup MFA Method
@@ -52,7 +52,7 @@ Feature: Login Using Back Up MFA
     Given a Migrated User with an Auth App Default MFA
     And the User is Authenticated
     And the User does not have a Backup MFA method
-    When the User adds "07700900111" as the Backup MFA
+    When the User adds "07700900111" as their SMS Backup MFA
     Then the system sends an OTP to "07700900111"
     When the User provides the correct otp
     Then "+447700900111" is added as a verified Backup MFA Method
@@ -72,7 +72,7 @@ Feature: Login Using Back Up MFA
     Given a Migrated User with a Default MFA of SMS
     And the User is Authenticated
     And the User does not have a Backup MFA method
-    When the User adds "07700900111" as the Backup MFA
+    When the User adds "07700900111" as their SMS Backup MFA
     Then the system sends an OTP to "07700900111"
     When the User provides the correct otp
     Then "+447700900111" is added as a verified Backup MFA Method
@@ -94,7 +94,7 @@ Feature: Login Using Back Up MFA
     Given a Migrated User with a Default MFA of SMS
     And the User is Authenticated
     And the User does not have a Backup MFA method
-    When the User adds "07700900111" as the Backup MFA
+    When the User adds "07700900111" as their SMS Backup MFA
     Then the system sends an OTP to "<Mobile Number>"
     When the User provides the correct otp
     Then "+447700900111" is added as a verified Backup MFA Method
@@ -118,7 +118,7 @@ Feature: Login Using Back Up MFA
     Given a Migrated User with an Auth App Default MFA
     And the User is Authenticated
     And the User does not have a Backup MFA method
-    When the User adds "07700900111" as the Backup MFA
+    When the User adds "07700900111" as their SMS Backup MFA
     Then the system sends an OTP to "07700900111"
     When the User provides the correct otp
     Then "+447700900111" is added as a verified Backup MFA Method
@@ -140,7 +140,7 @@ Feature: Login Using Back Up MFA
     Given a Migrated User with a Default MFA of SMS
     And the User is Authenticated
     And the User does not have a Backup MFA method
-    When the User adds "07700900111" as the Backup MFA
+    When the User adds "07700900111" as their SMS Backup MFA
     Then the system sends an OTP to "07700900111"
     When the User provides the correct otp
     Then "+447700900111" is added as a verified Backup MFA Method
@@ -165,7 +165,7 @@ Feature: Login Using Back Up MFA
     Given a Migrated User with a Default MFA of SMS
     And the User is Authenticated
     And the User does not have a Backup MFA method
-    When the User adds "07700900111" as the Backup MFA
+    When the User adds "07700900111" as their SMS Backup MFA
     Then the system sends an OTP to "07700900111"
     When the User provides the correct otp
     Then "+447700900111" is added as a verified Backup MFA Method
@@ -190,7 +190,7 @@ Feature: Login Using Back Up MFA
     Given a Migrated User with a Default MFA of SMS
     And the User is Authenticated
     And the User does not have a Backup MFA method
-    When the User adds "07700900111" as the Backup MFA
+    When the User adds "07700900111" as their SMS Backup MFA
     Then the system sends an OTP to "07700900111"
     When the User provides the correct otp
     Then "+447700900111" is added as a verified Backup MFA Method
@@ -215,7 +215,7 @@ Feature: Login Using Back Up MFA
     Given a Migrated User with an Auth App Default MFA
     And the User is Authenticated
     And the User does not have a Backup MFA method
-    When the User adds "07700900111" as the Backup MFA
+    When the User adds "07700900111" as their SMS Backup MFA
     Then the system sends an OTP to "07700900111"
     When the User provides the correct otp
     Then "+447700900111" is added as a verified Backup MFA Method
@@ -240,7 +240,7 @@ Feature: Login Using Back Up MFA
     Given a Migrated User with an Auth App Default MFA
     And the User is Authenticated
     And the User does not have a Backup MFA method
-    When the User adds "07700900111" as the Backup MFA
+    When the User adds "07700900111" as their SMS Backup MFA
     Then the system sends an OTP to "07700900111"
     When the User provides the correct otp
     Then "+447700900111" is added as a verified Backup MFA Method
@@ -265,7 +265,7 @@ Feature: Login Using Back Up MFA
     Given a Migrated User with an Auth App Default MFA
     And the User is Authenticated
     And the User does not have a Backup MFA method
-    When the User adds "07700900111" as the Backup MFA
+    When the User adds "07700900111" as their SMS Backup MFA
     Then the system sends an OTP to "07700900111"
     When the User provides the correct otp
     Then "+447700900111" is added as a verified Backup MFA Method
@@ -316,7 +316,7 @@ Feature: Login Using Back Up MFA
     Given a Migrated User with an Auth App Default MFA
     And the User is Authenticated
     And the User does not have a Backup MFA method
-    When the User adds "07700900111" as the Backup MFA
+    When the User adds "07700900111" as their SMS Backup MFA
     Then the system sends an OTP to "07700900111"
     When the User provides the correct otp
     Then "+447700900111" is added as a verified Backup MFA Method
@@ -345,7 +345,7 @@ Feature: Login Using Back Up MFA
     Given a Migrated User with an Auth App Default MFA
     And the User is Authenticated
     And the User does not have a Backup MFA method
-    When the User adds "07700900111" as the Backup MFA
+    When the User adds "07700900111" as their SMS Backup MFA
     Then the system sends an OTP to "07700900111"
     When the User provides the correct otp
     Then "+447700900111" is added as a verified Backup MFA Method
@@ -399,7 +399,7 @@ Feature: Login Using Back Up MFA
     When the User adds "07700900111" as their SMS Backup MFA
     Then the system sends an OTP to "07700900111"
     When the User provides the correct otp
-    Then "07700900111" is added as a verified Backup MFA Method
+    Then "+447700900111" is added as a verified Backup MFA Method
     When the user comes from the stub relying party with option 2fa-off and is taken to the "Create your GOV.UK One Login or sign in" page
     When the user selects sign in
     Then the user is taken to the "Enter your email" page
@@ -426,7 +426,7 @@ Feature: Login Using Back Up MFA
     When the User adds "07700900111" as their SMS Backup MFA
     Then the system sends an OTP to "07700900111"
     When the User provides the correct otp
-    Then "07700900111" is added as a verified Backup MFA Method
+    Then "+447700900111" is added as a verified Backup MFA Method
     When the user comes from the stub relying party with option 2fa-off and is taken to the "Create your GOV.UK One Login or sign in" page
     When the user selects sign in
     Then the user is taken to the "Enter your email" page
