@@ -57,6 +57,7 @@ public class CrossPageFlows extends BasePage {
     public void requestPhoneSecurityCodeResendNumberOfTimes(
             Integer numberOfTimes, Boolean isReauth) {
         for (int i = 0; i < numberOfTimes; i++) {
+            waitForPageLoad("Check your phone");
             checkYourPhonePage.clickProblemsWithTheCodeLink();
             checkYourPhonePage.clickSendTheCodeAgainLink();
             waitForPageLoad("Get security code");
