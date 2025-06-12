@@ -98,7 +98,9 @@ For API Tests:
 
 ### Overview
 
-The scripts support running tests with either Chrome or Firefox browsers by specifying the browser as a second argument (e.g., `./rundocker.sh dev-ui chrome`).
+The scripts primarily support running the tests in Chromium.
+
+Firefox (or maybe even Edge) can be used by passing the full reference of a `selenium/standalone-*` image [list here](https://hub.docker.com/u/selenium?page=1&search=standalone) as a second CLI argument. For example: `./rundocker.sh dev-ui selenium/standalone-firefox:136.0`.
 
 Test reports can be found in the tmp folder within the project. Note: this folder can fill up quickly so regular purging is recommended.
 

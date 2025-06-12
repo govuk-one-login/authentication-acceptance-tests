@@ -3,11 +3,14 @@ set -euo pipefail
 
 ENVIRONMENT="${1:-}"
 if [ -z "${ENVIRONMENT}" ]; then
-  echo "Usage: $0 <environment> [<browser>]"
+  echo "Usage: $0 <environment> [<base_image>]"
+
+  echo "Example: $0 dev-ui"
+  echo "Example: $0 staging-api selenium/standalone-firefox:132.0"
   exit 1
 fi
 
-BROWSER="${2:-chromium}"
+BASE_IMAGE="${2:-}"
 
 case "${ENVIRONMENT}" in
   dev-api)
@@ -66,13 +69,20 @@ source ./scripts/check_aws_creds.sh
 results_dir=./tmp/results/$(date +%Y-%m-%d-%H-%M-%S)
 mkdir -p "${results_dir}"
 
+BUILD_ARG_ARGS=()
+
+if [ -n "${BASE_IMAGE}" ]; then
+  echo "Using base image: ${BASE_IMAGE}"
+  BUILD_ARG_ARGS+=("--build-arg" "SELENIUM_BASE=${BASE_IMAGE}")
+fi
+
 if [ "${TEST_MODE}" = "UI" ]; then
   docker build . -t ui-acceptance-tests:latest --target auth-ui \
-    --build-arg "SELENIUM_BASE=selenium/standalone-${BROWSER}:132.0"
+    "${BUILD_ARG_ARGS[@]+"${BUILD_ARG_ARGS[@]}"}"
 
   create_local_env_file "env-override-ui.env"
 
-  docker run -p 4442-4444:4442-4444 --privileged \
+  docker run -p 4442-4444:4442-4444 \
     -e CODEBUILD_BUILD_ID=1 \
     -e AWS_REGION="${AWS_REGION:-eu-west-2}" \
     -e TEST_ENVIRONMENT="${ENVIRONMENT}" \
@@ -80,16 +90,17 @@ if [ "${TEST_MODE}" = "UI" ]; then
     -v "$(pwd)/env-generated.env:/test/.env" \
     -v "${results_dir}":/test/results \
     --env-file <(aws configure export-credentials --format env-no-export) \
-    -it --rm --entrypoint /bin/bash --shm-size="2g" ui-acceptance-tests:latest /run-tests.sh
+    -it --rm --entrypoint /bin/bash --shm-size="2g" \
+    ui-acceptance-tests:latest /run-tests.sh
 fi
 
 if [ "${TEST_MODE}" = "API" ]; then
   docker build . -t api-acceptance-tests:latest --target auth-api \
-    --build-arg "SELENIUM_BASE=selenium/standalone-${BROWSER}:132.0"
+    "${BUILD_ARG_ARGS[@]+"${BUILD_ARG_ARGS[@]}"}"
 
   create_local_env_file "env-override-api.env"
 
-  docker run -p 4442-4444:4442-4444 --privileged \
+  docker run -p 4442-4444:4442-4444 \
     -e PARALLEL_BROWSERS=1 \
     -v "$(pwd)/env-generated.env:/test/.env" \
     -v "${results_dir}":/test/acceptance-tests/target/cucumber-report \
