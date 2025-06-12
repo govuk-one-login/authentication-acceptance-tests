@@ -98,7 +98,9 @@ setup_environment_variables() {
     # shellcheck source=../scripts/fetch_envars.sh
     /test/scripts/fetch_envars.sh "${ENVIRONMENT}" | tee /test/.env
   fi
+}
 
+export_environment_variables() {
   # shellcheck source=/dev/null
   set -o allexport && source /test/.env && set +o allexport
 }
@@ -108,6 +110,8 @@ log_run_configuration() {
     echo
     echo "********************************************************************************************"
     echo "CUCUMBER FILTER TAGS: ${CUCUMBER_FILTER_TAGS}"
+    echo "RP_URL: ${RP_URL}"
+    echo "STUB_RP_TYPE: ${STUB_RP_TYPE}"
     echo "********************************************************************************************"
     echo
   else
@@ -136,9 +140,10 @@ execute_tests() {
 }
 
 check_guard_conditions
-setup_to_run_api_tests
 setup_cucumber_run_parameters
 setup_environment_variables
+setup_to_run_api_tests
+export_environment_variables
 log_run_configuration
 assume_role_to_access_dynamodb_in_api_account
 execute_tests
