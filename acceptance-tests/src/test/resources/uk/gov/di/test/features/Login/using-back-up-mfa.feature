@@ -588,4 +588,3 @@ Feature: Login Using Back Up MFA
     Then the user is taken to the "Enter the 6 digit security code shown in your authenticator app" page
     When the user enters an incorrect auth app security code 6 times
     Then the user is taken to the "You entered the wrong security code too many times" page
-
