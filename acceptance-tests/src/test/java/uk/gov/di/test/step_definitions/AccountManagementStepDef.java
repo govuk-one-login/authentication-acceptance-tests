@@ -1,12 +1,10 @@
 package uk.gov.di.test.step_definitions;
 
-import io.cucumber.java.After;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import uk.gov.di.test.pages.BasePage;
 import uk.gov.di.test.services.UserLifecycleService;
-import uk.gov.di.test.utils.Driver;
 
 import java.util.Arrays;
 import java.util.List;
