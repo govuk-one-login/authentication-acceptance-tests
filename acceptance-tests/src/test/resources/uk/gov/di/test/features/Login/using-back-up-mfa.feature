@@ -1,4 +1,4 @@
-@under-development @UI @Login
+@under-development @API @Login
 Feature: Login Using Back Up MFA
 
   @AUT-1416
@@ -130,7 +130,7 @@ Feature: Login Using Back Up MFA
     When the user clicks the forgotten password link
     Then the user is taken to the "Check your email" page
     When the user enters the six digit security code from their email
-    Then the user is taken to the "Enter the 6 digit security code shown in your authenticator app" page
+    Then the user is taken to the "Enter a security code from your authenticator app" page
     And the user selects "I do not have access to the authenticator app" link
     And the user selects "try another way to get a security code" link
     Then the user is taken to the "How do you want to get a security code?" page
@@ -305,7 +305,7 @@ Feature: Login Using Back Up MFA
     And the user selects "try another way to get a security code" link
     Then the user is taken to the "How do you want to get a security code?" page
     When the user selects radio button "Use your authenticator app"
-    Then the user is taken to the "Enter the 6 digit security code shown in your authenticator app" page
+    Then the user is taken to the "Enter a security code from your authenticator app" page
     And the user enters the security code from backup MFA auth app
     Then the user is taken to the "Reset your password" page
     When the user enters valid new password and correctly retypes it
@@ -328,7 +328,7 @@ Feature: Login Using Back Up MFA
     When the user clicks the forgotten password link
     Then the user is taken to the "Check your email" page
     When the user enters the six digit security code from their email
-    Then the user is taken to the "Enter the 6 digit security code shown in your authenticator app" page
+    Then the user is taken to the "Enter a security code from your authenticator app" page
     When the user selects "I do not have access to the authenticator app" link
     And the user selects "try another way to get a security code" link
     Then the user is taken to the "How do you want to get a security code?" page
@@ -357,7 +357,7 @@ Feature: Login Using Back Up MFA
     When the user clicks the forgotten password link
     Then the user is taken to the "Check your email" page
     When the user enters the six digit security code from their email
-    Then the user is taken to the "Enter the 6 digit security code shown in your authenticator app" page
+    Then the user is taken to the "Enter a security code from your authenticator app" page
     When the user selects "I do not have access to the authenticator app" link
     And the user selects "try another way to get a security code" link
     Then the user is taken to the "How do you want to get a security code?" page
@@ -387,7 +387,7 @@ Feature: Login Using Back Up MFA
     And the user selects "try another way to get a security code" link
     Then the user is taken to the "How do you want to get a security code?" page
     When the user selects radio button "Use your authenticator app"
-    Then the user is taken to the "Enter the 6 digit security code shown in your authenticator app" page
+    Then the user is taken to the "Enter a security code from your authenticator app" page
     When the user enters an incorrect auth app security code 6 times
     Then the user is taken to the "You entered the wrong security code too many times" page
 
