@@ -82,6 +82,4 @@ public class Hooks extends BasePage {
         Driver.get().manage().deleteAllCookies();
         Driver.closeDriver();
     }
-
-
 }
