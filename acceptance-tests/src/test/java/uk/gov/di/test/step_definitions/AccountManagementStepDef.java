@@ -4,7 +4,6 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import uk.gov.di.test.pages.BasePage;
-import uk.gov.di.test.services.UserLifecycleService;
 
 import java.util.Arrays;
 import java.util.List;
@@ -20,8 +19,6 @@ import static uk.gov.di.test.services.ApiInteractionsService.updatePhoneNumber;
 
 public class AccountManagementStepDef extends BasePage {
     private final World world;
-    private static final UserLifecycleService userLifecycleService =
-            UserLifecycleService.getInstance();
 
     public AccountManagementStepDef(World world) {
         this.world = world;
