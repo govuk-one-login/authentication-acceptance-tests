@@ -1,4 +1,4 @@
-@under-development @API @Login
+@under-development @UI @Login
 Feature: Login Using Back Up MFA
 
   @AUT-1416
@@ -130,7 +130,7 @@ Feature: Login Using Back Up MFA
     When the user clicks the forgotten password link
     Then the user is taken to the "Check your email" page
     When the user enters the six digit security code from their email
-    Then the user is taken to the "Enter a security code from your authenticator app" page
+    Then the user is taken to the "Enter the 6 digit security code shown in your authenticator app" page
     And the user selects "I do not have access to the authenticator app" link
     And the user selects "try another way to get a security code" link
     Then the user is taken to the "How do you want to get a security code?" page
@@ -182,7 +182,7 @@ Feature: Login Using Back Up MFA
     And the user selects radio button "Text message to your phone number ending with" and "111"
     When the user clicks the continue button
     Then the user is taken to the "Check your phone" page
-    When the user requests the phone otp code a further 4 times
+    When the user requests the phone otp code a further 5 times
     Then the user is taken to the "You asked to resend the security code too many times" page
 
   @AUT-4247
@@ -305,7 +305,7 @@ Feature: Login Using Back Up MFA
     And the user selects "try another way to get a security code" link
     Then the user is taken to the "How do you want to get a security code?" page
     When the user selects radio button "Use your authenticator app"
-    Then the user is taken to the "Enter a security code from your authenticator app" page
+    Then the user is taken to the "Enter the 6 digit security code shown in your authenticator app" page
     And the user enters the security code from backup MFA auth app
     Then the user is taken to the "Reset your password" page
     When the user enters valid new password and correctly retypes it
@@ -328,7 +328,7 @@ Feature: Login Using Back Up MFA
     When the user clicks the forgotten password link
     Then the user is taken to the "Check your email" page
     When the user enters the six digit security code from their email
-    Then the user is taken to the "Enter a security code from your authenticator app" page
+    Then the user is taken to the "Enter the 6 digit security code shown in your authenticator app" page
     When the user selects "I do not have access to the authenticator app" link
     And the user selects "try another way to get a security code" link
     Then the user is taken to the "How do you want to get a security code?" page
@@ -357,7 +357,7 @@ Feature: Login Using Back Up MFA
     When the user clicks the forgotten password link
     Then the user is taken to the "Check your email" page
     When the user enters the six digit security code from their email
-    Then the user is taken to the "Enter a security code from your authenticator app" page
+    Then the user is taken to the "Enter the 6 digit security code shown in your authenticator app" page
     When the user selects "I do not have access to the authenticator app" link
     And the user selects "try another way to get a security code" link
     Then the user is taken to the "How do you want to get a security code?" page
@@ -387,7 +387,7 @@ Feature: Login Using Back Up MFA
     And the user selects "try another way to get a security code" link
     Then the user is taken to the "How do you want to get a security code?" page
     When the user selects radio button "Use your authenticator app"
-    Then the user is taken to the "Enter a security code from your authenticator app" page
+    Then the user is taken to the "Enter the 6 digit security code shown in your authenticator app" page
     When the user enters an incorrect auth app security code 6 times
     Then the user is taken to the "You entered the wrong security code too many times" page
 
@@ -475,37 +475,34 @@ Feature: Login Using Back Up MFA
     Then the user is successfully reauthenticated and returned to the service
 
   @AUT-4198
-  Scenario: Auth App user successfully reauthenticate with Auth App
-    Given a Migrated User with an Auth App Default MFA
+  Scenario: SMS user successfully reauthenticate with backup Auth App
+    Given a Migrated User with a Default MFA of SMS
     And the User is Authenticated
     And the User does not have a Backup MFA method
-    When the User adds "+447700900111" as their SMS Backup MFA
-    Then the system sends an OTP to "07700900111"
-    When the User provides the correct otp
-    Then "+447700900111" is added as a verified Backup MFA Method
+    When the User requests to add a backup MFA Auth App
+    Then the User's back up MFA Auth App is updated
     When the user comes from the stub relying party with default options and is taken to the "Create your GOV.UK One Login or sign in" page
     And the user selects sign in
     Then the user is taken to the "Enter your email" page
     When the user enters their email address
     Then the user is taken to the "Enter your password" page
     When the user enters their password
-    Then the user is taken to the "Enter the 6 digit security code shown in your authenticator app" page
-    And the user enters the security code from the auth app
+    Then the user is taken to the "Check your phone" page
+    When the user enters the six digit security code from their phone
     Given the RP requires the user to reauthenticate
     When the user enters the same email address for reauth as they used for login
     And the user enters the correct password
-    Then the user is taken to the "Enter the 6 digit security code shown in your authenticator app" page
-    And the user selects "I do not have access to the authenticator app" link
+    Then the user is taken to the "Check your phone" page
+    And the user selects "Problems with the code?" link
     And the user selects "try another way to get a security code" link
     Then the user is taken to the "How do you want to get a security code?" page
-    And the user selects radio button "Text message to your phone number ending with" and "111"
-    When the user clicks the continue button
-    Then the user is taken to the "Check your phone" page
-    When the user enters the six digit security code from their phone
+    When the user selects radio button "Use your authenticator app"
+    Then the user is taken to the "Enter the 6 digit security code shown in your authenticator app" page
+    When the user enters the security code from backup MFA auth app
     Then the user is successfully reauthenticated and returned to the service
 
   @AUT-4198
-  Scenario: Sms user force log off while reauthenticate with backup phone number
+  Scenario: Auth App user force log off while reauthenticate with backup phone number enters wrong code too many times
     Given a Migrated User with an Auth App Default MFA
     And the User is Authenticated
     And the User does not have a Backup MFA method
@@ -520,12 +517,12 @@ Feature: Login Using Back Up MFA
     Then the user is taken to the "Enter your password" page
     When the user enters their password
     Then the user is taken to the "Enter the 6 digit security code shown in your authenticator app" page
-    And the user enters the security code from the auth app
+    When the user enters the security code from the auth app
     Given the RP requires the user to reauthenticate
     When the user enters the same email address for reauth as they used for login
     And the user enters the correct password
     Then the user is taken to the "Enter the 6 digit security code shown in your authenticator app" page
-    And the user selects "I do not have access to the authenticator app" link
+    When the user selects "I do not have access to the authenticator app" link
     And the user selects "try another way to get a security code" link
     Then the user is taken to the "How do you want to get a security code?" page
     And the user selects radio button "Text message to your phone number ending with" and "111"
