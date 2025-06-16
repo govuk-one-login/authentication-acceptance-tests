@@ -6,6 +6,7 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import uk.gov.di.test.pages.BasePage;
 import uk.gov.di.test.services.UserLifecycleService;
+import uk.gov.di.test.utils.Driver;
 
 import java.util.Arrays;
 import java.util.List;
@@ -69,19 +70,5 @@ public class AccountManagementStepDef extends BasePage {
                 newPhoneNumber,
                 matchingValue,
                 "Actual phone number does not match the expected phone number.");
-    }
-
-    @After("@Test")
-    public void theUserIsDeleted() {
-        if (world.userProfile != null) {
-            System.out.printf(
-                    "Deleting user profile with email %s%n", world.userProfile.getEmail());
-            userLifecycleService.deleteUserProfileFromDynamodb(world.userProfile);
-        }
-        if (world.userCredentials != null) {
-            System.out.printf(
-                    "Deleting user credentials with email %s%n", world.userCredentials.getEmail());
-            userLifecycleService.deleteUserCredentialsFromDynamodb(world.userCredentials);
-        }
     }
 }

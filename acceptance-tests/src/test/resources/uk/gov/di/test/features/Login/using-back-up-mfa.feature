@@ -182,7 +182,7 @@ Feature: Login Using Back Up MFA
     And the user selects radio button "Text message to your phone number ending with" and "111"
     When the user clicks the continue button
     Then the user is taken to the "Check your phone" page
-    When the user requests the phone otp code a further 5 times
+    When the user requests the phone otp code a further 4 times
     Then the user is taken to the "You asked to resend the security code too many times" page
 
   @AUT-4247
