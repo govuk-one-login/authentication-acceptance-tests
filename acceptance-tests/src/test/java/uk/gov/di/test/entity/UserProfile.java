@@ -43,6 +43,7 @@ public class UserProfile {
     @DynamoDbPartitionKey
     @DynamoDbAttribute(ATTRIBUTE_EMAIL)
     public String getEmail() {
+        System.out.println("Email : " + email);
         return email;
     }
 
