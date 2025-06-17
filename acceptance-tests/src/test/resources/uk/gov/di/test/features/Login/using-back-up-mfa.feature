@@ -310,8 +310,8 @@ Feature: Login Using Back Up MFA
     * the lockout reason is "you entered the wrong security code too many times"
 
 
-  @AUT-4248 @AUT-4378 @vivekttatw
-  Scenario: User loses access to their Default Auth App and enters too many incorrect OTPs when authenticating with a Backup Auth App MFA and Validate signin again post logout
+  @AUT-4248 @AUT-4378
+  Scenario: User loses access to their Default Phone Number and enters too many incorrect OTPs when authenticating with a Backup Auth App MFA and Validate signin again post logout
     Given a Migrated User with a Default MFA of SMS
     And the User is Authenticated
     And the User does not have a Backup MFA method
