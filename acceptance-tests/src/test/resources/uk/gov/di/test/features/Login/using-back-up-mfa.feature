@@ -235,7 +235,7 @@ Feature: Login Using Back Up MFA
     When the user enters the six digit security code from their phone
     Then the user is returned to the service
 
-  @AUT-4248 @AUT-4378 @vivekttt @UI
+  @AUT-4248 @AUT-4378
   Scenario: A User loses access to their Default Auth App and requests too many OTPs when authenticating with a Backup SMS MFA and Validate signin again post logout
     Given a Migrated User with an Auth App Default MFA
     And the User is Authenticated
@@ -272,7 +272,7 @@ Feature: Login Using Back Up MFA
     * the lockout duration is 2 hours
     * the lockout reason is "you entered the wrong security code too many times"
 
-  @AUT-4248 @AUT-4378 @vivektt
+  @AUT-4248 @AUT-4378
   Scenario: User loses access to their Default Auth App and enters too many incorrect OTPs when authenticating with a Backup SMS MFA and Validate signin again post logout
     Given a Migrated User with an Auth App Default MFA
     And the User is Authenticated
@@ -400,7 +400,7 @@ Feature: Login Using Back Up MFA
     When the user enters valid new password and correctly retypes it
     Then the user is returned to the service
 
-  @AUT-4183 @AUT-4377 @vivektt
+  @AUT-4183 @AUT-4377
   Scenario: User requests too many OTPs when resetting their password with a Backup SMS MFA and Validate password reset again post logout
     Given a Migrated User with an Auth App Default MFA
     And the User is Authenticated
@@ -441,7 +441,7 @@ Feature: Login Using Back Up MFA
     * the lockout reason is "you asked to resend the security code too many times"
     * the lockout duration is 2 hours
 
-  @AUT-4183 @AUT-4377 @vivektt
+  @AUT-4183 @AUT-4377
   Scenario: User enters too many incorrect OTPs resetting their password using a Backup Auth App MFA and Validate password reset again post logout
     Given a Migrated User with a Default MFA of SMS
     And the User is Authenticated
