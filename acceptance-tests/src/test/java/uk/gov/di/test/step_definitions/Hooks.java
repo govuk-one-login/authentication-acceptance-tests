@@ -14,12 +14,18 @@ import uk.gov.di.test.utils.Driver;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
-public class Hooks extends BasePage {
+import static uk.gov.di.test.step_definitions.UserLifecycleStepDef.userLifecycleService;
 
+public class Hooks extends BasePage {
+    private final World world;
     private static int failureCount = 0;
 
     protected static final Boolean FAIL_FAST_ENABLED =
             Boolean.parseBoolean(TEST_CONFIG_SERVICE.getOrDefault("FAIL_FAST_ENABLED", "false"));
+
+    public Hooks(World world) {
+        this.world = world;
+    }
 
     @Before(value = "@UI", order = 1)
     public void setUpScenario(Scenario scenario) {
@@ -41,11 +47,11 @@ public class Hooks extends BasePage {
 
     @After("@UI")
     public void takeScreenshotOnFailure(Scenario scenario) {
+        System.out.println("******* After UI *********");
         if (scenario.isFailed()) {
-
             WebDriver driver = Driver.get();
-
             final byte[] screenshot = ((TakesScreenshot) driver).getScreenshotAs(OutputType.BYTES);
+
             scenario.attach(
                     screenshot,
                     "image/png",
@@ -57,6 +63,23 @@ public class Hooks extends BasePage {
                 failureCount++;
             }
         }
+        Driver.closeDriver();
+    }
+
+    @After("@API")
+    public void theUserIsDeleted() {
+        System.out.println("******* After API *********");
+        if (world.userProfile != null) {
+            System.out.printf(
+                    "Deleting user profile with email %s%n", world.userProfile.getEmail());
+            userLifecycleService.deleteUserProfileFromDynamodb(world.userProfile);
+        }
+        if (world.userCredentials != null) {
+            System.out.printf(
+                    "Deleting user credentials with email %s%n", world.userCredentials.getEmail());
+            userLifecycleService.deleteUserCredentialsFromDynamodb(world.userCredentials);
+        }
+        Driver.get().manage().deleteAllCookies();
         Driver.closeDriver();
     }
 }

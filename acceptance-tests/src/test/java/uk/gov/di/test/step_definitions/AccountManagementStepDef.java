@@ -1,11 +1,9 @@
 package uk.gov.di.test.step_definitions;
 
-import io.cucumber.java.After;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import uk.gov.di.test.pages.BasePage;
-import uk.gov.di.test.services.UserLifecycleService;
 
 import java.util.Arrays;
 import java.util.List;
@@ -21,8 +19,6 @@ import static uk.gov.di.test.services.ApiInteractionsService.updatePhoneNumber;
 
 public class AccountManagementStepDef extends BasePage {
     private final World world;
-    private static final UserLifecycleService userLifecycleService =
-            UserLifecycleService.getInstance();
 
     public AccountManagementStepDef(World world) {
         this.world = world;
@@ -69,19 +65,5 @@ public class AccountManagementStepDef extends BasePage {
                 newPhoneNumber,
                 matchingValue,
                 "Actual phone number does not match the expected phone number.");
-    }
-
-    @After("@Test")
-    public void theUserIsDeleted() {
-        if (world.userProfile != null) {
-            System.out.printf(
-                    "Deleting user profile with email %s%n", world.userProfile.getEmail());
-            userLifecycleService.deleteUserProfileFromDynamodb(world.userProfile);
-        }
-        if (world.userCredentials != null) {
-            System.out.printf(
-                    "Deleting user credentials with email %s%n", world.userCredentials.getEmail());
-            userLifecycleService.deleteUserCredentialsFromDynamodb(world.userCredentials);
-        }
     }
 }
