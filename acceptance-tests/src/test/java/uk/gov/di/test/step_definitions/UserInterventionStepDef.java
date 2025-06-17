@@ -56,13 +56,13 @@ public class UserInterventionStepDef {
                 world.userInterventions);
     }
 
-    @After("@UI")
-    public void deleteIntervention() {
-        if (world.userInterventions != null) {
-            System.out.printf(
-                    "Deleting user interventions with email %s%n",
-                    world.userInterventions.getEquivalentPlainEmailAddress());
-            lifecycleController.deleteInterventionInDynamoDb(world.userInterventions);
-        }
-    }
+//    @After("@UI")
+//    public void deleteIntervention() {
+//        if (world.userInterventions != null) {
+//            System.out.printf(
+//                    "Deleting user interventions with email %s%n",
+//                    world.userInterventions.getEquivalentPlainEmailAddress());
+//            lifecycleController.deleteInterventionInDynamoDb(world.userInterventions);
+//        }
+//    }
 }

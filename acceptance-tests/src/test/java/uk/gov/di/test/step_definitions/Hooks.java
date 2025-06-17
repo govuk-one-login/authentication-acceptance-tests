@@ -66,20 +66,20 @@ public class Hooks extends BasePage {
         Driver.closeDriver();
     }
 
-    @After("@API")
-    public void theUserIsDeleted() {
-        System.out.println("******* After API *********");
-        if (world.userProfile != null) {
-            System.out.printf(
-                    "Deleting user profile with email %s%n", world.userProfile.getEmail());
-            userLifecycleService.deleteUserProfileFromDynamodb(world.userProfile);
-        }
-        if (world.userCredentials != null) {
-            System.out.printf(
-                    "Deleting user credentials with email %s%n", world.userCredentials.getEmail());
-            userLifecycleService.deleteUserCredentialsFromDynamodb(world.userCredentials);
-        }
-        Driver.get().manage().deleteAllCookies();
-        Driver.closeDriver();
-    }
+//    @After("@API")
+//    public void theUserIsDeleted() {
+//        System.out.println("******* After API *********");
+//        if (world.userProfile != null) {
+//            System.out.printf(
+//                    "Deleting user profile with email %s%n", world.userProfile.getEmail());
+//            userLifecycleService.deleteUserProfileFromDynamodb(world.userProfile);
+//        }
+//        if (world.userCredentials != null) {
+//            System.out.printf(
+//                    "Deleting user credentials with email %s%n", world.userCredentials.getEmail());
+//            userLifecycleService.deleteUserCredentialsFromDynamodb(world.userCredentials);
+//        }
+//        Driver.get().manage().deleteAllCookies();
+//        Driver.closeDriver();
+//    }
 }

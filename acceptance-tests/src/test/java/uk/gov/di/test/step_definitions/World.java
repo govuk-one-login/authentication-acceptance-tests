@@ -76,6 +76,7 @@ public class World {
     }
 
     public String getUserPassword() {
+        System.out.println("Passowrd is" + userPassword);
         return userPassword;
     }
 
