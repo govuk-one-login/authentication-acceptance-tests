@@ -213,6 +213,11 @@ public class MFAMethodsAPIStepdefs {
         switchMFAMethods(world);
     }
 
+    @And("the User only has a default MFA of {string} and remains migrated")
+    public void theUserOnlyHasADefaultMfa(String mfaMethodType) {
+        assertTrue(checkUserHasDefaultMfa(world, mfaMethodType));
+    }
+
     @When("the User cannot add an Auth App as Backup")
     public void theUserCannotToAddAuthAppAsBackupMFA() {
         String jsonResponse = addBackupAuthApp(world);
