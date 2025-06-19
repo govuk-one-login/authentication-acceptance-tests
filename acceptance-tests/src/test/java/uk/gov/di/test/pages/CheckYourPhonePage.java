@@ -34,11 +34,6 @@ public class CheckYourPhonePage extends BasePage {
         Driver.get().findElement(changeHowYouGetSecurityCodesLink).click();
     }
 
-    public void changeHowToGetSecurityCodes() {
-        clickProblemsWithTheCodeLink();
-        clickChangeHowYouGetSecurityCodesLink();
-    }
-
     public void clickSendTheCodeAgainLink() {
         Driver.get().findElement(sendTheCodeAgainLink).click();
     }
