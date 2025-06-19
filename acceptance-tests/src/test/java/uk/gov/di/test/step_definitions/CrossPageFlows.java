@@ -311,7 +311,7 @@ public class CrossPageFlows extends BasePage {
             Integer numberOfTimes, Boolean isReauth) {
         for (int i = 0; i < numberOfTimes; i++) {
             checkYourPhonePage.clickProblemsWithTheCodeLink();
-            checkYourPhonePage.clickSendTheCodeAgainLink();
+            checkYourPhonePage.clickChangeHowYouGetSecurityCodesLink();
             waitForPageLoad("Get security code");
             if (isReauth) {
                 waitForThisText("you will be signed out");
