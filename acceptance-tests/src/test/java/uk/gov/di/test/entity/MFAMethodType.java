@@ -15,4 +15,9 @@ public enum MFAMethodType {
     public String getValue() {
         return value;
     }
+
+    public static MFAMethodType fromString(String value) {
+        String normalizedValue = value.replace(" ", "_");
+        return MFAMethodType.valueOf(normalizedValue);
+    }
 }
