@@ -705,6 +705,31 @@ public class ApiInteractionsService {
         return invokeResponse.payload().asUtf8String();
     }
 
+    public static boolean checkUserHasDefaultMfa(World world, String mfaMethodType) {
+        var normalizedValue = mfaMethodType.replace(" ", "_");
+        try {
+            String mfaMethods = retrieveUsersMFAMethods(world);
+
+            ObjectMapper objectMapper = new ObjectMapper();
+            JsonNode rootNode = objectMapper.readTree(mfaMethods);
+            JsonNode bodyArray = objectMapper.readTree(rootNode.path("body").asText());
+
+            if (bodyArray.isArray() && !bodyArray.isEmpty() && bodyArray.size() == 1) {
+                JsonNode firstElement = bodyArray.get(0);
+                String priorityIdentifier = firstElement.path("priorityIdentifier").asText();
+                if (priorityIdentifier.equalsIgnoreCase("DEFAULT")) {
+                    JsonNode method = firstElement.path("method");
+                    if (method.get("mfaMethodType").asText().equalsIgnoreCase(normalizedValue)) {
+                        return true;
+                    }
+                }
+            }
+        } catch (Exception e) {
+            LOG.error(e.getMessage());
+        }
+        return false;
+    }
+
     public static void updateBackupAuthApp(World world) {
         var functionName =
                 getLambda(

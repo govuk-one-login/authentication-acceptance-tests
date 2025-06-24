@@ -52,6 +52,17 @@ public class UserLifecycleStepDef {
                         world.userProfile, world.getUserPassword(), MFAMethodType.SMS);
     }
 
+    @Given("a Migrated User with a Default MFA of {string}")
+    public void aMigratedUserWithMFAMethodExists(String mfaMethodType) {
+        aMigratedUserDoesNotYetExist();
+        userLifecycleService.putUserProfileToDynamodb(world.userProfile);
+        world.userCredentials =
+                userLifecycleService.createUserCredentials(
+                        world.userProfile,
+                        world.getUserPassword(),
+                        MFAMethodType.fromString(mfaMethodType));
+    }
+
     @Given("a User exists")
     @Given("a user exists")
     public void aUserExists() {
