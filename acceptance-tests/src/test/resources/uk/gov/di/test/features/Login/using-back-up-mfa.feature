@@ -270,7 +270,7 @@ Feature: Login Using Back Up MFA
     When the user enters their password
     Then the "You cannot sign in at the moment" lockout screen is displayed
     * the lockout duration is 2 hours
-    * the lockout reason is "you entered the wrong security code too many times"
+    * the lockout reason is "you asked to resend the security code too many times"
 
   @AUT-4348 @AUT-4278 @AUT-4252
   Scenario: User loses access to their Default Auth App and enters too many incorrect OTPs when authenticating with a Backup SMS MFA and lockout
@@ -510,7 +510,7 @@ Feature: Login Using Back Up MFA
     Then the user is taken to the "Check your email" page
     When the user enters the six digit security code from their email
     Then the "You cannot sign in at the moment" lockout screen is displayed
-    * the lockout reason is "You asked to resend the security code too many times"
+    * the lockout reason is "you asked to resend the security code too many times"
     * the lockout duration is 2 hours
 
   @AUT-4183 @AUT-4377 @AUT-4252
@@ -551,7 +551,7 @@ Feature: Login Using Back Up MFA
     Then the user is taken to the "Check your email" page
     When the user enters the six digit security code from their email
     Then the "You cannot sign in at the moment" lockout screen is displayed
-    * the lockout reason is "You entered the wrong security code too many times"
+    * the lockout reason is "you entered the wrong security code too many times"
     * the lockout duration is 2 hours
 
   @AUT-4183 @AUT-4377 @AUT-4252
@@ -589,10 +589,12 @@ Feature: Login Using Back Up MFA
     Then the user is taken to the "Enter your email" page
     When the user enters their email address
     Then the user is taken to the "Enter your password" page
-    When the user enters their password
-    Then the "You asked to resend the security code too many times" lockout screen is displayed
+    When the user clicks the forgotten password link
+    Then the user is taken to the "Check your email" page
+    When the user enters the six digit security code from their email
+    Then the "You cannot sign in at the moment" lockout screen is displayed
     * the lockout duration is 2 hours
-    * the lockout reason is "You asked to resend the security code too many times"
+    * the lockout reason is "you asked to resend the security code too many times"
 
   @AUT-4183 @AUT-4377 @AUT-4252
   Scenario: User with SMS as Default MFA requests too many incorrect OTPs resetting their password using a Backup SMS and lockout
@@ -632,7 +634,7 @@ Feature: Login Using Back Up MFA
     Then the user is taken to the "Check your email" page
     When the user enters the six digit security code from their email
     Then the "You cannot sign in at the moment" lockout screen is displayed
-    * the lockout reason is "You entered the wrong security code too many times"
+    * the lockout reason is "you entered the wrong security code too many times"
     * the lockout duration is 2 hours
 
   @AUT-4183 @AUT-4377 @AUT-4252
@@ -670,7 +672,7 @@ Feature: Login Using Back Up MFA
     Then the user is taken to the "Check your email" page
     When the user enters the six digit security code from their email
     Then the "You cannot sign in at the moment" lockout screen is displayed
-    * the lockout reason is "You entered the wrong security code too many times"
+    * the lockout reason is "you entered the wrong security code too many times"
     * the lockout duration is 2 hours
 
   @AUT-4199
