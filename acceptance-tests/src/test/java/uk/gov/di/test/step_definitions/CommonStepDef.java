@@ -26,7 +26,6 @@ public class CommonStepDef extends BasePage {
     public StubUserInfoPage stubUserInfoPage = StubUserInfoPage.getStubUserInfoPage();
     StubStartPage stubStartPage = StubStartPage.getStubStartPage();
     private final World world;
-    //private byte[] userInfoJson;
     private String userInfoJson;
     public void setUserInfoJson(String json) {
         this.userInfoJson = json;
@@ -219,5 +218,4 @@ public class CommonStepDef extends BasePage {
 
         setUserInfoJson(json);
     }
-
     }
