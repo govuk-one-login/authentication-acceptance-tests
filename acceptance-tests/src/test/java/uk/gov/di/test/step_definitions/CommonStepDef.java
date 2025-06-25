@@ -16,6 +16,7 @@ import uk.gov.di.test.pages.StubUserInfoPage;
 import uk.gov.di.test.utils.Driver;
 
 import java.util.List;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.*;
 import static uk.gov.di.test.utils.Driver.getDriver;
@@ -27,6 +28,7 @@ public class CommonStepDef extends BasePage {
     StubStartPage stubStartPage = StubStartPage.getStubStartPage();
     private final World world;
     private String userInfoJson;
+
     public void setUserInfoJson(String json) {
         this.userInfoJson = json;
     }
@@ -198,7 +200,8 @@ public class CommonStepDef extends BasePage {
     @And("the {string} is {word}")
     public void theClaimIs(String claimName, String expectedValue) throws Exception {
         if (userInfoJson == null) {
-            throw new IllegalStateException("User info JSON has not been set before validating claims.");
+            throw new IllegalStateException(
+                    "User info JSON has not been set before validating claims.");
         }
 
         ObjectMapper mapper = new ObjectMapper();
@@ -212,10 +215,11 @@ public class CommonStepDef extends BasePage {
 
     @And("the user info JSON is extracted from the stub page")
     public void extractUserInfoJsonFromStubPage() {
-        String json = Driver.get()
-                .findElement(By.xpath("//*[@id='main-content']/dl/div[2]/dd"))
-                .getText();
+        String json =
+                Driver.get()
+                        .findElement(By.xpath("//*[@id='main-content']/dl/div[2]/dd"))
+                        .getText();
 
         setUserInfoJson(json);
     }
-    }
+}
