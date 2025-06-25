@@ -13,6 +13,16 @@ fi
 BASE_IMAGE="${2:-}"
 
 case "${ENVIRONMENT}" in
+  authdev*-api)
+    TEST_MODE=API
+    AWS_PROFILE=di-authentication-development-admin
+    ENVIRONMENT=${ENVIRONMENT%-*}
+    ;;
+  authdev*-ui)
+    TEST_MODE=UI
+    AWS_PROFILE=di-authentication-development-admin
+    ENVIRONMENT=${ENVIRONMENT%-*}
+    ;;
   dev-api)
     TEST_MODE=API
     AWS_PROFILE=di-auth-development-admin
