@@ -1,5 +1,7 @@
 package uk.gov.di.test.step_definitions;
 
+import io.cucumber.core.internal.com.fasterxml.jackson.databind.JsonNode;
+import io.cucumber.core.internal.com.fasterxml.jackson.databind.ObjectMapper;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -15,6 +17,7 @@ import uk.gov.di.test.utils.Driver;
 
 import java.util.List;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.*;
 import static uk.gov.di.test.utils.Driver.getDriver;
 
@@ -24,6 +27,11 @@ public class CommonStepDef extends BasePage {
     public StubUserInfoPage stubUserInfoPage = StubUserInfoPage.getStubUserInfoPage();
     StubStartPage stubStartPage = StubStartPage.getStubStartPage();
     private final World world;
+    private String userInfoJson;
+
+    public void setUserInfoJson(String json) {
+        this.userInfoJson = json;
+    }
 
     public CommonStepDef(World world) {
         this.crossPageFlows = new CrossPageFlows(world);
@@ -187,5 +195,31 @@ public class CommonStepDef extends BasePage {
     @When("the user clicks the continue button without selecting any radio button option")
     public void theUserClicksTheContinueButtonWithoutSelectingAnyRadioButtonOption() {
         findAndClickContinue();
+    }
+
+    @And("the {string} is {word}")
+    public void theClaimIs(String claimName, String expectedValue) throws Exception {
+        if (userInfoJson == null) {
+            throw new IllegalStateException(
+                    "User info JSON has not been set before validating claims.");
+        }
+
+        ObjectMapper mapper = new ObjectMapper();
+        JsonNode root = mapper.readTree(userInfoJson);
+
+        boolean actual = root.get(claimName).asBoolean();
+        boolean expected = Boolean.parseBoolean(expectedValue);
+
+        assertEquals("Expected '" + claimName + "' to be " + expected, expected, actual);
+    }
+
+    @And("the user info JSON is extracted from the stub page")
+    public void extractUserInfoJsonFromStubPage() {
+        String json =
+                Driver.get()
+                        .findElement(By.xpath("//*[@id='main-content']/dl/div[2]/dd"))
+                        .getText();
+
+        setUserInfoJson(json);
     }
 }

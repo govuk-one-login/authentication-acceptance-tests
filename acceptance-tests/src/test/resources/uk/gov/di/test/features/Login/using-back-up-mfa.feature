@@ -532,3 +532,96 @@ Feature: Login Using Back Up MFA
     Then the user is forcibly logged out
     * the user is not blocked from signing in
     * the user is not blocked from reauthenticating
+
+
+  @AUT-4315
+  Scenario: Migrated User with SMS as Default MFA and SMS as backup MFA to validate default phone number for claim
+    Given a Migrated User with a Default MFA of SMS
+    And the User is Authenticated
+    And the User does not have a Backup MFA method
+    When the User adds "+447700900111" as their SMS Backup MFA
+    Then the system sends an OTP to "07700900111"
+    When the User provides the correct otp
+    Then "+447700900111" is added as a verified Backup MFA Method
+    When the user comes from the stub relying party with default options and is taken to the "Create your GOV.UK One Login or sign in" page
+    When the user selects sign in
+    Then the user is taken to the "Enter your email" page
+    When the user enters their email address
+    Then the user is taken to the "Enter your password" page
+    When the user enters their password
+    Then the user is taken to the "Check your phone" page
+    When the user enters the six digit security code from their phone
+    Then the user is returned to the service
+    And the user info JSON is extracted from the stub page
+    And the "phone_number_verified" is true
+
+  @AUT-4315
+  Scenario: Migrated User with SMS as Default MFA and Auth App as backup MFA to validate default phone number for claim
+    Given a Migrated User with a Default MFA of SMS
+    And the User is Authenticated
+    And the User does not have a Backup MFA method
+    When the User requests to add a backup MFA Auth App
+    Then the User's back up MFA Auth App is updated
+    When the user comes from the stub relying party with default options and is taken to the "Create your GOV.UK One Login or sign in" page
+    When the user selects sign in
+    Then the user is taken to the "Enter your email" page
+    When the user enters their email address
+    Then the user is taken to the "Enter your password" page
+    When the user enters their password
+    Then the user is taken to the "Check your phone" page
+    When the user enters the six digit security code from their phone
+    Then the user is returned to the service
+    And the user info JSON is extracted from the stub page
+    And the "phone_number_verified" is true
+
+  @AUT-4315
+  Scenario: Migrated User with Auth APP as Default MFA and SMS as backup MFA to validate default phone number for claim
+    Given a Migrated User with an Auth App Default MFA
+    And the User is Authenticated
+    And the User does not have a Backup MFA method
+    When the User adds "+447700900111" as their SMS Backup MFA
+    Then the system sends an OTP to "07700900111"
+    When the User provides the correct otp
+    Then "+447700900111" is added as a verified Backup MFA Method
+    When the user comes from the stub relying party with default options and is taken to the "Create your GOV.UK One Login or sign in" page
+    When the user selects sign in
+    Then the user is taken to the "Enter your email" page
+    When the user enters their email address
+    Then the user is taken to the "Enter your password" page
+    When the user enters their password
+    Then the user is taken to the "Enter the 6 digit security code shown in your authenticator app" page
+    When the user enters the six digit code for "App"
+    Then the user is returned to the service
+    And the user info JSON is extracted from the stub page
+    And the "phone_number_verified" is false
+
+  @AUT-4315
+  Scenario: Non-Migrated User with APP as Default MFA and no backup to validate default phone number for claim
+    Given a user with App MFA exists
+    When the user comes from the stub relying party with default options and is taken to the "Create your GOV.UK One Login or sign in" page
+    When the user selects sign in
+    Then the user is taken to the "Enter your email" page
+    When the user enters their email address
+    Then the user is taken to the "Enter your password" page
+    When the user enters their password
+    Then the user is taken to the "Enter the 6 digit security code shown in your authenticator app" page
+    When the user enters the six digit code for "App"
+    Then the user is returned to the service
+    And the user info JSON is extracted from the stub page
+    And the "phone_number_verified" is false
+
+
+  @AUT-4315
+  Scenario: Non-Migrated User with SMS as Default MFA and no backup to validate default phone number for claim
+    Given a user with SMS MFA exists
+    When the user comes from the stub relying party with default options and is taken to the "Create your GOV.UK One Login or sign in" page
+    When the user selects sign in
+    Then the user is taken to the "Enter your email" page
+    When the user enters their email address
+    Then the user is taken to the "Enter your password" page
+    When the user enters their password
+    Then the user is taken to the "Check your phone" page
+    When the user enters the six digit security code from their phone
+    Then the user is returned to the service
+    And the user info JSON is extracted from the stub page
+    And the "phone_number_verified" is true
