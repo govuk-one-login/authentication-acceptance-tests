@@ -235,8 +235,8 @@ Feature: Login Using Back Up MFA
     When the user enters the six digit security code from their phone
     Then the user is returned to the service
 
-  @AUT-4248
-  Scenario: A User loses access to their Default Auth App and requests too many OTPs when authenticating with a Backup SMS MFA
+  @AUT-4248 @AUT-4378 @AUT-4252
+  Scenario: A User loses access to their Default Auth App and requests too many OTPs when authenticating with a Backup SMS MFA and lockout
     Given a Migrated User with an Auth App Default MFA
     And the User is Authenticated
     And the User does not have a Backup MFA method
@@ -259,9 +259,21 @@ Feature: Login Using Back Up MFA
     Then the user is taken to the "Check your phone" page
     When the user requests the phone otp code a further 5 times
     Then the user is taken to the "You asked to resend the security code too many times" page
+    * the lockout duration is 2 hours
 
-  @AUT-4248
-  Scenario: User loses access to their Default Auth App and enters too many incorrect OTPs when authenticating with a Backup SMS MFA
+    Given the lockout has not yet expired
+    When the user comes from the stub relying party with default options and is taken to the "Create your GOV.UK One Login or sign in" page
+    And the user selects sign in
+    Then the user is taken to the "Enter your email" page
+    When the user enters their email address
+    Then the user is taken to the "Enter your password" page
+    When the user enters their password
+    Then the "You cannot sign in at the moment" lockout screen is displayed
+    * the lockout duration is 2 hours
+    * the lockout reason is "you asked to resend the security code too many times"
+
+  @AUT-4348 @AUT-4278 @AUT-4252
+  Scenario: User loses access to their Default Auth App and enters too many incorrect OTPs when authenticating with a Backup SMS MFA and lockout
     Given a Migrated User with an Auth App Default MFA
     And the User is Authenticated
     And the User does not have a Backup MFA method
@@ -284,6 +296,126 @@ Feature: Login Using Back Up MFA
     Then the user is taken to the "Check your phone" page
     When the user enters an incorrect phone security code 6 times
     Then the user is taken to the "You entered the wrong security code too many times" page
+    * the lockout duration is 2 hours
+
+    Given the lockout has not yet expired
+    When the user comes from the stub relying party with default options and is taken to the "Create your GOV.UK One Login or sign in" page
+    And the user selects sign in
+    Then the user is taken to the "Enter your email" page
+    When the user enters their email address
+    Then the user is taken to the "Enter your password" page
+    When the user enters their password
+    Then the "You cannot sign in at the moment" lockout screen is displayed
+    * the lockout duration is 2 hours
+    * the lockout reason is "you entered the wrong security code too many times"
+
+  @AUT-4248 @AUT-4378 @AUT-4252
+  Scenario: User loses access to their Default SMS and enters too many incorrect OTPs when authenticating with a Backup SMS MFA and lockout
+    Given a Migrated User with a Default MFA of SMS
+    And the User is Authenticated
+    And the User does not have a Backup MFA method
+    When the User adds "+447700900111" as their SMS Backup MFA
+    Then the system sends an OTP to "07700900111"
+    When the User provides the correct otp
+    Then "+447700900111" is added as a verified Backup MFA Method
+    When the user comes from the stub relying party with default options and is taken to the "Create your GOV.UK One Login or sign in" page
+    When the user selects sign in
+    Then the user is taken to the "Enter your email" page
+    When the user enters their email address
+    Then the user is taken to the "Enter your password" page
+    When the user enters their password
+    Then the user is taken to the "Check your phone" page
+    And the user selects "Problems with the code?" link
+    And the user selects "try another way to get a security code" link
+    Then the user is taken to the "How do you want to get a security code?" page
+    And the user selects radio button "Text message to your phone number ending with" and "111"
+    When the user clicks the continue button
+    Then the user is taken to the "Check your phone" page
+    When the user enters an incorrect phone security code 6 times
+    Then the user is taken to the "You entered the wrong security code too many times" page
+    * the lockout duration is 2 hours
+
+    Given the lockout has not yet expired
+    When the user comes from the stub relying party with default options and is taken to the "Create your GOV.UK One Login or sign in" page
+    And the user selects sign in
+    Then the user is taken to the "Enter your email" page
+    When the user enters their email address
+    Then the user is taken to the "Enter your password" page
+    When the user enters their password
+    Then the "You cannot sign in at the moment" lockout screen is displayed
+    * the lockout duration is 2 hours
+    * the lockout reason is "you entered the wrong security code too many times"
+
+  @AUT-4248 @AUT-4378 @AUT-4252
+  Scenario: User loses access to their Default SMS and requests OTPs too many time when authenticating with a Backup SMS MFA and lockout
+    Given a Migrated User with a Default MFA of SMS
+    And the User is Authenticated
+    And the User does not have a Backup MFA method
+    When the User adds "+447700900111" as their SMS Backup MFA
+    Then the system sends an OTP to "07700900111"
+    When the User provides the correct otp
+    Then "+447700900111" is added as a verified Backup MFA Method
+    When the user comes from the stub relying party with default options and is taken to the "Create your GOV.UK One Login or sign in" page
+    When the user selects sign in
+    Then the user is taken to the "Enter your email" page
+    When the user enters their email address
+    Then the user is taken to the "Enter your password" page
+    When the user enters their password
+    Then the user is taken to the "Check your phone" page
+    And the user selects "Problems with the code?" link
+    And the user selects "try another way to get a security code" link
+    Then the user is taken to the "How do you want to get a security code?" page
+    And the user selects radio button "Text message to your phone number ending with" and "111"
+    When the user clicks the continue button
+    Then the user is taken to the "Check your phone" page
+    When the user requests the phone otp code a further 4 times
+    Then the user is taken to the "You asked to resend the security code too many times" page
+    * the lockout duration is 2 hours
+
+    Given the lockout has not yet expired
+    When the user comes from the stub relying party with default options and is taken to the "Create your GOV.UK One Login or sign in" page
+    And the user selects sign in
+    Then the user is taken to the "Enter your email" page
+    When the user enters their email address
+    Then the user is taken to the "Enter your password" page
+    When the user enters their password
+    Then the "You cannot sign in at the moment" lockout screen is displayed
+    * the lockout duration is 2 hours
+    * the lockout reason is "you asked to resend the security code too many times the last time"
+
+  @AUT-4248 @AUT-4378 @AUT-4252
+  Scenario: User loses access to their Default SMS and enters too many incorrect OTPs when authenticating with a Backup Auth App MFA and lockout
+    Given a Migrated User with a Default MFA of SMS
+    And the User is Authenticated
+    And the User does not have a Backup MFA method
+    When the User requests to add a backup MFA Auth App
+    Then the User's back up MFA Auth App is updated
+    When the user comes from the stub relying party with default options and is taken to the "Create your GOV.UK One Login or sign in" page
+    When the user selects sign in
+    Then the user is taken to the "Enter your email" page
+    When the user enters their email address
+    Then the user is taken to the "Enter your password" page
+    When the user enters their password
+    Then the user is taken to the "Check your phone" page
+    And the user selects "Problems with the code?" link
+    And the user selects "try another way to get a security code" link
+    Then the user is taken to the "How do you want to get a security code?" page
+    When the user selects radio button "Use your authenticator app"
+    Then the user is taken to the "Enter the 6 digit security code shown in your authenticator app" page
+    When the user enters an incorrect auth app security code 6 times
+    Then the user is taken to the "You entered the wrong security code too many times" page
+    * the lockout duration is 2 hours
+
+    Given the lockout has not yet expired
+    When the user comes from the stub relying party with default options and is taken to the "Create your GOV.UK One Login or sign in" page
+    And the user selects sign in
+    Then the user is taken to the "Enter your email" page
+    When the user enters their email address
+    Then the user is taken to the "Enter your password" page
+    When the user enters their password
+    Then the "You cannot sign in at the moment" lockout screen is displayed
+    * the lockout duration is 2 hours
+    * the lockout reason is "you entered the wrong security code too many times"
 
   @AUT-4183
   Scenario: User resets password using a Backup Auth App MFA
@@ -340,8 +472,8 @@ Feature: Login Using Back Up MFA
     When the user enters valid new password and correctly retypes it
     Then the user is returned to the service
 
-  @AUT-4183
-  Scenario: User requests too many OTPs when resetting their password with a Backup SMS MFA
+  @AUT-4183 @AUT-4377 @AUT-4252
+  Scenario: User with Auth App Default MFA requests too many OTPs when resetting their password with a Backup SMS MFA and lockout
     Given a Migrated User with an Auth App Default MFA
     And the User is Authenticated
     And the User does not have a Backup MFA method
@@ -366,9 +498,147 @@ Feature: Login Using Back Up MFA
     Then the user is taken to the "Check your phone" page
     When the user requests the phone otp code a further 5 times
     Then the user is taken to the "You asked to resend the security code too many times" page
+    * the lockout duration is 2 hours
 
-  @AUT-4183
-  Scenario: User enters too many incorrect OTPs resetting their password using a Backup Auth App MFA
+    Given the lockout has not yet expired
+    When the user comes from the stub relying party with default options and is taken to the "Create your GOV.UK One Login or sign in" page
+    And the user selects sign in
+    Then the user is taken to the "Enter your email" page
+    When the user enters their email address
+    Then the user is taken to the "Enter your password" page
+    When the user clicks the forgotten password link
+    Then the user is taken to the "Check your email" page
+    When the user enters the six digit security code from their email
+    Then the "You cannot sign in at the moment" lockout screen is displayed
+    * the lockout reason is "you asked to resend the security code too many times"
+    * the lockout duration is 2 hours
+
+  @AUT-4183 @AUT-4377 @AUT-4252
+  Scenario: User with Auth App Default MFA enters too many incorrect OTPs when resetting their password with a Backup SMS MFA and lockout
+    Given a Migrated User with an Auth App Default MFA
+    And the User is Authenticated
+    And the User does not have a Backup MFA method
+    When the User adds "+447700900111" as their SMS Backup MFA
+    Then the system sends an OTP to "07700900111"
+    When the User provides the correct otp
+    Then "+447700900111" is added as a verified Backup MFA Method
+    When the user comes from the stub relying party with default options and is taken to the "Create your GOV.UK One Login or sign in" page
+    When the user selects sign in
+    Then the user is taken to the "Enter your email" page
+    When the user enters their email address
+    Then the user is taken to the "Enter your password" page
+    When the user clicks the forgotten password link
+    Then the user is taken to the "Check your email" page
+    When the user enters the six digit security code from their email
+    Then the user is taken to the "Enter a security code from your authenticator app" page
+    When the user selects "I do not have access to the authenticator app" link
+    And the user selects "try another way to get a security code" link
+    Then the user is taken to the "How do you want to get a security code?" page
+    And the user selects radio button "Text message to your phone number ending with" and "111"
+    When the user clicks the continue button
+    Then the user is taken to the "Check your phone" page
+    When the user enters an incorrect phone security code 6 times
+    Then the user is taken to the "You entered the wrong security code too many times" page
+    * the lockout duration is 2 hours
+
+    Given the lockout has not yet expired
+    When the user comes from the stub relying party with default options and is taken to the "Create your GOV.UK One Login or sign in" page
+    And the user selects sign in
+    Then the user is taken to the "Enter your email" page
+    When the user enters their email address
+    Then the user is taken to the "Enter your password" page
+    When the user clicks the forgotten password link
+    Then the user is taken to the "Check your email" page
+    When the user enters the six digit security code from their email
+    Then the "You cannot sign in at the moment" lockout screen is displayed
+    * the lockout reason is "you entered the wrong security code too many times"
+    * the lockout duration is 2 hours
+
+  @AUT-4183 @AUT-4377 @AUT-4252
+  Scenario: User with SMS as Default MFA requests too many OTPs resetting their password using a Backup SMS MFA and lockout
+    Given a Migrated User with a Default MFA of SMS
+    And the User is Authenticated
+    And the User does not have a Backup MFA method
+    When the User adds "+447700900111" as their SMS Backup MFA
+    Then the system sends an OTP to "07700900111"
+    When the User provides the correct otp
+    Then "+447700900111" is added as a verified Backup MFA Method
+    When the user comes from the stub relying party with default options and is taken to the "Create your GOV.UK One Login or sign in" page
+    When the user selects sign in
+    Then the user is taken to the "Enter your email" page
+    When the user enters their email address
+    Then the user is taken to the "Enter your password" page
+    When the user clicks the forgotten password link
+    Then the user is taken to the "Check your email" page
+    When the user enters the six digit security code from their email
+    Then the user is taken to the "Check your phone" page
+    And the user selects "Problems with the code?" link
+    Then the user is taken to the "Check your phone" page
+    And the user selects "try another way to get a security code" link
+    Then the user is taken to the "How do you want to get a security code?" page
+    And the user selects radio button "Text message to your phone number ending with" and "111"
+    When the user clicks the continue button
+    Then the user is taken to the "Check your phone" page
+    When the user requests the phone otp code a further 4 times
+    Then the user is taken to the "You asked to resend the security code too many times" page
+    * the lockout duration is 2 hours
+
+    Given the lockout has not yet expired
+    When the user comes from the stub relying party with default options and is taken to the "Create your GOV.UK One Login or sign in" page
+    And the user selects sign in
+    Then the user is taken to the "Enter your email" page
+    When the user enters their email address
+    Then the user is taken to the "Enter your password" page
+    When the user clicks the forgotten password link
+    Then the user is taken to the "Check your email" page
+    When the user enters the six digit security code from their email
+    Then the "You cannot sign in at the moment" lockout screen is displayed
+    * the lockout duration is 2 hours
+    * the lockout reason is "you asked to resend the security code too many times"
+
+  @AUT-4183 @AUT-4377 @AUT-4252
+  Scenario: User with SMS as Default MFA requests too many incorrect OTPs resetting their password using a Backup SMS and lockout
+    Given a Migrated User with a Default MFA of SMS
+    And the User is Authenticated
+    And the User does not have a Backup MFA method
+    When the User adds "+447700900111" as their SMS Backup MFA
+    Then the system sends an OTP to "07700900111"
+    When the User provides the correct otp
+    Then "+447700900111" is added as a verified Backup MFA Method
+    When the user comes from the stub relying party with default options and is taken to the "Create your GOV.UK One Login or sign in" page
+    When the user selects sign in
+    Then the user is taken to the "Enter your email" page
+    When the user enters their email address
+    Then the user is taken to the "Enter your password" page
+    When the user clicks the forgotten password link
+    Then the user is taken to the "Check your email" page
+    When the user enters the six digit security code from their email
+    Then the user is taken to the "Check your phone" page
+    And the user selects "Problems with the code?" link
+    And the user selects "try another way to get a security code" link
+    Then the user is taken to the "How do you want to get a security code?" page
+    And the user selects radio button "Text message to your phone number ending with" and "111"
+    When the user clicks the continue button
+    Then the user is taken to the "Check your phone" page
+    When the user enters an incorrect phone security code 6 times
+    Then the user is taken to the "You entered the wrong security code too many times" page
+    * the lockout duration is 2 hours
+
+    Given the lockout has not yet expired
+    When the user comes from the stub relying party with default options and is taken to the "Create your GOV.UK One Login or sign in" page
+    And the user selects sign in
+    Then the user is taken to the "Enter your email" page
+    When the user enters their email address
+    Then the user is taken to the "Enter your password" page
+    When the user clicks the forgotten password link
+    Then the user is taken to the "Check your email" page
+    When the user enters the six digit security code from their email
+    Then the "You cannot sign in at the moment" lockout screen is displayed
+    * the lockout reason is "you entered the wrong security code too many times"
+    * the lockout duration is 2 hours
+
+  @AUT-4183 @AUT-4377 @AUT-4252
+  Scenario: User with SMS as Default MFA requests too many incorrect OTPs resetting their password using a Backup Auth App and lockout
     Given a Migrated User with a Default MFA of SMS
     And the User is Authenticated
     And the User does not have a Backup MFA method
@@ -390,6 +660,20 @@ Feature: Login Using Back Up MFA
     Then the user is taken to the "Enter a security code from your authenticator app" page
     When the user enters an incorrect auth app security code 6 times
     Then the user is taken to the "You entered the wrong security code too many times" page
+    * the lockout duration is 2 hours
+
+    Given the lockout has not yet expired
+    When the user comes from the stub relying party with default options and is taken to the "Create your GOV.UK One Login or sign in" page
+    And the user selects sign in
+    Then the user is taken to the "Enter your email" page
+    When the user enters their email address
+    Then the user is taken to the "Enter your password" page
+    When the user clicks the forgotten password link
+    Then the user is taken to the "Check your email" page
+    When the user enters the six digit security code from their email
+    Then the "You cannot sign in at the moment" lockout screen is displayed
+    * the lockout reason is "you entered the wrong security code too many times"
+    * the lockout duration is 2 hours
 
   @AUT-4199
   Scenario: User with SMS as Default MFA and SMS as backup MFA switches MFA in uplift journey
