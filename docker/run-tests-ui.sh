@@ -26,7 +26,7 @@ setup_to_run_api_tests() {
   if [ "${SAM_STACK_NAME:-}" == "authentication-api" ]; then
     echo -e "\nEnvironment configuration overrides for ${SAM_STACK_NAME}:"
     if grep -qE '^API_RP_URL=' /test/.env; then
-      API_RP_URL=$(grep ^API_RP_URL= /test/.env | cut -d= -f2-)
+      API_RP_URL=$(grep ^API_RP_URL= /test/.env | cut -d= -f2- | tail -1)
 
       if grep -qE '^RP_URL=' /test/.env; then
         sed -i '/^RP_URL=.*/d' /test/.env
@@ -35,7 +35,7 @@ setup_to_run_api_tests() {
     fi
 
     if grep -qE '^API_STUB_RP_TYPE=' /test/.env; then
-      API_STUB_RP_TYPE=$(grep ^API_STUB_RP_TYPE= /test/.env | cut -d= -f2-)
+      API_STUB_RP_TYPE=$(grep ^API_STUB_RP_TYPE= /test/.env | cut -d= -f2- | tail -1)
 
       if grep -qE '^STUB_RP_TYPE=' /test/.env; then
         sed -i '/^STUB_RP_TYPE=.*/d' /test/.env
@@ -44,7 +44,7 @@ setup_to_run_api_tests() {
     fi
 
     if grep -qE '^API_CUCUMBER_FILTER_TAGS=' /test/.env; then
-      API_CUCUMBER_FILTER_TAGS=$(grep ^API_CUCUMBER_FILTER_TAGS= /test/.env | cut -d= -f2-)
+      API_CUCUMBER_FILTER_TAGS=$(grep ^API_CUCUMBER_FILTER_TAGS= /test/.env | cut -d= -f2- | tail -1)
 
       if grep -qE '^CUCUMBER_FILTER_TAGS=' /test/.env; then
         sed -i '/^CUCUMBER_FILTER_TAGS=.*/d' /test/.env
