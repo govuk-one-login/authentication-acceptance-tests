@@ -1,4 +1,4 @@
-@under-development @API @Login
+@API @Login
 Feature: Login Using Back Up MFA
 
   @AUT-1416
