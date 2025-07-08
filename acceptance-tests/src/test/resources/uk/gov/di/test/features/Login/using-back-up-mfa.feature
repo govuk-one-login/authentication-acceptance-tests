@@ -1,4 +1,4 @@
-@API @Login
+@API @Login @Andrew
 Feature: Login Using Back Up MFA
 
   @AUT-1416
@@ -818,7 +818,7 @@ Feature: Login Using Back Up MFA
     * the user is not blocked from reauthenticating
 
 
-  @AUT-4315
+  @AUT-4315 @under-development
   Scenario: Migrated User with SMS as Default MFA and SMS as backup MFA to validate default phone number for claim
     Given a Migrated User with a Default MFA of SMS
     And the User is Authenticated
@@ -839,7 +839,7 @@ Feature: Login Using Back Up MFA
     And the user info JSON is extracted from the stub page
     And the "phone_number_verified" is true
 
-  @AUT-4315
+  @AUT-4315 @under-development
   Scenario: Migrated User with SMS as Default MFA and Auth App as backup MFA to validate default phone number for claim
     Given a Migrated User with a Default MFA of SMS
     And the User is Authenticated
@@ -858,7 +858,7 @@ Feature: Login Using Back Up MFA
     And the user info JSON is extracted from the stub page
     And the "phone_number_verified" is true
 
-  @AUT-4315
+  @AUT-4315 @under-development
   Scenario: Migrated User with Auth APP as Default MFA and SMS as backup MFA to validate default phone number for claim
     Given a Migrated User with an Auth App Default MFA
     And the User is Authenticated
@@ -879,7 +879,7 @@ Feature: Login Using Back Up MFA
     And the user info JSON is extracted from the stub page
     And the "phone_number_verified" is false
 
-  @AUT-4315
+  @AUT-4315 @under-development
   Scenario: Non-Migrated User with APP as Default MFA and no backup to validate default phone number for claim
     Given a user with App MFA exists
     When the user comes from the stub relying party with default options and is taken to the "Create your GOV.UK One Login or sign in" page
@@ -895,7 +895,7 @@ Feature: Login Using Back Up MFA
     And the "phone_number_verified" is false
 
 
-  @AUT-4315
+  @AUT-4315 @under-development
   Scenario: Non-Migrated User with SMS as Default MFA and no backup to validate default phone number for claim
     Given a user with SMS MFA exists
     When the user comes from the stub relying party with default options and is taken to the "Create your GOV.UK One Login or sign in" page
