@@ -5,7 +5,7 @@ public enum SupportingPages {
             "/accessibility-statement", "Accessibility statement for GOV.UK One Login"),
     GOV_UK_ACCOUNTS_COOKIES("/cookies", "GOV.UK One Login cookies policy"),
     TERMS_AND_CONDITIONS("/terms-and-conditions", "Terms and conditions"),
-    PRIVACY_NOTICE("/privacy-notice", "Privacy notice");
+    PRIVACY_NOTICE("/govuk-one-login-privacy-notice", "Privacy notice");
 
     private static final String PRODUCT_NAME = "GOV.UK One Login";
 
