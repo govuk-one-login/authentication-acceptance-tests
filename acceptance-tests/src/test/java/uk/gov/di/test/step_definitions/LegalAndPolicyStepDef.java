@@ -26,22 +26,22 @@ public class LegalAndPolicyStepDef extends BasePage {
 
     @Then("the user is taken to the accessibility statement page")
     public void theUserIsTakenToTheAccessibilityStatementPage() {
-        checkPageLoadInTabAndClose(SupportingPages.ACCESSIBILITY_STATEMENT);
+        checkPageLoadThenGoBackToSignIn(SupportingPages.ACCESSIBILITY_STATEMENT);
     }
 
     @Then("the user is taken to the GOV.UK cookies page")
     public void theUserIsTakenToTheGOVUKCookiesPage() {
-        checkPageLoadInTabAndClose(SupportingPages.GOV_UK_ACCOUNTS_COOKIES);
+        checkPageLoadThenGoBackToSignIn(SupportingPages.GOV_UK_ACCOUNTS_COOKIES);
     }
 
     @Then("the user is taken to the terms and conditions page")
     public void theUserIsTakenToTheTermsAndConditionsPage() {
-        checkPageLoadInTabAndClose(SupportingPages.TERMS_AND_CONDITIONS);
+        checkPageLoadThenGoBackToSignIn(SupportingPages.TERMS_AND_CONDITIONS);
     }
 
     @Then("the user is taken to the privacy notice page")
     public void theUserIsTakenToThePrivacyNoticePage() {
-        checkPageLoadInTabAndClose(SupportingPages.PRIVACY_NOTICE);
+        checkPageLoadThenGoBackToSignIn(SupportingPages.PRIVACY_NOTICE);
     }
 
     private void waitForPageLoadThenValidate(SupportingPages page) {
@@ -49,17 +49,9 @@ public class LegalAndPolicyStepDef extends BasePage {
         assertEquals(page.getRoute(), URI.create(Driver.get().getCurrentUrl()).getPath());
     }
 
-    private void checkPageLoadInTabAndClose(SupportingPages page) {
-        String currentWindowHandle = Driver.get().getWindowHandle();
-        Driver.get().getWindowHandles().stream()
-                .filter(h -> !h.equals(currentWindowHandle))
-                .findFirst()
-                .map(w -> Driver.get().switchTo().window(w))
-                .ifPresent(
-                        d -> {
-                            waitForPageLoadThenValidate(page);
-                            d.close();
-                        });
-        Driver.get().switchTo().window(currentWindowHandle);
+    private void checkPageLoadThenGoBackToSignIn(SupportingPages page) {
+        waitForPageLoadThenValidate(page);
+        Driver.get().navigate().back();
+        waitForPageLoad("Create your GOV.UK One Login or sign in");
     }
 }
