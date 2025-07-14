@@ -109,11 +109,18 @@ These follow a consistent naming pattern:
 /acceptance-tests/build/RP_URL
 
 These parameters must be present as environment variables during execution.
+<<<<<<< HEAD
 
 Running the tests from the command line
 
 **UI Tests**
 ./rundocker.sh dev-ui 
+=======
+Running the tests from the command line
+
+**UI Tests**
+./rundocker.sh dev-ui
+>>>>>>> 2a1684e (ReadMe-Update)
 ./rundocker.sh build-ui
 ./rundocker.sh staging-ui
 
