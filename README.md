@@ -1,19 +1,19 @@
 **GOV.UK One Login Acceptance Tests**
 
-A comprehensive automated testing suite for validating the GOV.UK One Login 
-authentication and account management functionality through both UI and API 
+A comprehensive automated testing suite for validating the GOV.UK One Login
+authentication and account management functionality through both UI and API
 acceptance tests using Cucumber.
 
 **The test suite consists of two main types of tests:**
-- UI Tests: Browser-based end-to-end tests using Selenium WebDriver to 
+- UI Tests: Browser-based end-to-end tests using Selenium WebDriver to
 validate user journeys through the web interface
 
-- API Tests: Direct validation of account management functionality by 
+- API Tests: Direct validation of account management functionality by
 interacting with AWS services that back the private APIs
 
-The API tests work around the limitation of not being able to directly call 
-the private APIs by interacting with the underlying AWS services (DynamoDB, Lambda, etc.) 
-through the AWS SDK. This approach allows testing of account management features like 
+The API tests work around the limitation of not being able to directly call
+the private APIs by interacting with the underlying AWS services (DynamoDB, Lambda, etc.)
+through the AWS SDK. This approach allows testing of account management features like
 MFA method updates and user profile changes by manipulating the same backend services that the APIs use.
 
 **Key features include:**
@@ -56,7 +56,7 @@ Prerequisites - Ensure the following tools are installed and configured:
 - Java 17 JDKDownload from https://jdk.java.net/17/ and verify with java -version
 - Docker and Docker ComposeInstall Docker Desktop from https://www.docker.com/
 with docker -v and docker-compose -v
-- AWS CLI configuration and set from https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2.htmlConfigure 
+- AWS CLI configuration and set from https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2.htmlConfigure
 with appropriate credentials (Dan - Tech Lead can help with credential access)
 - Gradle 7.xDownload from https://gradle.org/releases/ or use the included ./gradlew
 - Chrome or Firefox browser Install from https://www.google.com/chrome/ or https://www.mozilla.org/firefox/
@@ -75,11 +75,9 @@ Default region (eu-west-2)
 Output format (json)
 
 **Run The Tests**
-The preferred way to run the tests is using the rundocker.sh script. Due to the 
+The preferred way to run the tests is using the rundocker.sh script. Due to the
 two-account structure per environment, UI and API tests must be run separately against their respective accounts:
 The scripts primarily support running the tests in Chromium.
-Firefox can also be used by passing a selenium/standalone-* image as a second CLI argument. For example:
-./rundocker.sh dev-ui selenium/standalone-firefox:136.0
 
 **Test Reports**
 Test reports can be found in the tmp/ folder. Clean this folder regularly to avoid excessive disk usage.
