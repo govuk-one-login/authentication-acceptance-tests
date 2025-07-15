@@ -109,25 +109,18 @@ These follow a consistent naming pattern:
 /acceptance-tests/build/RP_URL
 
 These parameters must be present as environment variables during execution.
-<<<<<<< HEAD
 
 Running the tests from the command line
 
 **UI Tests**
-./rundocker.sh dev-ui 
-=======
-Running the tests from the command line
-
-**UI Tests**
-./rundocker.sh dev-ui
->>>>>>> 2a1684e (ReadMe-Update)
-./rundocker.sh build-ui
-./rundocker.sh staging-ui
+- ./rundocker.sh dev-ui
+- ./rundocker.sh build-ui
+- ./rundocker.sh staging-ui
 
 **API Tests**
-./rundocker.sh dev-api
-./rundocker.sh build-api
-./rundocker.sh staging-api
+- ./rundocker.sh dev-api
+- ./rundocker.sh build-api
+- ./rundocker.sh staging-api
 
 The Docker scripts retrieve variables from SSM and export them as environment variables. See:
 - docker/run-tests-api.sh
@@ -185,10 +178,10 @@ v                                                         v
 (DynamoDB, SSM)
 
 **Component Interactions**
-- Test Runner: Executes Cucumber features
-- Selenium WebDriver: Drives browser automation
-- Page Objects: Abstract web interactions
-- Service Layer: Handles AWS SDK operations
-- DynamoDB: Stores test user state
-- SSM: Stores configuration
-- Nginx: Handles routing and access control
+Test Runner: Executes Cucumber features
+Selenium WebDriver: Drives browser automation
+Page Objects: Abstract web interactions
+Service Layer: Handles AWS SDK operations
+DynamoDB: Stores test user state
+SSM: Stores configuration
+Nginx: Handles routing and access control
