@@ -105,12 +105,11 @@ CUCUMBER_FILTER_TAGS are used in each environment to run specific feature groups
 Tests depend on environment-specific variables from AWS Systems Manager (SSM) Parameter Store. 
 These follow a consistent naming pattern:
 
-/acceptance-tests/dev/CUCUMBER_FILTER_TAGS
-/acceptance-tests/build/RP_URL
-
+- /acceptance-tests/dev/CUCUMBER_FILTER_TAGS
+- /acceptance-tests/build/RP_URL
 These parameters must be present as environment variables during execution.
 
-Running the tests from the command line
+# Running the tests from the command line #
 
 **UI Tests**
 - ./rundocker.sh dev-ui
@@ -134,7 +133,7 @@ Example override to skip specific tests:
 CUCUMBER_FILTER_TAGS="not (@AccountInterventions or @Reauth or @old-mfa-without-ipv)"
 Example for additional concurrency: PARALLEL_BROWSERS=2
 
-Running the tests from IntelliJ
+# Running the tests from IntelliJ #
 
 **Create a run configuration using a .env file to provide environment variables**
 See example below:
