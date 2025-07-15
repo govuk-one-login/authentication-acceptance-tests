@@ -77,11 +77,11 @@ Output format (json)
 **Run The Tests**
 The preferred way to run the tests is using the rundocker.sh script. Due to the 
 two-account structure per environment, UI and API tests must be run separately against their respective accounts:
-
 The scripts primarily support running the tests in Chromium.
 Firefox can also be used by passing a selenium/standalone-* image as a second CLI argument. For example:
 ./rundocker.sh dev-ui selenium/standalone-firefox:136.0
 
+**Test Reports**
 Test reports can be found in the tmp/ folder. Clean this folder regularly to avoid excessive disk usage.
 
 **AWS Environment Account Structure**
