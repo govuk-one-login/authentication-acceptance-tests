@@ -24,6 +24,6 @@ Feature: Legal and policy pages
     When the user enters their password
     Then the user is taken to the "Check your phone" page
     When the user enters the six digit security code from their phone
-    Then the user is taken to the "terms of use update" page
+    Then the user is taken to the "We’ve updated our terms of use" page
     When the user agrees to the updated terms and conditions
     Then the user is returned to the service
