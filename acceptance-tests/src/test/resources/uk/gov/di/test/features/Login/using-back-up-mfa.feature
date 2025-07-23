@@ -1,4 +1,4 @@
-@API @Login @Andrew
+@Login @UI @API
 Feature: Login Using Back Up MFA
 
   @AUT-1416
