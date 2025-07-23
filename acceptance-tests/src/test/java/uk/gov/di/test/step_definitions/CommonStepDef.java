@@ -6,7 +6,11 @@ import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import org.openqa.selenium.*;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.NoSuchElementException;
 import uk.gov.di.test.pages.BasePage;
 import uk.gov.di.test.pages.CreateOrSignInPage;
 import uk.gov.di.test.pages.StubStartPage;
@@ -216,7 +220,7 @@ public class CommonStepDef extends BasePage {
         WebDriver driver = Driver.get();
         JavascriptExecutor js = (JavascriptExecutor) driver;
 
-        String json = null;
+        String json;
 
         try {
             WebElement element =
