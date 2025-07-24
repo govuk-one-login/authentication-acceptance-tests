@@ -7,6 +7,8 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import uk.gov.di.test.pages.BasePage;
@@ -215,10 +217,41 @@ public class CommonStepDef extends BasePage {
 
     @And("the user info JSON is extracted from the stub page")
     public void extractUserInfoJsonFromStubPage() {
-        String json =
-                Driver.get()
-                        .findElement(By.xpath("//*[@id='main-content']/dl/div[2]/dd"))
-                        .getText();
+        WebDriver driver = Driver.get();
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+
+        String json;
+
+        try {
+            WebElement element =
+                    driver.findElement(
+                            By.xpath(
+                                    "//dt[normalize-space()='User Info' or normalize-space()='User Info response']/following-sibling::dd[1]"));
+            json = element.getText();
+            System.out.println("[INFO] Extracted JSON from dd next to label.");
+        } catch (NoSuchElementException e) {
+            System.out.println(
+                    "[WARN] Could not find dd with label — trying pretty-json fallback...");
+
+            List<WebElement> prettyJsonElements =
+                    driver.findElements(By.cssSelector("#main-content pretty-json"));
+
+            if (!prettyJsonElements.isEmpty()) {
+                json =
+                        (String)
+                                js.executeScript(
+                                        "const el = document.querySelector('#main-content pretty-json');"
+                                                + "const shadow = el.shadowRoot;"
+                                                + "return shadow.querySelector('.container').innerText;");
+                System.out.println("[INFO] Extracted JSON from pretty-json component.");
+            } else {
+                System.out.println("===== PAGE SOURCE =====");
+                System.out.println(driver.getPageSource());
+                System.out.println("=======================");
+                throw new RuntimeException(
+                        "Could not find JSON in dd after 'User Info' or 'User Info response', or pretty-json.");
+            }
+        }
 
         setUserInfoJson(json);
     }
