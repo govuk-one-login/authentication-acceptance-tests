@@ -14,7 +14,7 @@ def dependencyVersions = [
     junit_version: '5.13.4',
     cucumber_version: '7.27.0',
     axe_version: '3.0',
-    selenium_java_version: '4.28.1',
+    selenium_java_version: '4.35.0',
     aws_sdk_v2_version: "2.32.20",
     json_version: '20250517',
     rest_assured: '5.5.5'
