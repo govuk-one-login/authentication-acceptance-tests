@@ -1,3 +1,11 @@
+buildscript {
+    repositories {
+        maven {
+            url 'https://gds.jfrog.io/artifactory/di-allowed-repos'
+        }
+    }
+}
+
 plugins {
     id 'application'
     id 'java'
