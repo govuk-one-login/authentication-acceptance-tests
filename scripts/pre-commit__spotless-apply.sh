@@ -18,4 +18,4 @@ RATCHET_REF="${PRE_COMMIT_FROM_REF:-HEAD^}"
 echo "Running spotlessApply on files changed since ${RATCHET_REF}"
 
 # shellcheck source=../gradlew
-./gradlew --no-daemon --console=plain :spotlessApply -PratchetFrom="${RATCHET_REF}"
+./gradlew --no-daemon --console=plain :acceptance-tests:spotlessApply -PratchetFrom="${RATCHET_REF}"
