@@ -5,6 +5,7 @@
 ._*
 
 tmp/
+test-reports/
 .gradle/
 .idea/
 build/

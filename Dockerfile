@@ -1,23 +1,23 @@
 ARG SELENIUM_BASE=selenium/standalone-chromium:132.0
-FROM gradle:7-jdk17 AS builder
+FROM gradle:8-jdk17 AS builder
 
 WORKDIR /test
 
-COPY build.gradle settings.gradle gradlew gradle.properties ./
+COPY settings.gradle gradlew gradle.properties ./
 COPY gradle ./gradle
-
-RUN chmod u+x ./gradlew && ./gradlew --no-daemon --console=plain clean
 
 COPY acceptance-tests ./acceptance-tests
 
+RUN chmod u+x ./gradlew
+
 RUN chmod u+x ./gradlew \
     && ./gradlew --no-daemon --console=plain \
-        build \
-        assemble \
+        :acceptance-tests:build \
+        :acceptance-tests:assemble \
         :acceptance-tests:compileTestJava \
         :acceptance-tests:testClasses \
-        downloadCucumberDependencies \
-        -x :acceptance-tests:test -x spotlessApply -x spotlessCheck
+        :acceptance-tests:downloadCucumberDependencies \
+        -x :acceptance-tests:test -x :acceptance-tests:spotlessApply -x :acceptance-tests:spotlessCheck
 
 FROM ${SELENIUM_BASE} AS base
 ARG SEL_USER=seluser
@@ -47,7 +47,7 @@ COPY --chown=${SEL_USER}:${SEL_GROUP} --from=builder /root/.gradle /home/${SEL_U
 
 WORKDIR /test
 
-COPY --chown=${SEL_USER}:${SEL_GROUP} --from=builder /test/build.gradle /test/settings.gradle /test/gradlew /test/gradle.properties ./
+COPY --chown=${SEL_USER}:${SEL_GROUP} --from=builder /test/settings.gradle /test/gradlew /test/gradle.properties ./
 COPY --chown=${SEL_USER}:${SEL_GROUP} --from=builder /test/.gradle /test/.gradle
 COPY --chown=${SEL_USER}:${SEL_GROUP} --from=builder /test/gradle ./gradle
 COPY --chown=${SEL_USER}:${SEL_GROUP} --from=builder /test/build /test/build

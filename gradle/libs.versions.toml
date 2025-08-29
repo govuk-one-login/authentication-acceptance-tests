@@ -1,0 +1,85 @@
+[versions]
+junit = "5.13.4"
+cucumber = "7.27.0"
+axe = "3.0"
+selenium = "4.28.1"
+aws-sdk-v2 = "2.32.20"
+json = "20250517"
+rest-assured = "5.5.5"
+spotless = "7.0.0.BETA2"
+sonarqube = "4.4.1.3373"
+oauth2-oidc-sdk = "11.27"
+nimbus-jose-jwt = "10.4.1"
+jose4j = "0.9.6"
+commons-text = "1.14.0"
+commons-codec = "1.19.0"
+guava = "33.4.8-jre"
+bouncycastle = "1.81"
+spring-security = "6.5.2"
+aws-lambda-log4j2 = "1.6.0"
+aws-lambda-core = "1.3.0"
+aws-lambda-events = "3.16.1"
+slf4j = "2.0.17"
+awaitility = "4.3.0"
+gson = "2.13.1"
+maven-surefire = "3.2.5"
+
+[libraries]
+junit-bom = { module = "org.junit:junit-bom", version.ref = "junit" }
+junit-jupiter-api = { module = "org.junit.jupiter:junit-jupiter-api", version.ref = "junit" }
+junit-jupiter-engine = { module = "org.junit.jupiter:junit-jupiter-engine", version.ref = "junit" }
+
+cucumber-bom = { module = "io.cucumber:cucumber-bom", version.ref = "cucumber" }
+cucumber-java = { module = "io.cucumber:cucumber-java" }
+cucumber-junit = { module = "io.cucumber:cucumber-junit" }
+cucumber-picocontainer = { module = "io.cucumber:cucumber-picocontainer" }
+
+selenium-bom = { module = "org.seleniumhq.selenium:selenium-dependencies-bom", version.ref = "selenium" }
+selenium-java = { module = "org.seleniumhq.selenium:selenium-java" }
+axe-selenium = { module = "com.deque:axe-selenium", version.ref = "axe" }
+
+aws-bom = { module = "software.amazon.awssdk:bom", version.ref = "aws-sdk-v2" }
+aws-sso = { module = "software.amazon.awssdk:sso" }
+aws-ssooidc = { module = "software.amazon.awssdk:ssooidc" }
+aws-dynamodb = { module = "software.amazon.awssdk:dynamodb" }
+aws-dynamodb-enhanced = { module = "software.amazon.awssdk:dynamodb-enhanced" }
+aws-ssm = { module = "software.amazon.awssdk:ssm" }
+aws-kms = { module = "software.amazon.awssdk:kms" }
+aws-lambda = { module = "software.amazon.awssdk:lambda" }
+aws-s3 = { module = "software.amazon.awssdk:s3" }
+aws-apigateway = { module = "software.amazon.awssdk:apigateway", version.ref = "aws-sdk-v2" }
+
+oauth2-oidc-sdk = { module = "com.nimbusds:oauth2-oidc-sdk", version.ref = "oauth2-oidc-sdk" }
+nimbus-jose-jwt = { module = "com.nimbusds:nimbus-jose-jwt", version.ref = "nimbus-jose-jwt" }
+jose4j = { module = "org.bitbucket.b_c:jose4j", version.ref = "jose4j" }
+
+commons-text = { module = "org.apache.commons:commons-text", version.ref = "commons-text" }
+commons-codec = { module = "commons-codec:commons-codec", version.ref = "commons-codec" }
+guava = { module = "com.google.guava:guava", version.ref = "guava" }
+bouncycastle = { module = "org.bouncycastle:bcpkix-jdk18on", version.ref = "bouncycastle" }
+spring-security-crypto = { module = "org.springframework.security:spring-security-crypto", version.ref = "spring-security" }
+
+json = { module = "org.json:json", version.ref = "json" }
+rest-assured = { module = "io.rest-assured:rest-assured", version.ref = "rest-assured" }
+
+aws-lambda-log4j2 = { module = "com.amazonaws:aws-lambda-java-log4j2", version.ref = "aws-lambda-log4j2" }
+aws-lambda-core = { module = "com.amazonaws:aws-lambda-java-core", version.ref = "aws-lambda-core" }
+aws-lambda-events = { module = "com.amazonaws:aws-lambda-java-events", version.ref = "aws-lambda-events" }
+
+slf4j-nop = { module = "org.slf4j:slf4j-nop", version.ref = "slf4j" }
+awaitility = { module = "org.awaitility:awaitility", version.ref = "awaitility" }
+gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
+maven-surefire-plugin = { module = "org.apache.maven.plugins:maven-surefire-plugin", version.ref = "maven-surefire" }
+
+[bundles]
+junit = ["junit-jupiter-api", "junit-jupiter-engine"]
+cucumber = ["cucumber-java", "cucumber-junit", "cucumber-picocontainer"]
+selenium = ["selenium-java", "axe-selenium"]
+aws-core = ["aws-sso", "aws-ssooidc", "aws-dynamodb", "aws-dynamodb-enhanced", "aws-ssm", "aws-kms", "aws-lambda", "aws-s3", "aws-apigateway"]
+auth = ["oauth2-oidc-sdk", "nimbus-jose-jwt", "jose4j"]
+commons = ["commons-text", "commons-codec", "guava"]
+aws-lambda = ["aws-lambda-log4j2", "aws-lambda-core", "aws-lambda-events"]
+
+[plugins]
+spotless = { id = "com.diffplug.spotless", version.ref = "spotless" }
+sonarqube = { id = "org.sonarqube", version.ref = "sonarqube" }
