@@ -76,7 +76,13 @@ create_local_env_file() {
 
 export AWS_PROFILE
 source ./scripts/check_aws_creds.sh
-results_dir=./tmp/results/$(date +%Y-%m-%d-%H-%M-%S)
+
+# Cleanup old test results (keep only last 10 runs)
+if [ -d "./test-reports" ]; then
+  find ./test-reports -maxdepth 1 -type d -name "20*" | sort | head -n -10 | xargs rm -rf 2>/dev/null || true
+fi
+
+results_dir=./test-reports/$(date +%Y-%m-%d-%H-%M-%S)
 mkdir -p "${results_dir}"
 
 BUILD_ARG_ARGS=()
