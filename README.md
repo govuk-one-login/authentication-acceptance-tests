@@ -30,7 +30,6 @@ MFA method updates and user profile changes by manipulating the same backend ser
 - Add details of running in the auth dev environment.
 - Add details about ad-hoc test runs via the AWS Console
 - Accessibility testing using axe-core
-- Test reports cleanup in tmp/ folder
 
 ### Repository Structure
 ````
@@ -45,35 +44,39 @@ MFA method updates and user profile changes by manipulating the same backend ser
 │   │   └── resources/        # Test resources and feature files
 │   └── build.gradle          # Gradle build configuration for tests
 ├── docker/                   # Docker configuration for test execution
+├── gradle/                   # Gradle wrapper and version catalog
+│   ├── libs.versions.toml    # Centralized dependency management
+│   └── wrapper/              # Gradle wrapper files
 ├── nginx/                    # Nginx configuration for routing
-└── scripts/                  # Utility scripts for running tests
+├── scripts/                  # Utility scripts for running tests
+└── test-reports/             # Test execution reports (auto-cleaned)
 ````
 
 ### Quick Start
 Prerequisites - Ensure the following tools are installed and configured:
-- IntelliJ IDEA (optional but recommended)Download from https://www.jetbrains.com/idea/
+- IntelliJ IDEA (optional but recommended) - Download from https://www.jetbrains.com/idea/
 - Recommended plugins: Cucumber for Java, Gherkin
-- Java 17 JDKDownload from https://jdk.java.net/17/ and verify with java -version
-- Docker and Docker Compose.  Install Docker Desktop from https://www.docker.com/
+- Java 17 JDK - Download from https://jdk.java.net/17/ and verify with java -version
+- Docker and Docker Compose - Install Docker Desktop from https://www.docker.com/
 with docker -v and docker-compose -v
-- AWS CLI configuration and set from https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2.htmlConfigure
-with appropriate credentials (Dan - Tech Lead can help with credential access)
-- Gradle 7.x.  Download from https://gradle.org/releases/ or use the included ./gradlew
-- Chrome or Firefox browser Install from https://www.google.com/chrome/ or https://www.mozilla.org/firefox/
+- AWS CLI configuration - Download from https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2.html
+Configure with appropriate credentials (Dan - Tech Lead can help with credential access)
+- Gradle 8.x - Download from https://gradle.org/releases/ or use the included ./gradlew
+- Chrome or Firefox browser - Install from https://www.google.com/chrome/ or https://www.mozilla.org/firefox/
 
 ### Test Setup
 #### Clone the repository:
 ```` bash
-git clone <repository-url> below:
-   gov-uk-one-login-acceptance-tests
-   gov-uk-one-login-authentication-api
-cd gov-uk-one-login-acceptance-tests
+git clone <repository-url>
+cd authentication-acceptance-tests
 ````
 #### Configure AWS credentials:
+````bash
 aws configure
-Access Key ID
-Default region (eu-west-2)
-Output format (json)
+# Access Key ID
+# Default region (eu-west-2)
+# Output format (json)
+````
 
 **Run The Tests**
 The preferred way to run the tests is using the rundocker.sh script. Due to the
@@ -81,7 +84,8 @@ two-account structure per environment, UI and API tests must be run separately a
 The scripts primarily support running the tests in Chromium.
 
 **Test Reports**
-This can be found in the tmp/ folder. Clean this folder regularly to avoid excessive disk usage.
+Test reports are automatically generated in the `test-reports/` directory with timestamped folders.
+The system automatically keeps only the 10 most recent test runs to prevent excessive disk usage.
 
 **AWS Environment Account Structure**
 Separate AWS accounts are used for API and UI components:
@@ -106,6 +110,7 @@ These follow a consistent naming pattern:
 
 - /acceptance-tests/dev/CUCUMBER_FILTER_TAGS
 - /acceptance-tests/build/RP_URL
+
 These parameters must be present as environment variables during execution.
 
 ### Running the tests from the command line
@@ -128,9 +133,15 @@ These parameters must be present as environment variables during execution.
 You can override environment variables using local .env files:
 - env-override-api.env
 - env-override-ui.env
+
 Example override to skip specific tests:
+````
 CUCUMBER_FILTER_TAGS="not (@AccountInterventions or @Re-auth or @old-mfa-without-ipv)"
-Example for additional concurrency: PARALLEL_BROWSERS=2
+````
+Example for additional concurrency:
+````
+PARALLEL_BROWSERS=2
+````
 
 ### Running the tests from IntelliJ
 
@@ -151,16 +162,16 @@ See example below:
 | PARALLEL_BROWSERS    | 1                            |                                                                                                                                  |
 | CUCUMBER_FILTER_TAGS | "@API"                       |                                                                                                                                  |
 | AWS_PROFILE          | di-auth-development-admin    |                                                                                                                                  |
-| ENVIRONMENT          | dev                          |
+| ENVIRONMENT          | dev                          |                                                                                                                                  |
 ````
 
 **First-Time Setup Tips**
 - Use chmod +x gradlew if the Gradle wrapper lacks execution permissions.
 - Pull latest Selenium images regularly:
-- docker pull selenium/standalone-chrome
-- docker pull selenium/standalone-firefox
+  - docker pull selenium/standalone-chrome
+  - docker pull selenium/standalone-firefox
 - Ensure Docker is running and not blocked by firewall or VPN.
-- Clear the tmp/ folder periodically to avoid disk space issues.
+- Test reports are automatically managed in the test-reports/ directory.
 
 **Deployment**
 Tests are deployed using GitHub Actions:
@@ -168,9 +179,16 @@ Tests are deployed using GitHub Actions:
 - Use "Build and Push to UI DEV account" to deploy to UI
 
 **The workflow:**
-Builds test containers (Chrome and Firefox)
-Pushes images to ECR
-Tags for the development environment
+- Builds test containers (Chrome and Firefox)
+- Pushes images to ECR
+- Tags for the development environment
+
+**Build System**
+The project uses Gradle 8 with modern best practices:
+- Version catalog (`gradle/libs.versions.toml`) for centralized dependency management
+- No root build.gradle (single subproject structure)
+- Optimized build performance with caching and parallel execution
+- Java 17 compatibility
 
 **Data Flow**
 
@@ -183,7 +201,7 @@ v                                                         v
 ````
 
 ### Component Interactions
-- **Test Runner:** Executes Cucumber features
+- **Test Runner:** Executes Cucumber features using Gradle 8
 - **Selenium WebDriver:** Drives browser automation
 - **Page Objects:** Abstract web interactions
 - **Service Layer:** Handles AWS SDK operations
