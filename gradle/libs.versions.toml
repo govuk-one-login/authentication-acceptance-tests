@@ -2,7 +2,7 @@
 junit = "5.13.4"
 cucumber = "7.27.0"
 axe = "3.0"
-selenium = "4.28.1"
+selenium = "4.35.0"
 aws-sdk-v2 = "2.32.20"
 json = "20250517"
 rest-assured = "5.5.5"
