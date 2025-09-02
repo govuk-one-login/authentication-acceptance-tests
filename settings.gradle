@@ -1,1 +1,5 @@
-include 'acceptance-tests'
+rootProject.name = 'authentication-acceptance-tests'
+
+include('acceptance-tests')
+
+project(':acceptance-tests').projectDir = file('acceptance-tests')
