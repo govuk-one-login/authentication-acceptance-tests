@@ -7,6 +7,7 @@ import com.nimbusds.jose.JOSEException;
 import io.cucumber.core.internal.com.fasterxml.jackson.core.JsonProcessingException;
 import io.cucumber.core.internal.com.fasterxml.jackson.databind.JsonNode;
 import io.cucumber.core.internal.com.fasterxml.jackson.databind.ObjectMapper;
+import io.restassured.response.Response;
 import org.apache.http.client.utils.URIUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -53,6 +54,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
+import static io.restassured.RestAssured.given;
 import static org.awaitility.Awaitility.await;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
@@ -108,11 +110,36 @@ public class ApiInteractionsService {
     }
 
     public static void sendOtpNotification(World world) {
-        InvokeResponse invokeResponse = invokeSendOtpLambda(world);
+        String apiGatewayUrl =
+                String.format(
+                        "https://%s.execute-api.eu-west-2.amazonaws.com/default",
+                        world.getMethodManagementApiId());
 
-        LOG.debug("/send-otp-notification response: {}", invokeResponse.payload().asUtf8String());
-        LOG.debug("payload: {}", invokeResponse.payload().asUtf8String());
-        assertEquals(200, invokeResponse.statusCode());
+        String requestBody =
+                """
+            {
+                "notificationType": "VERIFY_PHONE_NUMBER",
+                "email": "%s",
+                "phoneNumber": "%s"
+            }
+            """
+                        .formatted(world.userProfile.getEmail(), world.getNewPhoneNumber());
+
+        Response response =
+                given().baseUri(apiGatewayUrl)
+                        .header("Content-Type", "application/json")
+                        .header("Authorization", "Bearer " + world.getToken())
+                        .header("txma-audit-encoded", "encoded-string")
+                        .header("X-Forwarded-For", "0.0.0.0")
+                        .body(requestBody)
+                        .when()
+                        .post("/send-otp-notification")
+                        .then()
+                        .extract()
+                        .response();
+
+        LOG.debug("/send-otp-notification response: {}", response.getBody().asString());
+        assertEquals(200, response.getStatusCode());
     }
 
     public static void cannotSendOtpNotification(World world) {
