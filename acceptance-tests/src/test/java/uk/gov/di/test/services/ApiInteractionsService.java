@@ -110,33 +110,29 @@ public class ApiInteractionsService {
     }
 
     public static void sendOtpNotification(World world) {
-        String apiGatewayUrl =
-                String.format(
-                        "https://%s-vpce-01a1f8e880d273ec6.execute-api.eu-west-2.vpce.amazonaws.com/dev",
-                        world.getMethodManagementApiId());
-
-        String requestBody =
-                """
+        String vpcEndpointUrl = "https://vpce-01a1f8e880d273ec6-g0jwt3hp.execute-api.eu-west-2.vpce.amazonaws.com";
+        
+        String requestBody = """
             {
                 "notificationType": "VERIFY_PHONE_NUMBER",
                 "email": "%s",
                 "phoneNumber": "%s"
             }
-            """
-                        .formatted(world.userProfile.getEmail(), world.getNewPhoneNumber());
+            """.formatted(world.userProfile.getEmail(), world.getNewPhoneNumber());
 
-        Response response =
-                given().baseUri(apiGatewayUrl)
-                        .header("Content-Type", "application/json")
-                        .header("Authorization", "Bearer " + world.getToken())
-                        .header("txma-audit-encoded", "encoded-string")
-                        .header("X-Forwarded-For", "0.0.0.0")
-                        .body(requestBody)
-                        .when()
-                        .post("/send-otp-notification")
-                        .then()
-                        .extract()
-                        .response();
+        Response response = given()
+                .baseUri(vpcEndpointUrl)
+                .header("Content-Type", "application/json")
+                .header("Host", world.getMethodManagementApiId() + ".execute-api.eu-west-2.amazonaws.com")
+                .header("Authorization", "Bearer " + world.getToken())
+                .header("txma-audit-encoded", "encoded-string")
+                .header("X-Forwarded-For", "0.0.0.0")
+                .body(requestBody)
+                .when()
+                .post("/dev/send-otp-notification")
+                .then()
+                .extract()
+                .response();
 
         LOG.debug("/send-otp-notification response: {}", response.getBody().asString());
         assertEquals(200, response.getStatusCode());
