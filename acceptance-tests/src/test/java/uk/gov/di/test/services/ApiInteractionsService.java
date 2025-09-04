@@ -112,7 +112,7 @@ public class ApiInteractionsService {
     public static void sendOtpNotification(World world) {
         String apiGatewayUrl =
                 String.format(
-                        "https://%s.execute-api.eu-west-2.amazonaws.com/default",
+                        "https://%s.execute-api.eu-west-2.amazonaws.com/dev",
                         world.getMethodManagementApiId());
 
         String requestBody =
