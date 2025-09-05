@@ -7,7 +7,6 @@ import com.nimbusds.jose.JOSEException;
 import io.cucumber.core.internal.com.fasterxml.jackson.core.JsonProcessingException;
 import io.cucumber.core.internal.com.fasterxml.jackson.databind.JsonNode;
 import io.cucumber.core.internal.com.fasterxml.jackson.databind.ObjectMapper;
-import io.restassured.response.Response;
 import org.apache.http.client.utils.URIUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -105,37 +104,69 @@ public class ApiInteractionsService {
         InvokeResponse invokeResponse = lambdaClient.invoke(invokeRequest);
 
         LOG.debug("/authenticate response: {}", invokeResponse);
+        LOG.debug("/authenticate response payload: {}", invokeResponse.payload().asUtf8String());
 
         assertEquals(200, invokeResponse.statusCode());
     }
 
     public static void sendOtpNotification(World world) {
-        String vpcEndpointUrl = "https://vpce-01a1f8e880d273ec6-g0jwt3hp.execute-api.eu-west-2.vpce.amazonaws.com";
-        
-        String requestBody = """
+        String requestBody =
+                """
             {
                 "notificationType": "VERIFY_PHONE_NUMBER",
                 "email": "%s",
                 "phoneNumber": "%s"
             }
-            """.formatted(world.userProfile.getEmail(), world.getNewPhoneNumber());
+            """
+                        .formatted(world.userProfile.getEmail(), world.getNewPhoneNumber());
 
-        Response response = given()
-                .baseUri(vpcEndpointUrl)
-                .header("Content-Type", "application/json")
-                .header("Host", world.getMethodManagementApiId() + ".execute-api.eu-west-2.amazonaws.com")
-                .header("Authorization", "Bearer " + world.getToken())
-                .header("txma-audit-encoded", "encoded-string")
-                .header("X-Forwarded-For", "0.0.0.0")
-                .body(requestBody)
-                .when()
-                .post("/dev/send-otp-notification")
-                .then()
-                .extract()
-                .response();
+        String token = world.getToken();
+        if (token == null) {
+            throw new RuntimeException("Token is null - ensure user is authenticated first");
+        }
 
-        LOG.debug("/send-otp-notification response: {}", response.getBody().asString());
-        assertEquals(200, response.getStatusCode());
+        // HOST_ENVIRONMENT indicates where the tests are running from (local machine vs CI/CD pipeline)
+        // This is different from ENVIRONMENT which indicates the target environment (dev/build/staging)
+        String hostEnvironment = System.getenv("HOST_ENVIRONMENT");
+        
+        if ("local".equals(hostEnvironment)) {
+            // Local environment - use RestAssured with Docker
+            io.restassured.response.Response response =
+                    given().baseUri("http://host.docker.internal:8123")
+                            .header("Authorization", "Bearer " + token)
+                            .header("Content-Type", "application/json")
+                            .header("txma-audit-encoded", "encoded-string")
+                            .header("X-Forwarded-For", "0.0.0.0")
+                            .body(requestBody)
+                            .when()
+                            .post("/send-otp-notification")
+                            .then()
+                            .extract()
+                            .response();
+
+            assertEquals(204, response.getStatusCode());
+        } else {
+            // Non-local environment - use VPCE approach
+            String apiGatewayUrl =
+                    String.format(
+                            "https://%s-vpce-01a1f8e880d273ec6.execute-api.eu-west-2.vpce.amazonaws.com/dev",
+                            world.getMethodManagementApiId());
+
+            io.restassured.response.Response response =
+                    given().baseUri(apiGatewayUrl)
+                            .header("Content-Type", "application/json")
+                            .header("Authorization", "Bearer " + token)
+                            .header("txma-audit-encoded", "encoded-string")
+                            .header("X-Forwarded-For", "0.0.0.0")
+                            .body(requestBody)
+                            .when()
+                            .post("/send-otp-notification")
+                            .then()
+                            .extract()
+                            .response();
+
+            assertEquals(204, response.getStatusCode());
+        }
     }
 
     public static void cannotSendOtpNotification(World world) {
@@ -942,13 +973,27 @@ public class ApiInteractionsService {
         var authorizerContext =
                 executeAuthorizerToObtainAuthorizerContext(restApiId, world.getToken());
 
+        LOG.debug("Authorizer context: {}", authorizerContext);
+
         var authorizerContextAsMap = new HashMap<String, Object>();
         authorizerContext
                 .entrySet()
                 .forEach(entry -> authorizerContextAsMap.put(entry.getKey(), entry.getValue()));
-        authorizerContextAsMap.put(
-                "clientId",
-                authorizerContext.get("context").getAsJsonObject().get("clientId").getAsString());
+
+        if (authorizerContext.has("context") && authorizerContext.get("context").isJsonObject()) {
+            authorizerContextAsMap.put(
+                    "clientId",
+                    authorizerContext
+                            .get("context")
+                            .getAsJsonObject()
+                            .get("clientId")
+                            .getAsString());
+        } else {
+            LOG.error("Authorizer failed - no context returned: {}", authorizerContext);
+            throw new RuntimeException(
+                    "Authorizer validation failed: "
+                            + authorizerContext.get("errorMessage").getAsString());
+        }
 
         world.setAuthorizerContent(authorizerContextAsMap);
         world.setMethodManagementApiId(restApiId);
