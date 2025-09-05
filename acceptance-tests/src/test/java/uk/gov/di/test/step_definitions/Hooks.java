@@ -13,10 +13,13 @@ import uk.gov.di.test.utils.Driver;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import static uk.gov.di.test.step_definitions.UserLifecycleStepDef.userLifecycleService;
 
 public class Hooks extends BasePage {
+    private static final Logger LOG = LogManager.getLogger(Hooks.class);
     private final World world;
     private static int failureCount = 0;
 
@@ -40,14 +43,13 @@ public class Hooks extends BasePage {
         AxeStepDef.thereAreNoAccessibilityViolations();
     }
 
-    @After
-    public void afterEach() {
+    @After("@UI")
+    public void afterEachUI() {
         Driver.get().manage().deleteAllCookies();
     }
 
     @After("@UI")
     public void takeScreenshotOnFailure(Scenario scenario) {
-        System.out.println("******* After UI *********");
         if (scenario.isFailed()) {
             WebDriver driver = Driver.get();
             final byte[] screenshot = ((TakesScreenshot) driver).getScreenshotAs(OutputType.BYTES);
@@ -68,18 +70,13 @@ public class Hooks extends BasePage {
 
     @After("@API")
     public void theUserIsDeleted() {
-        System.out.println("******* After API *********");
         if (world.userProfile != null) {
-            System.out.printf(
-                    "Deleting user profile with email %s%n", world.userProfile.getEmail());
+            LOG.info("After API hook: Deleting user profile with email {}", world.userProfile.getEmail());
             userLifecycleService.deleteUserProfileFromDynamodb(world.userProfile);
         }
         if (world.userCredentials != null) {
-            System.out.printf(
-                    "Deleting user credentials with email %s%n", world.userCredentials.getEmail());
+            LOG.info("After API hook: Deleting user credentials with email {}", world.userCredentials.getEmail());
             userLifecycleService.deleteUserCredentialsFromDynamodb(world.userCredentials);
         }
-        Driver.get().manage().deleteAllCookies();
-        Driver.closeDriver();
     }
 }

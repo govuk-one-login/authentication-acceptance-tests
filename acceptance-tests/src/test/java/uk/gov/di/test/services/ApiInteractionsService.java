@@ -240,7 +240,6 @@ public class ApiInteractionsService {
                                     try {
                                         return s3client.getObjectAsBytes(getObjectRequest);
                                     } catch (NoSuchKeyException nsk) {
-                                        LOG.info("OTP not written to S3 yet.");
                                         return null;
                                     }
                                 },
