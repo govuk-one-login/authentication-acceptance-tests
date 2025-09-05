@@ -120,6 +120,14 @@ public class ApiInteractionsService {
             """
                         .formatted(world.userProfile.getEmail(), world.getNewPhoneNumber());
 
+        String apiPath = "/send-otp-notification";
+        int expectedStatusCode = 204;
+
+        makeApiCall(world, requestBody, apiPath, expectedStatusCode);
+    }
+
+    public static void makeApiCall(
+            World world, String requestBody, String apiPath, int expectedStatusCode) {
         String token = world.getToken();
         if (token == null) {
             throw new RuntimeException("Token is null - ensure user is authenticated first");
@@ -141,14 +149,16 @@ public class ApiInteractionsService {
                             .header("X-Forwarded-For", "0.0.0.0")
                             .body(requestBody)
                             .when()
-                            .post("/send-otp-notification")
+                            .post(apiPath)
                             .then()
                             .extract()
                             .response();
 
-            assertEquals(204, response.getStatusCode());
+            assertEquals(expectedStatusCode, response.getStatusCode());
         } else {
             // Non-local environment - use VPCE approach
+            String environment = Environment.getOrThrow("ENVIRONMENT");
+            String vpcePath = "/" + environment + apiPath;
             String vpcEndpointUrl =
                     "https://vpce-01a1f8e880d273ec6-g0jwt3hp.execute-api.eu-west-2.vpce.amazonaws.com";
 
@@ -164,12 +174,12 @@ public class ApiInteractionsService {
                             .header("X-Forwarded-For", "0.0.0.0")
                             .body(requestBody)
                             .when()
-                            .post("/dev/send-otp-notification")
+                            .post(vpcePath)
                             .then()
                             .extract()
                             .response();
 
-            assertEquals(200, response.getStatusCode());
+            assertEquals(expectedStatusCode, response.getStatusCode());
         }
     }
 
