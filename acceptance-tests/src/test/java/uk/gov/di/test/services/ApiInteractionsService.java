@@ -103,9 +103,6 @@ public class ApiInteractionsService {
 
         InvokeResponse invokeResponse = lambdaClient.invoke(invokeRequest);
 
-        LOG.debug("/authenticate response: {}", invokeResponse);
-        LOG.debug("/authenticate response payload: {}", invokeResponse.payload().asUtf8String());
-
         assertEquals(200, invokeResponse.statusCode());
     }
 
@@ -186,19 +183,20 @@ public class ApiInteractionsService {
     }
 
     public static void cannotSendOtpNotification(World world) {
-        InvokeResponse invokeResponse = invokeSendOtpLambda(world);
+        String requestBody =
+                """
+            {
+                "notificationType": "VERIFY_PHONE_NUMBER",
+                "email": "%s",
+                "phoneNumber": "%s"
+            }
+            """
+                        .formatted(world.userProfile.getEmail(), world.getNewPhoneNumber());
 
-        LOG.debug("/send-otp-notification response: {}", invokeResponse.payload().asUtf8String());
-        LOG.debug("payload: {}", invokeResponse.payload().asUtf8String());
+        String apiPath = "/send-otp-notification";
+        int expectedStatusCode = 400;
 
-        ObjectMapper objectMapper = new ObjectMapper();
-        try {
-            JsonNode payloadJson = objectMapper.readTree(invokeResponse.payload().asUtf8String());
-            int actualStatusCode = payloadJson.get("statusCode").asInt();
-            Assert.assertEquals(400, actualStatusCode);
-        } catch (JsonProcessingException e) {
-            fail("Error parsing JSON response: " + e.getMessage());
-        }
+        makeApiCall(world, requestBody, apiPath, expectedStatusCode);
     }
 
     private static InvokeResponse invokeSendOtpLambda(World world) {
@@ -962,8 +960,6 @@ public class ApiInteractionsService {
 
         var authorizerContext =
                 executeAuthorizerToObtainAuthorizerContext(restApiId, world.getToken());
-
-        LOG.debug("Authorizer context: {}", authorizerContext);
 
         var authorizerContextAsMap = new HashMap<String, Object>();
         authorizerContext
