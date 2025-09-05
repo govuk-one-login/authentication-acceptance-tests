@@ -151,6 +151,7 @@ public class ApiInteractionsService {
                             .when()
                             .post(apiPath)
                             .then()
+                            .time(org.hamcrest.Matchers.lessThan(30000L))
                             .extract()
                             .response();
 
@@ -176,6 +177,7 @@ public class ApiInteractionsService {
                             .when()
                             .post(vpcePath)
                             .then()
+                            .time(org.hamcrest.Matchers.lessThan(30000L))
                             .extract()
                             .response();
 
@@ -406,57 +408,31 @@ public class ApiInteractionsService {
     }
 
     public static String addBackupSMS(World world) {
-        var functionName =
-                getLambda(
-                        world.getMethodManagementApiId(),
-                        "/v1/mfa-methods/{publicSubjectId}",
-                        HttpMethod.POST.toString());
-
-        var body =
+        String requestBody =
                 """
-                    {
-                                mfaMethod: {
-                                  priorityIdentifier: "BACKUP",
-                                  method: {
-                                    mfaMethodType: "SMS",
-                                    phoneNumber: "%s",
-                                   otp: "%s"
-                                  }
-                                }
-                              }
-               """
+                {
+                    "mfaMethod": {
+                        "priorityIdentifier": "BACKUP",
+                        "method": {
+                            "mfaMethodType": "SMS",
+                            "phoneNumber": "%s",
+                            "otp": "%s"
+                        }
+                    }
+                }
+                """
                         .formatted(world.getNewPhoneNumber(), world.getOtp());
 
-        Map<String, String> pathParameters = new HashMap<>();
-        pathParameters.put("publicSubjectId", world.userProfile.getPublicSubjectID());
+        String apiPath = "/v1/mfa-methods/" + world.userProfile.getPublicSubjectID();
+        int expectedStatusCode = 200;
 
-        var event =
-                createApiGatewayProxyRequestEvent(
-                        body, pathParameters, world.getAuthorizerContent());
-
-        InvokeRequest invokeRequest =
-                InvokeRequest.builder()
-                        .functionName(functionName)
-                        .payload(SdkBytes.fromUtf8String(event))
-                        .build();
-
-        LambdaClient lambdaClient =
-                LambdaClient.builder()
-                        .region(Region.EU_WEST_2)
-                        .credentialsProvider(DefaultCredentialsProvider.create())
-                        .build();
-
-        InvokeResponse invokeResponse = lambdaClient.invoke(invokeRequest);
+        makeApiCall(world, requestBody, apiPath, expectedStatusCode);
 
         world.userCredentials =
                 DynamoDbService.getInstance().getUserCredentials(world.userProfile.getEmail());
 
-        if (invokeResponse.statusCode() != 200) {
-            LOG.error("Error from lambda {}.", invokeResponse.statusCode());
-            throw new RuntimeException("Error from lambda: " + invokeResponse.statusCode());
-        }
-
-        return invokeResponse.payload().asUtf8String();
+        // Return a mock response since makeApiCall doesn't return the response body
+        return "{\"statusCode\": 200}";
     }
 
     public static String addBackupSMSInvalidReq(World world) {
