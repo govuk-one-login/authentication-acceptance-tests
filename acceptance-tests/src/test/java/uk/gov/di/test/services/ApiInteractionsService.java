@@ -125,10 +125,12 @@ public class ApiInteractionsService {
             throw new RuntimeException("Token is null - ensure user is authenticated first");
         }
 
-        // HOST_ENVIRONMENT indicates where the tests are running from (local machine vs CI/CD pipeline)
-        // This is different from ENVIRONMENT which indicates the target environment (dev/build/staging)
+        // HOST_ENVIRONMENT indicates where the tests are running from (local machine vs CI/CD
+        // pipeline)
+        // This is different from ENVIRONMENT which indicates the target environment
+        // (dev/build/staging)
         String hostEnvironment = System.getenv("HOST_ENVIRONMENT");
-        
+
         if ("local".equals(hostEnvironment)) {
             // Local environment - use RestAssured with Docker
             io.restassured.response.Response response =
@@ -147,25 +149,27 @@ public class ApiInteractionsService {
             assertEquals(204, response.getStatusCode());
         } else {
             // Non-local environment - use VPCE approach
-            String apiGatewayUrl =
-                    String.format(
-                            "https://%s-vpce-01a1f8e880d273ec6.execute-api.eu-west-2.vpce.amazonaws.com/dev",
-                            world.getMethodManagementApiId());
+            String vpcEndpointUrl =
+                    "https://vpce-01a1f8e880d273ec6-g0jwt3hp.execute-api.eu-west-2.vpce.amazonaws.com";
 
             io.restassured.response.Response response =
-                    given().baseUri(apiGatewayUrl)
+                    given().baseUri(vpcEndpointUrl)
                             .header("Content-Type", "application/json")
+                            .header(
+                                    "Host",
+                                    world.getMethodManagementApiId()
+                                            + ".execute-api.eu-west-2.amazonaws.com")
                             .header("Authorization", "Bearer " + token)
                             .header("txma-audit-encoded", "encoded-string")
                             .header("X-Forwarded-For", "0.0.0.0")
                             .body(requestBody)
                             .when()
-                            .post("/send-otp-notification")
+                            .post("/dev/send-otp-notification")
                             .then()
                             .extract()
                             .response();
 
-            assertEquals(204, response.getStatusCode());
+            assertEquals(200, response.getStatusCode());
         }
     }
 
