@@ -5,7 +5,7 @@ Feature: The MFA reset process.
   they are redirected to Identity to determine their verification status. Identity verifies
   whether the user is classified as authentication-only or identity-verified.
 
-@AUT-3825 @new-mfa-reset-with-ipv @under-development
+@AUT-3825 @new-mfa-reset-with-ipv
 Scenario: User with Auth App Default MFA and SMS Backup MFA resets their MFAs and remains migrated
 Given a Migrated User with a Default MFA of "AUTH APP"
 And the User is Authenticated
@@ -35,7 +35,7 @@ When the user clicks the continue button
 Then the user is returned to the service
 And the User only has a default MFA of "SMS" and remains migrated
 
-@AUT-3825 @new-mfa-reset-with-ipv @under-development
+@AUT-3825 @new-mfa-reset-with-ipv
 Scenario: User with SMS Default MFA and Auth App Backup MFA resets their MFAs and remains migrated
 Given a Migrated User with a Default MFA of "SMS"
 And the User is Authenticated
