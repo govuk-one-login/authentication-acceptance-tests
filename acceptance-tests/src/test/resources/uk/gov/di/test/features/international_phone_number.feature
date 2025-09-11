@@ -50,28 +50,3 @@ Feature: International Phone Numbers
     Then the user is taken to the "You’ve created your GOV.UK One Login" page
     When the user clicks the continue button
     Then the user is returned to the service
-
-#  Scenario: User with an international phone number reports that they did not receive their security code
-#    When the user comes from the stub relying party with default options
-#    Then the user is taken to the "Create your GOV.UK One Login or sign in" page
-#    When the user clicks on the support link
-#    Then the user is taken to the Contact us page in a new tab
-#    When the user selects radio button "A problem creating a GOV.UK One Login"
-#    Then the user is taken to the "A problem creating a GOV.UK One Login" page
-#    When the user selects radio button "You did not get a security code"
-#    Then the user is taken to the "You did not get a security code" page
-#    And the user selects radio button "Text message to a phone number from another country"
-#    #Test stopped here so as not to submit case to the actual support desk
-#
-#
-#  Scenario: User with an international phone number reports that their security code did not work
-#    When the user comes from the stub relying party with default options
-#    Then the user is taken to the "Create your GOV.UK One Login or sign in" page
-#    When the user clicks on the support link
-#    Then the user is taken to the Contact us page in a new tab
-#    When the user selects radio button "A problem signing in to your GOV.UK One Login"
-#    Then the user is taken to the "A problem signing in to your GOV.UK One Login" page
-#    When the user selects radio button "The security code did not work"
-#    Then the user is taken to the "The security code does not work" page
-#    And the user selects radio button "Text message to a phone number from another country"
-#    #Test stopped here so as not to submit case to the actual support desk
