@@ -131,7 +131,7 @@ Feature: Account interventions
     Then the user is taken to the "Sorry, there is a problem" page
 
   @under-development @AUT-3921
-  Scenario: Auth app user cannot change the way they get security codes when they have a temporarily suspended account (Dev only Test)
+  Scenario Outline: Auth app user cannot change the way they get security codes when they have a temporarily suspended account (Dev only Test)
     Given a user with App MFA exists
     And the user has a temporarily suspended intervention
     When the user comes from the stub relying party with option 2fa-on and is taken to the "Create your GOV.UK One Login or sign in" page
@@ -148,8 +148,8 @@ Feature: Account interventions
     And the user clicks the continue button
     Then the user is taken to the "You cannot change how you get security codes" page
     Examples:
-      | Mfa Type | Link Text                                     | IPV Response              |
-      | App      | I do not have access to the authenticator app | Identity check failed     |
+      | IPV Response              |
+      | Identity check failed     |
 
   @locked @build-sp @dev
   Scenario: Sms user cannot log in when they have a permanently locked account
@@ -261,7 +261,7 @@ Feature: Account interventions
     Then the user is taken to the "Your GOV.UK One Login has been permanently locked" page
 
   @under-development @AUT-3921
-  Scenario: Sms user cannot change the way they get security codes when they have a permanently locked account (Dev only Test)
+  Scenario Outline: Sms user cannot change the way they get security codes when they have a permanently locked account (Dev only Test)
     Given a user with SMS MFA exists
     And the user has a permanently locked intervention
     When the user comes from the stub relying party with option 2fa-on and is taken to the "Create your GOV.UK One Login or sign in" page
@@ -279,8 +279,8 @@ Feature: Account interventions
     And the user clicks the continue button
     Then the user is taken to the "You cannot change how you get security codes" page
     Examples:
-      | Mfa Type | Link Text                                     | IPV Response              |
-      | SMS      | I do not have access to the authenticator app | Identity check failed     |
+      | IPV Response              |
+      | Identity check failed     |
 
   @locked @build-sp @old-mfa-without-ipv
   Scenario: Auth app user cannot change the way they get security codes when they have a permanently locked account
@@ -300,7 +300,7 @@ Feature: Account interventions
     Then the user is taken to the "Your GOV.UK One Login has been permanently locked" page
 
   @under-development @AUT-3921
-  Scenario: Auth app user cannot change the way they get security codes when they have a permanently locked account (Dev Only Test)
+  Scenario Outline: Auth app user cannot change the way they get security codes when they have a permanently locked account (Dev Only Test)
     Given a user with App MFA exists
     And the user has a permanently locked intervention
     When the user comes from the stub relying party with option 2fa-on and is taken to the "Create your GOV.UK One Login or sign in" page
@@ -318,31 +318,9 @@ Feature: Account interventions
     And the user clicks the continue button
     Then the user is taken to the "You cannot change how you get security codes" page
     Examples:
-      | Mfa Type | Link Text                                     | IPV Response              |
-      | App      | I do not have access to the authenticator app | Identity check failed     |
+      | IPV Response              |
+      | Identity check failed     |
 
-#  @reset_password # commented out due to an unidentified data issue that causes failure in th pipeline. Runs fine locally.
-#  Scenario: Sms user forced to reset their password when a password reset intervention has been placed on their account
-#    Given a user with SMS MFA exists
-#    And the user has a password reset intervention
-#    When the user comes from the stub relying party with default options
-#    When the user is taken to the "Create your GOV.UK One Login or sign in" page
-#    And the user selects sign in
-#    Then the user is taken to the "Enter your email" page
-#    When the user enters their email address
-#    Then the user is taken to the "Enter your password" page
-#    When the user enters their password
-#    Then the user is taken to the "Check your phone" page
-#    When the user enters the six digit security code from their phone
-#    Then the user is taken to the "You need to reset your password" page
-#    When the user clicks the continue button
-#    Then the user is taken to the "Check your email" page
-#    When the user enters the six digit security code from their email
-#    Then the user is taken to the "Reset your password" page
-#    The test needs to stop here in Build, due to there being static data in the AIS stub the reset pw flag is not removed and so the correct path is not followed
-#    When the user enters valid new password and correctly retypes it
-#    Then the user is returned to the service
-#    And the user clicks logout
 
   @reset_password @build-sp @dev
   Scenario: Auth app user forced to reset their password when a password reset intervention has been placed on their account
