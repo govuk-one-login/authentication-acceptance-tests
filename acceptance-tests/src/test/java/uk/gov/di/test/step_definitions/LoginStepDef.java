@@ -85,6 +85,11 @@ public class LoginStepDef extends BasePage {
         createOrSignInPage.clickSignInButton();
     }
 
+    @And("User enters an email {string}")
+    public void theUserEntersAnEmailAddress(String email) {
+        enterYourEmailAddressPage.enterEmailAddressAndContinue(email);
+    }
+
     @And("the user enters their email address")
     @And("the user enters the email address")
     public void theUserEntersTheirEmailAddress() {
