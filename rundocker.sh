@@ -115,7 +115,8 @@ if [ "${TEST_MODE}" = "API" ]; then
   if [ "${ENVIRONMENT}" == "dev" ]; then
     # Must have authentication-api cloned in above directory
     # Creates bastion host to access private API outside of VPC
-    ../authentication-api/scripts/api-proxy.sh account-management dev 8123 &
+    API_PROXY_PORT=${API_PROXY_PORT:-8123}
+    ../authentication-api/scripts/api-proxy.sh account-management dev "$API_PROXY_PORT" &
     API_PROXY_PID=$!
   fi
 

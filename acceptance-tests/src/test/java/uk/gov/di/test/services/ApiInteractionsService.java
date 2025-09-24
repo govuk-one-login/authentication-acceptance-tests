@@ -11,7 +11,6 @@ import org.apache.http.client.utils.URIUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jose4j.base64url.Base64Url;
-import org.junit.Assert;
 import org.openqa.selenium.remote.http.HttpMethod;
 import software.amazon.awssdk.auth.credentials.DefaultCredentialsProvider;
 import software.amazon.awssdk.core.ResponseBytes;
@@ -57,7 +56,6 @@ import static io.restassured.RestAssured.given;
 import static org.awaitility.Awaitility.await;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.fail;
 
 public class ApiInteractionsService {
     private static final Logger LOG = LogManager.getLogger(ApiInteractionsService.class);
@@ -139,7 +137,10 @@ public class ApiInteractionsService {
         if ("local".equals(hostEnvironment)) {
             // Local environment - use RestAssured with Docker
             io.restassured.response.Response response =
-                    given().baseUri("http://host.docker.internal:8123")
+                    given().baseUri(
+                                    "http://host.docker.internal:"
+                                            + System.getenv()
+                                                    .getOrDefault("API_PROXY_PORT", "8123"))
                             .header("Authorization", "Bearer " + token)
                             .header("Content-Type", "application/json")
                             .header("txma-audit-encoded", "encoded-string")
