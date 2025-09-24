@@ -111,6 +111,14 @@ if [ "${TEST_MODE}" = "UI" ]; then
 fi
 
 if [ "${TEST_MODE}" = "API" ]; then
+
+  if [ "${ENVIRONMENT}" == "dev" ]; then
+    # Must have authentication-api cloned in above directory
+    # Creates bastion host to access private API outside of VPC
+    ../authentication-api/scripts/api-proxy.sh account-management dev 8123 &
+    API_PROXY_PID=$!
+  fi
+
   docker build . -t api-acceptance-tests:latest --target auth-api \
     "${BUILD_ARG_ARGS[@]+"${BUILD_ARG_ARGS[@]}"}"
 
@@ -123,4 +131,9 @@ if [ "${TEST_MODE}" = "API" ]; then
     --env-file <(aws configure export-credentials --format env-no-export) \
     -it --rm --entrypoint /bin/bash --shm-size="2g" \
     api-acceptance-tests:latest /test/run-acceptance-tests.sh -s "${ENVIRONMENT}"
+
+  # Clean up API proxy
+  if [ -n "${API_PROXY_PID:-}" ]; then
+    kill "$API_PROXY_PID" 2>/dev/null || true
+  fi
 fi
