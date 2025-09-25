@@ -280,7 +280,5 @@ public class CommonStepDef extends BasePage {
     @And("the user clicks on {string} link")
     public void TheUserClicksOnLink(String text) {
         selectLinkByText(text);
-        {
-        }
     }
 }
