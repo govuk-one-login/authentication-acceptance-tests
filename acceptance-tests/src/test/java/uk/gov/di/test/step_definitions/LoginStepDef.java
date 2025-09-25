@@ -85,8 +85,15 @@ public class LoginStepDef extends BasePage {
         createOrSignInPage.clickSignInButton();
     }
 
-    @And("User enters an email {string}")
-    public void theUserEntersAnEmailAddress(String email) {
+    @When("User enters a high-risk email")
+    public void theUserEntersAHighRiskEmailAddress() {
+        var email = "test-user+dev-stubemailassessmentfailure@test.null.local";
+        enterYourEmailAddressPage.enterEmailAddressAndContinue(email);
+    }
+
+    @When("User enters a high-risk email that will cause an error")
+    public void theUserEntersAHighRiskEmailAddressThatWillCauseAnError() {
+        var email = "test-user+dev-stubemailassessmenterrore@test.null.local";
         enterYourEmailAddressPage.enterEmailAddressAndContinue(email);
     }
 

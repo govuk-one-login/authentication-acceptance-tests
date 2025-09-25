@@ -11,12 +11,14 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import uk.gov.di.test.pages.BasePage;
 import uk.gov.di.test.pages.CreateOrSignInPage;
 import uk.gov.di.test.pages.StubStartPage;
 import uk.gov.di.test.pages.StubUserInfoPage;
 import uk.gov.di.test.utils.Driver;
 
+import java.time.Duration;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -47,9 +49,8 @@ public class CommonStepDef extends BasePage {
         waitForPageLoad("Create your password");
     }
 
-    @Then("the user email is accepted and the {string} page is presented")
+    @Then("the user email is accepted and taken to {string} page")
     @Then("the user is taken to the {string} page")
-    @Then("the user email is blocked and the {string} page is presented")
     public void theUserIsTakenToThePage(String pageTitle) {
         waitForPageLoad(pageTitle);
     }
@@ -70,7 +71,7 @@ public class CommonStepDef extends BasePage {
     }
 
     @When("the user selects {string} link")
-    public void theUserSelectsProblemsWithTheCode(String text) {
+    public void theUserSelectsTheLink(String text) {
         selectLinkByText(text);
     }
 
@@ -183,13 +184,26 @@ public class CommonStepDef extends BasePage {
         waitForPageLoad(pageTitle);
     }
 
+    @Then("the user remain on the {string} page")
+    @Then("the user email is blocked and taken to {string} page")
     @Then("the URL is present with suffix {string}")
     public void theUrlIsPresentWithSuffix(String expectedSuffix) {
-        String currentUrl = getDriver().getCurrentUrl();
-        assertTrue(currentUrl.contains(expectedSuffix));
+        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(10));
+        Boolean urlContainsSuffix =
+                wait.until(
+                        driver ->
+                                driver.getCurrentUrl() != null
+                                        && driver.getCurrentUrl().contains(expectedSuffix));
+        assertTrue(
+                urlContainsSuffix,
+                "Expected URL to contain suffix: "
+                        + expectedSuffix
+                        + " but was: "
+                        + getDriver().getCurrentUrl());
     }
 
     @And("the user navigates to the previous page")
+    @And("the user attempt to navigates to the previous page")
     public void theUserNavigatesToThePreviousPage() {
         WebDriver driver = getDriver();
         driver.navigate().back();
@@ -261,5 +275,12 @@ public class CommonStepDef extends BasePage {
         }
 
         setUserInfoJson(json);
+    }
+
+    @And("the user clicks on {string} link")
+    public void TheUserClicksOnLink(String text) {
+        selectLinkByText(text);
+        {
+        }
     }
 }
