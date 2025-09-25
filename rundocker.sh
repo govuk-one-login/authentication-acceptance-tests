@@ -112,7 +112,7 @@ fi
 
 if [ "${TEST_MODE}" = "API" ]; then
 
-  if [ "${ENVIRONMENT}" == "dev" ]; then
+  if [ "${HOST_ENVIRONMENT}" == "local" ]; then
     # Must have authentication-api cloned in above directory
     # Creates bastion host to access private API outside of VPC
     API_PROXY_PORT=${API_PROXY_PORT:-8123}
