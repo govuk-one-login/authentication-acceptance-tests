@@ -16,7 +16,7 @@ Feature: Create account - Experian email check
     Then the user is taken to the "Check your email" page
     When the user enters the six digit security code from their email
     And the user email is accepted and taken to "Create your password" page
-    Then the user email is not blocked
+    Then the user email is not blocked to proceed with account creation
 
 
   Scenario: User can create an account with a high-risk email and not blocked by experian when the service is down
@@ -28,7 +28,7 @@ Feature: Create account - Experian email check
     Then the user is taken to the "Check your email" page
     When the user enters the six digit security code from their email
     And the user email is accepted and taken to "Create your password" page
-    Then the user email is not blocked
+    Then the user email is not blocked to proceed with account creation
 
 
   Scenario: User get blocked while trying to create an account with high-risk email

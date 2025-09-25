@@ -44,7 +44,7 @@ public class CommonStepDef extends BasePage {
 
     String idToken;
 
-    @Then("the user email is not blocked")
+    @Then("the user email is not blocked to proceed with account creation")
     public void emailNotBlocked() {
         waitForPageLoad("Create your password");
     }
