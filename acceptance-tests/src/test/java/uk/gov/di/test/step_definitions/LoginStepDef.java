@@ -35,6 +35,7 @@ public class LoginStepDef extends BasePage {
 
     StubStartPage stubStartPage = StubStartPage.getStubStartPage();
     private final World world;
+    private final UserLifecycleService userLifecycleService = UserLifecycleService.getInstance();
 
     private String authAppSecretKey;
 
@@ -87,13 +88,13 @@ public class LoginStepDef extends BasePage {
 
     @When("User enters a high-risk email")
     public void theUserEntersAHighRiskEmailAddress() {
-        var email = "test-user+dev-stubemailassessmentfailure@test.null.local";
+        var email = userLifecycleService.generateHighRiskEmailAddress();
         enterYourEmailAddressPage.enterEmailAddressAndContinue(email);
     }
 
     @When("User enters a high-risk email that will cause an error")
     public void theUserEntersAHighRiskEmailAddressThatWillCauseAnError() {
-        var email = "test-user+dev-stubemailassessmenterrore@test.null.local";
+        var email = userLifecycleService.generateHighRiskEmailAddressThatWillCauseAnError();
         enterYourEmailAddressPage.enterEmailAddressAndContinue(email);
     }
 
