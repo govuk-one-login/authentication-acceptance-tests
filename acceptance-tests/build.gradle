@@ -38,6 +38,14 @@ dependencies {
     testImplementation libs.gson
 }
 
+dependencies {
+    constraints {
+        testImplementation('io.netty:netty-codec-http:[4.1.125.Final,)') {
+            because 'CVE-2025-58056 is fixed in io.netty:netty-codec-http:4.1.125.Final and higher'
+        }
+    }
+}
+
 group = 'uk.gov.di'
 version = '1.0-SNAPSHOT'
 description = 'acceptance-tests'
