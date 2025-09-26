@@ -22,7 +22,7 @@ aws-lambda-events = "3.16.1"
 slf4j = "2.0.17"
 awaitility = "4.3.0"
 gson = "2.13.1"
-maven-surefire = "3.2.5"
+maven-surefire = "3.5.2"
 
 [libraries]
 junit-bom = { module = "org.junit:junit-bom", version.ref = "junit" }
