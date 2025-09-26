@@ -64,6 +64,15 @@ public class UserLifecycleService {
         return sub.replace(emailAddressFormat);
     }
 
+    public String generateHighRiskEmailAddress() {
+        return String.format(
+                "test-user+%s-stubemailassessmentfailure@test.null.local", ENVIRONMENT);
+    }
+
+    public String generateHighRiskEmailAddressThatWillCauseAnError() {
+        return String.format("test-user+%s-stubemailassessmenterrore@test.null.local", ENVIRONMENT);
+    }
+
     private TermsAndConditions buildTermsAndConditions(String version) {
         return new TermsAndConditions(version, DEFAULT_TIMESTAMP);
     }
