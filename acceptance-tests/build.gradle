@@ -39,6 +39,9 @@ dependencies {
 }
 
 dependencies {
+    // Force commons-lang3 to patched version to fix Dependabot alert
+    testImplementation 'org.apache.commons:commons-lang3:3.18.0'
+
     constraints {
         testImplementation('io.netty:netty-codec-http:[4.1.125.Final,)') {
             because 'CVE-2025-58056 is fixed in io.netty:netty-codec-http:4.1.125.Final and higher'
