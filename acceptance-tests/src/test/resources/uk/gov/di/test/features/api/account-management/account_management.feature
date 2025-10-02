@@ -1,4 +1,4 @@
-@API
+@API @VPC
 Feature: Account Management
 
   Scenario Outline: Authenticated User successfully changes their Phone Number
