@@ -18,6 +18,20 @@ setup_environment_variables() {
   fi
   # shellcheck source=/dev/null
   set -o allexport && source /test/.env && set +o allexport
+
+  if [ -n "${AD_HOC_CUCUMBER_TAGS:-}" ]; then
+    if [[ ! ${AD_HOC_CUCUMBER_TAGS} =~ ^[a-zA-Z0-9@_-]+(\s+(and|or|not)\s+[a-zA-Z0-9@_()-]+)*$ ]]; then
+      echo "Error: Invalid cucumber tags format: ${AD_HOC_CUCUMBER_TAGS}"
+      exit 1
+    fi
+
+    echo "Value from build-and-push-adhoc-tests workflow present."
+    echo "Overwriting CUCUMBER_FILTER_TAGS value from SSM."
+
+    sed -i '/^CUCUMBER_FILTER_TAGS=/d' /test/.env
+    printf 'CUCUMBER_FILTER_TAGS=%q\n' "${AD_HOC_CUCUMBER_TAGS}" >> /test/.env
+    export CUCUMBER_FILTER_TAGS="${AD_HOC_CUCUMBER_TAGS}"
+  fi
 }
 
 log_run_configuration() {

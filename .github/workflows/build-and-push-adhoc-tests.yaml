@@ -1,0 +1,66 @@
+name: Build and push ad hoc acceptance tests
+
+env:
+  AWS_REGION: eu-west-2
+  SELENIUM_BASE: selenium/standalone-chromium:132.0
+  AD_HOC_DEV_ECR_REPO: acceptance-test-dev-adhoctestrunnerimagerepository-1o5hjfyrcrly
+  GHA_DEV_ROLE: arn:aws:iam::653994557586:role/dev-auth-deploy-pipeline-GitHubActionsRole-QrtGginNnjDD
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Target environment'
+        required: true
+        default: 'dev'
+        type: choice
+        # TODO: add staging and build options after functionality is validated in dev
+        options:
+          - dev
+      cucumber_tags:
+        description: 'Cucumber tag(s) (optional)'
+        required: false
+        type: string
+
+concurrency:
+  group: "build-and-push-tests"
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    permissions:
+      id-token: write
+      contents: read
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+
+      - name: Set up AWS credentials
+        uses: aws-actions/configure-aws-credentials@7474bc4690e29a8392af63c5b98e7449536d5c3a # v4.3.1
+        with:
+          role-to-assume: ${{ (inputs.environment == 'dev' && env.GHA_DEV_ROLE) || (inputs.environment == 'build' && secrets.GHA_BUILD_ROLE) || (inputs.environment == 'staging' && secrets.GHA_STAGING_ROLE) }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@062b18b96a7aff071d4dc91bc00c4c1a7945b076 # v2.0.1
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@e468171a9de216ec08956ac3ada2f0791b6bd435 # v3.11.1
+
+      - name: Build and push
+        id: build-and-push
+        uses: docker/build-push-action@263435318d21b8e681c14492fe198d362a7d2c83 # v6.18.0
+        with:
+          context: .
+          push: true
+          target: auth-api
+          build-args: |
+            SELENIUM_BASE=${{ env.SELENIUM_BASE }}
+            AD_HOC_CUCUMBER_TAGS=${{ inputs.cucumber_tags }}
+          tags: ${{ format('{0}/{1}:latest', steps.login-ecr.outputs.registry, (inputs.environment == 'dev' && env.AD_HOC_DEV_ECR_REPO) || (inputs.environment == 'build' && secrets.BUILD_ACCEPTANCE_ECR_REPO) || (inputs.environment == 'staging' && secrets.STAGING_ACCEPTANCE_ECR_REPO)) }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max

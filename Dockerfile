@@ -22,6 +22,7 @@ RUN chmod u+x ./gradlew \
 FROM ${SELENIUM_BASE} AS base
 ARG SEL_USER=seluser
 ARG SEL_GROUP=${SEL_USER}
+ARG AD_HOC_CUCUMBER_TAGS
 
 USER root
 
