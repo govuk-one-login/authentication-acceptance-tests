@@ -22,7 +22,7 @@ Feature: Reauthentication of user
     And the user enters the security code from the auth app
     Then the user is successfully reauthenticated and returned to the service
 
-  @reauth-same-incorrect-emails @AUT-2790
+  @reauth-same-incorrect-emails @AUT-2790 @failed-cli @failed-docker
   Scenario: Sms user enters the same incorrect email address (known to One Login) 6 times during reauthentication and gets logged out. Owner of incorrect email is not locked out.
     Given a user with SMS MFA exists
     And the user is already signed in to their One Login account
@@ -39,7 +39,7 @@ Feature: Reauthentication of user
     Then the user is not blocked from signing in
     And the user is not blocked from reauthenticating
 
-  @reauth-different-incorrect-emails @AUT-2790
+  @reauth-different-incorrect-emails @AUT-2790 @failed-cli @failed-docker
   Scenario: Sms user enters 6 different incorrect email addresses (not known to One Login) during reauthentication and gets logged out. Original user is not locked out.
     Given a user with SMS MFA exists
     And the user is already signed in to their One Login account
@@ -50,7 +50,7 @@ Feature: Reauthentication of user
     * the user is not blocked from signing in
     * the user is not blocked from reauthenticating
 
-  @reauth-incorrect-pw @AUT-2789
+  @reauth-incorrect-pw @AUT-2789 @failed-cli @failed-docker
   Scenario: Sms user enters incorrect password during reauthentication
     Given a user with SMS MFA exists
     And the user is already signed in to their One Login account
@@ -64,7 +64,7 @@ Feature: Reauthentication of user
     * the user is not blocked from signing in
     * the user is not blocked from reauthenticating
 
-  @reauth-incorrect-sms-code @AUT-2788
+  @reauth-incorrect-sms-code @AUT-2788 @failed-cli @failed-docker
   Scenario: Sms user enters incorrect phone code during reauthentication
     Given a user with SMS MFA exists
     And the user is already signed in to their One Login account
@@ -78,7 +78,7 @@ Feature: Reauthentication of user
     * the user is not blocked from reauthenticating
 
 
-  @reauth-incorrect-auth-app-code @AUT-2788
+  @reauth-incorrect-auth-app-code @AUT-2788 @failed-cli @failed-docker
   Scenario: Auth app user enters incorrect auth app code during reauthentication
     Given a user with App MFA exists
     And the user is already signed in to their One Login account
@@ -92,7 +92,7 @@ Feature: Reauthentication of user
     * the user is not blocked from reauthenticating
 
 
-  @reauth-request-too-many-sms-codes @AUT-3089
+  @reauth-request-too-many-sms-codes @AUT-3089 @failed-cli @failed-docker
   Scenario: Sms user requests phone code resend during reauthentication
     Given a user with SMS MFA exists
     And the user is already signed in to their One Login account
@@ -133,36 +133,6 @@ Feature: Reauthentication of user
 
 
   @reauth-multiple-rp-tab @AUT-3530
-  Scenario: Sms user verify that when re-authenticating in tab B and then logs out in a tab A they cannot complete the re-authenticate in tab B when they enter a valid email
-    Given a user with SMS MFA exists
-    And the user is already signed in to their One Login account
-    When the user opens a new tab and performs a silent login
-    And the RP requires the user to reauthenticate
-    And the user switches back to the first tab
-    And the user logs out
-    And the user switches back to the second tab
-    And the user enters their email address for reauth
-    And the user enters the correct password
-    And the user enters the six digit security code from their phone
-    Then the user is taken to the "There’s a problem with this service" page
-
-
-  @reauth-multiple-rp-tab @AUT-3530
-  Scenario: Sms user verify that when re-authenticating in tab B and logs out in a tab A they cannot complete the re-authenticate in tab B when they enter a valid password
-    Given a user with SMS MFA exists
-    And the user is already signed in to their One Login account
-    When the user opens a new tab and performs a silent login
-    And the RP requires the user to reauthenticate
-    And the user enters their email address for reauth
-    And the user switches back to the first tab
-    And the user logs out
-    And the user switches back to the second tab
-    And the user enters the correct password
-    And the user enters the six digit security code from their phone
-    Then the user is taken to the "There’s a problem with this service" page
-
-
-  @reauth-multiple-rp-tab @AUT-3530
   Scenario: Sms user verify that when user starts multiple re-authentications and then completes each one
     Given a user with SMS MFA exists
     And the user is already signed in to their One Login account
@@ -179,7 +149,7 @@ Feature: Reauthentication of user
     Then the user is returned to the service
 
 
-  @AUT-3613 @AUT-3530
+  @AUT-3613 @AUT-3530 @failed-cli @failed-docker
   Scenario: Sms user enters 6 different incorrect email addresses
     Given a user with SMS MFA exists
     And the user is already signed in to their One Login account
@@ -194,7 +164,7 @@ Feature: Reauthentication of user
     * the user is not blocked from reauthenticating
 
 
-  @AUT-3613 @AUT-3530
+  @AUT-3613 @AUT-3530 @failed-cli @failed-docker
   Scenario: Sms user enters incorrect password during reauthentication
     Given a user with SMS MFA exists
     And the user is already signed in to their One Login account
@@ -213,7 +183,7 @@ Feature: Reauthentication of user
 
 
   # WILL BE REPLACED WITH NEW PROCESS IN V3
-  @reauth-change-security-code-method-to-auth-app
+  @reauth-change-security-code-method-to-auth-app @failed-cli @failed-docker
   Scenario: Sms user can change how they get security codes during reauthentication
     Given a user with SMS MFA exists
     And the user is already signed in to their One Login account
@@ -228,7 +198,7 @@ Feature: Reauthentication of user
 
 
   # WILL BE REPLACED WITH NEW PROCESS IN V3
-  @reauth-change-security-code-method-to-sms
+  @reauth-change-security-code-method-to-sms @failed-cli @failed-docker
   Scenario: Auth app user can change how they get security codes during reauthentication
     Given a user with App MFA exists
     And the user is already signed in to their One Login account

@@ -70,7 +70,16 @@ public class Driver {
                     default -> throw new RuntimeException("Invalid driver: " + SELENIUM_BROWSER);
                 }
                 driverPool.get().manage().deleteAllCookies();
-                driverPool.get().manage().window().maximize();
+                driverPool
+                        .get()
+                        .manage()
+                        .window()
+                        .setSize(new org.openqa.selenium.Dimension(1200, 800));
+                driverPool
+                        .get()
+                        .manage()
+                        .window()
+                        .setPosition(new org.openqa.selenium.Point(100, 100));
             }
         return driverPool.get();
     }

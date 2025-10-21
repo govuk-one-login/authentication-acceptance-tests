@@ -3,8 +3,10 @@ package uk.gov.di.test.step_definitions;
 import io.cucumber.java.ParameterType;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import uk.gov.di.test.pages.BasePage;
 import uk.gov.di.test.pages.StubStartPage;
+import uk.gov.di.test.utils.Driver;
 
 public class RpStubStepDef extends BasePage {
 
@@ -45,8 +47,11 @@ public class RpStubStepDef extends BasePage {
     @Then("the user is forcibly logged out")
     @Then("the logged-in User is forcibly logged out")
     public void theUserIsLoggedOut() {
-        waitForThisText("Error in Callback");
-        waitForThisText("Error: login_required");
-        waitForThisText("Error description: Login required");
+        new WebDriverWait(Driver.get(), DEFAULT_PAGE_LOAD_WAIT_TIME)
+                .until(
+                        driver -> {
+                            String url = driver.getCurrentUrl();
+                            return url != null && url.contains("error=login_required");
+                        });
     }
 }
