@@ -38,17 +38,6 @@ dependencies {
     testImplementation libs.gson
 }
 
-dependencies {
-    constraints {
-        testImplementation('io.netty:netty-codec-http:[4.1.125.Final,)') {
-            because 'CVE-2025-58056 is fixed in io.netty:netty-codec-http:4.1.125.Final and higher'
-        }
-        testImplementation('org.apache.commons:commons-lang3:[3.18.0,)') {
-            because 'CVE-2025-48924 is fixed in org.apache.commons:commons-lang3:3.18.0 and higher'
-        }
-    }
-}
-
 group = 'uk.gov.di'
 version = '1.0-SNAPSHOT'
 description = 'acceptance-tests'
@@ -86,6 +75,15 @@ java.targetCompatibility = JavaVersion.VERSION_17
 configurations {
     cucumberRuntime {
         extendsFrom testImplementation
+    }
+}
+
+configurations.all {
+    resolutionStrategy {
+        // CVE-2025-48924 is fixed in org.apache.commons:commons-lang3:3.18.0 and higher
+        force 'org.apache.commons:commons-lang3:3.18.0'
+        // CVE-2025-58056 is fixed in io.netty:netty-codec-http:4.1.125.Final and higher
+        force 'io.netty:netty-codec-http:4.1.125.Final'
     }
 }
 
