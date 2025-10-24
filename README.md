@@ -125,6 +125,10 @@ These parameters must be present as environment variables during execution.
 - ./rundocker.sh build-api
 - ./rundocker.sh staging-api
 
+To access the Account Management API when running the tests locally, you will need to specify a proxy hostname.
+
+Set `AM_API_URL='http://host.docker.internal:8123'` in `env-override-api.env` and ensure you are running the `authentication-api/scripts/api-proxy.sh account-management [ENV]` script in parallel.
+
 **The Docker scripts retrieve variables from SSM and export them as environment variables. See:**
 - docker/run-tests-api.sh
 - docker/run-tests-ui.sh
