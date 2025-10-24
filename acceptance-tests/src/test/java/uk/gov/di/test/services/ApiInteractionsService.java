@@ -104,7 +104,7 @@ public class ApiInteractionsService {
         assertEquals(200, invokeResponse.statusCode());
     }
 
-    public static void sendOtpNotification(World world) {
+    public static void sendSmsOtpNotification(World world) {
         String requestBody =
                 """
             {
@@ -183,7 +183,7 @@ public class ApiInteractionsService {
         }
     }
 
-    public static void cannotSendOtpNotification(World world) {
+    public static void cannotSendSmsOtpNotification(World world) {
         String requestBody =
                 """
             {
