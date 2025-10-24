@@ -159,6 +159,43 @@ public class ApiInteractionsService {
         return lambdaClient.invoke(invokeRequest);
     }
 
+    public static void sendEmailOtpNotification(World world) {
+        InvokeResponse invokeResponse = invokeSendOtpLambdaForEmail(world);
+
+        LOG.debug("/send-otp-notification response: {}", invokeResponse.payload().asUtf8String());
+        LOG.debug("payload: {}", invokeResponse.payload().asUtf8String());
+        assertEquals(200, invokeResponse.statusCode());
+    }
+
+    private static InvokeResponse invokeSendOtpLambdaForEmail(World world) {
+        var functionName =
+                getLambda(
+                        world.getMethodManagementApiId(),
+                        "/send-otp-notification",
+                        HttpMethod.POST.toString());
+
+        LOG.debug("/send-otp-notification email: {}", world.getNewEmailAddress());
+
+        var body =
+                """
+                {
+                    "notificationType": "VERIFY_EMAIL",
+                    "email": "%s"
+                }
+                """
+                        .formatted(world.getNewEmailAddress());
+
+        var event = createApiGatewayProxyRequestEvent(body, null, world.getAuthorizerContent());
+
+        InvokeRequest invokeRequest =
+                InvokeRequest.builder()
+                        .functionName(functionName)
+                        .payload(SdkBytes.fromUtf8String(event))
+                        .build();
+
+        return lambdaClient.invoke(invokeRequest);
+    }
+
     public static String getOtp(String email) {
         var s3client = S3Client.builder().region(Region.of(Region.EU_WEST_2.toString())).build();
         var bucketName = Environment.getOrThrow("ENVIRONMENT") + "-am-api-acceptance-tests-otp";
