@@ -107,16 +107,16 @@ public class ApiInteractionsService {
         assertEquals(200, invokeResponse.statusCode());
     }
 
-    public static void sendOtpNotification(World world) {
-        InvokeResponse invokeResponse = invokeSendOtpLambda(world);
+    public static void sendSmsOtpNotification(World world) {
+        InvokeResponse invokeResponse = invokeSendOtpLambdaForSms(world);
 
         LOG.debug("/send-otp-notification response: {}", invokeResponse.payload().asUtf8String());
         LOG.debug("payload: {}", invokeResponse.payload().asUtf8String());
         assertEquals(200, invokeResponse.statusCode());
     }
 
-    public static void cannotSendOtpNotification(World world) {
-        InvokeResponse invokeResponse = invokeSendOtpLambda(world);
+    public static void cannotSendSmsOtpNotification(World world) {
+        InvokeResponse invokeResponse = invokeSendOtpLambdaForSms(world);
 
         LOG.debug("/send-otp-notification response: {}", invokeResponse.payload().asUtf8String());
         LOG.debug("payload: {}", invokeResponse.payload().asUtf8String());
@@ -131,7 +131,7 @@ public class ApiInteractionsService {
         }
     }
 
-    private static InvokeResponse invokeSendOtpLambda(World world) {
+    private static InvokeResponse invokeSendOtpLambdaForSms(World world) {
         var functionName =
                 getLambda(
                         world.getMethodManagementApiId(),
@@ -147,6 +147,43 @@ public class ApiInteractionsService {
                 }
                 """
                         .formatted(world.userProfile.getEmail(), world.getNewPhoneNumber());
+
+        var event = createApiGatewayProxyRequestEvent(body, null, world.getAuthorizerContent());
+
+        InvokeRequest invokeRequest =
+                InvokeRequest.builder()
+                        .functionName(functionName)
+                        .payload(SdkBytes.fromUtf8String(event))
+                        .build();
+
+        return lambdaClient.invoke(invokeRequest);
+    }
+
+    public static void sendEmailOtpNotification(World world) {
+        InvokeResponse invokeResponse = invokeSendOtpLambdaForEmail(world);
+
+        LOG.debug("/send-otp-notification response: {}", invokeResponse.payload().asUtf8String());
+        LOG.debug("payload: {}", invokeResponse.payload().asUtf8String());
+        assertEquals(200, invokeResponse.statusCode());
+    }
+
+    private static InvokeResponse invokeSendOtpLambdaForEmail(World world) {
+        var functionName =
+                getLambda(
+                        world.getMethodManagementApiId(),
+                        "/send-otp-notification",
+                        HttpMethod.POST.toString());
+
+        LOG.debug("/send-otp-notification email: {}", world.getNewEmailAddress());
+
+        var body =
+                """
+                {
+                    "notificationType": "VERIFY_EMAIL",
+                    "email": "%s"
+                }
+                """
+                        .formatted(world.getNewEmailAddress());
 
         var event = createApiGatewayProxyRequestEvent(body, null, world.getAuthorizerContent());
 

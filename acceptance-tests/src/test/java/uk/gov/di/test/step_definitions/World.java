@@ -1,5 +1,6 @@
 package uk.gov.di.test.step_definitions;
 
+import io.restassured.response.Response;
 import uk.gov.di.test.entity.UserCredentials;
 import uk.gov.di.test.entity.UserInterventions;
 import uk.gov.di.test.entity.UserProfile;
@@ -29,6 +30,8 @@ public class World {
     private String otherUserPassword;
     private String token;
     private String newPhoneNumber;
+    private String newEmailAddress;
+    private Response apiResponse;
     private Map<String, Object> authorizerContent;
     private String otp;
     private String invokeResponse;
@@ -124,6 +127,22 @@ public class World {
 
     public void setNewPhoneNumber(String newPhoneNumber) {
         this.newPhoneNumber = newPhoneNumber;
+    }
+
+    public String getNewEmailAddress() {
+        return newEmailAddress;
+    }
+
+    public void setNewEmailAddress(String newEmailAddress) {
+        this.newEmailAddress = newEmailAddress;
+    }
+
+    public Response getApiResponse() {
+        return apiResponse;
+    }
+
+    public void setApiResponse(Response apiResponse) {
+        this.apiResponse = apiResponse;
     }
 
     public Map<String, Object> getAuthorizerContent() {

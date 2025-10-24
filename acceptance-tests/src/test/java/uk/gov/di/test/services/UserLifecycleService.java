@@ -65,12 +65,19 @@ public class UserLifecycleService {
     }
 
     public String generateHighRiskEmailAddress() {
-        return String.format(
-                "test-user+%s-stubemailassessmentfailure@test.null.local", ENVIRONMENT);
+        Map<String, String> values = new HashMap<>(baseEmailFormatValues);
+        values.put("counter", String.valueOf(emailSubAddressCounter.getAndIncrement()));
+        StringSubstitutor sub = new StringSubstitutor(values);
+        return sub.replace(
+                "test-user+${environment}-${instantiationMillis}-${counter}-stubemailassessmentfailure@test.null.local");
     }
 
     public String generateHighRiskEmailAddressThatWillCauseAnError() {
-        return String.format("test-user+%s-stubemailassessmenterrore@test.null.local", ENVIRONMENT);
+        Map<String, String> values = new HashMap<>(baseEmailFormatValues);
+        values.put("counter", String.valueOf(emailSubAddressCounter.getAndIncrement()));
+        StringSubstitutor sub = new StringSubstitutor(values);
+        return sub.replace(
+                "test-user+${environment}-${instantiationMillis}-${counter}-stubemailassessmenterror@test.null.local");
     }
 
     private TermsAndConditions buildTermsAndConditions(String version) {
