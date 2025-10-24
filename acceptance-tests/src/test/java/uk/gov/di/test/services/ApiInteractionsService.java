@@ -107,16 +107,16 @@ public class ApiInteractionsService {
         assertEquals(200, invokeResponse.statusCode());
     }
 
-    public static void sendOtpNotification(World world) {
-        InvokeResponse invokeResponse = invokeSendOtpLambda(world);
+    public static void sendSmsOtpNotification(World world) {
+        InvokeResponse invokeResponse = invokeSendOtpLambdaForSms(world);
 
         LOG.debug("/send-otp-notification response: {}", invokeResponse.payload().asUtf8String());
         LOG.debug("payload: {}", invokeResponse.payload().asUtf8String());
         assertEquals(200, invokeResponse.statusCode());
     }
 
-    public static void cannotSendOtpNotification(World world) {
-        InvokeResponse invokeResponse = invokeSendOtpLambda(world);
+    public static void cannotSendSmsOtpNotification(World world) {
+        InvokeResponse invokeResponse = invokeSendOtpLambdaForSms(world);
 
         LOG.debug("/send-otp-notification response: {}", invokeResponse.payload().asUtf8String());
         LOG.debug("payload: {}", invokeResponse.payload().asUtf8String());
@@ -131,7 +131,7 @@ public class ApiInteractionsService {
         }
     }
 
-    private static InvokeResponse invokeSendOtpLambda(World world) {
+    private static InvokeResponse invokeSendOtpLambdaForSms(World world) {
         var functionName =
                 getLambda(
                         world.getMethodManagementApiId(),
