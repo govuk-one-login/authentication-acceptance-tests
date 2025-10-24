@@ -1,11 +1,14 @@
 package uk.gov.di.test.step_definitions;
 
+import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import org.awaitility.Awaitility;
 import uk.gov.di.test.pages.BasePage;
 import uk.gov.di.test.services.UserLifecycleService;
 
+import java.time.Duration;
 import java.util.Arrays;
 import java.util.List;
 
@@ -90,5 +93,10 @@ public class AccountManagementStepDef extends BasePage {
                         .generateHighRiskEmailAddressThatWillCauseAnError();
         world.setNewEmailAddress(email);
         sendEmailOtpNotification(world);
+    }
+
+    @And("the User waits for {int} seconds")
+    public void theUserWaitsForSeconds(int seconds) {
+        Awaitility.await().pollDelay(Duration.ofSeconds(seconds)).until(() -> true);
     }
 }
