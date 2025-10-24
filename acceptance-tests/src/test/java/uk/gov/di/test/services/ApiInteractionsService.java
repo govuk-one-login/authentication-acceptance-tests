@@ -122,6 +122,22 @@ public class ApiInteractionsService {
         makeApiCall(world, requestBody, apiPath, expectedStatusCode);
     }
 
+    public static void sendEmailOtpNotification(World world) {
+        String requestBody =
+                """
+            {
+                "notificationType": "VERIFY_EMAIL",
+                "email": "%s"
+            }
+            """
+                        .formatted(world.getNewEmailAddress());
+
+        String apiPath = "/send-otp-notification";
+        int expectedStatusCode = 204;
+
+        makeApiCall(world, requestBody, apiPath, expectedStatusCode);
+    }
+
     public static Response makeApiCall(World world, String requestBody, String apiPath) {
         String token = world.getToken();
         if (token == null) {

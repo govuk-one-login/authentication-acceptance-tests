@@ -4,6 +4,7 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import uk.gov.di.test.pages.BasePage;
+import uk.gov.di.test.services.UserLifecycleService;
 
 import java.util.Arrays;
 import java.util.List;
@@ -14,6 +15,7 @@ import static uk.gov.di.test.services.ApiInteractionsService.authenticateUser;
 import static uk.gov.di.test.services.ApiInteractionsService.authorizeUser;
 import static uk.gov.di.test.services.ApiInteractionsService.cannotSendSmsOtpNotification;
 import static uk.gov.di.test.services.ApiInteractionsService.getOtp;
+import static uk.gov.di.test.services.ApiInteractionsService.sendEmailOtpNotification;
 import static uk.gov.di.test.services.ApiInteractionsService.sendSmsOtpNotification;
 import static uk.gov.di.test.services.ApiInteractionsService.updatePhoneNumber;
 
@@ -65,5 +67,28 @@ public class AccountManagementStepDef extends BasePage {
                 newPhoneNumber,
                 matchingValue,
                 "Actual phone number does not match the expected phone number.");
+    }
+
+    @Then("the User provides a new email address")
+    public void theSystemSendsAnOTPToTheNewEmailAddress() {
+        var email = UserLifecycleService.getInstance().generateNewUniqueEmailAddress();
+        world.setNewEmailAddress(email);
+        sendEmailOtpNotification(world);
+    }
+
+    @Then("the User provides a new high-risk email address")
+    public void theUserProvidesANewHighRiskEmailAddress() {
+        var email = UserLifecycleService.getInstance().generateHighRiskEmailAddress();
+        world.setNewEmailAddress(email);
+        sendEmailOtpNotification(world);
+    }
+
+    @Then("the User provides a new high-risk email address that will cause an error")
+    public void theUserProvidesANewHighRiskEmailAddressThatWillCauseAnError() {
+        var email =
+                UserLifecycleService.getInstance()
+                        .generateHighRiskEmailAddressThatWillCauseAnError();
+        world.setNewEmailAddress(email);
+        sendEmailOtpNotification(world);
     }
 }
