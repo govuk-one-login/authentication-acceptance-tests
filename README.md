@@ -122,11 +122,6 @@ These parameters must be present as environment variables during execution.
 
 **API Tests**
 - ./rundocker.sh dev-api
-  - As the account management API is private and in a VPC, a bastion host is used as a proxy to allow access.
-  - The proxy session is set up by calling the `api-proxy.sh` script in the authentication-api project.
-    Because of this, **the authentication-api repository must be cloned in the parent directory.**
-  - `api-proxy.sh` is called when running `rundocker.sh dev-api`, but the user must first be signed into the `di-auth-development`
-    account (via AWS SSO) with AWS access environment variables set.
 - ./rundocker.sh build-api
 - ./rundocker.sh staging-api
 

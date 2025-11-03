@@ -73,12 +73,10 @@ public class AuthTokenGenerator {
     public static String createJwt(String internalSubjectId) throws ParseException, JOSEException {
         var clientId = TEST_CONFIG_SERVICE.get("CLIENT_ID");
 
-        var issuer = "https://oidc.integration.account.gov.uk";
-
         JWTClaimsSet claims =
                 new JWTClaimsSet.Builder()
                         .subject(internalSubjectId)
-                        .issuer(issuer)
+                        .issuer("https://example.com")
                         .jwtID(UUID.randomUUID().toString())
                         .issueTime(new Date())
                         .expirationTime(Date.from(Instant.now().plus(60, ChronoUnit.MINUTES)))

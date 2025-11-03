@@ -11,6 +11,7 @@ import org.apache.http.client.utils.URIUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jose4j.base64url.Base64Url;
+import org.junit.Assert;
 import org.openqa.selenium.remote.http.HttpMethod;
 import software.amazon.awssdk.auth.credentials.DefaultCredentialsProvider;
 import software.amazon.awssdk.core.ResponseBytes;
@@ -52,10 +53,10 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-import static io.restassured.RestAssured.given;
 import static org.awaitility.Awaitility.await;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 
 public class ApiInteractionsService {
     private static final Logger LOG = LogManager.getLogger(ApiInteractionsService.class);
@@ -101,103 +102,61 @@ public class ApiInteractionsService {
 
         InvokeResponse invokeResponse = lambdaClient.invoke(invokeRequest);
 
+        LOG.debug("/authenticate response: {}", invokeResponse);
+
         assertEquals(200, invokeResponse.statusCode());
     }
 
     public static void sendOtpNotification(World world) {
-        String requestBody =
-                """
-            {
-                "notificationType": "VERIFY_PHONE_NUMBER",
-                "email": "%s",
-                "phoneNumber": "%s"
-            }
-            """
-                        .formatted(world.userProfile.getEmail(), world.getNewPhoneNumber());
+        InvokeResponse invokeResponse = invokeSendOtpLambda(world);
 
-        String apiPath = "/send-otp-notification";
-        int expectedStatusCode = 204;
-
-        makeApiCall(world, requestBody, apiPath, expectedStatusCode);
-    }
-
-    public static void makeApiCall(
-            World world, String requestBody, String apiPath, int expectedStatusCode) {
-        String token = world.getToken();
-        if (token == null) {
-            throw new RuntimeException("Token is null - ensure user is authenticated first");
-        }
-
-        // HOST_ENVIRONMENT indicates where the tests are running from (local machine vs CI/CD
-        // pipeline)
-        // This is different from ENVIRONMENT which indicates the target environment
-        // (dev/build/staging)
-        String hostEnvironment = System.getenv("HOST_ENVIRONMENT");
-
-        if ("local".equals(hostEnvironment)) {
-            // Local environment - use RestAssured with Docker
-            io.restassured.response.Response response =
-                    given().baseUri(
-                                    "http://host.docker.internal:"
-                                            + System.getenv()
-                                                    .getOrDefault("API_PROXY_PORT", "8123"))
-                            .header("Authorization", "Bearer " + token)
-                            .header("Content-Type", "application/json")
-                            .header("txma-audit-encoded", "encoded-string")
-                            .header("X-Forwarded-For", "0.0.0.0")
-                            .body(requestBody)
-                            .when()
-                            .post(apiPath)
-                            .then()
-                            .time(org.hamcrest.Matchers.lessThan(30000L))
-                            .extract()
-                            .response();
-
-            assertEquals(expectedStatusCode, response.getStatusCode());
-        } else {
-            // Non-local environment - use VPCE approach
-            String environment = Environment.getOrThrow("ENVIRONMENT");
-            String vpcePath = "/" + environment + apiPath;
-
-            String vpcEndpointUrl = TEST_CONFIG_SERVICE.get("AUTH_INTERNAL_VPCE_URL");
-
-            io.restassured.response.Response response =
-                    given().baseUri(vpcEndpointUrl)
-                            .header("Content-Type", "application/json")
-                            .header(
-                                    "Host",
-                                    world.getMethodManagementApiId()
-                                            + ".execute-api.eu-west-2.amazonaws.com")
-                            .header("Authorization", "Bearer " + token)
-                            .header("txma-audit-encoded", "encoded-string")
-                            .header("X-Forwarded-For", "0.0.0.0")
-                            .body(requestBody)
-                            .when()
-                            .post(vpcePath)
-                            .then()
-                            .time(org.hamcrest.Matchers.lessThan(30000L))
-                            .extract()
-                            .response();
-
-            assertEquals(expectedStatusCode, response.getStatusCode());
-        }
+        LOG.debug("/send-otp-notification response: {}", invokeResponse.payload().asUtf8String());
+        LOG.debug("payload: {}", invokeResponse.payload().asUtf8String());
+        assertEquals(200, invokeResponse.statusCode());
     }
 
     public static void cannotSendOtpNotification(World world) {
-        String requestBody =
+        InvokeResponse invokeResponse = invokeSendOtpLambda(world);
+
+        LOG.debug("/send-otp-notification response: {}", invokeResponse.payload().asUtf8String());
+        LOG.debug("payload: {}", invokeResponse.payload().asUtf8String());
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            JsonNode payloadJson = objectMapper.readTree(invokeResponse.payload().asUtf8String());
+            int actualStatusCode = payloadJson.get("statusCode").asInt();
+            Assert.assertEquals(400, actualStatusCode);
+        } catch (JsonProcessingException e) {
+            fail("Error parsing JSON response: " + e.getMessage());
+        }
+    }
+
+    private static InvokeResponse invokeSendOtpLambda(World world) {
+        var functionName =
+                getLambda(
+                        world.getMethodManagementApiId(),
+                        "/send-otp-notification",
+                        HttpMethod.POST.toString());
+
+        var body =
                 """
-            {
-                "notificationType": "VERIFY_PHONE_NUMBER",
-                "email": "%s",
-                "phoneNumber": "%s"
-            }
-            """
+                {
+                    "notificationType": "VERIFY_PHONE_NUMBER",
+                    "email": "%s",
+                    "phoneNumber": "%s"
+                }
+                """
                         .formatted(world.userProfile.getEmail(), world.getNewPhoneNumber());
 
-        String apiPath = "/send-otp-notification";
-        int expectedStatusCode = 400;
+        var event = createApiGatewayProxyRequestEvent(body, null, world.getAuthorizerContent());
 
-        makeApiCall(world, requestBody, apiPath, expectedStatusCode);
+        InvokeRequest invokeRequest =
+                InvokeRequest.builder()
+                        .functionName(functionName)
+                        .payload(SdkBytes.fromUtf8String(event))
+                        .build();
+
+        return lambdaClient.invoke(invokeRequest);
     }
 
     public static String getOtp(String email) {
@@ -213,6 +172,7 @@ public class ApiInteractionsService {
                                     try {
                                         return s3client.getObjectAsBytes(getObjectRequest);
                                     } catch (NoSuchKeyException nsk) {
+                                        LOG.info("OTP not written to S3 yet.");
                                         return null;
                                     }
                                 },
@@ -378,31 +338,57 @@ public class ApiInteractionsService {
     }
 
     public static String addBackupSMS(World world) {
-        String requestBody =
+        var functionName =
+                getLambda(
+                        world.getMethodManagementApiId(),
+                        "/v1/mfa-methods/{publicSubjectId}",
+                        HttpMethod.POST.toString());
+
+        var body =
                 """
-                {
-                    "mfaMethod": {
-                        "priorityIdentifier": "BACKUP",
-                        "method": {
-                            "mfaMethodType": "SMS",
-                            "phoneNumber": "%s",
-                            "otp": "%s"
-                        }
-                    }
-                }
-                """
+                    {
+                                mfaMethod: {
+                                  priorityIdentifier: "BACKUP",
+                                  method: {
+                                    mfaMethodType: "SMS",
+                                    phoneNumber: "%s",
+                                   otp: "%s"
+                                  }
+                                }
+                              }
+               """
                         .formatted(world.getNewPhoneNumber(), world.getOtp());
 
-        String apiPath = "/v1/mfa-methods/" + world.userProfile.getPublicSubjectID();
-        int expectedStatusCode = 200;
+        Map<String, String> pathParameters = new HashMap<>();
+        pathParameters.put("publicSubjectId", world.userProfile.getPublicSubjectID());
 
-        makeApiCall(world, requestBody, apiPath, expectedStatusCode);
+        var event =
+                createApiGatewayProxyRequestEvent(
+                        body, pathParameters, world.getAuthorizerContent());
+
+        InvokeRequest invokeRequest =
+                InvokeRequest.builder()
+                        .functionName(functionName)
+                        .payload(SdkBytes.fromUtf8String(event))
+                        .build();
+
+        LambdaClient lambdaClient =
+                LambdaClient.builder()
+                        .region(Region.EU_WEST_2)
+                        .credentialsProvider(DefaultCredentialsProvider.create())
+                        .build();
+
+        InvokeResponse invokeResponse = lambdaClient.invoke(invokeRequest);
 
         world.userCredentials =
                 DynamoDbService.getInstance().getUserCredentials(world.userProfile.getEmail());
 
-        // Return a mock response since makeApiCall doesn't return the response body
-        return "{\"statusCode\": 200}";
+        if (invokeResponse.statusCode() != 200) {
+            LOG.error("Error from lambda {}.", invokeResponse.statusCode());
+            throw new RuntimeException("Error from lambda: " + invokeResponse.statusCode());
+        }
+
+        return invokeResponse.payload().asUtf8String();
     }
 
     public static String addBackupSMSInvalidReq(World world) {
@@ -937,21 +923,9 @@ public class ApiInteractionsService {
         authorizerContext
                 .entrySet()
                 .forEach(entry -> authorizerContextAsMap.put(entry.getKey(), entry.getValue()));
-
-        if (authorizerContext.has("context") && authorizerContext.get("context").isJsonObject()) {
-            authorizerContextAsMap.put(
-                    "clientId",
-                    authorizerContext
-                            .get("context")
-                            .getAsJsonObject()
-                            .get("clientId")
-                            .getAsString());
-        } else {
-            LOG.error("Authorizer failed - no context returned: {}", authorizerContext);
-            throw new RuntimeException(
-                    "Authorizer validation failed: "
-                            + authorizerContext.get("errorMessage").getAsString());
-        }
+        authorizerContextAsMap.put(
+                "clientId",
+                authorizerContext.get("context").getAsJsonObject().get("clientId").getAsString());
 
         world.setAuthorizerContent(authorizerContextAsMap);
         world.setMethodManagementApiId(restApiId);
