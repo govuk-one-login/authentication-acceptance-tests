@@ -79,7 +79,7 @@ source ./scripts/check_aws_creds.sh
 
 # Cleanup old test results (keep only last 10 runs)
 if [ -d "./test-reports" ]; then
-  find ./test-reports -maxdepth 1 -type d -name "20*" | sort -r | tail -n +11 | xargs rm -rf 2> /dev/null || true
+  find ./test-reports -maxdepth 1 -type d -name "20*" | sort | head -n -10 | xargs rm -rf 2> /dev/null || true
 fi
 
 results_dir=./test-reports/$(date +%Y-%m-%d-%H-%M-%S)
@@ -111,28 +111,10 @@ if [ "${TEST_MODE}" = "UI" ]; then
 fi
 
 if [ "${TEST_MODE}" = "API" ]; then
-
-  create_local_env_file "env-override-api.env"
-
-  # Source the generated env file to make variables available to this script
-  set -a
-  if [[ -f env-generated.env ]]; then
-    # shellcheck disable=SC1091
-    source env-generated.env
-  fi
-  set +a
-
-  if [ "${HOST_ENVIRONMENT:-}" == "local" ]; then
-    # Must have authentication-api cloned in above directory
-    # Creates bastion host to access private API outside of VPC
-    API_PROXY_PORT=${API_PROXY_PORT:-8123}
-    echo "Starting API proxy on port $API_PROXY_PORT..."
-    ../authentication-api/scripts/api-proxy.sh account-management "${ENVIRONMENT}" "$API_PROXY_PORT" &
-    API_PROXY_PID=$!
-  fi
-
   docker build . -t api-acceptance-tests:latest --target auth-api \
     "${BUILD_ARG_ARGS[@]+"${BUILD_ARG_ARGS[@]}"}"
+
+  create_local_env_file "env-override-api.env"
 
   docker run -p 4442-4444:4442-4444 \
     -e PARALLEL_BROWSERS=1 \
@@ -141,9 +123,4 @@ if [ "${TEST_MODE}" = "API" ]; then
     --env-file <(aws configure export-credentials --format env-no-export) \
     -it --rm --entrypoint /bin/bash --shm-size="2g" \
     api-acceptance-tests:latest /test/run-acceptance-tests.sh -s "${ENVIRONMENT}"
-
-  # Clean up API proxy
-  if [ -n "${API_PROXY_PID:-}" ]; then
-    kill "$API_PROXY_PID" 2> /dev/null || true
-  fi
 fi

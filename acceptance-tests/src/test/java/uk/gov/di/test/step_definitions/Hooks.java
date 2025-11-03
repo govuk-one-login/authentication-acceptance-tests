@@ -5,8 +5,6 @@ import io.cucumber.java.AfterStep;
 import io.cucumber.java.Before;
 import io.cucumber.java.PendingException;
 import io.cucumber.java.Scenario;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
@@ -19,7 +17,6 @@ import java.util.Calendar;
 import static uk.gov.di.test.step_definitions.UserLifecycleStepDef.userLifecycleService;
 
 public class Hooks extends BasePage {
-    private static final Logger LOG = LogManager.getLogger(Hooks.class);
     private final World world;
     private static int failureCount = 0;
 
@@ -43,13 +40,14 @@ public class Hooks extends BasePage {
         AxeStepDef.thereAreNoAccessibilityViolations();
     }
 
-    @After("@UI")
-    public void afterEachUI() {
+    @After
+    public void afterEach() {
         Driver.get().manage().deleteAllCookies();
     }
 
     @After("@UI")
     public void takeScreenshotOnFailure(Scenario scenario) {
+        System.out.println("******* After UI *********");
         if (scenario.isFailed()) {
             WebDriver driver = Driver.get();
             final byte[] screenshot = ((TakesScreenshot) driver).getScreenshotAs(OutputType.BYTES);
@@ -70,17 +68,18 @@ public class Hooks extends BasePage {
 
     @After("@API")
     public void theUserIsDeleted() {
+        System.out.println("******* After API *********");
         if (world.userProfile != null) {
-            LOG.info(
-                    "After API hook: Deleting user profile with email {}",
-                    world.userProfile.getEmail());
+            System.out.printf(
+                    "Deleting user profile with email %s%n", world.userProfile.getEmail());
             userLifecycleService.deleteUserProfileFromDynamodb(world.userProfile);
         }
         if (world.userCredentials != null) {
-            LOG.info(
-                    "After API hook: Deleting user credentials with email {}",
-                    world.userCredentials.getEmail());
+            System.out.printf(
+                    "Deleting user credentials with email %s%n", world.userCredentials.getEmail());
             userLifecycleService.deleteUserCredentialsFromDynamodb(world.userCredentials);
         }
+        Driver.get().manage().deleteAllCookies();
+        Driver.closeDriver();
     }
 }
