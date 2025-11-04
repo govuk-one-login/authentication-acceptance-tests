@@ -207,9 +207,9 @@ Feature: The MFA reset process.
       | App      | I do not have access to the authenticator app | Identity check incomplete | Enter the 6 digit security code shown in your authenticator app |
 
 
-  @AUT-3993 @new-mfa-reset-with-ipv @under-development
-  Scenario Outline: MFA reset is switched on and APP user can reset their MFA method after resetting their password
-    Given a user with "<Mfa Type>" MFA exists
+  @AUT-3993 @new-mfa-reset-with-ipv
+  Scenario: MFA reset is switched on and APP user can reset their MFA method after resetting their password
+    Given a user with App MFA exists
     When the user comes from the stub relying party with default options and is taken to the "Create your GOV.UK One Login or sign in" page
     And the user selects sign in
     And the user enters their email address
@@ -227,11 +227,11 @@ Feature: The MFA reset process.
     When the user enters their email address
     Then the user is taken to the "Enter your password" page
     When the user enters their password
-    Then the user is taken to the "<Page>" page
-    And the user selects "<Link Text>" link
+    Then the user is taken to the "Enter the 6 digit security code shown in your authenticator app" page
+    And the user selects "I do not have access to the authenticator app" link
     And the user selects "check if you can change how you get security codes" link
     Then the user is taken to the IPV stub page
-    When "<IPV Response>" radio option selected
+    When "Success" radio option selected
     And the user clicks the continue button
     Then the user is taken to the "How do you want to get security codes" page
     When the user selects radio button "Text message"
@@ -242,14 +242,11 @@ Feature: The MFA reset process.
     Then the user is taken to the "You’ve changed how you get security codes" page
     And the user clicks the continue button
     Then the user is returned to the service
-    Examples:
-      | Mfa Type | Link Text                                     | IPV Response | Page                                                            |
-      | App      | I do not have access to the authenticator app | Success      | Enter the 6 digit security code shown in your authenticator app |
 
 
-  @AUT-3993 @new-mfa-reset-with-ipv @under-development
-  Scenario Outline: MFA reset is switched on and SMS user can reset their MFA method after resetting their password
-    Given a user with "<Mfa Type>" MFA exists
+  @AUT-3993 @new-mfa-reset-with-ipv
+  Scenario: MFA reset is switched on and SMS user can reset their MFA method after resetting their password
+    Given a user with SMS MFA exists
     When the user comes from the stub relying party with default options and is taken to the "Create your GOV.UK One Login or sign in" page
     And the user selects sign in
     And the user enters their email address
@@ -257,8 +254,8 @@ Feature: The MFA reset process.
     When the user clicks the forgotten password link
     Then the user is taken to the "Check your email" page
     When the user enters the six digit security code from their email
-    Then the user is taken to the "<Page>" page
-    When the user enters the six digit code for "<Mfa Type>"
+    Then the user is taken to the "Check your phone" page
+    When the user enters the six digit security code from their phone
     Then the user is taken to the "Reset your password" page
     When the user enters valid new password and correctly retypes it
     Then the user is returned to the service
@@ -268,11 +265,11 @@ Feature: The MFA reset process.
     When the user enters their email address
     Then the user is taken to the "Enter your password" page
     When the user enters their password
-    Then the user is taken to the "<Page>" page
-    And the user selects "<Link Text>" link
+    Then the user is taken to the "Check your phone" page
+    And the user selects "Problems with the code?" link
     And the user selects "check if you can change how you get security codes" link
     Then the user is taken to the IPV stub page
-    When "<IPV Response>" radio option selected
+    When "Success" radio option selected
     And the user clicks the continue button
     Then the user is taken to the "How do you want to get security codes" page
     When the user chooses auth app to get security codes
@@ -282,74 +279,10 @@ Feature: The MFA reset process.
     Then the user is taken to the "You’ve changed how you get security codes" page
     When the user clicks the continue button
     Then the user is returned to the service
-    Examples:
-      | Mfa Type | Link Text               | IPV Response | Page             |
-      | SMS      | Problems with the code? | Success      | Check your phone |
 
 
-  @AUT-3993 @old-mfa-without-ipv
-  Scenario Outline: MFA reset is switched off and SMS user cannot reset their MFA method after resetting their password
-    Given a user with "<Mfa Type>" MFA exists
-    When the user comes from the stub relying party with default options and is taken to the "Create your GOV.UK One Login or sign in" page
-    And the user selects sign in
-    And the user enters their email address
-    Then the user is taken to the "Enter your password" page
-    When the user clicks the forgotten password link
-    Then the user is taken to the "Check your email" page
-    When the user enters the six digit security code from their email
-    Then the user is taken to the "<Page>" page
-    When the user enters the six digit code for "<Mfa Type>"
-    Then the user is taken to the "Reset your password" page
-    When the user enters valid new password and correctly retypes it
-    Then the user is returned to the service
-    And the user logs out
-    When the user comes from the stub relying party with default options and is taken to the "Create your GOV.UK One Login or sign in" page
-    And the user selects sign in
-    Then the user is taken to the "Enter your email" page
-    When the user enters their email address
-    Then the user is taken to the "Enter your password" page
-    When the user enters their password
-    Then the user is taken to the "<Page>" page
-    And the user selects "<Link Text>" link
-    Then the link "change how you get security codes" is not available
-    When the user enters the six digit code for "<Mfa Type>"
-    Then the user is returned to the service
-    Examples:
-      | Mfa Type | Link Text               | Page             |
-      | SMS      | Problems with the code? | Check your phone |
-
-
-  @AUT-3993 @old-mfa-without-ipv
-  Scenario Outline: MFA reset is switched off and APP user cannot reset their MFA method after resetting their password
-    Given a user with "<Mfa Type>" MFA exists
-    When the user comes from the stub relying party with default options and is taken to the "Create your GOV.UK One Login or sign in" page
-    And the user selects sign in
-    And the user enters their email address
-    Then the user is taken to the "Enter your password" page
-    When the user clicks the forgotten password link
-    Then the user is taken to the "Check your email" page
-    When the user enters the six digit security code from their email
-    And the user enters the security code from the auth app
-    Then the user is taken to the "Reset your password" page
-    When the user enters valid new password and correctly retypes it
-    Then the user is returned to the service
-    And the user logs out
-    When the user comes from the stub relying party with default options and is taken to the "Create your GOV.UK One Login or sign in" page
-    And the user selects sign in
-    Then the user is taken to the "Enter your email" page
-    When the user enters their email address
-    Then the user is taken to the "Enter your password" page
-    When the user enters their password
-    Then the user is taken to the "<Page>" page
-    And the link "I do not have access to the authenticator app" is not available
-    When the user enters the six digit code for "<Mfa Type>"
-    Then the user is returned to the service
-    Examples:
-      | Mfa Type | Page                                                            |
-      | App      | Enter the 6 digit security code shown in your authenticator app |
-
-  @AUT-4051 @new-mfa-reset-with-ipv @under-development
-  Scenario Outline: User is signing in via the one login v2 app
+  @AUT-4051 @new-mfa-reset-with-ipv
+  Scenario Outline: User who signs in via the Strategic-App must open OneLogin in a web browser to successfully change how they get their security code.
     Given a user with "<Mfa Type>" MFA exists
     When the user comes from the stub relying party with option <Channel> and is taken to the "Sign in to GOV.UK One Login" page
     And the user selects sign in
@@ -361,7 +294,65 @@ Feature: The MFA reset process.
     Then the URL is present with suffix "open-one-login-in-web-browser"
     Examples:
       | Channel               | Mfa Type | Link Text                                     | Page                                               |
-      | channel-strategic-app | App      | I do not have access to the authenticator app | Open GOV.UK One Login in a web browser to continue |
       | channel-strategic-app | SMS      | Problems with the code?                       | Open GOV.UK One Login in a web browser to continue |
-      | channel-generic-app   | App      | I do not have access to the authenticator app | Open GOV.UK One Login in a web browser to continue |
-      | channel-generic-app   | SMS      | Problems with the code?                       | Open GOV.UK One Login in a web browser to continue |
+      | channel-strategic-app | App      | I do not have access to the authenticator app | Open GOV.UK One Login in a web browser to continue |
+
+
+  @AUT-4298 @signup-via-GOV.UK-App
+  Scenario: Sign up via GOV.UK App with sms mfa
+    Given a user does not yet exist
+    When the user comes from the stub relying party with option channel-generic-app and is taken to the "Create your GOV.UK One Login or sign in" page
+    When the user selects create an account
+    Then the user is taken to the "Enter your email address" page
+    When the user enters their email address
+    Then the user is taken to the "Check your email" page
+    When the user enters the six digit security code from their email
+    Then the user is taken to the "Create your password" page
+    When the user creates a password
+    Then the user is taken to the "Choose how to get security codes" page
+    When the user chooses text message to get security codes
+    Then the user is taken to the "Enter your mobile phone number" page
+    When the user enters their mobile phone number
+    Then the user is taken to the "Check your phone" page
+    When the user enters the six digit security code from their phone
+    Then the user is taken to the "You’ve created your GOV.UK One Login" page
+    When the user clicks the continue button
+    Then the user is returned to the service
+
+
+  @AUT-4298 @signup-via-GOV.UK-App
+  Scenario: Sign up via GOV.UK App with Auth App mfa
+    Given a user does not yet exist
+    When the user comes from the stub relying party with option channel-generic-app and is taken to the "Create your GOV.UK One Login or sign in" page
+    When the user selects create an account
+    Then the user is taken to the "Enter your email address" page
+    When the user enters their email address
+    Then the user is taken to the "Check your email" page
+    When the user enters the six digit security code from their email
+    Then the user is taken to the "Create your password" page
+    When the user creates a password
+    Then the user is taken to the "Choose how to get security codes" page
+    When the user chooses auth app to get security codes
+    Then the user is taken to the "Set up an authenticator app" page
+    When the user adds the secret key on the screen to their auth app
+    And the user enters the security code from the auth app
+    Then the user is taken to the "You’ve created your GOV.UK One Login" page
+    When the user clicks the continue button
+    Then the user is returned to the service
+
+
+  @AUT-4298 @sign-in-via-GOV.UK-App
+  Scenario Outline: Sign in via GOV.UK App
+    Given a user with "<Mfa Type>" MFA exists
+    When the user comes from the stub relying party with option <Channel> and is taken to the "Create your GOV.UK One Login or sign in" page
+    And the user selects sign in
+    And the user enters their email address
+    And the user enters their password
+    Then the user is taken to the "<Page>" page
+    When the user enters the six digit code for "<Mfa Type>"
+    Then the user is returned to the service
+
+    Examples:
+      | Channel               | Mfa Type |  Page                                                            |
+      | channel-generic-app   | App      |  Enter the 6 digit security code shown in your authenticator app |
+      | channel-generic-app   | SMS      |  Check your phone                                                |
