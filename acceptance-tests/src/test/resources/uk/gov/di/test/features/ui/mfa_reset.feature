@@ -281,63 +281,6 @@ Feature: The MFA reset process.
     Then the user is returned to the service
 
 
-  @AUT-3993 @old-mfa-without-ipv
-  Scenario: MFA reset is switched off and SMS user cannot reset their MFA method after resetting their password
-    Given a user with SMS MFA exists
-    When the user comes from the stub relying party with default options and is taken to the "Create your GOV.UK One Login or sign in" page
-    And the user selects sign in
-    And the user enters their email address
-    Then the user is taken to the "Enter your password" page
-    When the user clicks the forgotten password link
-    Then the user is taken to the "Check your email" page
-    When the user enters the six digit security code from their email
-    Then the user is taken to the "Check your phone" page
-    When the user enters the six digit security code from their phone
-    Then the user is taken to the "Reset your password" page
-    When the user enters valid new password and correctly retypes it
-    Then the user is returned to the service
-    And the user logs out
-    When the user comes from the stub relying party with default options and is taken to the "Create your GOV.UK One Login or sign in" page
-    And the user selects sign in
-    Then the user is taken to the "Enter your email" page
-    When the user enters their email address
-    Then the user is taken to the "Enter your password" page
-    When the user enters their password
-    Then the user is taken to the "Check your phone" page
-    And the user selects "Problems with the code?" link
-    Then the link "change how you get security codes" is not available
-    When the user enters the six digit security code from their phone
-    Then the user is returned to the service
-
-
-  @AUT-3993 @old-mfa-without-ipv
-  Scenario: MFA reset is switched off and APP user cannot reset their MFA method after resetting their password
-    Given a user with App MFA exists
-    When the user comes from the stub relying party with default options and is taken to the "Create your GOV.UK One Login or sign in" page
-    And the user selects sign in
-    And the user enters their email address
-    Then the user is taken to the "Enter your password" page
-    When the user clicks the forgotten password link
-    Then the user is taken to the "Check your email" page
-    When the user enters the six digit security code from their email
-    And the user enters the security code from the auth app
-    Then the user is taken to the "Reset your password" page
-    When the user enters valid new password and correctly retypes it
-    Then the user is returned to the service
-    And the user logs out
-    When the user comes from the stub relying party with default options and is taken to the "Create your GOV.UK One Login or sign in" page
-    And the user selects sign in
-    Then the user is taken to the "Enter your email" page
-    When the user enters their email address
-    Then the user is taken to the "Enter your password" page
-    When the user enters their password
-    Then the user is taken to the "Enter the 6 digit security code shown in your authenticator app" page
-    And the user selects "I do not have access to the authenticator app" link
-    Then the link "change how you get security codes" is not available
-    And the user enters the security code from the auth app
-    Then the user is returned to the service
-
-
   @AUT-4051 @new-mfa-reset-with-ipv
   Scenario Outline: User who signs in via the Strategic-App must open OneLogin in a web browser to successfully change how they get their security code.
     Given a user with "<Mfa Type>" MFA exists
