@@ -1,4 +1,4 @@
-@AUT-4388 @AUT-4389 @UI @dev @under-development
+@AUT-4388 @AUT-4389 @UI @dev @EmailBlocks @under-development
 Feature: Create account - Experian email check
 
   This scenario covers how Experian checks the email address submitted during One Login account creation.
