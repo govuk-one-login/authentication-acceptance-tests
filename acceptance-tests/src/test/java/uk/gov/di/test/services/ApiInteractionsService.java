@@ -119,7 +119,7 @@ public class ApiInteractionsService {
         String apiPath = "/send-otp-notification";
         int expectedStatusCode = 204;
 
-        makeApiCall(world, requestBody, apiPath, expectedStatusCode);
+        makeApiCallAndAssertStatusCode(world, requestBody, apiPath, expectedStatusCode);
     }
 
     public static void sendEmailOtpNotification(World world) {
@@ -135,10 +135,11 @@ public class ApiInteractionsService {
         String apiPath = "/send-otp-notification";
         int expectedStatusCode = 204;
 
-        makeApiCall(world, requestBody, apiPath, expectedStatusCode);
+        makeApiCallAndAssertStatusCode(world, requestBody, apiPath, expectedStatusCode);
     }
 
-    public static Response makeApiCall(World world, String requestBody, String apiPath) {
+    public static Response makeApiCallAndAssertStatusCode(
+            World world, String requestBody, String apiPath) {
         String token = world.getToken();
         if (token == null) {
             throw new RuntimeException("Token is null - ensure user is authenticated first");
@@ -192,9 +193,9 @@ public class ApiInteractionsService {
         }
     }
 
-    public static void makeApiCall(
+    public static void makeApiCallAndAssertStatusCode(
             World world, String requestBody, String apiPath, int expectedStatusCode) {
-        Response response = makeApiCall(world, requestBody, apiPath);
+        Response response = makeApiCallAndAssertStatusCode(world, requestBody, apiPath);
         assertEquals(expectedStatusCode, response.getStatusCode());
     }
 
@@ -212,7 +213,7 @@ public class ApiInteractionsService {
         String apiPath = "/send-otp-notification";
         int expectedStatusCode = 400;
 
-        makeApiCall(world, requestBody, apiPath, expectedStatusCode);
+        makeApiCallAndAssertStatusCode(world, requestBody, apiPath, expectedStatusCode);
     }
 
     public static String getOtp(String email) {
@@ -411,7 +412,7 @@ public class ApiInteractionsService {
         String apiPath = "/v1/mfa-methods/" + world.userProfile.getPublicSubjectID();
         int expectedStatusCode = 200;
 
-        makeApiCall(world, requestBody, apiPath, expectedStatusCode);
+        makeApiCallAndAssertStatusCode(world, requestBody, apiPath, expectedStatusCode);
 
         world.userCredentials =
                 DynamoDbService.getInstance().getUserCredentials(world.userProfile.getEmail());

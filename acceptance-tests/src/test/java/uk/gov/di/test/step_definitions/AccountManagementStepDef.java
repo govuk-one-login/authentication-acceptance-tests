@@ -20,7 +20,7 @@ import static uk.gov.di.test.services.ApiInteractionsService.authenticateUser;
 import static uk.gov.di.test.services.ApiInteractionsService.authorizeUser;
 import static uk.gov.di.test.services.ApiInteractionsService.cannotSendSmsOtpNotification;
 import static uk.gov.di.test.services.ApiInteractionsService.getOtp;
-import static uk.gov.di.test.services.ApiInteractionsService.makeApiCall;
+import static uk.gov.di.test.services.ApiInteractionsService.makeApiCallAndAssertStatusCode;
 import static uk.gov.di.test.services.ApiInteractionsService.sendEmailOtpNotification;
 import static uk.gov.di.test.services.ApiInteractionsService.sendSmsOtpNotification;
 import static uk.gov.di.test.services.ApiInteractionsService.updatePhoneNumber;
@@ -106,7 +106,7 @@ public class AccountManagementStepDef extends BasePage {
     @When("the User provides the correct otp for the new email address")
     public void theUserProvidesTheCorrectOtpForTheNewEmailAddress() {
         Response response =
-                makeApiCall(
+                makeApiCallAndAssertStatusCode(
                         world,
                         """
                 {
