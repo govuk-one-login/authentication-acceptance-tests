@@ -1,4 +1,4 @@
-@AUT-4388 @AUT-4389 @UI @dev @under-development
+@AUT-4388 @AUT-4389 @UI @dev @EmailBlocks @under-development
 Feature: Create account - Experian email check
 
   This scenario covers how Experian checks the email address submitted during One Login account creation.
@@ -14,6 +14,7 @@ Feature: Create account - Experian email check
     Then the user is taken to the "Enter your email address" page
     When the user enters their email address
     Then the user is taken to the "Check your email" page
+    And the User waits for 4 seconds
     When the user enters the six digit security code from their email
     And the user email is accepted and taken to "Create your password" page
     Then the user email is not blocked to proceed with account creation
@@ -26,6 +27,7 @@ Feature: Create account - Experian email check
     Then the user is taken to the "Enter your email address" page
     When User enters a high-risk email that will cause an error
     Then the user is taken to the "Check your email" page
+    And the User waits for 4 seconds
     When the user enters the six digit security code from their email
     And the user email is accepted and taken to "Create your password" page
     Then the user email is not blocked to proceed with account creation
@@ -38,6 +40,7 @@ Feature: Create account - Experian email check
     Then the user is taken to the "Enter your email address" page
     When User enters a high-risk email
     Then the user is taken to the "Check your email" page
+    And the User waits for 4 seconds
     When the user enters the six digit security code from their email
     Then the user email is blocked and taken to "cannot-use-email-address" page
     And the user attempt to navigates to the previous page

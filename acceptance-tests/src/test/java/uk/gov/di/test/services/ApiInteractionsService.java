@@ -7,6 +7,7 @@ import com.nimbusds.jose.JOSEException;
 import io.cucumber.core.internal.com.fasterxml.jackson.core.JsonProcessingException;
 import io.cucumber.core.internal.com.fasterxml.jackson.databind.JsonNode;
 import io.cucumber.core.internal.com.fasterxml.jackson.databind.ObjectMapper;
+import io.restassured.response.Response;
 import org.apache.http.client.utils.URIUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -104,7 +105,7 @@ public class ApiInteractionsService {
         assertEquals(200, invokeResponse.statusCode());
     }
 
-    public static void sendOtpNotification(World world) {
+    public static void sendSmsOtpNotification(World world) {
         String requestBody =
                 """
             {
@@ -118,11 +119,27 @@ public class ApiInteractionsService {
         String apiPath = "/send-otp-notification";
         int expectedStatusCode = 204;
 
-        makeApiCall(world, requestBody, apiPath, expectedStatusCode);
+        makeApiCallAndAssertStatusCode(world, requestBody, apiPath, expectedStatusCode);
     }
 
-    public static void makeApiCall(
-            World world, String requestBody, String apiPath, int expectedStatusCode) {
+    public static void sendEmailOtpNotification(World world) {
+        String requestBody =
+                """
+            {
+                "notificationType": "VERIFY_EMAIL",
+                "email": "%s"
+            }
+            """
+                        .formatted(world.getNewEmailAddress());
+
+        String apiPath = "/send-otp-notification";
+        int expectedStatusCode = 204;
+
+        makeApiCallAndAssertStatusCode(world, requestBody, apiPath, expectedStatusCode);
+    }
+
+    public static Response makeApiCallAndAssertStatusCode(
+            World world, String requestBody, String apiPath) {
         String token = world.getToken();
         if (token == null) {
             throw new RuntimeException("Token is null - ensure user is authenticated first");
@@ -136,24 +153,20 @@ public class ApiInteractionsService {
 
         if ("local".equals(hostEnvironment)) {
             // Local environment - use RestAssured with Docker
-            io.restassured.response.Response response =
-                    given().baseUri(
-                                    "http://host.docker.internal:"
-                                            + System.getenv()
-                                                    .getOrDefault("API_PROXY_PORT", "8123"))
-                            .header("Authorization", "Bearer " + token)
-                            .header("Content-Type", "application/json")
-                            .header("txma-audit-encoded", "encoded-string")
-                            .header("X-Forwarded-For", "0.0.0.0")
-                            .body(requestBody)
-                            .when()
-                            .post(apiPath)
-                            .then()
-                            .time(org.hamcrest.Matchers.lessThan(30000L))
-                            .extract()
-                            .response();
-
-            assertEquals(expectedStatusCode, response.getStatusCode());
+            return given().baseUri(
+                            "http://host.docker.internal:"
+                                    + System.getenv().getOrDefault("API_PROXY_PORT", "8123"))
+                    .header("Authorization", "Bearer " + token)
+                    .header("Content-Type", "application/json")
+                    .header("txma-audit-encoded", "encoded-string")
+                    .header("X-Forwarded-For", "0.0.0.0")
+                    .body(requestBody)
+                    .when()
+                    .post(apiPath)
+                    .then()
+                    .time(org.hamcrest.Matchers.lessThan(30000L))
+                    .extract()
+                    .response();
         } else {
             // Non-local environment - use VPCE approach
             String environment = Environment.getOrThrow("ENVIRONMENT");
@@ -161,29 +174,32 @@ public class ApiInteractionsService {
 
             String vpcEndpointUrl = TEST_CONFIG_SERVICE.get("AUTH_INTERNAL_VPCE_URL");
 
-            io.restassured.response.Response response =
-                    given().baseUri(vpcEndpointUrl)
-                            .header("Content-Type", "application/json")
-                            .header(
-                                    "Host",
-                                    world.getMethodManagementApiId()
-                                            + ".execute-api.eu-west-2.amazonaws.com")
-                            .header("Authorization", "Bearer " + token)
-                            .header("txma-audit-encoded", "encoded-string")
-                            .header("X-Forwarded-For", "0.0.0.0")
-                            .body(requestBody)
-                            .when()
-                            .post(vpcePath)
-                            .then()
-                            .time(org.hamcrest.Matchers.lessThan(30000L))
-                            .extract()
-                            .response();
-
-            assertEquals(expectedStatusCode, response.getStatusCode());
+            return given().baseUri(vpcEndpointUrl)
+                    .header("Content-Type", "application/json")
+                    .header(
+                            "Host",
+                            world.getMethodManagementApiId()
+                                    + ".execute-api.eu-west-2.amazonaws.com")
+                    .header("Authorization", "Bearer " + token)
+                    .header("txma-audit-encoded", "encoded-string")
+                    .header("X-Forwarded-For", "0.0.0.0")
+                    .body(requestBody)
+                    .when()
+                    .post(vpcePath)
+                    .then()
+                    .time(org.hamcrest.Matchers.lessThan(30000L))
+                    .extract()
+                    .response();
         }
     }
 
-    public static void cannotSendOtpNotification(World world) {
+    public static void makeApiCallAndAssertStatusCode(
+            World world, String requestBody, String apiPath, int expectedStatusCode) {
+        Response response = makeApiCallAndAssertStatusCode(world, requestBody, apiPath);
+        assertEquals(expectedStatusCode, response.getStatusCode());
+    }
+
+    public static void cannotSendSmsOtpNotification(World world) {
         String requestBody =
                 """
             {
@@ -197,7 +213,7 @@ public class ApiInteractionsService {
         String apiPath = "/send-otp-notification";
         int expectedStatusCode = 400;
 
-        makeApiCall(world, requestBody, apiPath, expectedStatusCode);
+        makeApiCallAndAssertStatusCode(world, requestBody, apiPath, expectedStatusCode);
     }
 
     public static String getOtp(String email) {
@@ -396,7 +412,7 @@ public class ApiInteractionsService {
         String apiPath = "/v1/mfa-methods/" + world.userProfile.getPublicSubjectID();
         int expectedStatusCode = 200;
 
-        makeApiCall(world, requestBody, apiPath, expectedStatusCode);
+        makeApiCallAndAssertStatusCode(world, requestBody, apiPath, expectedStatusCode);
 
         world.userCredentials =
                 DynamoDbService.getInstance().getUserCredentials(world.userProfile.getEmail());

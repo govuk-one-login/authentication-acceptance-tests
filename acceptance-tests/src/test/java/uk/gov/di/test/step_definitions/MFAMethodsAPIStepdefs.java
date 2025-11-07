@@ -190,7 +190,7 @@ public class MFAMethodsAPIStepdefs {
     public void theUserRequestsToUpdateABackupMFAAuthApp(String phoneNumber) {
         // put new mfa in world
         world.setNewPhoneNumber(phoneNumber);
-        sendOtpNotification(world);
+        sendSmsOtpNotification(world);
     }
 
     @When("{string} is the new verified Default MFA")
