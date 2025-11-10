@@ -1,16 +1,26 @@
 package uk.gov.di.test.pages;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.openqa.selenium.By;
 import uk.gov.di.test.utils.Driver;
 
 public class OrchestrationStubUserInfoPage extends StubUserInfoPage {
-    By idTokenField = By.cssSelector("dl.govuk-summary-list > div:nth-child(1) > dd");
-    By accessTokenField = By.id("user-info-access-token");
+    By idTokenField = By.cssSelector("dl > div:nth-child(4) > dd > pretty-json");
+    By accessTokenField = By.cssSelector("dl > div:nth-child(3) > dd");
+    By userInfoField = By.cssSelector("pretty-json");
     private static final String TITLE = OrchestrationStubStartPage.TITLE;
 
     @Override
     public String getIdToken() {
-        return Driver.get().findElement(idTokenField).getText();
+        try {
+            String jsonText = Driver.get().findElement(userInfoField).getText();
+            ObjectMapper mapper = new ObjectMapper();
+            JsonNode root = mapper.readTree(jsonText);
+            return root.get("rp_pairwise_id").asText();
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to extract rp_pairwise_id from user info JSON", e);
+        }
     }
 
     @Override
