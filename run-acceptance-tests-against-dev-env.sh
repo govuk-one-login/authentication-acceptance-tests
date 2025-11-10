@@ -25,7 +25,11 @@ for ((i = 0; i < ${#envvalue[@]}; ++i)); do
 done
 
 if [[ ${ENVIRONMENT} == authdev* ]] || [[ ${ENVIRONMENT} == "dev" ]]; then
+<<<<<<< HEAD
   export AWS_PROFILE="di-auth-development-AdministratorAccessPermission"
+=======
+  export AWS_PROFILE="di-auth-development-admin"
+>>>>>>> 71a029c (AUT-4727: Removing sandpit config from respo)
 else
   echo "Unknown environment: ${ENVIRONMENT}"
   exit 1
