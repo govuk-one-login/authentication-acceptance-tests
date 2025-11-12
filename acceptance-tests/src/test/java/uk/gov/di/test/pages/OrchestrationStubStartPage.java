@@ -31,6 +31,11 @@ public class OrchestrationStubStartPage extends StubStartPage {
     }
 
     @Override
+    public void useDefaultOptionsAndContinue() {
+        selectRpOptionsByIdAndContinue(new String[] {"prompt-none"});
+    }
+
+    @Override
     public void selectRpOptionsById(String[] opts) {
         HashSet<String> set = new HashSet<>(List.of(opts));
         for (String id : set) {
@@ -41,13 +46,12 @@ public class OrchestrationStubStartPage extends StubStartPage {
                 case "2fa-off":
                     id = "level-2";
                     break;
-                    // TODO: create more semantic stub actions
-                    //                case "not-authenticated":
-                    //                    id = "authenticated";
-                    //                    break;
-                    //                case "already-authenticated":
-                    //                    id = "authenticated-2";
-                    //                    break;
+                case "prompt-login":
+                    id = "authenticated";
+                    break;
+                case "prompt-none":
+                    id = "authenticated-2";
+                    break;
                 default:
                     break;
             }
@@ -57,6 +61,9 @@ public class OrchestrationStubStartPage extends StubStartPage {
 
     @Override
     public void reauthRequired(String idToken) {
-        throw new UnsupportedOperationException("Not implemented for orchestration stub");
+        goToRpStub();
+        enterReauthIdToken(idToken);
+        findAndClickButton(getContinueButton());
+        setAnalyticsCookieTo(false);
     }
 }

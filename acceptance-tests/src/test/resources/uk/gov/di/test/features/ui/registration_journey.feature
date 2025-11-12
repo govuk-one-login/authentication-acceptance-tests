@@ -86,6 +86,7 @@ Feature: Registration Journey
   Scenario: Partial registered user is able to complete registration when they restart journey and select forgotten password for sms user
     Given a user does not yet exist
     Given the user is partially registered up to "choose how to get security codes" page
+    Given the user's session has ended
     When the user attempts to re-sign-in after partial registration and selects forgotten password link
     Then the user is taken to the "Finish creating your GOV.UK One Login" page
     When the user chooses text message to get security codes and progress to set it up

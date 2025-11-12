@@ -16,7 +16,7 @@ Feature: Account recovery
     Then the user is taken to the "Check your email" page
     When the user enters the six digit security code from their email
     Then the user is taken to the "How do you want to get security codes" page
-    When the user selects radio button "Authenticator app for smartphone, tablet or computer"
+    When the user selects radio button "Authenticator app"
     Then the user is taken to the "Set up an authenticator app" page
     When the user adds the secret key on the screen to their auth app
     And the user enters the security code from the auth app
@@ -49,7 +49,7 @@ Feature: Account recovery
     Then the user is taken to the IPV stub page
     When the user clicks the continue button
     Then the user is taken to the "How do you want to get security codes" page
-    When the user selects radio button "Authenticator app for smartphone, tablet or computer"
+    When the user selects radio button "Authenticator app"
     Then the user is taken to the "Set up an authenticator app" page
     When the user adds the secret key on the screen to their auth app
     And the user enters the security code from the auth app

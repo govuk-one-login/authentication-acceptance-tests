@@ -158,6 +158,11 @@ public class CommonStepDef extends BasePage {
         crossPageFlows.createPartialRegisteredUpToChooseHowToGetSecurityCodesPage();
     }
 
+    @Given("the user's session has ended")
+    public void theUsersSessionHasEnded() {
+        Driver.get().manage().deleteAllCookies();
+    }
+
     @When(
             "the user attempts to re-sign-in after partial registration and selects forgotten password link")
     public void theUserAttemptsToReSignInAfterPartialRegistrationAndSelectsForgottenPasswordLink() {
