@@ -6,7 +6,7 @@ Feature: Update Email
     Given a User exists
     And the User is Authenticated
     Then the User provides a new email address
-    And the User waits for 4 seconds
+    And the User waits for 7 seconds
     When the User provides the correct otp for the new email address
     Then the system accepts the request
 
@@ -15,7 +15,7 @@ Feature: Update Email
     Given a User exists
     And the User is Authenticated
     Then the User provides a new high-risk email address
-    And the User waits for 4 seconds
+    And the User waits for 7 seconds
     When the User provides the correct otp for the new email address
     Then the system rejects the request with status code 403 and error code 1089
 
@@ -24,6 +24,6 @@ Feature: Update Email
     Given a User exists
     And the User is Authenticated
     Then the User provides a new high-risk email address that will cause an error
-    And the User waits for 4 seconds
+    And the User waits for 7 seconds
     When the User provides the correct otp for the new email address
     Then the system accepts the request
