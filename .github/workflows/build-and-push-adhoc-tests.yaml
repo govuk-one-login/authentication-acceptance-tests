@@ -14,9 +14,10 @@ on:
         required: true
         default: 'dev'
         type: choice
-        # TODO: add staging and build options after functionality is validated in dev
+        # TODO: staging option to be added after creating new github actions role for that environment
         options:
           - dev
+          - build
       cucumber_tags:
         description: 'Cucumber tag(s) (optional)'
         required: false
