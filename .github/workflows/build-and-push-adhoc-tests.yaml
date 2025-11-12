@@ -62,6 +62,6 @@ jobs:
           build-args: |
             SELENIUM_BASE=${{ env.SELENIUM_BASE }}
             AD_HOC_CUCUMBER_TAGS=${{ inputs.cucumber_tags }}
-          tags: ${{ format('{0}/{1}:latest', steps.login-ecr.outputs.registry, (inputs.environment == 'dev' && env.AD_HOC_DEV_ECR_REPO) || (inputs.environment == 'build' && secrets.BUILD_ACCEPTANCE_ECR_REPO) || (inputs.environment == 'staging' && secrets.STAGING_ACCEPTANCE_ECR_REPO)) }}
+          tags: ${{ format('{0}/{1}:latest', steps.login-ecr.outputs.registry, (inputs.environment == 'dev' && env.AD_HOC_DEV_ECR_REPO) || (inputs.environment == 'build' && secrets.AD_HOC_BUILD_ECR_REPO) || (inputs.environment == 'staging' && secrets.AD_HOC_STAGING_ECR_REPO)) }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
