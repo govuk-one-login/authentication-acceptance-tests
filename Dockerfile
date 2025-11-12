@@ -70,6 +70,8 @@ RUN chmod 500 /test/scripts/fetch_envars.sh
 # the root directory of the docker image.
 #
 FROM base AS auth-api
+ARG AD_HOC_CUCUMBER_TAGS
+ENV AD_HOC_CUCUMBER_TAGS=${AD_HOC_CUCUMBER_TAGS}
 COPY --chown=${SEL_USER}:${SEL_GROUP} docker/run-tests-api.sh /test/run-acceptance-tests.sh
 RUN chmod 500 /test/run-acceptance-tests.sh
 
