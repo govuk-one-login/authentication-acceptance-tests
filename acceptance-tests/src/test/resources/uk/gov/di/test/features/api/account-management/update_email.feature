@@ -1,4 +1,4 @@
-@under-development @API
+@API
 Feature: Update Email
 
   @EmailBlocks
