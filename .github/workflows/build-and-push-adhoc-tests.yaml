@@ -3,7 +3,7 @@ name: Build and push ad hoc acceptance tests
 env:
   AWS_REGION: eu-west-2
   SELENIUM_BASE: selenium/standalone-chromium:132.0
-  AD_HOC_DEV_ECR_REPO: acceptance-test-dev-adhoctestrunnerimagerepository-1o5hjfyrcrly
+  AD_HOC_DEV_ECR_REPO: dev-ad-hoc-tests-adhoctestrunnerimagerepository-fxyishxmivqj
   GHA_DEV_ROLE: arn:aws:iam::653994557586:role/dev-auth-deploy-pipeline-GitHubActionsRole-QrtGginNnjDD
 
 on:
