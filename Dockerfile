@@ -86,13 +86,3 @@ COPY --chown=${SEL_USER}:${SEL_GROUP} docker/run-tests-ui.sh /run-tests.sh
 RUN chmod 500 /run-tests.sh
 
 ENTRYPOINT ["/run-tests.sh"]
-
-#
-# The API tests are run on the secure pipeline which expects a file called run-tests.sh in the root
-# directory of the docker image.
-#
-FROM base AS am-api
-COPY --chown=${SEL_USER}:${SEL_GROUP} docker/run-tests-am.sh /run-tests.sh
-RUN chmod 500 /run-tests.sh
-
-ENTRYPOINT ["/run-tests.sh"]
