@@ -6,12 +6,13 @@ WORKDIR /test
 COPY settings.gradle gradlew gradle.properties ./
 COPY gradle ./gradle
 
-COPY acceptance-tests ./acceptance-tests
-
 RUN chmod u+x ./gradlew
 
-RUN chmod u+x ./gradlew \
-    && ./gradlew --no-daemon --console=plain \
+RUN ./gradlew --version
+
+COPY acceptance-tests ./acceptance-tests
+
+RUN ./gradlew --no-daemon --console=plain \
         :acceptance-tests:build \
         :acceptance-tests:assemble \
         :acceptance-tests:compileTestJava \
