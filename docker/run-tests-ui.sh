@@ -74,12 +74,12 @@ setup_to_run_api_tests() {
     fi
 
     if grep -qE '^API_CUCUMBER_FILTER_TAGS=' /test/.env; then
-      API_CUCUMBER_FILTER_TAGS=$(grep ^API_CUCUMBER_FILTER_TAGS= /test/.env | cut -d= -f2- | tail -1)
+      AM_CUCUMBER_FILTER_TAGS=$(grep ^AM_CUCUMBER_FILTER_TAGS= /test/.env | cut -d= -f2- | tail -1)
 
       if grep -qE '^CUCUMBER_FILTER_TAGS=' /test/.env; then
         sed -i '/^CUCUMBER_FILTER_TAGS=.*/d' /test/.env
       fi
-      echo -e "CUCUMBER_FILTER_TAGS=${API_CUCUMBER_FILTER_TAGS}" | tee --append /test/.env
+      echo -e "CUCUMBER_FILTER_TAGS=${AM_CUCUMBER_FILTER_TAGS}" | tee --append /test/.env
     fi
   fi
 }
