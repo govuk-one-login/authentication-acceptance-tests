@@ -142,7 +142,9 @@ Feature: Reauthentication of user
     And the user logs out
     And the user switches back to the second tab
     And the user enters their email address for reauth
-    Then the user is taken to the "Sorry, the page has expired" page
+    And the user enters the correct password
+    And the user enters the six digit security code from their phone
+    Then the user is taken to the "There’s a problem with this service" page
 
 
   @reauth-multiple-rp-tab @AUT-3530
@@ -156,7 +158,8 @@ Feature: Reauthentication of user
     And the user logs out
     And the user switches back to the second tab
     And the user enters the correct password
-    Then the user is taken to the "Sorry, the page has expired" page
+    And the user enters the six digit security code from their phone
+    Then the user is taken to the "There’s a problem with this service" page
 
 
   @reauth-multiple-rp-tab @AUT-3530
@@ -209,6 +212,7 @@ Feature: Reauthentication of user
     * the user is not blocked from reauthenticating
 
 
+  # WILL BE REPLACED WITH NEW PROCESS IN V3
   @reauth-change-security-code-method-to-auth-app
   Scenario: Sms user can change how they get security codes during reauthentication
     Given a user with SMS MFA exists
@@ -218,20 +222,12 @@ Feature: Reauthentication of user
     And the user enters their email address for reauth
     And the user enters the correct password
     And the user is taken to the "Check your phone" page
-    When the user selects "Problems with the code?" link
-    And the user selects "check if you can change how you get security codes" link
-    Then the user is taken to the IPV stub page
-    When the user clicks the continue button
-    Then the user is taken to the "How do you want to get security codes" page
-    When the user chooses auth app to get security codes
-    Then the user is taken to the "Set up an authenticator app" page
-    When the user adds the secret key on the screen to their auth app
-    And the user enters the security code from the auth app
-    When the user clicks the continue button
+    When the sms user changes how they get security codes
     Then the user is successfully reauthenticated and returned to the service
     And the user logs out
 
 
+  # WILL BE REPLACED WITH NEW PROCESS IN V3
   @reauth-change-security-code-method-to-sms
   Scenario: Auth app user can change how they get security codes during reauthentication
     Given a user with App MFA exists
@@ -241,15 +237,7 @@ Feature: Reauthentication of user
     And the user enters their email address for reauth
     And the user enters the correct password
     And the user is taken to the "Enter the 6 digit security code shown in your authenticator app" page
-    When the user selects "I do not have access to the authenticator app" link
-    And the user selects "check if you can change how you get security codes" link
-    Then the user is taken to the IPV stub page
-    When the user clicks the continue button
-    Then the user is taken to the "How do you want to get security codes" page
-    When the user chooses text message to get security codes
-    And the user enters their mobile phone number
-    And the user enters the six digit security code from their phone
-    When the user clicks the continue button
+    When the auth app user changes how they get security codes
     Then the user is successfully reauthenticated and returned to the service
     And the user logs out
 
