@@ -1,3 +1,13 @@
+buildscript {
+    dependencies {
+        constraints {
+            classpath('org.apache.commons:commons-lang3:[3.20.0,)') {
+                because 'CVE-2025-48924 is fixed in org.apache.commons:commons-lang3:3.20.0 and higher'
+            }
+        }
+    }
+}
+
 plugins {
     id 'java'
     id 'maven-publish'
@@ -35,6 +45,15 @@ dependencies {
     testImplementation libs.awaitility
     testImplementation libs.gson
     testImplementation libs.jackson.databind
+
+    constraints {
+        testImplementation('org.apache.commons:commons-lang3:[3.20.0,)') {
+            because 'CVE-2025-48924 is fixed in org.apache.commons:commons-lang3:3.20.0 and higher'
+        }
+        testImplementation('io.netty:netty-codec-http:[4.2.7.Final,)') {
+            because 'CVE-2025-58056 is fixed in io.netty:netty-codec-http:4.2.7.Final and higher'
+        }
+    }
 }
 
 group = 'uk.gov.di'
@@ -74,15 +93,6 @@ java.targetCompatibility = JavaVersion.VERSION_17
 configurations {
     cucumberRuntime {
         extendsFrom testImplementation
-    }
-}
-
-configurations.all {
-    resolutionStrategy {
-        // CVE-2025-48924 is fixed in org.apache.commons:commons-lang3:3.18.0 and higher
-        force 'org.apache.commons:commons-lang3:3.20.0'
-        // CVE-2025-58056 is fixed in io.netty:netty-codec-http:4.1.125.Final and higher
-        force 'io.netty:netty-codec-http:4.2.7.Final'
     }
 }
 
