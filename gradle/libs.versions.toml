@@ -3,7 +3,7 @@ junit = "5.13.4"
 cucumber = "7.28.1"
 axe = "3.0"
 selenium = "4.35.0"
-aws-sdk-v2 = "2.33.3"
+aws-sdk-v2 = "2.39.1"
 json = "20250517"
 rest-assured = "5.5.6"
 spotless = "7.2.1"
@@ -23,6 +23,7 @@ slf4j = "2.0.17"
 awaitility = "4.3.0"
 gson = "2.13.1"
 maven-surefire = "3.5.2"
+jackson = "2.18.3"
 
 [libraries]
 junit-bom = { module = "org.junit:junit-bom", version.ref = "junit" }
@@ -69,6 +70,7 @@ aws-lambda-events = { module = "com.amazonaws:aws-lambda-java-events", version.r
 slf4j-nop = { module = "org.slf4j:slf4j-nop", version.ref = "slf4j" }
 awaitility = { module = "org.awaitility:awaitility", version.ref = "awaitility" }
 gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
+jackson-databind = { module = "com.fasterxml.jackson.core:jackson-databind", version.ref = "jackson" }
 maven-surefire-plugin = { module = "org.apache.maven.plugins:maven-surefire-plugin", version.ref = "maven-surefire" }
 
 [bundles]
