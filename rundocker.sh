@@ -15,22 +15,22 @@ BASE_IMAGE="${2:-}"
 case "${ENVIRONMENT}" in
   authdev*-api)
     TEST_MODE=API
-    AWS_PROFILE=di-auth-development-admin
+    AWS_PROFILE=di-auth-development-AdministratorAccessPermission
     ENVIRONMENT=${ENVIRONMENT%-*}
     ;;
   authdev*-ui)
     TEST_MODE=UI
-    AWS_PROFILE=di-authentication-development-admin
+    AWS_PROFILE=di-authentication-development-AdministratorAccessPermission
     ENVIRONMENT=${ENVIRONMENT%-*}
     ;;
   dev-api)
     TEST_MODE=API
-    AWS_PROFILE=di-auth-development-admin
+    AWS_PROFILE=di-auth-development-AdministratorAccessPermission
     ENVIRONMENT=dev
     ;;
   dev-ui)
     TEST_MODE=UI
-    AWS_PROFILE=di-authentication-development-admin
+    AWS_PROFILE=di-authentication-development-AdministratorAccessPermission
     ENVIRONMENT=dev
     ;;
   build-api)

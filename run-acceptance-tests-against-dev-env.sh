@@ -25,7 +25,7 @@ for ((i = 0; i < ${#envvalue[@]}; ++i)); do
 done
 
 if [[ ${ENVIRONMENT} == authdev* ]] || [[ ${ENVIRONMENT} == "dev" ]]; then
-  export AWS_PROFILE="di-auth-development-admin"
+  export AWS_PROFILE="di-auth-development-AdministratorAccessPermission"
 elif [ "${ENVIRONMENT}" == "sandpit" ]; then
   export AWS_PROFILE="gds-di-development-admin"
 else
