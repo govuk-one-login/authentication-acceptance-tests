@@ -4,7 +4,7 @@ set -eu
 
 DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" > /dev/null 2>&1 && pwd)"
 
-envvalue=("authdev1" "authdev2" "sandpit" "dev")
+envvalue=("authdev1" "authdev2" "dev")
 
 select word in "${envvalue[@]}"; do
   if [[ -z ${word} ]]; then
@@ -25,9 +25,7 @@ for ((i = 0; i < ${#envvalue[@]}; ++i)); do
 done
 
 if [[ ${ENVIRONMENT} == authdev* ]] || [[ ${ENVIRONMENT} == "dev" ]]; then
-  export AWS_PROFILE="di-auth-development-admin"
-elif [ "${ENVIRONMENT}" == "sandpit" ]; then
-  export AWS_PROFILE="gds-di-development-admin"
+  export AWS_PROFILE="di-auth-development-AdministratorAccessPermission"
 else
   echo "Unknown environment: ${ENVIRONMENT}"
   exit 1

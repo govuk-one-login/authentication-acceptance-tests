@@ -8,11 +8,8 @@
 For example:
 
 1. Code Review
-1. Deploy to sandpit with `./deploy-sandpit.sh -a`
-1. Ensure that resources `x`, `y` and `z` were not changed
-1. Visit [some url](https://some.sandpit.url/to/visit)
-1. Log in
-1. Ensure `x` message appears in a modal
+1. Run against an env (e.g. `./rundocker.sh dev-ui`)
+1. Ensure expected tests pass
 -->
 
 ## Related PRs
