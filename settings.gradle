@@ -1,3 +1,11 @@
+pluginManagement {
+    repositories {
+        maven {
+            url 'https://gds.jfrog.io/artifactory/di-allowed-repos'
+        }
+    }
+}
+
 rootProject.name = 'authentication-acceptance-tests'
 
 include('acceptance-tests')
