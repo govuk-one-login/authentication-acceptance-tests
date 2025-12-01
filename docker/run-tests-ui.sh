@@ -73,7 +73,7 @@ setup_to_run_api_tests() {
       echo -e "STUB_RP_TYPE=${API_STUB_RP_TYPE}" | tee --append /test/.env
     fi
 
-    if grep -qE '^API_CUCUMBER_FILTER_TAGS=' /test/.env; then
+    if grep -qE '^AM_CUCUMBER_FILTER_TAGS=' /test/.env; then
       AM_CUCUMBER_FILTER_TAGS=$(grep ^AM_CUCUMBER_FILTER_TAGS= /test/.env | cut -d= -f2- | tail -1)
 
       if grep -qE '^CUCUMBER_FILTER_TAGS=' /test/.env; then
