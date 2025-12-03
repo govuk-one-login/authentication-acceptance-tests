@@ -13,6 +13,11 @@ fi
 BASE_IMAGE="${2:-}"
 
 case "${ENVIRONMENT}" in
+  local-ui)
+    TEST_MODE=UI
+    ENVIRONMENT=local
+    USE_LOCAL=true
+    ;;
   authdev*-api)
     TEST_MODE=API
     AWS_PROFILE=di-auth-development-AdministratorAccessPermission
@@ -63,7 +68,12 @@ create_local_env_file() {
   local override_file="$1"
   [ -f "${override_file}" ] || touch "${override_file}"
 
-  scripts/fetch_envars.sh "${ENVIRONMENT}" | tee env-generated.env
+  if [ "${USE_LOCAL:-false}" = "true" ]; then
+    echo "Using local environment configuration..."
+    cp .env.local env-generated.env
+  else
+    scripts/fetch_envars.sh "${ENVIRONMENT}" | tee env-generated.env
+  fi
 
   if [[ -f ${override_file} ]]; then
     printf "\nAdding local overrides to env file:\n"
@@ -75,7 +85,9 @@ create_local_env_file() {
 }
 
 export AWS_PROFILE
-source ./scripts/check_aws_creds.sh
+if [ "${USE_LOCAL:-false}" != "true" ]; then
+  source ./scripts/check_aws_creds.sh
+fi
 
 # Cleanup old test results (keep only last 10 runs)
 if [ -d "./test-reports" ]; then
@@ -98,15 +110,31 @@ if [ "${TEST_MODE}" = "UI" ]; then
 
   create_local_env_file "env-override-ui.env"
 
-  docker run -p 4442-4444:4442-4444 \
-    -e CODEBUILD_BUILD_ID=1 \
-    -e AWS_REGION="${AWS_REGION:-eu-west-2}" \
-    -e TEST_ENVIRONMENT="${ENVIRONMENT}" \
-    -e PARALLEL_BROWSERS=1 \
-    -v "$(pwd)/env-generated.env:/test/.env" \
-    -v "${results_dir}":/test/results \
-    --env-file <(aws configure export-credentials --format env-no-export) \
-    -it --rm --entrypoint /bin/bash --shm-size="2g" \
+  DOCKER_RUN_ARGS=(
+    -p 4442-4444:4442-4444
+    -e PARALLEL_BROWSERS=1
+    -v "$(pwd)/env-generated.env:/test/.env"
+    -v "${results_dir}":/test/results
+    --rm --entrypoint /bin/bash --shm-size="2g"
+  )
+
+  if [ "${USE_LOCAL:-false}" = "true" ]; then
+    DOCKER_RUN_ARGS+=(
+      --network host
+      -e CODEBUILD_BUILD_ID=local
+      -e TEST_ENVIRONMENT=local
+      -e AWS_REGION="${AWS_REGION:-eu-west-2}"
+    )
+  else
+    DOCKER_RUN_ARGS+=(
+      -e CODEBUILD_BUILD_ID=1
+      -e AWS_REGION="${AWS_REGION:-eu-west-2}"
+      -e TEST_ENVIRONMENT="${ENVIRONMENT}"
+      --env-file <(aws configure export-credentials --format env-no-export)
+    )
+  fi
+
+  docker run "${DOCKER_RUN_ARGS[@]}" \
     ui-acceptance-tests:latest /run-tests.sh
 fi
 

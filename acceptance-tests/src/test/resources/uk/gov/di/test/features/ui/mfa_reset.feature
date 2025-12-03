@@ -7,7 +7,7 @@ Feature: The MFA reset process.
   whether the user is classified as authentication-only or identity-verified.
 
 # ************************* SMS Section *************************
-  @new-mfa-reset-with-ipv
+  @new-mfa-reset-with-ipv @needs-ipv-stub
   Scenario: SMS User selects SMS OTP for MFA reset after successful identity verification
     Given a user with SMS MFA exists
     When the user comes from the stub relying party with default options and is taken to the "Create your GOV.UK One Login or sign in" page
@@ -27,7 +27,7 @@ Feature: The MFA reset process.
     Then the user is returned to the service
 
 
-  @new-mfa-reset-with-ipv
+  @new-mfa-reset-with-ipv @needs-ipv-stub
   Scenario: AUTH app User selects SMS OTP for MFA reset after successful identity verification
     Given a user with App MFA exists
     When the user comes from the stub relying party with default options and is taken to the "Create your GOV.UK One Login or sign in" page
@@ -47,7 +47,7 @@ Feature: The MFA reset process.
     Then the user is returned to the service
 
 # ************************* AUTH APP Section *************************
-  @new-mfa-reset-with-ipv
+  @new-mfa-reset-with-ipv @needs-ipv-stub
   Scenario: Auth app User selects Authenticate app for MFA reset after successful identity verification
     Given a user with App MFA exists
     When the user comes from the stub relying party with default options and is taken to the "Create your GOV.UK One Login or sign in" page
@@ -68,7 +68,7 @@ Feature: The MFA reset process.
     Then the user is returned to the service
 
 
-  @new-mfa-reset-with-ipv
+  @new-mfa-reset-with-ipv @needs-ipv-stub
   Scenario: SMS User selects Authenticate app for MFA reset after successful identity verification
     Given a user with SMS MFA exists
     When the user comes from the stub relying party with default options and is taken to the "Create your GOV.UK One Login or sign in" page
@@ -89,7 +89,7 @@ Feature: The MFA reset process.
     Then the user is returned to the service
 
 # ************************* Negative tests when for unsuccessful IPV responses **********************
-  @new-mfa-reset-with-ipv
+  @new-mfa-reset-with-ipv @needs-ipv-stub
   Scenario Outline: Mfa User choose to reset their MFA but are unsuccessful in identity verification test
     Given a user with "<Mfa Type>" MFA exists
     When the user comes from the stub relying party with default options and is taken to the "Create your GOV.UK One Login or sign in" page
@@ -117,7 +117,7 @@ Feature: The MFA reset process.
       | App      | I do not have access to the authenticator app | Identity did not match | Enter the 6 digit security code shown in your authenticator app |
 
 
-  @new-mfa-reset-with-ipv
+  @new-mfa-reset-with-ipv @needs-ipv-stub
   Scenario Outline: Mfa User Error scenario - get help to delete your account
     Given a user with "<Mfa Type>" MFA exists
     When the user comes from the stub relying party with default options and is taken to the "Create your GOV.UK One Login or sign in" page
@@ -145,7 +145,7 @@ Feature: The MFA reset process.
       | App      | I do not have access to the authenticator app | Identity check incomplete |
 
 # ************************* Additional tests for IPV MFA journey **********************
-  @new-mfa-reset-with-ipv
+  @new-mfa-reset-with-ipv @needs-ipv-stub
   Scenario Outline: Mfa User choose to use Back button when choosing the ‘Try entering a security code again’ option
     Given a user with "<Mfa Type>" MFA exists
     When the user comes from the stub relying party with default options and is taken to the "Create your GOV.UK One Login or sign in" page
@@ -177,7 +177,7 @@ Feature: The MFA reset process.
       | App      | I do not have access to the authenticator app | Identity did not match | Enter the 6 digit security code shown in your authenticator app |
 
 
-  @new-mfa-reset-with-ipv
+  @new-mfa-reset-with-ipv @needs-ipv-stub
   Scenario Outline: Mfa User choose to use Back-button from contact screen
     Given a user with "<Mfa Type>" MFA exists
     When the user comes from the stub relying party with default options and is taken to the "Create your GOV.UK One Login or sign in" page
@@ -208,7 +208,7 @@ Feature: The MFA reset process.
       | App      | I do not have access to the authenticator app | Identity check incomplete | Enter the 6 digit security code shown in your authenticator app |
 
 
-  @new-mfa-reset-with-ipv
+  @new-mfa-reset-with-ipv @needs-ipv-stub
   Scenario: MFA reset is switched on and APP user can reset their MFA method after resetting their password
     Given a user with App MFA exists
     When the user comes from the stub relying party with default options and is taken to the "Create your GOV.UK One Login or sign in" page
@@ -246,7 +246,7 @@ Feature: The MFA reset process.
     Then the user is returned to the service
 
 
-  @new-mfa-reset-with-ipv
+  @new-mfa-reset-with-ipv @needs-ipv-stub
   Scenario: MFA reset is switched on and SMS user can reset their MFA method after resetting their password
     Given a user with SMS MFA exists
     When the user comes from the stub relying party with default options and is taken to the "Create your GOV.UK One Login or sign in" page
@@ -284,7 +284,7 @@ Feature: The MFA reset process.
     Then the user is returned to the service
 
 
-  @new-mfa-reset-with-ipv @under-development
+  @new-mfa-reset-with-ipv @needs-ipv-stub @under-development
   Scenario Outline: User who signs in via the Strategic-App must open OneLogin in a web browser to successfully change how they get their security code.
     Given a user with "<Mfa Type>" MFA exists
     When the user comes from the stub relying party with option <Channel> and is taken to the "Sign in to GOV.UK One Login" page

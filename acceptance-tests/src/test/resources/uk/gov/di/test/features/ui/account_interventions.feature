@@ -1,4 +1,4 @@
-@UI @AccountInterventions @build
+@UI @AccountInterventions @build @needs-ais-stub
 Feature: Account interventions
 
   @suspended @tw-test @focusme @build-sp-fail
@@ -96,7 +96,7 @@ Feature: Account interventions
     When the user enters the six digit security code from their email
     Then the user is taken to the "Sorry, there is a problem" page
 
-  @under-development @AUT-3921
+  @under-development @AUT-3921 @needs-ipv-stub
   Scenario: Sms user cannot change the way they get security codes when they have a temporarily suspended account (Dev Only test)
     Given a user with SMS MFA exists
     And the user has a temporarily suspended intervention
@@ -130,7 +130,7 @@ Feature: Account interventions
     When the user enters the six digit security code from their email
     Then the user is taken to the "Sorry, there is a problem" page
 
-  @under-development @AUT-3921
+  @under-development @AUT-3921 @needs-ipv-stub
   Scenario: Auth app user cannot change the way they get security codes when they have a temporarily suspended account (Dev only Test)
     Given a user with App MFA exists
     And the user has a temporarily suspended intervention
@@ -257,7 +257,7 @@ Feature: Account interventions
     When the user enters the six digit security code from their email
     Then the user is taken to the "Your GOV.UK One Login has been permanently locked" page
 
-  @under-development @AUT-3921
+  @under-development @AUT-3921 @needs-ipv-stub
   Scenario: Sms user cannot change the way they get security codes when they have a permanently locked account (Dev only Test)
     Given a user with SMS MFA exists
     And the user has a permanently locked intervention
@@ -294,7 +294,7 @@ Feature: Account interventions
     When the user enters the six digit security code from their email
     Then the user is taken to the "Your GOV.UK One Login has been permanently locked" page
 
-  @under-development @AUT-3921
+  @under-development @AUT-3921 @needs-ipv-stub
   Scenario: Auth app user cannot change the way they get security codes when they have a permanently locked account (Dev Only Test)
     Given a user with App MFA exists
     And the user has a permanently locked intervention
@@ -440,7 +440,7 @@ Feature: Account interventions
     When the user enters valid new password and correctly retypes it
     Then the user is returned to the service
 
-  @under-development @AUT-3921 @old-mfa-without-ipv
+  @under-development @AUT-3921 @old-mfa-without-ipv @needs-ipv-stub
   Scenario: Auth app user cannot change the way they get security codes when they have a password reset intervention on their account (Dev Only Test)
     Given a user with App MFA exists
     And the user has a password reset intervention

@@ -6,6 +6,11 @@ set -uo pipefail
 export ENVIRONMENT=${TEST_ENVIRONMENT:-local}
 
 check_guard_conditions() {
+  if [ "${ENVIRONMENT}" = "local" ]; then
+    echo "Running in local mode"
+    return 0
+  fi
+
   allowed_environments=("dev" "build" "staging")
   if [[ ! " ${allowed_environments[*]} " =~ ${ENVIRONMENT} ]]; then
     echo "Unconfigured environment: $ENVIRONMENT"
@@ -145,5 +150,7 @@ setup_environment_variables
 setup_to_run_api_tests
 export_environment_variables
 log_run_configuration
-assume_role_to_access_dynamodb_in_api_account
+if [ "${ENVIRONMENT}" != "local" ]; then
+  assume_role_to_access_dynamodb_in_api_account
+fi
 execute_tests
