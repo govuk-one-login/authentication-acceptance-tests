@@ -129,6 +129,21 @@ if [ "${TEST_MODE}" = "API" ]; then
     echo "Starting API proxy on port $API_PROXY_PORT..."
     ../authentication-api/scripts/api-proxy.sh account-management "${ENVIRONMENT}" "$API_PROXY_PORT" &
     API_PROXY_PID=$!
+
+    # Wait for proxy to be ready
+    echo "Waiting for proxy to be ready..."
+    for i in {1..30}; do
+      if nc -z localhost "$API_PROXY_PORT" 2> /dev/null; then
+        echo "Proxy is ready"
+        break
+      fi
+      if [ "$i" -eq 30 ]; then
+        echo "Timeout waiting for proxy"
+        kill "$API_PROXY_PID" 2> /dev/null || true
+        exit 1
+      fi
+      sleep 1
+    done
   fi
 
   docker build . -t api-acceptance-tests:latest --target auth-api \

@@ -33,5 +33,7 @@ if ! aws sts get-caller-identity --profile "${AWS_PROFILE}" > /dev/null; then
   aws sso login --sso-session "${sso_session}"
 fi
 
+eval "$(aws configure export-credentials --profile "${AWS_PROFILE}" --format env)"
+
 configured_region="$(aws configure get region --profile "${AWS_PROFILE}" 2> /dev/null || true)"
 export AWS_REGION="${configured_region:-eu-west-2}"
