@@ -8,6 +8,7 @@ import io.cucumber.core.internal.com.fasterxml.jackson.core.JsonProcessingExcept
 import io.cucumber.core.internal.com.fasterxml.jackson.databind.JsonNode;
 import io.cucumber.core.internal.com.fasterxml.jackson.databind.ObjectMapper;
 import io.restassured.response.Response;
+import io.restassured.specification.RequestSpecification;
 import org.apache.http.client.utils.URIUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -119,7 +120,8 @@ public class ApiInteractionsService {
         String apiPath = "/send-otp-notification";
         int expectedStatusCode = 204;
 
-        makeApiCallAndAssertStatusCode(world, requestBody, apiPath, expectedStatusCode);
+        makeApiCallAndAssertStatusCode(
+                world, requestBody, apiPath, HttpMethod.POST, expectedStatusCode);
     }
 
     public static void sendEmailOtpNotification(World world) {
@@ -135,67 +137,104 @@ public class ApiInteractionsService {
         String apiPath = "/send-otp-notification";
         int expectedStatusCode = 204;
 
-        makeApiCallAndAssertStatusCode(world, requestBody, apiPath, expectedStatusCode);
+        makeApiCallAndAssertStatusCode(
+                world, requestBody, apiPath, HttpMethod.POST, expectedStatusCode);
     }
 
-    public static Response makeApiCallAndAssertStatusCode(
-            World world, String requestBody, String apiPath) {
+    private static Response makeApiCallAndReturnResponse(
+            World world,
+            String requestBody,
+            String apiPath,
+            HttpMethod httpMethod,
+            Map<String, Object> pathParams) {
         String token = world.getToken();
         if (token == null) {
             throw new RuntimeException("Token is null - ensure user is authenticated first");
         }
 
-        // HOST_ENVIRONMENT indicates where the tests are running from (local machine vs CI/CD
-        // pipeline)
-        // This is different from ENVIRONMENT which indicates the target environment
-        // (dev/build/staging)
+        /*
+           HOST_ENVIRONMENT indicates where the tests are running from (local machine vs CI/CD pipeline)
+           This is different from ENVIRONMENT which indicates the target environment (dev/build/staging)
+        */
         String hostEnvironment = System.getenv("HOST_ENVIRONMENT");
+        String runningSpecificApiPath;
+        RequestSpecification requestSpec;
 
         if ("local".equals(hostEnvironment)) {
             // Local environment - use RestAssured with Docker
-            return given().baseUri(
+            requestSpec =
+                    buildBaseRequestSpecification(
                             "http://host.docker.internal:"
-                                    + System.getenv().getOrDefault("API_PROXY_PORT", "8123"))
-                    .header("Authorization", "Bearer " + token)
-                    .header("Content-Type", "application/json")
-                    .header("txma-audit-encoded", "encoded-string")
-                    .header("X-Forwarded-For", "0.0.0.0")
-                    .body(requestBody)
-                    .when()
-                    .post(apiPath)
-                    .then()
-                    .time(org.hamcrest.Matchers.lessThan(30000L))
-                    .extract()
-                    .response();
+                                    + System.getenv().getOrDefault("API_PROXY_PORT", "8123"),
+                            token,
+                            requestBody);
+
+            runningSpecificApiPath = apiPath;
+
         } else {
             // Non-local environment - use VPCE approach
-            String environment = Environment.getOrThrow("ENVIRONMENT");
-            String vpcePath = "/" + environment + apiPath;
+            requestSpec =
+                    buildBaseRequestSpecification(
+                                    TEST_CONFIG_SERVICE.get("AUTH_INTERNAL_VPCE_URL"),
+                                    token,
+                                    requestBody)
+                            .header(
+                                    "Host",
+                                    world.getMethodManagementApiId()
+                                            + ".execute-api.eu-west-2.amazonaws.com");
 
-            String vpcEndpointUrl = TEST_CONFIG_SERVICE.get("AUTH_INTERNAL_VPCE_URL");
-
-            return given().baseUri(vpcEndpointUrl)
-                    .header("Content-Type", "application/json")
-                    .header(
-                            "Host",
-                            world.getMethodManagementApiId()
-                                    + ".execute-api.eu-west-2.amazonaws.com")
-                    .header("Authorization", "Bearer " + token)
-                    .header("txma-audit-encoded", "encoded-string")
-                    .header("X-Forwarded-For", "0.0.0.0")
-                    .body(requestBody)
-                    .when()
-                    .post(vpcePath)
-                    .then()
-                    .time(org.hamcrest.Matchers.lessThan(30000L))
-                    .extract()
-                    .response();
+            runningSpecificApiPath = "/" + Environment.getOrThrow("ENVIRONMENT") + apiPath;
         }
+
+        if (pathParams != null) {
+            requestSpec.pathParams(pathParams);
+        }
+
+        return (switch (httpMethod) {
+                    case GET -> requestSpec.when().get(runningSpecificApiPath);
+                    case POST -> requestSpec.when().post(runningSpecificApiPath);
+                    case PUT -> requestSpec.when().put(runningSpecificApiPath);
+                    case DELETE -> requestSpec.when().delete(runningSpecificApiPath);
+                    default -> throw new IllegalArgumentException(
+                            "Unsupported HTTP method: " + httpMethod);
+                })
+                .then()
+                .time(org.hamcrest.Matchers.lessThan(30000L))
+                .extract()
+                .response();
+    }
+
+    private static RequestSpecification buildBaseRequestSpecification(
+            String baseUri, String token, String requestBody) {
+        return given().baseUri(baseUri)
+                .header("Content-Type", "application/json")
+                .header("Authorization", "Bearer " + token)
+                .header("txma-audit-encoded", "encoded-string")
+                .header("X-Forwarded-For", "0.0.0.0")
+                .body(requestBody);
+    }
+
+    public static Response makeApiCall(
+            World world, String requestBody, String apiPath, HttpMethod httpMethod) {
+        return makeApiCall(world, requestBody, apiPath, httpMethod, null);
+    }
+
+    public static Response makeApiCall(
+            World world,
+            String requestBody,
+            String apiPath,
+            HttpMethod httpMethod,
+            Map<String, Object> pathParams) {
+        return makeApiCallAndReturnResponse(world, requestBody, apiPath, httpMethod, pathParams);
     }
 
     public static void makeApiCallAndAssertStatusCode(
-            World world, String requestBody, String apiPath, int expectedStatusCode) {
-        Response response = makeApiCallAndAssertStatusCode(world, requestBody, apiPath);
+            World world,
+            String requestBody,
+            String apiPath,
+            HttpMethod httpMethod,
+            int expectedStatusCode) {
+        Response response = makeApiCall(world, requestBody, apiPath, httpMethod);
         assertEquals(expectedStatusCode, response.getStatusCode());
     }
 
@@ -213,7 +252,8 @@ public class ApiInteractionsService {
         String apiPath = "/send-otp-notification";
         int expectedStatusCode = 400;
 
-        makeApiCallAndAssertStatusCode(world, requestBody, apiPath, expectedStatusCode);
+        makeApiCallAndAssertStatusCode(
+                world, requestBody, apiPath, HttpMethod.POST, expectedStatusCode);
     }
 
     public static String getOtp(String email) {
@@ -310,37 +350,23 @@ public class ApiInteractionsService {
     }
 
     public static String checkUserHasBackupMFA(World world) {
-        var functionName =
-                getLambda(
-                        world.getMethodManagementApiId(),
+
+        Response response =
+                makeApiCallAndReturnResponse(
+                        world,
+                        """
+                {}
+                """,
                         "/v1/mfa-methods/{publicSubjectId}",
-                        HttpMethod.GET.toString());
+                        HttpMethod.GET,
+                        Map.of("publicSubjectId", world.userProfile.getPublicSubjectID()));
 
-        Map<String, String> pathParameters = new HashMap<>();
-        pathParameters.put("publicSubjectId", world.userProfile.getPublicSubjectID());
+        world.setApiResponse(response);
 
-        var event =
-                createApiGatewayProxyRequestEvent(
-                        "{}", pathParameters, world.getAuthorizerContent());
-
-        InvokeRequest invokeRequest =
-                InvokeRequest.builder()
-                        .functionName(functionName)
-                        .payload(SdkBytes.fromUtf8String(event))
-                        .build();
-
-        LambdaClient lambdaClient =
-                LambdaClient.builder()
-                        .region(Region.EU_WEST_2)
-                        .credentialsProvider(DefaultCredentialsProvider.create())
-                        .build();
-
-        InvokeResponse invokeResponse = lambdaClient.invoke(invokeRequest);
-
-        if (invokeResponse.statusCode() != 200) {
-            throw new RuntimeException("Error from lambda: " + invokeResponse.statusCode());
+        if (response.statusCode() != 200) {
+            throw new RuntimeException("Error from api gateway: " + response.statusCode());
         }
-        return invokeResponse.payload().asUtf8String();
+        return response.asString();
     }
 
     private static String retrieveUsersMFAMethods(World world) throws JsonProcessingException {
@@ -412,7 +438,8 @@ public class ApiInteractionsService {
         String apiPath = "/v1/mfa-methods/" + world.userProfile.getPublicSubjectID();
         int expectedStatusCode = 200;
 
-        makeApiCallAndAssertStatusCode(world, requestBody, apiPath, expectedStatusCode);
+        makeApiCallAndAssertStatusCode(
+                world, requestBody, apiPath, HttpMethod.POST, expectedStatusCode);
 
         world.userCredentials =
                 DynamoDbService.getInstance().getUserCredentials(world.userProfile.getEmail());

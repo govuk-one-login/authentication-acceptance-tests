@@ -7,6 +7,7 @@ import io.cucumber.java.en.When;
 import io.restassured.response.Response;
 import org.awaitility.Awaitility;
 import org.hamcrest.Matchers;
+import org.openqa.selenium.remote.http.HttpMethod;
 import uk.gov.di.test.pages.BasePage;
 import uk.gov.di.test.services.UserLifecycleService;
 
@@ -20,7 +21,7 @@ import static uk.gov.di.test.services.ApiInteractionsService.authenticateUser;
 import static uk.gov.di.test.services.ApiInteractionsService.authorizeUser;
 import static uk.gov.di.test.services.ApiInteractionsService.cannotSendSmsOtpNotification;
 import static uk.gov.di.test.services.ApiInteractionsService.getOtp;
-import static uk.gov.di.test.services.ApiInteractionsService.makeApiCallAndAssertStatusCode;
+import static uk.gov.di.test.services.ApiInteractionsService.makeApiCall;
 import static uk.gov.di.test.services.ApiInteractionsService.sendEmailOtpNotification;
 import static uk.gov.di.test.services.ApiInteractionsService.sendSmsOtpNotification;
 import static uk.gov.di.test.services.ApiInteractionsService.updatePhoneNumber;
@@ -106,7 +107,7 @@ public class AccountManagementStepDef extends BasePage {
     @When("the User provides the correct otp for the new email address")
     public void theUserProvidesTheCorrectOtpForTheNewEmailAddress() {
         Response response =
-                makeApiCallAndAssertStatusCode(
+                makeApiCall(
                         world,
                         """
                 {
@@ -119,7 +120,8 @@ public class AccountManagementStepDef extends BasePage {
                                         world.userProfile.getEmail(),
                                         world.getNewEmailAddress(),
                                         TEST_CONFIG_SERVICE.get("EMAIL_VERIFY_CODE")),
-                        "/update-email");
+                        "/update-email",
+                        HttpMethod.POST);
 
         world.setApiResponse(response);
     }
