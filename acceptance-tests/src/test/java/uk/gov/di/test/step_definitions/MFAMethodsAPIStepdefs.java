@@ -233,15 +233,7 @@ public class MFAMethodsAPIStepdefs {
 
     @Then("appropriate error is returned for invalid request to add Phone Number as SMS Backup MFA")
     public void appropriateErrorIsReturnedForInvalidRequestToAddPhoneNumberAsSMSBackupMFA() {
-        String jsonResponse = addBackupSMSInvalidReq(world);
-        ObjectMapper objectMapper = new ObjectMapper();
-        try {
-            JsonNode payloadJson = objectMapper.readTree(jsonResponse);
-            int actualStatusCode = payloadJson.get("statusCode").asInt();
-            assertEquals(400, actualStatusCode);
-        } catch (JsonProcessingException e) {
-            fail("Error parsing JSON response: " + e.getMessage());
-        }
+        assertEquals(400, addBackupSMSInvalidReq(world));
     }
 
     @Then("the user will not be able to add Backup MFA")

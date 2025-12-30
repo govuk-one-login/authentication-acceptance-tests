@@ -389,13 +389,7 @@ public class ApiInteractionsService {
         return "{\"statusCode\": 200}";
     }
 
-    public static String addBackupSMSInvalidReq(World world) {
-        var functionName =
-                getLambda(
-                        world.getMethodManagementApiId(),
-                        "/v1/mfa-methods/{publicSubjectId}",
-                        HttpMethod.POST.toString());
-
+    public static int addBackupSMSInvalidReq(World world) {
         var body =
                 """
                     {
@@ -410,36 +404,18 @@ public class ApiInteractionsService {
                """
                         .formatted(world.getNewPhoneNumber(), world.getOtp());
 
-        Map<String, String> pathParameters = new HashMap<>();
-        pathParameters.put("publicSubjectId", world.userProfile.getPublicSubjectID());
-
-        var event =
-                createApiGatewayProxyRequestEvent(
-                        body, pathParameters, world.getAuthorizerContent());
-
-        InvokeRequest invokeRequest =
-                InvokeRequest.builder()
-                        .functionName(functionName)
-                        .payload(SdkBytes.fromUtf8String(event))
-                        .build();
-
-        LambdaClient lambdaClient =
-                LambdaClient.builder()
-                        .region(Region.EU_WEST_2)
-                        .credentialsProvider(DefaultCredentialsProvider.create())
-                        .build();
-
-        InvokeResponse invokeResponse = lambdaClient.invoke(invokeRequest);
+        Response response =
+                makeApiCall(
+                        world,
+                        body,
+                        "/v1/mfa-methods/{publicSubjectId}",
+                        HttpMethod.POST,
+                        Map.of("publicSubjectId", world.userProfile.getPublicSubjectID()));
 
         world.userCredentials =
                 DynamoDbService.getInstance().getUserCredentials(world.userProfile.getEmail());
 
-        if (invokeResponse.statusCode() != 200) {
-            LOG.error("Error from lambda {}.", invokeResponse.statusCode());
-            throw new RuntimeException("Error from lambda: " + invokeResponse.statusCode());
-        }
-
-        return invokeResponse.payload().asUtf8String();
+        return response.statusCode();
     }
 
     public static String addBackupSMSUserNotFound(World world) {
