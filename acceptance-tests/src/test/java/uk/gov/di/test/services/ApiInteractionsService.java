@@ -269,12 +269,6 @@ public class ApiInteractionsService {
     }
 
     public static void updatePhoneNumber(World world) {
-        var functionName =
-                getLambda(
-                        world.getMethodManagementApiId(),
-                        "/v1/update-phone-number",
-                        HttpMethod.POST.toString());
-
         var body =
                 """
                 {
@@ -288,25 +282,8 @@ public class ApiInteractionsService {
                                 world.getNewPhoneNumber(),
                                 world.getOtp());
 
-        var event = createApiGatewayProxyRequestEvent(body, null, world.getAuthorizerContent());
-
-        InvokeRequest invokeRequest =
-                InvokeRequest.builder()
-                        .functionName(functionName)
-                        .payload(SdkBytes.fromUtf8String(event))
-                        .build();
-
-        LambdaClient lambdaClient =
-                LambdaClient.builder()
-                        .region(Region.EU_WEST_2)
-                        .credentialsProvider(DefaultCredentialsProvider.create())
-                        .build();
-
-        InvokeResponse invokeResponse = lambdaClient.invoke(invokeRequest);
-
-        if (invokeResponse.statusCode() != 200) {
-            throw new RuntimeException("Error from lambda: " + invokeResponse.statusCode());
-        }
+        makeApiCallAndAssertStatusCode(
+                world, body, "/v1/update-phone-number", HttpMethod.POST, 204);
     }
 
     public static boolean userHasAuthAppAsDefault(World world) {
