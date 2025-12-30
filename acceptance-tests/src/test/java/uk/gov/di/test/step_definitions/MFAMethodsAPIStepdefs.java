@@ -238,14 +238,6 @@ public class MFAMethodsAPIStepdefs {
 
     @Then("the user will not be able to add Backup MFA")
     public void theUserWillNotBeAbleToAddBackupMFA() {
-        String jsonResponse = addBackupSMSUserNotFound(world);
-        ObjectMapper objectMapper = new ObjectMapper();
-        try {
-            JsonNode payloadJson = objectMapper.readTree(jsonResponse);
-            int actualStatusCode = payloadJson.get("statusCode").asInt();
-            assertEquals(404, actualStatusCode);
-        } catch (JsonProcessingException e) {
-            fail("Error parsing JSON response: " + e.getMessage());
-        }
+        assertEquals(404, addBackupSMSUserNotFound(world));
     }
 }
