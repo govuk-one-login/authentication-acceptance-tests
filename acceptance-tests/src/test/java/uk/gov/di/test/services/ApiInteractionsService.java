@@ -291,8 +291,7 @@ public class ApiInteractionsService {
             String mfaMethods = retrieveUsersMFAMethods(world);
 
             ObjectMapper objectMapper = new ObjectMapper();
-            JsonNode rootNode = objectMapper.readTree(mfaMethods);
-            JsonNode bodyArray = objectMapper.readTree(rootNode.path("body").asText());
+            JsonNode bodyArray = objectMapper.readTree(mfaMethods);
 
             if (bodyArray.isArray() && !bodyArray.isEmpty()) {
                 JsonNode firstElement = bodyArray.get(0);
@@ -331,42 +330,23 @@ public class ApiInteractionsService {
     }
 
     private static String retrieveUsersMFAMethods(World world) throws JsonProcessingException {
-        var functionName =
-                getLambda(
-                        world.getMethodManagementApiId(),
+        Response response =
+                makeApiCall(
+                        world,
+                        "{}",
                         "/v1/mfa-methods/{publicSubjectId}",
-                        HttpMethod.GET.toString());
+                        HttpMethod.GET,
+                        Map.of("publicSubjectId", world.userProfile.getPublicSubjectID()));
 
-        Map<String, String> pathParameters = new HashMap<>();
-        pathParameters.put("publicSubjectId", world.userProfile.getPublicSubjectID());
-
-        var event =
-                createApiGatewayProxyRequestEvent(
-                        "{}", pathParameters, world.getAuthorizerContent());
-
-        InvokeRequest invokeRequest =
-                InvokeRequest.builder()
-                        .functionName(functionName)
-                        .payload(SdkBytes.fromUtf8String(event))
-                        .build();
-
-        LambdaClient lambdaClient =
-                LambdaClient.builder()
-                        .region(Region.EU_WEST_2)
-                        .credentialsProvider(DefaultCredentialsProvider.create())
-                        .build();
-
-        InvokeResponse invokeResponse = lambdaClient.invoke(invokeRequest);
-
-        if (invokeResponse.statusCode() != 200) {
-            LOG.error("Error from lambda {}.", invokeResponse.statusCode());
-            throw new RuntimeException("Error from lambda: " + invokeResponse.statusCode());
+        if (response.statusCode() != 200) {
+            LOG.error("Error from lambda {}.", response.statusCode());
+            throw new RuntimeException("Error from api gateway: " + response.statusCode());
         }
 
-        String responseBody = invokeResponse.payload().asUtf8String();
+        String responseBody = response.asString();
+
         ObjectMapper objectMapper = new ObjectMapper();
-        JsonNode rootNode = objectMapper.readTree(responseBody);
-        JsonNode bodyArray = objectMapper.readTree(rootNode.path("body").asText());
+        JsonNode bodyArray = objectMapper.readTree(responseBody);
 
         if (bodyArray.isArray() && bodyArray.size() > 0) {
             JsonNode firstElement = bodyArray.get(0);
@@ -729,8 +709,7 @@ public class ApiInteractionsService {
             String mfaMethods = retrieveUsersMFAMethods(world);
 
             ObjectMapper objectMapper = new ObjectMapper();
-            JsonNode rootNode = objectMapper.readTree(mfaMethods);
-            JsonNode bodyArray = objectMapper.readTree(rootNode.path("body").asText());
+            JsonNode bodyArray = objectMapper.readTree(mfaMethods);
 
             if (bodyArray.isArray() && !bodyArray.isEmpty() && bodyArray.size() == 1) {
                 JsonNode firstElement = bodyArray.get(0);
