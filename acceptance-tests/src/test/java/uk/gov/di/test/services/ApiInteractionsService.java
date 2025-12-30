@@ -78,12 +78,6 @@ public class ApiInteractionsService {
                     .build();
 
     public static void authenticateUser(World world) {
-        var functionName =
-                getLambda(
-                        world.getMethodManagementApiId(),
-                        "/authenticate",
-                        HttpMethod.POST.toString());
-
         var body =
                 """
                         {
@@ -93,17 +87,7 @@ public class ApiInteractionsService {
                         """
                         .formatted(world.userProfile.getEmail(), world.getUserPassword());
 
-        var event = createApiGatewayProxyRequestEvent(body, null, world.getAuthorizerContent());
-
-        InvokeRequest invokeRequest =
-                InvokeRequest.builder()
-                        .functionName(functionName)
-                        .payload(SdkBytes.fromUtf8String(event))
-                        .build();
-
-        InvokeResponse invokeResponse = lambdaClient.invoke(invokeRequest);
-
-        assertEquals(200, invokeResponse.statusCode());
+        makeApiCallAndAssertStatusCode(world, body, "/authenticate", HttpMethod.POST, 204);
     }
 
     public static void sendSmsOtpNotification(World world) {
