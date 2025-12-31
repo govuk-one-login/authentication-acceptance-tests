@@ -140,15 +140,7 @@ public class MFAMethodsAPIStepdefs {
 
     @When("the User requests to add a backup MFA Auth App")
     public void theUserRequestsToAddABackupMFAAuthApp() {
-        String jsonResponse = addBackupAuthApp(world);
-        ObjectMapper objectMapper = new ObjectMapper();
-        try {
-            JsonNode payloadJson = objectMapper.readTree(jsonResponse);
-            int actualStatusCode = payloadJson.get("statusCode").asInt();
-            assertEquals(200, actualStatusCode);
-        } catch (JsonProcessingException e) {
-            fail("Error parsing JSON response: " + e.getMessage());
-        }
+        assertEquals(200, addBackupAuthApp(world));
     }
 
     @Then("the User's back up MFA Auth App is updated")
@@ -190,15 +182,7 @@ public class MFAMethodsAPIStepdefs {
 
     @When("the User cannot add an Auth App as Backup")
     public void theUserCannotToAddAuthAppAsBackupMFA() {
-        String jsonResponse = addBackupAuthApp(world);
-        ObjectMapper objectMapper = new ObjectMapper();
-        try {
-            JsonNode payloadJson = objectMapper.readTree(jsonResponse);
-            int actualStatusCode = payloadJson.get("statusCode").asInt();
-            assertEquals(400, actualStatusCode);
-        } catch (JsonProcessingException e) {
-            fail("Error parsing JSON response: " + e.getMessage());
-        }
+        assertEquals(400, addBackupAuthApp(world));
     }
 
     @Then("appropriate error is returned for invalid request to add Phone Number as SMS Backup MFA")
