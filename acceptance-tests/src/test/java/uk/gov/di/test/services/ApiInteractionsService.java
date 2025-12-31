@@ -497,13 +497,7 @@ public class ApiInteractionsService {
         }
     }
 
-    public static String updateDefaultMfaToAuthApp(World world) {
-        var functionName =
-                getLambda(
-                        world.getMethodManagementApiId(),
-                        "/v1/mfa-methods/{publicSubjectId}/{mfaIdentifier}",
-                        HttpMethod.PUT.toString());
-
+    public static int updateDefaultMfaToAuthApp(World world) {
         var body =
                 """
                     {
@@ -517,34 +511,19 @@ public class ApiInteractionsService {
                     }
                 """;
 
-        Map<String, String> pathParameters = new HashMap<>();
-        pathParameters.put("publicSubjectId", world.userProfile.getPublicSubjectID());
-        pathParameters.put("mfaIdentifier", "1");
+        Response response =
+                makeApiCall(
+                        world,
+                        body,
+                        "/v1/mfa-methods/{publicSubjectId}/{mfaIdentifier}",
+                        HttpMethod.PUT,
+                        Map.of(
+                                "publicSubjectId",
+                                world.userProfile.getPublicSubjectID(),
+                                "mfaIdentifier",
+                                "1"));
 
-        var event =
-                createApiGatewayProxyRequestEvent(
-                        body, pathParameters, world.getAuthorizerContent());
-
-        InvokeRequest invokeRequest =
-                InvokeRequest.builder()
-                        .functionName(functionName)
-                        .payload(SdkBytes.fromUtf8String(event))
-                        .build();
-
-        LambdaClient lambdaClient =
-                LambdaClient.builder()
-                        .region(Region.EU_WEST_2)
-                        .credentialsProvider(DefaultCredentialsProvider.create())
-                        .build();
-
-        InvokeResponse invokeResponse = lambdaClient.invoke(invokeRequest);
-
-        if (invokeResponse.statusCode() != 200) {
-            LOG.error("Error from lambda {}.", invokeResponse.statusCode());
-            throw new RuntimeException("Error from lambda: " + invokeResponse.statusCode());
-        }
-
-        return invokeResponse.payload().asUtf8String();
+        return response.statusCode();
     }
 
     public static String addBackupAuthApp(World world) {
