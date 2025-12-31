@@ -614,41 +614,6 @@ public class ApiInteractionsService {
         return false;
     }
 
-    public static String backupSMSMFAAdded(World world) {
-        var functionName =
-                getLambda(
-                        world.getMethodManagementApiId(),
-                        "/v1/mfa-methods/{publicSubjectId}",
-                        HttpMethod.GET.toString());
-
-        Map<String, String> pathParameters = new HashMap<>();
-        pathParameters.put("publicSubjectId", world.userProfile.getPublicSubjectID());
-
-        var event =
-                createApiGatewayProxyRequestEvent(
-                        "{}", pathParameters, world.getAuthorizerContent());
-
-        InvokeRequest invokeRequest =
-                InvokeRequest.builder()
-                        .functionName(functionName)
-                        .payload(SdkBytes.fromUtf8String(event))
-                        .build();
-
-        LambdaClient lambdaClient =
-                LambdaClient.builder()
-                        .region(Region.EU_WEST_2)
-                        .credentialsProvider(DefaultCredentialsProvider.create())
-                        .build();
-
-        InvokeResponse invokeResponse = lambdaClient.invoke(invokeRequest);
-
-        if (invokeResponse.statusCode() != 200) {
-            LOG.error("Error from lambda {}.", invokeResponse.statusCode());
-            throw new RuntimeException("Error from lambda: " + invokeResponse.statusCode());
-        }
-        return invokeResponse.payload().asUtf8String();
-    }
-
     public static String backupAuthMFAAdded(World world) {
         var functionName =
                 getLambda(

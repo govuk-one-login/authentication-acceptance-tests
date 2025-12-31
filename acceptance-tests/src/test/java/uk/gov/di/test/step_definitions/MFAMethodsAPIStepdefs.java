@@ -124,20 +124,6 @@ public class MFAMethodsAPIStepdefs {
         assertEquals(400, updateDefaultMfaToAuthApp(world));
     }
 
-    @Then("Phone Number is added as a verified Backup MFA Method")
-    public void phoneNumberIsAddedAsAVerifiedBackupMFAMethod() {
-        backupSMSMFAAdded(world);
-        String jsonResponse = backupAuthMFAAdded(world);
-        ObjectMapper objectMapper = new ObjectMapper();
-        try {
-            JsonNode payloadJson = objectMapper.readTree(jsonResponse);
-            int actualStatusCode = payloadJson.get("statusCode").asInt();
-            assertEquals(200, actualStatusCode);
-        } catch (JsonProcessingException e) {
-            fail("Error parsing JSON response: " + e.getMessage());
-        }
-    }
-
     @When("the User requests to add a backup MFA Auth App")
     public void theUserRequestsToAddABackupMFAAuthApp() {
         assertEquals(200, addBackupAuthApp(world));
