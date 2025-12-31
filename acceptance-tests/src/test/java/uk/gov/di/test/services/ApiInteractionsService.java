@@ -552,13 +552,7 @@ public class ApiInteractionsService {
         return response.statusCode();
     }
 
-    public static String switchMFAMethods(World world) {
-        var functionName =
-                getLambda(
-                        world.getMethodManagementApiId(),
-                        "/v1/mfa-methods/{publicSubjectId}/{mfaIdentifier}",
-                        HttpMethod.PUT.toString());
-
+    public static int switchMFAMethods(World world) {
         var body =
                 """
                     {
@@ -568,7 +562,7 @@ public class ApiInteractionsService {
                     }
                 """;
 
-        Map<String, String> pathParameters = new HashMap<>();
+        Map<String, Object> pathParameters = new HashMap<>();
         pathParameters.put("publicSubjectId", world.userProfile.getPublicSubjectID());
 
         var backupMfa =
@@ -583,31 +577,17 @@ public class ApiInteractionsService {
             throw new RuntimeException("No BACKUP method found.");
         }
 
-        var event =
-                createApiGatewayProxyRequestEvent(
-                        body, pathParameters, world.getAuthorizerContent());
+        Response response =
+                makeApiCall(
+                        world,
+                        body,
+                        "/v1/mfa-methods/{publicSubjectId}/{mfaIdentifier}",
+                        HttpMethod.PUT,
+                        pathParameters);
 
-        InvokeRequest invokeRequest =
-                InvokeRequest.builder()
-                        .functionName(functionName)
-                        .payload(SdkBytes.fromUtf8String(event))
-                        .build();
+        LOG.debug("/Backup Auth is not updated: {}", response.asString());
 
-        LambdaClient lambdaClient =
-                LambdaClient.builder()
-                        .region(Region.EU_WEST_2)
-                        .credentialsProvider(DefaultCredentialsProvider.create())
-                        .build();
-
-        InvokeResponse invokeResponse = lambdaClient.invoke(invokeRequest);
-        LOG.debug("/Backup Auth is not updated: {}", invokeResponse.payload().asUtf8String());
-
-        if (invokeResponse.statusCode() != 200) {
-            LOG.error("Error from lambda {}.", invokeResponse.statusCode());
-            throw new RuntimeException("Error from lambda: " + invokeResponse.statusCode());
-        }
-
-        return invokeResponse.payload().asUtf8String();
+        return response.statusCode();
     }
 
     public static boolean checkUserHasDefaultMfa(World world, String mfaMethodType) {
