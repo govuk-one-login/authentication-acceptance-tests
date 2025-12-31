@@ -172,7 +172,7 @@ public class MFAMethodsAPIStepdefs {
 
     @And("the User switches their BACKUP and DEFAULT methods")
     public void theUserSwitchesTheirBACKUPAndDEFAULTMethods() {
-        switchMFAMethods(world);
+        assertEquals(200, switchMFAMethods(world));
     }
 
     @And("the User only has a default MFA of {string} and remains migrated")
