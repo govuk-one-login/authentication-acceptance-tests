@@ -242,7 +242,11 @@ public class ApiInteractionsService {
 
     public static String getOtp(String email) {
         var s3client = S3Client.builder().region(Region.of(Region.EU_WEST_2.toString())).build();
-        var bucketName = Environment.getOrThrow("ENVIRONMENT") + "-am-api-acceptance-tests-otp";
+        var newamenv = System.getenv("NEW_AM_ENV");
+        var bucketName =
+                "true".equals(newamenv)
+                        ? Environment.getOrThrow("ENVIRONMENT") + "-am-api-acceptance-test-otp"
+                        : Environment.getOrThrow("ENVIRONMENT") + "-am-api-acceptance-tests-otp";
         var getObjectRequest = GetObjectRequest.builder().bucket(bucketName).key(email).build();
 
         ResponseBytes<GetObjectResponse> response =
@@ -449,12 +453,6 @@ public class ApiInteractionsService {
     }
 
     public static void updateDefaultPhoneNumber(World world) {
-        var functionName =
-                getLambda(
-                        world.getMethodManagementApiId(),
-                        "/v1/mfa-methods/{publicSubjectId}/{mfaIdentifier}",
-                        HttpMethod.PUT.toString());
-
         var body =
                 """
                     {
@@ -470,31 +468,21 @@ public class ApiInteractionsService {
                 """
                         .formatted(world.getNewPhoneNumber(), world.getOtp());
 
-        Map<String, String> pathParameters = new HashMap<>();
+        Map<String, Object> pathParameters = new HashMap<>();
         pathParameters.put("publicSubjectId", world.userProfile.getPublicSubjectID());
         pathParameters.put("mfaIdentifier", "2");
 
-        var event =
-                createApiGatewayProxyRequestEvent(
-                        body, pathParameters, world.getAuthorizerContent());
+        Response response =
+                makeApiCall(
+                        world,
+                        body,
+                        "/v1/mfa-methods/{publicSubjectId}/{mfaIdentifier}",
+                        HttpMethod.PUT,
+                        pathParameters);
 
-        InvokeRequest invokeRequest =
-                InvokeRequest.builder()
-                        .functionName(functionName)
-                        .payload(SdkBytes.fromUtf8String(event))
-                        .build();
-
-        LambdaClient lambdaClient =
-                LambdaClient.builder()
-                        .region(Region.EU_WEST_2)
-                        .credentialsProvider(DefaultCredentialsProvider.create())
-                        .build();
-
-        InvokeResponse invokeResponse = lambdaClient.invoke(invokeRequest);
-
-        if (invokeResponse.statusCode() != 200) {
-            LOG.error("Error from lambda {}.", invokeResponse.statusCode());
-            throw new RuntimeException("Error from lambda: " + invokeResponse.statusCode());
+        if (response.statusCode() != 200) {
+            LOG.error("Error from api gateway {}.", response.statusCode());
+            throw new RuntimeException("Error from api gateway: " + response.statusCode());
         }
     }
 
@@ -616,79 +604,42 @@ public class ApiInteractionsService {
     }
 
     public static String backupAuthMFAAdded(World world) {
-        var functionName =
-                getLambda(
-                        world.getMethodManagementApiId(),
+        Response response =
+                makeApiCall(
+                        world,
+                        "{}",
                         "/v1/mfa-methods/{publicSubjectId}",
-                        HttpMethod.GET.toString());
+                        HttpMethod.GET,
+                        Map.of("publicSubjectId", world.userProfile.getPublicSubjectID()));
 
-        Map<String, String> pathParameters = new HashMap<>();
-        pathParameters.put("publicSubjectId", world.userProfile.getPublicSubjectID());
-
-        var event =
-                createApiGatewayProxyRequestEvent(
-                        "{}", pathParameters, world.getAuthorizerContent());
-
-        InvokeRequest invokeRequest =
-                InvokeRequest.builder()
-                        .functionName(functionName)
-                        .payload(SdkBytes.fromUtf8String(event))
-                        .build();
-
-        LambdaClient lambdaClient =
-                LambdaClient.builder()
-                        .region(Region.EU_WEST_2)
-                        .credentialsProvider(DefaultCredentialsProvider.create())
-                        .build();
-
-        InvokeResponse invokeResponse = lambdaClient.invoke(invokeRequest);
-
-        if (invokeResponse.statusCode() != 200) {
-            LOG.error("Error from lambda {}.", invokeResponse.statusCode());
-            throw new RuntimeException("Error from lambda: " + invokeResponse.statusCode());
+        if (response.statusCode() != 200) {
+            LOG.error("Error from api gateway {}.", response.statusCode());
+            throw new RuntimeException("Error from api gateway: " + response.statusCode());
         }
 
         world.userCredentials =
                 DynamoDbService.getInstance().getUserCredentials(world.userProfile.getEmail());
 
-        return invokeResponse.payload().asUtf8String();
+        // Wrap response to match expected Lambda format - escape quotes in response body
+        String responseBody = response.asString().replace("\"", "\\\"");
+        return String.format(
+                "{\"statusCode\": %d, \"body\": \"%s\"}", response.statusCode(), responseBody);
     }
 
-    public static String deleteBackupMFA(World world) {
-        var functionName =
-                getLambda(
-                        world.getMethodManagementApiId(),
-                        "/v1/mfa-methods/{publicSubjectId}/{mfaIdentifier}",
-                        HttpMethod.DELETE.toString());
-
-        Map<String, String> pathParameters = new HashMap<>();
+    public static int deleteBackupMFA(World world) {
+        Map<String, Object> pathParameters = new HashMap<>();
         pathParameters.put("publicSubjectId", world.userProfile.getPublicSubjectID());
         pathParameters.put("mfaIdentifier", world.userProfile.getmfaIdentifier());
 
-        var event =
-                createApiGatewayProxyRequestEvent(
-                        "{}", pathParameters, world.getAuthorizerContent());
+        Response response =
+                makeApiCall(
+                        world,
+                        "{}",
+                        "/v1/mfa-methods/{publicSubjectId}/{mfaIdentifier}",
+                        HttpMethod.DELETE,
+                        pathParameters);
 
-        InvokeRequest invokeRequest =
-                InvokeRequest.builder()
-                        .functionName(functionName)
-                        .payload(SdkBytes.fromUtf8String(event))
-                        .build();
-
-        LambdaClient lambdaClient =
-                LambdaClient.builder()
-                        .region(Region.EU_WEST_2)
-                        .credentialsProvider(DefaultCredentialsProvider.create())
-                        .build();
-
-        InvokeResponse invokeResponse = lambdaClient.invoke(invokeRequest);
-
-        if (invokeResponse.statusCode() != 200) {
-            LOG.error("Error from lambda {}.", invokeResponse.statusCode());
-            throw new RuntimeException("Error from lambda: " + invokeResponse.statusCode());
-        }
-
-        return invokeResponse.payload().asUtf8String();
+        return response.statusCode();
     }
 
     public static void authorizeUser(World world) {
@@ -714,12 +665,19 @@ public class ApiInteractionsService {
         }
 
         var env = Environment.getOrThrow("ENVIRONMENT");
-        var restApiName = "%s-di-account-management-api-method-management".formatted(env);
+        var newamenv = System.getenv("NEW_AM_ENV");
 
-        String restApiId = getRestApiIdByName(restApiName);
+        String restApiId;
+        if ("true".equals(newamenv)) {
+            restApiId = TEST_CONFIG_SERVICE.get("AUTH_AM_API_ID");
+        } else {
+            var restApiName = "%s-di-account-management-api-method-management".formatted(env);
+            restApiId = getRestApiIdByName(restApiName);
+        }
 
         var authorizerContext =
-                executeAuthorizerToObtainAuthorizerContext(restApiId, world.getToken());
+                executeAuthorizerToObtainAuthorizerContext(
+                        restApiId, world.getToken(), "true".equals(newamenv));
 
         var authorizerContextAsMap = new HashMap<String, Object>();
         authorizerContext
@@ -774,34 +732,42 @@ public class ApiInteractionsService {
     }
 
     public static JsonObject executeAuthorizerToObtainAuthorizerContext(
-            String restApiId, String token) {
-        GetAuthorizersRequest getAuthorizersRequest =
-                GetAuthorizersRequest.builder().restApiId(restApiId).build();
+            String restApiId, String token, boolean useNewAmEnv) {
+        String lambdaArn;
 
-        GetAuthorizersResponse getAuthorizerResponse =
-                apiGatewayClient.getAuthorizers(getAuthorizersRequest);
+        if (useNewAmEnv) {
+            lambdaArn = TEST_CONFIG_SERVICE.get("AUTH_AM_AUTHORIZER_LAMBDA_NAME");
+        } else {
+            LOG.info("Getting authorizers for API ID: {} in region: eu-west-2", restApiId);
+            GetAuthorizersRequest getAuthorizersRequest =
+                    GetAuthorizersRequest.builder().restApiId(restApiId).build();
+
+            GetAuthorizersResponse getAuthorizerResponse =
+                    apiGatewayClient.getAuthorizers(getAuthorizersRequest);
+
+            Optional<String> lambdaName =
+                    getAuthorizerResponse.items().stream()
+                            .findFirst()
+                            .map(Authorizer::authorizerUri)
+                            .map(uri -> uri.split(":")[11]);
+
+            if (lambdaName.isEmpty()) {
+                LOG.error("Could not determine authorizer lambda name");
+                throw new RuntimeException("Could not determine authorizer lambda name");
+            }
+            lambdaArn = lambdaName.get();
+        }
 
         JsonObject authorizerEvent = new JsonObject();
         authorizerEvent.addProperty("type", "TOKEN");
         authorizerEvent.addProperty("authorizationToken", "Bearer " + token);
         authorizerEvent.addProperty("methodArn", "arn:aws:execute-api:eu-west-2:*:*/*/*/*");
 
-        Optional<String> lambdaName =
-                getAuthorizerResponse.items().stream()
-                        .findFirst()
-                        .map(Authorizer::authorizerUri)
-                        .map(uri -> uri.split(":")[11]);
-
-        if (lambdaName.isEmpty()) {
-            LOG.error("Could not determine authorizer lambda name");
-            throw new RuntimeException("Could not determine authorizer lambda name");
-        }
-
         Gson gson = new Gson();
 
         InvokeRequest invokeRequest =
                 InvokeRequest.builder()
-                        .functionName(lambdaName.get())
+                        .functionName(lambdaArn)
                         .payload(SdkBytes.fromUtf8String(gson.toJson(authorizerEvent)))
                         .build();
 
@@ -814,6 +780,7 @@ public class ApiInteractionsService {
         InvokeResponse invokeResponse = lambdaClient.invoke(invokeRequest);
 
         var authorizerResponseAsJson = invokeResponse.payload().asUtf8String();
+
         return gson.fromJson(authorizerResponseAsJson, JsonObject.class);
     }
 

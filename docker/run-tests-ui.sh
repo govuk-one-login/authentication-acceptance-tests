@@ -4,6 +4,7 @@
 set -uo pipefail
 
 export ENVIRONMENT=${TEST_ENVIRONMENT:-local}
+export NEW_AM_ENV=true
 
 check_guard_conditions() {
   allowed_environments=("dev" "build" "staging")
