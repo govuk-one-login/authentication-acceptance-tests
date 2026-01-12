@@ -462,12 +462,13 @@ public class ApiInteractionsService {
                             "priorityIdentifier": "DEFAULT",
                             "method": {
                               "mfaMethodType": "SMS",
-                              "phoneNumber": "%s"
+                              "phoneNumber": "%s",
+                              "otp": "%s"
                             }
                           }
                     }
                 """
-                        .formatted(world.getNewPhoneNumber());
+                        .formatted(world.getNewPhoneNumber(), world.getOtp());
 
         Map<String, String> pathParameters = new HashMap<>();
         pathParameters.put("publicSubjectId", world.userProfile.getPublicSubjectID());
