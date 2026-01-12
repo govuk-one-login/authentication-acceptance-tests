@@ -467,17 +467,17 @@ public class ApiInteractionsService {
                 """
                         .formatted(world.getNewPhoneNumber());
 
-        Map<String, Object> pathParameters = new HashMap<>();
-        pathParameters.put("publicSubjectId", world.userProfile.getPublicSubjectID());
-        pathParameters.put("mfaIdentifier", "2");
-
         Response response =
                 makeApiCall(
                         world,
                         body,
                         "/v1/mfa-methods/{publicSubjectId}/{mfaIdentifier}",
                         HttpMethod.PUT,
-                        pathParameters);
+                        Map.of(
+                                "publicSubjectId",
+                                world.userProfile.getPublicSubjectID(),
+                                "mfaIdentifier",
+                                "2"));
 
         if (response.statusCode() != 200) {
             LOG.error("Error from api gateway {}.", response.statusCode());
