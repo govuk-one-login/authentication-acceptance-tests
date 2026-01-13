@@ -23,6 +23,10 @@ Feature: Auth App MFA User manages their MFA methods via the Method Management A
     Examples:
       | Mobile Number | Updated Mobile Number |
       | 07700900111   | +447700900111         |
+
+    @AcceptInternationalNumbers
+    Examples:
+      | Mobile Number | Updated Mobile Number |
       | +61412123123  | +61412123123          |
 
   Scenario Outline: Deleting a Backup MFA
@@ -36,6 +40,10 @@ Feature: Auth App MFA User manages their MFA methods via the Method Management A
     Examples:
       | Mobile Number | Updated Mobile Number |
       | 07700900111   | +447700900111         |
+
+    @AcceptInternationalNumbers
+    Examples:
+      | Mobile Number | Updated Mobile Number |
       | +61412123123  | +61412123123          |
 
   Scenario Outline: Changing Default MFA method from Auth App to SMS
@@ -47,6 +55,10 @@ Feature: Auth App MFA User manages their MFA methods via the Method Management A
     Examples:
       | Mobile Number | Updated Mobile Number |
       | 07700900111   | +447700900111         |
+
+    @AcceptInternationalNumbers
+    Examples:
+      | Mobile Number | Updated Mobile Number |
       | +61412123123  | +61412123123          |
 
   Scenario: Changing Default MFA method from Auth App to new Auth App
@@ -65,6 +77,10 @@ Feature: Auth App MFA User manages their MFA methods via the Method Management A
     Examples:
       | Mobile Number |
       | 07700900111   |
+
+    @AcceptInternationalNumbers
+    Examples:
+      | Mobile Number |
       | +61412123123  |
 
   Scenario Outline: Switch MFA methods
@@ -78,6 +94,10 @@ Feature: Auth App MFA User manages their MFA methods via the Method Management A
     Examples:
       | Mobile Number | Updated Mobile Number |
       | 07700900111   | +447700900111         |
+
+    @AcceptInternationalNumbers
+    Examples:
+      | Mobile Number | Updated Mobile Number |
       | +61412123123  | +61412123123          |
 
   Scenario Outline: Switch MFA methods Error for changing SMS back to default
@@ -91,6 +111,10 @@ Feature: Auth App MFA User manages their MFA methods via the Method Management A
     Examples:
       | Mobile Number | Updated Mobile Number |
       | 07700900111   | +447700900111         |
+
+    @AcceptInternationalNumbers
+    Examples:
+      | Mobile Number | Updated Mobile Number |
       | +61412123123  | +61412123123          |
 
   Scenario: Prevented from adding backup method to Auth App when Default is Auth App
