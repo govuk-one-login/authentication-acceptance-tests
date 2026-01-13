@@ -1,4 +1,4 @@
-@API
+@API @AccountManagementAPI
 Feature: SMS MFA User manages their MFA methods via the Method Management API
 
   As an Authenticated User with a Default MFA of SMS

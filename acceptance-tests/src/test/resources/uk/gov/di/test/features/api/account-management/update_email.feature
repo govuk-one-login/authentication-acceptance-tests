@@ -1,4 +1,4 @@
-@API
+@API @AccountManagementAPI
 Feature: Update Email
 
   @EmailBlocks
