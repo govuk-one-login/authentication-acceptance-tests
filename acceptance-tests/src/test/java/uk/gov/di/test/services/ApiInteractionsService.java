@@ -1,6 +1,5 @@
 package uk.gov.di.test.services;
 
-import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.nimbusds.jose.JOSEException;
@@ -22,13 +21,7 @@ import software.amazon.awssdk.services.apigateway.ApiGatewayClient;
 import software.amazon.awssdk.services.apigateway.model.Authorizer;
 import software.amazon.awssdk.services.apigateway.model.GetAuthorizersRequest;
 import software.amazon.awssdk.services.apigateway.model.GetAuthorizersResponse;
-import software.amazon.awssdk.services.apigateway.model.GetIntegrationRequest;
-import software.amazon.awssdk.services.apigateway.model.GetIntegrationResponse;
-import software.amazon.awssdk.services.apigateway.model.GetMethodRequest;
-import software.amazon.awssdk.services.apigateway.model.GetResourcesRequest;
-import software.amazon.awssdk.services.apigateway.model.GetResourcesResponse;
 import software.amazon.awssdk.services.apigateway.model.GetRestApisResponse;
-import software.amazon.awssdk.services.apigateway.model.Resource;
 import software.amazon.awssdk.services.apigateway.model.RestApi;
 import software.amazon.awssdk.services.lambda.LambdaClient;
 import software.amazon.awssdk.services.lambda.model.InvokeRequest;
@@ -64,12 +57,6 @@ public class ApiInteractionsService {
 
     private static final TestConfigurationService TEST_CONFIG_SERVICE =
             TestConfigurationService.getInstance();
-
-    private static final LambdaClient lambdaClient =
-            LambdaClient.builder()
-                    .region(Region.EU_WEST_2)
-                    .credentialsProvider(DefaultCredentialsProvider.create())
-                    .build();
 
     private static final ApiGatewayClient apiGatewayClient =
             ApiGatewayClient.builder()
@@ -799,72 +786,5 @@ public class ApiInteractionsService {
         } catch (NoSuchAlgorithmException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    private static String getLambda(String restApiId, String apiPath, String httpMethod) {
-        GetResourcesRequest getResourcesRequest =
-                GetResourcesRequest.builder().restApiId(restApiId).build();
-
-        GetResourcesResponse getResourcesResponse =
-                apiGatewayClient.getResources(getResourcesRequest);
-
-        String resourceId = null;
-
-        for (Resource resource : getResourcesResponse.items()) {
-            if (resource.path().equals(apiPath)) {
-                resourceId = resource.id();
-                break;
-            }
-        }
-
-        GetMethodRequest getMethodRequest =
-                GetMethodRequest.builder()
-                        .restApiId(restApiId)
-                        .resourceId(resourceId)
-                        .httpMethod(httpMethod)
-                        .build();
-
-        apiGatewayClient.getMethod(getMethodRequest);
-
-        GetIntegrationRequest getIntegrationRequest =
-                GetIntegrationRequest.builder()
-                        .restApiId(restApiId)
-                        .resourceId(resourceId)
-                        .httpMethod(httpMethod)
-                        .build();
-
-        GetIntegrationResponse getIntegrationResponse =
-                apiGatewayClient.getIntegration(getIntegrationRequest);
-
-        if ("AWS".equals(getIntegrationResponse.typeAsString())
-                || "AWS_PROXY".equals(getIntegrationResponse.typeAsString())) {
-            String uri = getIntegrationResponse.uri();
-            if (uri != null && uri.contains("arn:aws:lambda:")) {
-                return uri.split(":")[11];
-            } else {
-                LOG.error("Could not find AWS Lambda function");
-            }
-        }
-        return "";
-    }
-
-    private static String createApiGatewayProxyRequestEvent(
-            String body, Map<String, String> pathParams, Map<String, Object> authorizerContent) {
-        Map<String, String> headers = new HashMap<>();
-        headers.put("Content-Type", "application/json");
-        headers.put("txma-audit-encoded", "encoded-string");
-        headers.put("X-Forwarded-For", "0.0.0.0");
-
-        APIGatewayProxyRequestEvent event = new APIGatewayProxyRequestEvent();
-        event.setHeaders(headers);
-        event.setPathParameters(pathParams);
-        event.setBody(body);
-        event.setHttpMethod("GET");
-
-        APIGatewayProxyRequestEvent.ProxyRequestContext proxyRequestContext =
-                new APIGatewayProxyRequestEvent.ProxyRequestContext();
-        proxyRequestContext.setAuthorizer(authorizerContent);
-        event.setRequestContext(proxyRequestContext);
-        return new Gson().toJson(event);
     }
 }
