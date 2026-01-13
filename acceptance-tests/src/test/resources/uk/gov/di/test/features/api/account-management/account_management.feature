@@ -12,6 +12,10 @@ Feature: Account Management
     Examples:
       | Mobile Number |
       | 07700900111   |
+
+    @AcceptInternationalNumbers
+    Examples:
+      | Mobile Number |
       | +61412123123  |
 
   Scenario Outline: Cannot send an otp to a known number
