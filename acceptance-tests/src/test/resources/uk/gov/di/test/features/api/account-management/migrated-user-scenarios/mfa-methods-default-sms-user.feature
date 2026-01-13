@@ -36,6 +36,17 @@ Feature: SMS MFA User manages their MFA methods via the Method Management API
       | Mobile Number | Updated Mobile Number |
       | +61412123123  | +61412123123          |
 
+  @RejectInternationalNumbers
+  # Note: Avoid known test numbers to ensure international validation is tested.
+  Scenario Outline: Cannot add an international Backup SMS
+    And the User does not have a Backup MFA method
+    When the User adds "<Mobile Number>" as their SMS Backup MFA
+    Then the system rejects the request to send an OTP to "<Mobile Number>"
+
+    Examples:
+      | Mobile Number |
+      | +33777777777  |
+
   Scenario Outline: Switches SMS MFA
     And the User does not have a Backup MFA method
     When the User adds "<Mobile Number>" as their SMS Backup MFA
@@ -51,6 +62,17 @@ Feature: SMS MFA User manages their MFA methods via the Method Management API
     Examples:
       | Mobile Number |
       | +61412123123  |
+
+  @RejectInternationalNumbers
+  # Note: Avoid known test numbers to ensure international validation is tested.
+  Scenario Outline: Cannot switch to international SMS MFA
+    And the User does not have a Backup MFA method
+    When the User adds "<Mobile Number>" as their SMS Backup MFA
+    Then the system rejects the request to send an OTP to "<Mobile Number>"
+
+    Examples:
+      | Mobile Number |
+      | +33777777777  |
 
   Scenario: Prevented from changing Default method to Auth App when Backup is Auth App
     Given the User does not have a Backup MFA method
