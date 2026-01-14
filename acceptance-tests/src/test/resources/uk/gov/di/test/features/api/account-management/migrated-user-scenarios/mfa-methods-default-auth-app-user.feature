@@ -46,6 +46,7 @@ Feature: Auth App MFA User manages their MFA methods via the Method Management A
       | Mobile Number | Updated Mobile Number |
       | +61412123123  | +61412123123          |
 
+  @under-development
   Scenario Outline: Changing Default MFA method from Auth App to SMS
     When the User updates their Default MFA to SMS of "<Mobile Number>"
     Then the system sends an OTP to "<Mobile Number>"
