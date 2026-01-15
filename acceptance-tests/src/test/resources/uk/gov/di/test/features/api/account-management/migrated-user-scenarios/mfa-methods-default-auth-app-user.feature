@@ -1,4 +1,4 @@
-@API
+@API @AccountManagementAPI
 Feature: Auth App MFA User manages their MFA methods via the Method Management API
 
   As an Authenticated User using an Auth App as Default MFA
@@ -28,6 +28,17 @@ Feature: Auth App MFA User manages their MFA methods via the Method Management A
     Examples:
       | Mobile Number | Updated Mobile Number |
       | +61412123123  | +61412123123          |
+
+  @RejectInternationalNumbers
+  # Note: Avoid known test numbers to ensure international validation is tested.
+  Scenario Outline: Cannot add an international Phone Number as a Backup MFA
+    And the User does not have a Backup MFA method
+    When the User adds "<Mobile Number>" as their SMS Backup MFA
+    Then the system rejects the request to send an OTP to "<Mobile Number>"
+
+    Examples:
+      | Mobile Number |
+      | +33777777777  |
 
   Scenario Outline: Deleting a Backup MFA
     When the User adds "<Mobile Number>" as their SMS Backup MFA
