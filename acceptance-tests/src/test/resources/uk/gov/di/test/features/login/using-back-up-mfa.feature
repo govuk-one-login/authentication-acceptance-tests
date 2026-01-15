@@ -21,10 +21,14 @@ Feature: Login Using Back Up MFA
     And the user selects "try another way to get a security code" link
     Then the user is taken to the "How do you want to get a security code?" page
 
-  Examples:
-    | Mobile Number | Updated Mobile Number |
-    | 07700900111   | +447700900111         |
-    | +61412123123  | +61412123123          |
+    Examples:
+      | Mobile Number | Updated Mobile Number |
+      | 07700900111   | +447700900111         |
+
+    @AcceptInternationalNumbers
+    Examples:
+      | Mobile Number | Updated Mobile Number |
+      | +61412123123  | +61412123123          |
 
   Scenario: User with SMS as default MFA attempts alternative MFA journey but submits without choosing a method
     Given a Migrated User with a Default MFA of SMS

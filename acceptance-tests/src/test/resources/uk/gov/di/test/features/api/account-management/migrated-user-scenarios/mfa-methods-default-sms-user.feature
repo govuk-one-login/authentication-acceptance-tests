@@ -30,6 +30,10 @@ Feature: SMS MFA User manages their MFA methods via the Method Management API
     Examples:
       | Mobile Number | Updated Mobile Number |
       | 07700900111   | +447700900111         |
+
+    @AcceptInternationalNumbers
+    Examples:
+      | Mobile Number | Updated Mobile Number |
       | +61412123123  | +61412123123          |
 
   Scenario Outline: Switches SMS MFA
@@ -42,6 +46,10 @@ Feature: SMS MFA User manages their MFA methods via the Method Management API
     Examples:
       | Mobile Number |
       | 07700900111   |
+
+    @AcceptInternationalNumbers
+    Examples:
+      | Mobile Number |
       | +61412123123  |
 
   Scenario: Prevented from changing Default method to Auth App when Backup is Auth App

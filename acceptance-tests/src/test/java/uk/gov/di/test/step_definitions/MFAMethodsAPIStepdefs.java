@@ -111,74 +111,22 @@ public class MFAMethodsAPIStepdefs {
 
     @When("the User updates their Default MFA to an Auth App")
     public void theUserRequestsToUpdateBackupMFAAuthApp() {
-        String jsonResponse = updateDefaultMfaToAuthApp(world);
-        ObjectMapper objectMapper = new ObjectMapper();
-        try {
-            JsonNode payloadJson = objectMapper.readTree(jsonResponse);
-            int actualStatusCode = payloadJson.get("statusCode").asInt();
-            if (actualStatusCode != 200) {
-                LOG.info("Error response: {}", payloadJson.get("body"));
-            }
-            assertEquals(200, actualStatusCode);
-        } catch (JsonProcessingException e) {
-            fail("Error parsing JSON response: " + e.getMessage());
-        }
+        assertEquals(200, updateDefaultMfaToAuthApp(world));
     }
 
     @When("the User cannot update their Default MFA to an Auth App")
     public void theUserCannotTheirDefaultToAuthApp() {
-        String jsonResponse = updateDefaultMfaToAuthApp(world);
-        ObjectMapper objectMapper = new ObjectMapper();
-        try {
-            JsonNode payloadJson = objectMapper.readTree(jsonResponse);
-            int actualStatusCode = payloadJson.get("statusCode").asInt();
-            if (actualStatusCode != 200) {
-                LOG.info("Error response: {}", payloadJson.get("body"));
-            }
-            assertEquals(400, actualStatusCode);
-        } catch (JsonProcessingException e) {
-            fail("Error parsing JSON response: " + e.getMessage());
-        }
+        assertEquals(400, updateDefaultMfaToAuthApp(world));
     }
 
     @When("the User is prevented from updating the Default MFA to an Auth App")
     public void theUserIsPreventedFromUpdatingDefault() {
-        String jsonResponse = updateDefaultMfaToAuthApp(world);
-        ObjectMapper objectMapper = new ObjectMapper();
-        try {
-            JsonNode payloadJson = objectMapper.readTree(jsonResponse);
-            int actualStatusCode = payloadJson.get("statusCode").asInt();
-            assertEquals(400, actualStatusCode);
-        } catch (JsonProcessingException e) {
-            fail("Error parsing JSON response: " + e.getMessage());
-        }
-    }
-
-    @Then("Phone Number is added as a verified Backup MFA Method")
-    public void phoneNumberIsAddedAsAVerifiedBackupMFAMethod() {
-        backupSMSMFAAdded(world);
-        String jsonResponse = backupAuthMFAAdded(world);
-        ObjectMapper objectMapper = new ObjectMapper();
-        try {
-            JsonNode payloadJson = objectMapper.readTree(jsonResponse);
-            int actualStatusCode = payloadJson.get("statusCode").asInt();
-            assertEquals(200, actualStatusCode);
-        } catch (JsonProcessingException e) {
-            fail("Error parsing JSON response: " + e.getMessage());
-        }
+        assertEquals(400, updateDefaultMfaToAuthApp(world));
     }
 
     @When("the User requests to add a backup MFA Auth App")
     public void theUserRequestsToAddABackupMFAAuthApp() {
-        String jsonResponse = addBackupAuthApp(world);
-        ObjectMapper objectMapper = new ObjectMapper();
-        try {
-            JsonNode payloadJson = objectMapper.readTree(jsonResponse);
-            int actualStatusCode = payloadJson.get("statusCode").asInt();
-            assertEquals(200, actualStatusCode);
-        } catch (JsonProcessingException e) {
-            fail("Error parsing JSON response: " + e.getMessage());
-        }
+        assertEquals(200, addBackupAuthApp(world));
     }
 
     @Then("the User's back up MFA Auth App is updated")
@@ -210,7 +158,7 @@ public class MFAMethodsAPIStepdefs {
 
     @And("the User switches their BACKUP and DEFAULT methods")
     public void theUserSwitchesTheirBACKUPAndDEFAULTMethods() {
-        switchMFAMethods(world);
+        assertEquals(200, switchMFAMethods(world));
     }
 
     @And("the User only has a default MFA of {string} and remains migrated")
@@ -220,40 +168,16 @@ public class MFAMethodsAPIStepdefs {
 
     @When("the User cannot add an Auth App as Backup")
     public void theUserCannotToAddAuthAppAsBackupMFA() {
-        String jsonResponse = addBackupAuthApp(world);
-        ObjectMapper objectMapper = new ObjectMapper();
-        try {
-            JsonNode payloadJson = objectMapper.readTree(jsonResponse);
-            int actualStatusCode = payloadJson.get("statusCode").asInt();
-            assertEquals(400, actualStatusCode);
-        } catch (JsonProcessingException e) {
-            fail("Error parsing JSON response: " + e.getMessage());
-        }
+        assertEquals(400, addBackupAuthApp(world));
     }
 
     @Then("appropriate error is returned for invalid request to add Phone Number as SMS Backup MFA")
     public void appropriateErrorIsReturnedForInvalidRequestToAddPhoneNumberAsSMSBackupMFA() {
-        String jsonResponse = addBackupSMSInvalidReq(world);
-        ObjectMapper objectMapper = new ObjectMapper();
-        try {
-            JsonNode payloadJson = objectMapper.readTree(jsonResponse);
-            int actualStatusCode = payloadJson.get("statusCode").asInt();
-            assertEquals(400, actualStatusCode);
-        } catch (JsonProcessingException e) {
-            fail("Error parsing JSON response: " + e.getMessage());
-        }
+        assertEquals(400, addBackupSMSInvalidReq(world));
     }
 
     @Then("the user will not be able to add Backup MFA")
     public void theUserWillNotBeAbleToAddBackupMFA() {
-        String jsonResponse = addBackupSMSUserNotFound(world);
-        ObjectMapper objectMapper = new ObjectMapper();
-        try {
-            JsonNode payloadJson = objectMapper.readTree(jsonResponse);
-            int actualStatusCode = payloadJson.get("statusCode").asInt();
-            assertEquals(404, actualStatusCode);
-        } catch (JsonProcessingException e) {
-            fail("Error parsing JSON response: " + e.getMessage());
-        }
+        assertEquals(404, addBackupSMSUserNotFound(world));
     }
 }
