@@ -53,6 +53,9 @@ dependencies {
         testImplementation('io.netty:netty-codec-http:[4.2.7.Final,)') {
             because 'CVE-2025-58056 is fixed in io.netty:netty-codec-http:4.2.7.Final and higher'
         }
+        testImplementation('org.apache.logging.log4j:log4j-core:[2.25.3,3)') {
+            because 'CVE-2025-68161 is fixed in org.apache.logging.log4j:log4j-core:2.25.3 and higher'
+        }
     }
 }
 
