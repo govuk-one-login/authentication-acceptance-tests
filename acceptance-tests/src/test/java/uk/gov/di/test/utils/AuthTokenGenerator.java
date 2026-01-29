@@ -41,8 +41,10 @@ public class AuthTokenGenerator {
     public static final String CLIENT_NAME =
             "relying-party-stub-%s-app".formatted(Environment.getOrThrow("ENVIRONMENT"));
     private static final String KEY_ID =
-            "alias/%s-test-id-token-signing-key-alias"
-                    .formatted(Environment.getOrThrow("ENVIRONMENT"));
+            "true".equals(System.getenv("NEW_AM_ENV"))
+                    ? Environment.getOrThrow("AUTH_TEST_ID_TOKEN_KMS_ARN")
+                    : "alias/%s-test-id-token-signing-key-alias"
+                            .formatted(Environment.getOrThrow("ENVIRONMENT"));
 
     private static String signWithKms(JWTClaimsSet claims) throws ParseException, JOSEException {
         JWSHeader header = new JWSHeader.Builder(JWSAlgorithm.ES256).keyID(KEY_ID).build();
