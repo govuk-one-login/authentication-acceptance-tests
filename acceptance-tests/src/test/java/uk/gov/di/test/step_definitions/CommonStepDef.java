@@ -286,4 +286,9 @@ public class CommonStepDef extends BasePage {
     public void TheUserClicksOnLink(String text) {
         selectLinkByText(text);
     }
+
+    @Then("the option {string} is not displayed")
+    public void theOptionIsNotDisplayed(String optionText) {
+        assertFalse(isLinkTextDisplayedImmediately(optionText));
+    }
 }
