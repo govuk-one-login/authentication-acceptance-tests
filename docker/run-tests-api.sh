@@ -62,7 +62,7 @@ execute_tests() {
   local acceptance_tests_exit_status
 
   pushd /test > /dev/null || exit 1
-  ./gradlew --no-daemon :acceptance-tests:cucumber
+  ./gradlew --no-daemon --offline :acceptance-tests:cucumber
   acceptance_tests_exit_status=$?
   popd > /dev/null || exit 1
 
