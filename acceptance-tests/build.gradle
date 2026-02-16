@@ -17,9 +17,7 @@ plugins {
 }
 
 repositories {
-    maven {
-        url 'https://gds.jfrog.io/artifactory/di-allowed-repos'
-    }
+    mavenCentral()
 }
 
 dependencies {
