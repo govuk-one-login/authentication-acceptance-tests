@@ -55,3 +55,19 @@ Feature: Login Journey
     When the user enters the six digit security code from their phone
     Then the user is returned to the service
     And the user clicks logout
+
+  Scenario: Existing user logs in once and is logged in seamlessly when signing in again
+    Given a user with SMS MFA exists
+    # First sign in
+    When the user comes from the stub relying party with default options and is taken to the "Create your GOV.UK One Login or sign in" page
+    When the user selects sign in
+    Then the user is taken to the "Enter your email" page
+    When the user enters their email address
+    Then the user is taken to the "Enter your password" page
+    When the user enters their password
+    Then the user is taken to the "Check your phone" page
+    When the user enters the six digit security code from their phone
+    Then the user is returned to the service
+    # Second (silent) sign in
+    When the user comes from the stub relying party with option authenticated-2
+    Then the user is returned to the service
