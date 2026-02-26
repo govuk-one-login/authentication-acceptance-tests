@@ -45,8 +45,7 @@ public abstract class StubStartPage extends BasePage {
         }
     }
 
-    public void useRpStubAndWaitForPage(
-            String pageTitle, String[] rpStubOptions, Throwable lastException) {
+    public void useRpStub(String[] rpStubOptions, Throwable lastException) {
         if (lastException != null) {
             Integer currentRetries = RETRY_HELPER.getAndIncrement("come-from-rp-stub");
             if (currentRetries > RETRY_LIMIT) {
@@ -59,10 +58,34 @@ public abstract class StubStartPage extends BasePage {
             goToRpStub();
             selectRpOptionsByIdAndContinue(rpStubOptions);
             setAnalyticsCookieTo(false);
+        } catch (SessionContextExceptions.SessionContextException | WebDriverException e) {
+            useRpStub(rpStubOptions, e);
+        }
+    }
+
+    public void useRpStubAndWaitForPage(
+            String pageTitle, String[] rpStubOptions, Throwable lastException) {
+        if (lastException != null) {
+            Integer currentRetries = RETRY_HELPER.getAndIncrement("come-from-rp-stub-and-wait");
+            if (currentRetries > RETRY_LIMIT) {
+                throw new LegacyStubStartPage.RPStubRetryException(lastException);
+            }
+            System.out.printf(
+                    "Retrying RP stub and wait, retry %s of %s%n", currentRetries, RETRY_LIMIT);
+        }
+
+        try {
+            goToRpStub();
+            selectRpOptionsByIdAndContinue(rpStubOptions);
+            setAnalyticsCookieTo(false);
             waitForPageLoad(pageTitle);
         } catch (SessionContextExceptions.SessionContextException | WebDriverException e) {
             useRpStubAndWaitForPage(pageTitle, rpStubOptions, e);
         }
+    }
+
+    public void useRpStub(String[] rpStubOptions) {
+        useRpStub(rpStubOptions, null);
     }
 
     public void useRpStubAndWaitForPage(String pageTitle) {
