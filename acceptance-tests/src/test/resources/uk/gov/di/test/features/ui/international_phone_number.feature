@@ -170,6 +170,30 @@ Feature: International phone numbers
   @InternationalNumbersIndefiniteLockout
   Rule: Indefinite lockout during 2FA sign in
 
+    @under-development
+    Scenario: User with international SMS MFA is indefinitely locked out after requesting code too many times
+      Given a user with unique international SMS MFA exists
+      And the international phone number send limit is reset for the users phone number
+      When the user comes from the stub relying party with default options and is taken to the "Create your GOV.UK One Login or sign in" page
+      When the user selects sign in
+      Then the user is taken to the "Enter your email" page
+      When the user enters their email address
+      Then the user is taken to the "Enter your password" page
+      When the user enters their password
+      Then the user is taken to the "Check your phone" page
+      When the user requests the phone otp code to the international numbers limit
+      Then the user is taken to the "Sorry, there’s a problem" page
+      When the user selects "Check if you can change how you get security codes" link
+      Then the user is taken to the IPV stub page
+      When the user clicks the continue button
+      Then the user is taken to the "How do you want to get security codes" page
+      When the user chooses text message to get security codes
+      And the user enters their mobile phone number
+      And the user enters the six digit security code from their phone
+      Then the user is taken to the "You’ve changed how you get security codes" page
+      When the user clicks the continue button
+      Then the user is returned to the service
+
     Scenario: User with international SMS MFA is indefinitely locked out when send limit already set
       Given a user with unique international SMS MFA exists
       And the users phone number has reached the international phone number send limit
@@ -185,6 +209,23 @@ Feature: International phone numbers
 
   @InternationalNumbersIndefiniteLockout
   Rule: Indefinite lockout during uplift
+
+    @under-development
+    Scenario: User with international SMS MFA is indefinitely locked out after requesting code too many times
+      Given a user with unique international SMS MFA exists
+      And the international phone number send limit is reset for the users phone number
+      When the user comes from the stub relying party with option 2fa-off and is taken to the "Create your GOV.UK One Login or sign in" page
+      When the user selects sign in
+      Then the user is taken to the "Enter your email" page
+      When the user enters their email address
+      Then the user is taken to the "Enter your password" page
+      When the user enters their password
+      Then the user is returned to the service
+      When the user comes from the stub relying party with options: [2fa-on,authenticated-2] and is taken to the "Enter a security code to continue" page
+      When the user requests the phone otp code to the international numbers limit
+      Then the user is taken to the "Sorry, there’s a problem" page
+      When the user selects "Check if you can change how you get security codes" link
+      Then the user is taken to the IPV stub page
 
     Scenario: User with international SMS MFA is indefinitely locked out when send limit already set
       Given a user with unique international SMS MFA exists
@@ -203,6 +244,23 @@ Feature: International phone numbers
   @InternationalNumbersIndefiniteLockout
   Rule: Indefinite lockout during password reset
 
+    @under-development
+    Scenario: User with international SMS MFA is indefinitely locked out after requesting code too many times
+      Given a user with unique international SMS MFA exists
+      And the international phone number send limit is reset for the users phone number
+      When the user comes from the stub relying party with default options and is taken to the "Create your GOV.UK One Login or sign in" page
+      And the user selects sign in
+      Then the user is taken to the "Enter your email" page
+      When the user enters their email address
+      Then the user is taken to the "Enter your password" page
+      When the user clicks the forgotten password link
+      Then the user is taken to the "Check your email" page
+      When the user enters the six digit security code from their email
+      Then the user is taken to the "Check your phone" page
+      When the user requests the phone otp code to the international numbers limit
+      Then the user is taken to the "Sorry, there is a problem" page
+      And the link "Check if you can change how you get security codes" is not available
+
     Scenario: User with international SMS MFA is indefinitely locked out when send limit already set
       Given a user with unique international SMS MFA exists
       And the users phone number has reached the international phone number send limit
@@ -219,6 +277,22 @@ Feature: International phone numbers
 
   @InternationalNumbersIndefiniteLockout
   Rule: Indefinite lockout during reauthentication
+
+    # Reauth scenarios must start with UK SMS MFA for initial sign-in to succeed,
+    # then switch to international number to trigger lockout during reauth
+    @under-development
+    Scenario: User with international SMS MFA is indefinitely locked out after requesting code too many times during reauthentication
+      Given a user with SMS MFA exists
+      And the user is already signed in to their One Login account
+      And the users phone number is changed to an international number
+      And the international phone number send limit is reset for the users phone number
+      When the RP requires the user to reauthenticate
+      And the user enters their email address for reauth
+      And the user enters the correct password
+      When the user requests the phone otp code to the international numbers limit
+      Then the user is taken to the "Sorry, there’s a problem" page
+      When the user selects "Check if you can change how you get security codes" link
+      Then the user is taken to the IPV stub page
 
     # Reauth scenarios must start with UK SMS MFA for initial sign-in to succeed,
     # then switch to international number to trigger lockout during reauth
