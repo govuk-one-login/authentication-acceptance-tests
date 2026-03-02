@@ -107,4 +107,12 @@ public class DynamoDbService {
         Key key = Key.builder().partitionValue(phoneNumber).build();
         smsInternationalNumberSendLimitTable.deleteItem(key);
     }
+
+    public void setSmsInternationalPhoneNumberSendLimit(String phoneNumber, int requestCount) {
+        SmsInternationalNumberSendLimit sendLimit =
+                new SmsInternationalNumberSendLimit()
+                        .withPhoneNumber(phoneNumber)
+                        .withSentCount(requestCount);
+        smsInternationalNumberSendLimitTable.putItem(sendLimit);
+    }
 }

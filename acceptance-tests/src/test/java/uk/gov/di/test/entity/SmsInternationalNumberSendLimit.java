@@ -8,8 +8,10 @@ import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbParti
 public class SmsInternationalNumberSendLimit {
 
     public static final String ATTRIBUTE_PHONE_NUMBER = "PhoneNumber";
+    public static final String ATTRIBUTE_SENT_COUNT = "SentCount";
 
     private String phoneNumber;
+    private int sentCount;
 
     public SmsInternationalNumberSendLimit() {
         // Required by DynamoDB mapper for deserialization
@@ -27,6 +29,20 @@ public class SmsInternationalNumberSendLimit {
 
     public SmsInternationalNumberSendLimit withPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
+        return this;
+    }
+
+    @DynamoDbAttribute(ATTRIBUTE_SENT_COUNT)
+    public int getSentCount() {
+        return sentCount;
+    }
+
+    public void setSentCount(int sentCount) {
+        this.sentCount = sentCount;
+    }
+
+    public SmsInternationalNumberSendLimit withSentCount(int sentCount) {
+        this.sentCount = sentCount;
         return this;
     }
 }

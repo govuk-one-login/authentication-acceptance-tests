@@ -6,6 +6,7 @@ import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import uk.gov.di.test.entity.MFAMethodType;
 import uk.gov.di.test.services.PhoneNumberLifecycleService;
+import uk.gov.di.test.services.TestConfigurationService;
 import uk.gov.di.test.services.UserLifecycleService;
 
 import static uk.gov.di.test.services.UserLifecycleService.generateValidPassword;
@@ -18,6 +19,8 @@ public class UserLifecycleStepDef {
             UserLifecycleService.getInstance();
     private static final PhoneNumberLifecycleService phoneNumberLifecycleService =
             PhoneNumberLifecycleService.getInstance();
+    private static final TestConfigurationService TEST_CONFIG_SERVICE =
+            TestConfigurationService.getInstance();
 
     public UserLifecycleStepDef(World world) {
         this.world = world;
@@ -111,6 +114,15 @@ public class UserLifecycleStepDef {
     @And("the users phone number is changed to an international number")
     public void theUsersPhoneNumberIsChangedToAnInternationalNumber() {
         userLifecycleService.updateUserMfaSmsWithUniqueInternationalNumber(world.userProfile);
+    }
+
+    @And("the users phone number has reached the international phone number send limit")
+    public void theUsersPhoneNumberHasReachedTheInternationalPhoneNumberSendLimit() {
+        int limit =
+                Integer.parseInt(
+                        TEST_CONFIG_SERVICE.getOrDefault("INTERNATIONAL_SMS_SEND_LIMIT", "0"));
+        String phoneNumber = world.userProfile.getPhoneNumber();
+        phoneNumberLifecycleService.setSmsInternationalPhoneNumberSendLimit(phoneNumber, limit);
     }
 
     @And("the international phone number send limit is reset for the users phone number")
