@@ -23,4 +23,8 @@ public class PhoneNumberLifecycleService {
     public void resetSmsInternationalPhoneNumberSendLimit(String phoneNumber) {
         DYNAMO_DB_SERVICE.deleteSmsInternationalPhoneNumberSendLimit(phoneNumber);
     }
+
+    public void setSmsInternationalPhoneNumberSendLimit(String phoneNumber, int requestCount) {
+        DYNAMO_DB_SERVICE.setSmsInternationalPhoneNumberSendLimit(phoneNumber, requestCount);
+    }
 }

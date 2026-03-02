@@ -166,3 +166,70 @@ Feature: International phone numbers
     Then the user is taken to the "You’ve changed how you get security codes" page
     When the user clicks the continue button
     Then the user is successfully reauthenticated and returned to the service
+
+  @InternationalNumbersIndefiniteLockout
+  Rule: Indefinite lockout during 2FA sign in
+
+    Scenario: User with international SMS MFA is indefinitely locked out when send limit already set
+      Given a user with unique international SMS MFA exists
+      And the users phone number has reached the international phone number send limit
+      When the user comes from the stub relying party with default options and is taken to the "Create your GOV.UK One Login or sign in" page
+      When the user selects sign in
+      Then the user is taken to the "Enter your email" page
+      When the user enters their email address
+      Then the user is taken to the "Enter your password" page
+      When the user enters their password
+      Then the user is taken to the "Sorry, there’s a problem" page
+      When the user selects "Check if you can change how you get security codes" link
+      Then the user is taken to the IPV stub page
+
+  @InternationalNumbersIndefiniteLockout
+  Rule: Indefinite lockout during uplift
+
+    Scenario: User with international SMS MFA is indefinitely locked out when send limit already set
+      Given a user with unique international SMS MFA exists
+      And the users phone number has reached the international phone number send limit
+      When the user comes from the stub relying party with option 2fa-off and is taken to the "Create your GOV.UK One Login or sign in" page
+      When the user selects sign in
+      Then the user is taken to the "Enter your email" page
+      When the user enters their email address
+      Then the user is taken to the "Enter your password" page
+      When the user enters their password
+      Then the user is returned to the service
+      When the user comes from the stub relying party with options: [2fa-on,authenticated-2] and is taken to the "Sorry, there’s a problem" page
+      When the user selects "Check if you can change how you get security codes" link
+      Then the user is taken to the IPV stub page
+
+  @InternationalNumbersIndefiniteLockout
+  Rule: Indefinite lockout during password reset
+
+    Scenario: User with international SMS MFA is indefinitely locked out when send limit already set
+      Given a user with unique international SMS MFA exists
+      And the users phone number has reached the international phone number send limit
+      When the user comes from the stub relying party with default options and is taken to the "Create your GOV.UK One Login or sign in" page
+      And the user selects sign in
+      Then the user is taken to the "Enter your email" page
+      When the user enters their email address
+      Then the user is taken to the "Enter your password" page
+      When the user clicks the forgotten password link
+      Then the user is taken to the "Check your email" page
+      When the user enters the six digit security code from their email
+      Then the user is taken to the "There’s a problem with this service" page
+      And the link "Check if you can change how you get security codes" is not available
+
+  @InternationalNumbersIndefiniteLockout
+  Rule: Indefinite lockout during reauthentication
+
+    # Reauth scenarios must start with UK SMS MFA for initial sign-in to succeed,
+    # then switch to international number to trigger lockout during reauth
+    Scenario: User with international SMS MFA is indefinitely locked out when send limit already set during reauthentication
+      Given a user with SMS MFA exists
+      And the user is already signed in to their One Login account
+      And the users phone number is changed to an international number
+      And the users phone number has reached the international phone number send limit
+      When the RP requires the user to reauthenticate
+      And the user enters their email address for reauth
+      And the user enters the correct password
+      Then the user is taken to the "Sorry, there’s a problem" page
+      When the user selects "Check if you can change how you get security codes" link
+      Then the user is taken to the IPV stub page
