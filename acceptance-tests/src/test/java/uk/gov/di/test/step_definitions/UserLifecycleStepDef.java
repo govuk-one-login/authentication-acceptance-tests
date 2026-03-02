@@ -5,6 +5,7 @@ import io.cucumber.java.ParameterType;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import uk.gov.di.test.entity.MFAMethodType;
+import uk.gov.di.test.services.PhoneNumberLifecycleService;
 import uk.gov.di.test.services.UserLifecycleService;
 
 import static uk.gov.di.test.services.UserLifecycleService.generateValidPassword;
@@ -15,6 +16,8 @@ public class UserLifecycleStepDef {
 
     public static final UserLifecycleService userLifecycleService =
             UserLifecycleService.getInstance();
+    private static final PhoneNumberLifecycleService phoneNumberLifecycleService =
+            PhoneNumberLifecycleService.getInstance();
 
     public UserLifecycleStepDef(World world) {
         this.world = world;
@@ -97,6 +100,23 @@ public class UserLifecycleStepDef {
             default:
                 throw new RuntimeException("Invalid MFA Method");
         }
+    }
+
+    @Given("a user with unique international SMS MFA exists")
+    public void aUserWithUniqueInternationalSmsMfaExists() {
+        aUserExists();
+        userLifecycleService.updateUserMfaSmsWithUniqueInternationalNumber(world.userProfile);
+    }
+
+    @And("the users phone number is changed to an international number")
+    public void theUsersPhoneNumberIsChangedToAnInternationalNumber() {
+        userLifecycleService.updateUserMfaSmsWithUniqueInternationalNumber(world.userProfile);
+    }
+
+    @And("the international phone number send limit is reset for the users phone number")
+    public void theInternationalPhoneNumberSendLimitIsResetForTheUsersPhoneNumber() {
+        String phoneNumber = world.userProfile.getPhoneNumber();
+        phoneNumberLifecycleService.resetSmsInternationalPhoneNumberSendLimit(phoneNumber);
     }
 
     @And("Another User with {mfaMethod} exists")
