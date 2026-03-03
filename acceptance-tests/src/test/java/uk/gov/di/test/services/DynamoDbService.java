@@ -5,7 +5,6 @@ import software.amazon.awssdk.enhanced.dynamodb.DynamoDbTable;
 import software.amazon.awssdk.enhanced.dynamodb.Key;
 import software.amazon.awssdk.enhanced.dynamodb.TableSchema;
 import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
-import uk.gov.di.test.entity.SmsInternationalNumberSendLimit;
 import uk.gov.di.test.entity.UserCredentials;
 import uk.gov.di.test.entity.UserInterventions;
 import uk.gov.di.test.entity.UserProfile;
@@ -51,12 +50,6 @@ public class DynamoDbService {
                     TEST_CONFIG_SERVICE.get("ACCOUNT_INTERVENTIONS_TABLE"),
                     TableSchema.fromBean(UserInterventions.class));
 
-    private static final DynamoDbTable<SmsInternationalNumberSendLimit>
-            smsInternationalNumberSendLimitTable =
-                    enhancedClient.table(
-                            TEST_CONFIG_SERVICE.get("INTERNATIONAL_SMS_SEND_COUNT_TABLE"),
-                            TableSchema.fromBean(SmsInternationalNumberSendLimit.class));
-
     public UserProfile getUserProfile(String key) {
         Key dbkey = Key.builder().partitionValue(key).build();
         return userProfileTable.getItem(dbkey);
@@ -101,18 +94,5 @@ public class DynamoDbService {
 
     public void deleteUserInterventions(UserInterventions userInterventions) {
         userInterventionsTable.deleteItem(userInterventions);
-    }
-
-    public void deleteSmsInternationalPhoneNumberSendLimit(String phoneNumber) {
-        Key key = Key.builder().partitionValue(phoneNumber).build();
-        smsInternationalNumberSendLimitTable.deleteItem(key);
-    }
-
-    public void setSmsInternationalPhoneNumberSendLimit(String phoneNumber, int requestCount) {
-        SmsInternationalNumberSendLimit sendLimit =
-                new SmsInternationalNumberSendLimit()
-                        .withPhoneNumber(phoneNumber)
-                        .withSentCount(requestCount);
-        smsInternationalNumberSendLimitTable.putItem(sendLimit);
     }
 }

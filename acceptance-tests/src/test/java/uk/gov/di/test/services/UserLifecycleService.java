@@ -56,7 +56,6 @@ public class UserLifecycleService {
     private static final DynamoDbService DYNAMO_DB_SERVICE = DynamoDbService.getInstance();
 
     private static final AtomicLong emailSubAddressCounter = new AtomicLong();
-    private static final AtomicLong phoneNumberCounter = new AtomicLong();
 
     public String generateNewUniqueEmailAddress() {
         Map<String, String> values = new HashMap<>(baseEmailFormatValues);
@@ -164,19 +163,6 @@ public class UserLifecycleService {
     public void updateUserMfaSms(UserProfile userProfile) {
         userProfile.setAccountVerified(1);
         userProfile.setPhoneNumber(UK_MOBILE_PHONE_NUMBER);
-        userProfile.setPhoneNumberVerified(true);
-        updateUserProfileInDynamodb(userProfile);
-    }
-
-    public String generateUniqueInternationalPhoneNumber() {
-        long counter = phoneNumberCounter.getAndIncrement() % 100;
-        // Format: +121255501AA where AA is 00-99 (using safe 0100-0199 block)
-        return String.format("+121255501%02d", counter);
-    }
-
-    public void updateUserMfaSmsWithUniqueInternationalNumber(UserProfile userProfile) {
-        userProfile.setAccountVerified(1);
-        userProfile.setPhoneNumber(generateUniqueInternationalPhoneNumber());
         userProfile.setPhoneNumberVerified(true);
         updateUserProfileInDynamodb(userProfile);
     }
