@@ -12,8 +12,7 @@ public enum AuthenticationJourneyPages {
     ENTER_CODE_UPLIFT("/enter-code", "Enter a security code to continue"),
     ENTER_EMAIL_EXISTING_USER(
             "/enter-email", "Enter your email address to sign in to your GOV.UK One Login"),
-    RESEND_SECURITY_CODE("/resend-code", "Get security code"),
-    CANNOT_USE_SECURITY_CODE("/cannot-use-security-code", "Sorry, there's a problem");
+    RESEND_SECURITY_CODE("/resend-code", "Get security code");
 
     private static final String PRODUCT_NAME = "GOV.UK One Login";
 
