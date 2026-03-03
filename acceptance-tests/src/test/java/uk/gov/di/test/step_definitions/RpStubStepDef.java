@@ -28,6 +28,11 @@ public class RpStubStepDef extends BasePage {
     }
 
     // MULTIPLE OPTIONS
+    @When("the user comes from the stub relying party with options: {rpStubOptions}")
+    public void theUserVisitsTheStubRelyingPartyWithOptions(String[] rpStubOptions) {
+        stubStartPage.useRpStub(rpStubOptions);
+    }
+
     @When(
             "the user comes from the stub relying party with options: {rpStubOptions} and is taken to the {string} page")
     public void theUserVisitsTheStubRelyingPartyWithOptionsAndIsTakenToThePage(
@@ -36,6 +41,11 @@ public class RpStubStepDef extends BasePage {
     }
 
     // SINGLE OPTION
+    @When("the user comes from the stub relying party with option {word}")
+    public void theUserVisitsTheStubRelyingPartyWithOneOption(String option) {
+        theUserVisitsTheStubRelyingPartyWithOptions(new String[] {option});
+    }
+
     @When(
             "the user comes from the stub relying party with option {word} and is taken to the {string} page")
     public void theUserVisitsTheStubRelyingPartyWithOneOptionAndIsTakenToPage(
