@@ -167,7 +167,7 @@ Feature: International phone numbers
     When the user clicks the continue button
     Then the user is successfully reauthenticated and returned to the service
 
-  @InternationalNumbersIndefiniteLockout
+  @InternationalNumbersIndefiniteLockout @new-mfa-reset-with-ipv
   Rule: Indefinite lockout during 2FA sign in
 
     @under-development
@@ -207,7 +207,7 @@ Feature: International phone numbers
       When the user selects "Check if you can change how you get security codes" link
       Then the user is taken to the IPV stub page
 
-  @InternationalNumbersIndefiniteLockout
+  @InternationalNumbersIndefiniteLockout @new-mfa-reset-with-ipv
   Rule: Indefinite lockout during uplift
 
     @under-development
@@ -275,7 +275,7 @@ Feature: International phone numbers
       Then the user is taken to the "There’s a problem with this service" page
       And the link "Check if you can change how you get security codes" is not available
 
-  @InternationalNumbersIndefiniteLockout
+  @InternationalNumbersIndefiniteLockout @new-mfa-reset-with-ipv
   Rule: Indefinite lockout during reauthentication
 
     # Reauth scenarios must start with UK SMS MFA for initial sign-in to succeed,
