@@ -1,4 +1,4 @@
-@UI @dev
+@UI @under-development
 Feature: Passkeys
 
   Scenario: Existing user without a passkey can log in and skip passkey creation successfully
