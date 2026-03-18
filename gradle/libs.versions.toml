@@ -23,7 +23,7 @@ slf4j = "2.0.17"
 awaitility = "4.3.0"
 gson = "2.13.2"
 maven-surefire = "3.5.2"
-jackson = "2.20.1"
+jackson = "2.21.1"
 
 [libraries]
 junit-bom = { module = "org.junit:junit-bom", version.ref = "junit" }
