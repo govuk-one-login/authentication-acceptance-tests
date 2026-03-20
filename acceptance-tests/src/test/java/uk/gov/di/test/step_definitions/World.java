@@ -1,12 +1,14 @@
 package uk.gov.di.test.step_definitions;
 
 import io.restassured.response.Response;
+import uk.gov.di.test.entity.Passkey;
 import uk.gov.di.test.entity.UserCredentials;
 import uk.gov.di.test.entity.UserInterventions;
 import uk.gov.di.test.entity.UserProfile;
 import uk.gov.di.test.services.UserLifecycleService;
 import uk.gov.di.test.utils.MFAType;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -22,6 +24,7 @@ public class World {
     public UserLifecycleService userLifecycleService;
     public UserCredentials userCredentials;
     public UserInterventions userInterventions;
+    public List<Passkey> userPasskeys;
     private String userPassword;
 
     private UserProfile otherUserProfile;
