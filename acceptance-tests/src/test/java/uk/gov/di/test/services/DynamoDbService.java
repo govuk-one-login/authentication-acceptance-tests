@@ -5,10 +5,13 @@ import software.amazon.awssdk.enhanced.dynamodb.DynamoDbTable;
 import software.amazon.awssdk.enhanced.dynamodb.Key;
 import software.amazon.awssdk.enhanced.dynamodb.TableSchema;
 import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
+import uk.gov.di.test.entity.Passkey;
 import uk.gov.di.test.entity.SmsInternationalNumberSendLimit;
 import uk.gov.di.test.entity.UserCredentials;
 import uk.gov.di.test.entity.UserInterventions;
 import uk.gov.di.test.entity.UserProfile;
+
+import java.util.List;
 
 public class DynamoDbService {
     private static volatile DynamoDbService instance;
@@ -56,6 +59,11 @@ public class DynamoDbService {
                     enhancedClient.table(
                             TEST_CONFIG_SERVICE.get("INTERNATIONAL_SMS_SEND_COUNT_TABLE"),
                             TableSchema.fromBean(SmsInternationalNumberSendLimit.class));
+
+    private static final DynamoDbTable<Passkey> authenticatorPasskeyTable =
+            enhancedClient.table(
+                    TEST_CONFIG_SERVICE.get("AUTHENTICATOR_TABLE"),
+                    TableSchema.fromBean(Passkey.class));
 
     public UserProfile getUserProfile(String key) {
         Key dbkey = Key.builder().partitionValue(key).build();
@@ -114,5 +122,15 @@ public class DynamoDbService {
                         .withPhoneNumber(phoneNumber)
                         .withSentCount(requestCount);
         smsInternationalNumberSendLimitTable.putItem(sendLimit);
+    }
+
+    public void putPasskey(Passkey passkey) {
+        authenticatorPasskeyTable.putItem(passkey);
+    }
+
+    public void deletePasskeys(List<Passkey> passkeys) {
+        for (Passkey passkey : passkeys) {
+            authenticatorPasskeyTable.deleteItem(passkey);
+        }
     }
 }

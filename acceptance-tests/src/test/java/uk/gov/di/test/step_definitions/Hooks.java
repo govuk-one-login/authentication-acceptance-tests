@@ -16,6 +16,7 @@ import uk.gov.di.test.utils.Driver;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
+import static uk.gov.di.test.step_definitions.UserLifecycleStepDef.passkeyLifecycleService;
 import static uk.gov.di.test.step_definitions.UserLifecycleStepDef.userLifecycleService;
 
 public class Hooks extends BasePage {
@@ -81,6 +82,12 @@ public class Hooks extends BasePage {
                     "After API hook: Deleting user credentials with email {}",
                     world.userCredentials.getEmail());
             userLifecycleService.deleteUserCredentialsFromDynamodb(world.userCredentials);
+        }
+        if (world.userPasskeys != null && !world.userPasskeys.isEmpty()) {
+            LOG.info(
+                    "After API hook: Deleting user passkeys with email {}",
+                    world.userCredentials.getEmail());
+            passkeyLifecycleService.deletePasskeysForUser(world.userPasskeys);
         }
         Driver.get().manage().deleteAllCookies();
         Driver.closeDriver();

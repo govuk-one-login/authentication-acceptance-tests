@@ -5,6 +5,7 @@ import io.cucumber.java.ParameterType;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import uk.gov.di.test.entity.MFAMethodType;
+import uk.gov.di.test.services.PasskeyLifecycleService;
 import uk.gov.di.test.services.PhoneNumberLifecycleService;
 import uk.gov.di.test.services.TestConfigurationService;
 import uk.gov.di.test.services.UserLifecycleService;
@@ -21,6 +22,8 @@ public class UserLifecycleStepDef {
             PhoneNumberLifecycleService.getInstance();
     private static final TestConfigurationService TEST_CONFIG_SERVICE =
             TestConfigurationService.getInstance();
+    public static final PasskeyLifecycleService passkeyLifecycleService =
+            PasskeyLifecycleService.getInstance();
 
     public UserLifecycleStepDef(World world) {
         this.world = world;
@@ -77,6 +80,19 @@ public class UserLifecycleStepDef {
         world.userCredentials =
                 userLifecycleService.buildNewUserCredentialsAndPutToDynamodb(
                         world.userProfile, world.getUserPassword());
+        world.userPasskeys =
+                passkeyLifecycleService.buildPasskeyAndPutToDynamoDb(
+                        world.userProfile.getPublicSubjectID());
+    }
+
+    @Given("a User exists with no passkey")
+    @Given("a user exists with no passkey")
+    public void aUserExistsWithNoPasskey() {
+        aUserDoesNotYetExist();
+        userLifecycleService.putUserProfileToDynamodb(world.userProfile);
+        world.userCredentials =
+                userLifecycleService.buildNewUserCredentialsAndPutToDynamodb(
+                        world.userProfile, world.getUserPassword());
     }
 
     @ParameterType("SMS|App|no")
@@ -88,6 +104,27 @@ public class UserLifecycleStepDef {
     @Given("a user with {mfaMethod} MFA exists")
     public void aUserExists(String mfaMethod) {
         aUserExists();
+        switch (mfaMethod) {
+            case "no":
+                break;
+            case "SMS":
+                userLifecycleService.updateUserMfaSms(world.userProfile);
+                break;
+            case "App":
+                world.userProfile.setPhoneNumber(null);
+                world.userProfile.setPhoneNumberVerified(false);
+                userLifecycleService.putUserProfileToDynamodb(world.userProfile);
+                userLifecycleService.updateUserMfaApp(world.userCredentials);
+                break;
+            default:
+                throw new RuntimeException("Invalid MFA Method");
+        }
+    }
+
+    @Given("a user with no passkey and {string} MFA exists")
+    @Given("a user with no passkey and {mfaMethod} MFA exists")
+    public void aUserExistsWithNoPasskeyAndMfaMethod(String mfaMethod) {
+        aUserExistsWithNoPasskey();
         switch (mfaMethod) {
             case "no":
                 break;
@@ -178,6 +215,11 @@ public class UserLifecycleStepDef {
             System.out.printf(
                     "Deleting user credentials with email %s%n", world.userCredentials.getEmail());
             userLifecycleService.deleteUserCredentialsFromDynamodb(world.userCredentials);
+        }
+        if (world.userPasskeys != null && !world.userPasskeys.isEmpty()) {
+            System.out.printf(
+                    "Deleting passkeys for user with email %s%n", world.userProfile.getEmail());
+            passkeyLifecycleService.deletePasskeysForUser(world.userPasskeys);
         }
     }
 }
