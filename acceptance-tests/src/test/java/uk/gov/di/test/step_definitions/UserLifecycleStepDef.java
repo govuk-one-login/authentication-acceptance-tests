@@ -93,9 +93,6 @@ public class UserLifecycleStepDef {
         world.userCredentials =
                 userLifecycleService.buildNewUserCredentialsAndPutToDynamodb(
                         world.userProfile, world.getUserPassword());
-        world.userPasskeys =
-                passkeyLifecycleService.buildPasskeyAndPutToDynamoDb(
-                        world.userProfile.getPublicSubjectID());
     }
 
     @ParameterType("SMS|App|no")

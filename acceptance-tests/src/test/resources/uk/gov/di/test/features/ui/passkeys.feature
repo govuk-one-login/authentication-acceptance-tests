@@ -2,7 +2,7 @@
 Feature: Passkeys
 
   Scenario: Existing user without a passkey can log in and skip passkey creation successfully
-    Given a user with SMS MFA exists
+    Given a user with no passkey and SMS MFA exists
     When the user comes from the stub relying party with default options and is taken to the "Create your GOV.UK One Login or sign in" page
     When the user selects sign in
     Then the user is taken to the "Enter your email" page
@@ -16,7 +16,7 @@ Feature: Passkeys
     Then the user is returned to the service
 
   Scenario: Existing user without a passkey not on latest terms and conditions can log in and skip passkey creation successfully
-    Given a user with SMS MFA exists
+    Given a user with no passkey and SMS MFA exists
     And the user has not yet accepted the latest terms and conditions
     When the user comes from the stub relying party with default options and is taken to the "Create your GOV.UK One Login or sign in" page
     When the user selects sign in
