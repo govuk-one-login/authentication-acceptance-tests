@@ -1,4 +1,4 @@
-@UI @under-development
+@UI @PasskeysEnabled
 Feature: Passkeys
 
   Scenario: Existing user without a passkey can log in and skip passkey creation successfully
