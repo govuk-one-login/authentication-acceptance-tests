@@ -35,7 +35,7 @@ Feature: Authentication App Journeys
     Then the user is returned to the service
 
 # This test duplicates the flow of the test above for envs where the passkeys feature flag is turned on
-  @under-development
+  @PasskeysEnabled
   Scenario: User successfully registers with auth app 2FA and login with 2fa-on
     Given a user does not yet exist
     When the user comes from the stub relying party with option 2fa-off and is taken to the "Create your GOV.UK One Login or sign in" page
