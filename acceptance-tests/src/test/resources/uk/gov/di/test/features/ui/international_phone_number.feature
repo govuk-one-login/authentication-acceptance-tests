@@ -65,7 +65,7 @@ Feature: International phone numbers
       When the user clicks the continue button
       Then the user is returned to the service
 
-  @InternationalNumbersForcedMFAReset
+  @InternationalNumbersForcedMFAReset @InternationalSmsSendingEnabled
   Rule: Forced MFA reset during 2FA sign in
 
     Scenario: User with international SMS MFA successfully completes forced MFA reset during sign in
@@ -90,7 +90,7 @@ Feature: International phone numbers
       When the user clicks the continue button
       Then the user is returned to the service
 
-  @InternationalNumbersForcedMFAReset
+  @InternationalNumbersForcedMFAReset @InternationalSmsSendingEnabled
   Rule: Forced MFA reset during uplift
 
     Scenario: User with international SMS MFA completes forced MFA reset during uplift after 1FA sign in
@@ -115,7 +115,7 @@ Feature: International phone numbers
       When the user clicks the continue button
       Then the user is returned to the service
 
-  @InternationalNumbersForcedMFAReset
+  @InternationalNumbersForcedMFAReset @InternationalSmsSendingEnabled
   Rule: Forced MFA reset during password reset
 
     Scenario: User with international SMS MFA completes forced MFA reset during password reset
@@ -143,7 +143,7 @@ Feature: International phone numbers
       When the user clicks the continue button
       Then the user is returned to the service
 
-  @InternationalNumbersForcedMFAReset
+  @InternationalNumbersForcedMFAReset @InternationalSmsSendingEnabled
   Rule: Forced MFA reset during reauthentication
 
   # Reauth scenarios must start with UK SMS MFA for initial sign-in to succeed,
@@ -167,7 +167,7 @@ Feature: International phone numbers
     When the user clicks the continue button
     Then the user is successfully reauthenticated and returned to the service
 
-  @InternationalNumbersIndefiniteLockout @new-mfa-reset-with-ipv
+  @InternationalNumbersIndefiniteLockout @new-mfa-reset-with-ipv @InternationalSmsSendingEnabled
   Rule: Indefinite lockout during 2FA sign in
 
     @under-development
@@ -207,7 +207,7 @@ Feature: International phone numbers
       When the user selects "Check if you can change how you get security codes" link
       Then the user is taken to the IPV stub page
 
-  @InternationalNumbersIndefiniteLockout @new-mfa-reset-with-ipv
+  @InternationalNumbersIndefiniteLockout @new-mfa-reset-with-ipv @InternationalSmsSendingEnabled
   Rule: Indefinite lockout during uplift
 
     @under-development
@@ -241,7 +241,7 @@ Feature: International phone numbers
       When the user selects "Check if you can change how you get security codes" link
       Then the user is taken to the IPV stub page
 
-  @InternationalNumbersIndefiniteLockout
+  @InternationalNumbersIndefiniteLockout @InternationalSmsSendingEnabled
   Rule: Indefinite lockout during password reset
 
     @under-development
@@ -275,7 +275,7 @@ Feature: International phone numbers
       Then the user is taken to the "There’s a problem with this service" page
       And the link "Check if you can change how you get security codes" is not available
 
-  @InternationalNumbersIndefiniteLockout @new-mfa-reset-with-ipv
+  @InternationalNumbersIndefiniteLockout @new-mfa-reset-with-ipv @InternationalSmsSendingEnabled
   Rule: Indefinite lockout during reauthentication
 
     # Reauth scenarios must start with UK SMS MFA for initial sign-in to succeed,
