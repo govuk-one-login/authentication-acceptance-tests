@@ -83,7 +83,8 @@ public class ApiInteractionsService {
             {
                 "notificationType": "VERIFY_PHONE_NUMBER",
                 "email": "%s",
-                "phoneNumber": "%s"
+                "phoneNumber": "%s",
+                "priorityIdentifier": "DEFAULT"
             }
             """
                         .formatted(world.userProfile.getEmail(), world.getNewPhoneNumber());
@@ -215,7 +216,8 @@ public class ApiInteractionsService {
             {
                 "notificationType": "VERIFY_PHONE_NUMBER",
                 "email": "%s",
-                "phoneNumber": "%s"
+                "phoneNumber": "%s",
+                "priorityIdentifier": "DEFAULT"
             }
             """
                         .formatted(world.userProfile.getEmail(), world.getNewPhoneNumber());
