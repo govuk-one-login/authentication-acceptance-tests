@@ -132,6 +132,8 @@ Feature: Reauthentication of user
     Then the user is returned to the service
 
 
+  # Orchestration-dependent: the expected error page is determined by the orchestration
+  # layer's handling of invalidated sessions (see ATO-2482).
   @reauth-multiple-rp-tab @AUT-3530
   Scenario: Sms user verify that when re-authenticating in tab B and then logs out in a tab A they cannot complete the re-authenticate in tab B when they enter a valid email
     Given a user with SMS MFA exists
@@ -147,6 +149,8 @@ Feature: Reauthentication of user
     Then the user is taken to the "Sorry, the page has expired" page
 
 
+  # Orchestration-dependent: the expected error page is determined by the orchestration
+  # layer's handling of invalidated sessions (see ATO-2482).
   @reauth-multiple-rp-tab @AUT-3530
   Scenario: Sms user verify that when re-authenticating in tab B and logs out in a tab A they cannot complete the re-authenticate in tab B when they enter a valid password
     Given a user with SMS MFA exists
