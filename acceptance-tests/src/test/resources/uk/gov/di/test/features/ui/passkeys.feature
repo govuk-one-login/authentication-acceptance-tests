@@ -34,6 +34,7 @@ Feature: Passkeys
     Then the user is returned to the service
 
 # Create passkey
+  @EnvironmentWithAMCStubDeployed
   Scenario: Existing user without a passkey can create a passkey successfully
     Given a user with no passkey and SMS MFA exists
     And the user has not yet accepted the latest terms and conditions
@@ -53,6 +54,7 @@ Feature: Passkeys
     When the user agrees to the updated terms and conditions
     Then the user is returned to the service
 
+  @EnvironmentWithAMCStubDeployed
   Scenario: Existing user without a passkey is taken to updated terms and conditions if they click skip when creating a passkey
     Given a user with no passkey and SMS MFA exists
     And the user has not yet accepted the latest terms and conditions
@@ -73,6 +75,7 @@ Feature: Passkeys
     When the user agrees to the updated terms and conditions
     Then the user is returned to the service
 
+  @EnvironmentWithAMCStubDeployed
   Scenario: Existing user without a passkey is taken back to create-passkey if they click back when creating a passkey
     Given a user with no passkey and SMS MFA exists
     And the user has not yet accepted the latest terms and conditions

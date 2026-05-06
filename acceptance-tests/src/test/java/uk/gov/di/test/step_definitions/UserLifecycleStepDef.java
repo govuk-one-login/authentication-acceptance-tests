@@ -188,6 +188,8 @@ public class UserLifecycleStepDef {
         world.setOtherUserCredentials(
                 userLifecycleService.buildNewUserCredentialsAndPutToDynamodb(
                         world.getOtherUserProfile(), world.getOtherUserPassword()));
+        passkeyLifecycleService.buildPasskeyAndPutToDynamoDb(
+                world.getOtherUserProfile().getPublicSubjectID());
     }
 
     @And("the user has not yet accepted the latest terms and conditions")
