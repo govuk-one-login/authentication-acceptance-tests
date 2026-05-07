@@ -50,6 +50,9 @@ public class UserLifecycleStepDef {
         world.userCredentials =
                 userLifecycleService.createUserCredentials(
                         world.userProfile, world.getUserPassword(), MFAMethodType.AUTH_APP);
+        world.userPasskeys =
+                passkeyLifecycleService.buildPasskeyAndPutToDynamoDb(
+                        world.userProfile.getPublicSubjectID());
     }
 
     @Given("a Migrated User with a Default MFA of SMS")
@@ -59,6 +62,9 @@ public class UserLifecycleStepDef {
         world.userCredentials =
                 userLifecycleService.createUserCredentials(
                         world.userProfile, world.getUserPassword(), MFAMethodType.SMS);
+        world.userPasskeys =
+                passkeyLifecycleService.buildPasskeyAndPutToDynamoDb(
+                        world.userProfile.getPublicSubjectID());
     }
 
     @Given("a Migrated User with a Default MFA of {string}")
@@ -70,6 +76,9 @@ public class UserLifecycleStepDef {
                         world.userProfile,
                         world.getUserPassword(),
                         MFAMethodType.fromString(mfaMethodType));
+        world.userPasskeys =
+                passkeyLifecycleService.buildPasskeyAndPutToDynamoDb(
+                        world.userProfile.getPublicSubjectID());
     }
 
     @Given("a User exists")
