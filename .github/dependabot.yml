@@ -11,6 +11,8 @@ updates:
     ignore:
       - dependency-name: "org.seleniumhq.selenium:selenium-java"
         versions: [ "> 4.11.0" ]
+      - dependency-name: "gradle"
+        versions: [ "[9.0,)" ]
     groups:
       gradle-most-dependencies:
         patterns:
