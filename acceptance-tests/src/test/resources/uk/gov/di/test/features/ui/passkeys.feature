@@ -50,6 +50,8 @@ Feature: Passkeys
     When the user clicks the continue button
     Then the user is taken to the AMC stub page passkey create page
     When the user clicks the continue button
+    Then the user is taken to the "You’ve set up a passkey" page
+    When the user clicks the continue button
     Then the user is taken to the "We’ve updated our terms of use" page
     When the user agrees to the updated terms and conditions
     Then the user is returned to the service
