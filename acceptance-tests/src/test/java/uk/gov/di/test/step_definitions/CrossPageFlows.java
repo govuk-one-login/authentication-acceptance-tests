@@ -55,9 +55,12 @@ public class CrossPageFlows extends BasePage {
     }
 
     public void requestPhoneSecurityCodeResendNumberOfTimes(
-            Integer numberOfTimes, Boolean isReauth) {
+            Integer numberOfTimes, Boolean isReauth, Boolean isUplift) {
+        String expectedEnterCodePageTitle =
+                isUplift ? "Enter a security code to continue" : "Check your phone";
+
         for (int i = 0; i < numberOfTimes; i++) {
-            waitForPageLoad("Check your phone");
+            waitForPageLoad(expectedEnterCodePageTitle);
             checkYourPhonePage.clickProblemsWithTheCodeLink();
             checkYourPhonePage.clickSendTheCodeAgainLink();
 

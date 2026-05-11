@@ -148,7 +148,8 @@ public class LoginStepDef extends BasePage {
     @When("the user requests the phone otp code {int} times")
     @When("the user requests the phone otp code a further {int} times")
     public void theUserRequestsThePhoneOtpCodeTimes(Integer timesCodeIncorrect) {
-        crossPageFlows.requestPhoneSecurityCodeResendNumberOfTimes(timesCodeIncorrect, false);
+        crossPageFlows.requestPhoneSecurityCodeResendNumberOfTimes(
+                timesCodeIncorrect, false, false);
     }
 
     @When("the user resends the phone otp code until the international numbers limit is reached")
@@ -156,12 +157,22 @@ public class LoginStepDef extends BasePage {
         int requestCount =
                 Integer.parseInt(
                         TEST_CONFIG_SERVICE.getOrDefault("INTERNATIONAL_SMS_SEND_LIMIT", "1"));
-        crossPageFlows.requestPhoneSecurityCodeResendNumberOfTimes(requestCount, false);
+        crossPageFlows.requestPhoneSecurityCodeResendNumberOfTimes(requestCount, false, false);
+    }
+
+    @When(
+            "the user resends the phone otp code until the international numbers limit is reached during uplift")
+    public void
+            theUserResendsThePhoneOtpCodeUntilTheInternationalNumbersLimitIsReachedDuringUplift() {
+        int requestCount =
+                Integer.parseInt(
+                        TEST_CONFIG_SERVICE.getOrDefault("INTERNATIONAL_SMS_SEND_LIMIT", "1"));
+        crossPageFlows.requestPhoneSecurityCodeResendNumberOfTimes(requestCount, false, true);
     }
 
     @When("the user requests the phone otp code a further {int} times during reauth")
     public void theUserRequestsThePhoneOtpCodeTimesAtReauth(Integer timesCodeIncorrect) {
-        crossPageFlows.requestPhoneSecurityCodeResendNumberOfTimes(timesCodeIncorrect, true);
+        crossPageFlows.requestPhoneSecurityCodeResendNumberOfTimes(timesCodeIncorrect, true, false);
     }
 
     @When("the user clicks the get a new code link")
