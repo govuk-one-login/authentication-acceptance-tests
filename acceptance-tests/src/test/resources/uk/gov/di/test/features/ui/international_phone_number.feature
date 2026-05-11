@@ -181,7 +181,7 @@ Feature: International phone numbers
       Then the user is taken to the "Enter your password" page
       When the user enters their password
       Then the user is taken to the "Check your phone" page
-      When the user requests the phone otp code to the international numbers limit
+      When the user resends the phone otp code until the international numbers limit is reached
       Then the user is taken to the "Sorry, there’s a problem" page
       When the user selects "Check if you can change how you get security codes" link
       Then the user is taken to the IPV stub page
@@ -222,7 +222,7 @@ Feature: International phone numbers
       When the user enters their password
       Then the user is returned to the service
       When the user comes from the stub relying party with options: [2fa-on,authenticated-2] and is taken to the "Enter a security code to continue" page
-      When the user requests the phone otp code to the international numbers limit
+      When the user resends the phone otp code until the international numbers limit is reached during uplift
       Then the user is taken to the "Sorry, there’s a problem" page
       When the user selects "Check if you can change how you get security codes" link
       Then the user is taken to the IPV stub page
@@ -257,7 +257,7 @@ Feature: International phone numbers
       Then the user is taken to the "Check your email" page
       When the user enters the six digit security code from their email
       Then the user is taken to the "Check your phone" page
-      When the user requests the phone otp code to the international numbers limit
+      When the user resends the phone otp code until the international numbers limit is reached
       Then the user is taken to the "Sorry, there is a problem" page
       And the link "Check if you can change how you get security codes" is not available
 
@@ -289,7 +289,7 @@ Feature: International phone numbers
       When the RP requires the user to reauthenticate
       And the user enters their email address for reauth
       And the user enters the correct password
-      When the user requests the phone otp code to the international numbers limit
+      When the user resends the phone otp code until the international numbers limit is reached
       Then the user is taken to the "Sorry, there’s a problem" page
       When the user selects "Check if you can change how you get security codes" link
       Then the user is taken to the IPV stub page

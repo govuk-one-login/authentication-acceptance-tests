@@ -151,12 +151,11 @@ public class LoginStepDef extends BasePage {
         crossPageFlows.requestPhoneSecurityCodeResendNumberOfTimes(timesCodeIncorrect, false);
     }
 
-    @When("the user requests the phone otp code to the international numbers limit")
-    public void theUserRequestsThePhoneOtpCodeToTheInternationalNumbersLimit() {
-        int limit =
+    @When("the user resends the phone otp code until the international numbers limit is reached")
+    public void theUserResendsThePhoneOtpCodeUntilTheInternationalNumbersLimitIsReached() {
+        int requestCount =
                 Integer.parseInt(
                         TEST_CONFIG_SERVICE.getOrDefault("INTERNATIONAL_SMS_SEND_LIMIT", "1"));
-        int requestCount = limit - 1;
         crossPageFlows.requestPhoneSecurityCodeResendNumberOfTimes(requestCount, false);
     }
 

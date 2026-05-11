@@ -60,17 +60,14 @@ public class CrossPageFlows extends BasePage {
             waitForPageLoad("Check your phone");
             checkYourPhonePage.clickProblemsWithTheCodeLink();
             checkYourPhonePage.clickSendTheCodeAgainLink();
+
             waitForPageLoad("Get security code");
             if (isReauth) {
                 waitForThisText("you will be signed out");
             }
             getSecurityCodePage.pressGetSecurityCodeButton();
-            System.out.println(
-                    "Code request count: "
-                            + (i + 1)
-                            + " ("
-                            + (i + 2)
-                            + " including code sent on initial entry to the Check Your Phone page)");
+
+            System.out.println("Code request resends: " + (i + 1));
         }
     }
 
