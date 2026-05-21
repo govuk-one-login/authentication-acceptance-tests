@@ -22,7 +22,7 @@ Feature: Reauthentication of user
     And the user enters the security code from the auth app
     Then the user is successfully reauthenticated and returned to the service
 
-  @reauth-same-incorrect-emails @AUT-2790
+  @reauth-same-incorrect-emails
   Scenario: Sms user enters the same incorrect email address (known to One Login) 6 times during reauthentication and gets logged out. Owner of incorrect email is not locked out.
     Given a user with SMS MFA exists
     And the user is already signed in to their One Login account
@@ -39,7 +39,7 @@ Feature: Reauthentication of user
     Then the user is not blocked from signing in
     And the user is not blocked from reauthenticating
 
-  @reauth-different-incorrect-emails @AUT-2790
+  @reauth-different-incorrect-emails
   Scenario: Sms user enters 6 different incorrect email addresses (not known to One Login) during reauthentication and gets logged out. Original user is not locked out.
     Given a user with SMS MFA exists
     And the user is already signed in to their One Login account
@@ -50,7 +50,7 @@ Feature: Reauthentication of user
     * the user is not blocked from signing in
     * the user is not blocked from reauthenticating
 
-  @reauth-incorrect-pw @AUT-2789
+  @reauth-incorrect-pw
   Scenario: Sms user enters incorrect password during reauthentication
     Given a user with SMS MFA exists
     And the user is already signed in to their One Login account
@@ -64,7 +64,7 @@ Feature: Reauthentication of user
     * the user is not blocked from signing in
     * the user is not blocked from reauthenticating
 
-  @reauth-incorrect-sms-code @AUT-2788
+  @reauth-incorrect-sms-code
   Scenario: Sms user enters incorrect phone code during reauthentication
     Given a user with SMS MFA exists
     And the user is already signed in to their One Login account
@@ -78,7 +78,7 @@ Feature: Reauthentication of user
     * the user is not blocked from reauthenticating
 
 
-  @reauth-incorrect-auth-app-code @AUT-2788
+  @reauth-incorrect-auth-app-code
   Scenario: Auth app user enters incorrect auth app code during reauthentication
     Given a user with App MFA exists
     And the user is already signed in to their One Login account
@@ -92,7 +92,7 @@ Feature: Reauthentication of user
     * the user is not blocked from reauthenticating
 
 
-  @reauth-request-too-many-sms-codes @AUT-3089
+  @reauth-request-too-many-sms-codes
   Scenario: Sms user requests phone code resend during reauthentication
     Given a user with SMS MFA exists
     And the user is already signed in to their One Login account
@@ -107,7 +107,7 @@ Feature: Reauthentication of user
 
 
   #Silent log in support for multiple RPs re-authenticating (This is only relevant for multiple tabs)
-#  @reauth-multiple-rp-tab @AUT-3529 @AUT-3530
+#  @reauth-multiple-rp-tab
 #  Scenario: Sms user verify that silent login does not reset the counts of failed credential entry for the re-authentication journey [invalid email]
 #    Given a user with SMS MFA exists
 #    And the user is already signed in to their One Login account
@@ -119,7 +119,7 @@ Feature: Reauthentication of user
 #    Then the user is forcibly logged out
 
 
-  @reauth-multiple-rp-tab @AUT-3529 @AUT-3530
+  @reauth-multiple-rp-tab
   Scenario: Sms user verify that silent login does not reset the counts of failed credential entry for the re-authentication journey [invalid password]
     Given a user with SMS MFA exists
     And the user is already signed in to their One Login account
@@ -134,7 +134,7 @@ Feature: Reauthentication of user
 
   # Orchestration-dependent: the expected error page is determined by the orchestration
   # layer's handling of invalidated sessions (see ATO-2482).
-  @reauth-multiple-rp-tab @AUT-3530
+  @reauth-multiple-rp-tab
   Scenario: Sms user verify that when re-authenticating in tab B and then logs out in a tab A they cannot complete the re-authenticate in tab B when they enter a valid email
     Given a user with SMS MFA exists
     And the user is already signed in to their One Login account
@@ -151,7 +151,7 @@ Feature: Reauthentication of user
 
   # Orchestration-dependent: the expected error page is determined by the orchestration
   # layer's handling of invalidated sessions (see ATO-2482).
-  @reauth-multiple-rp-tab @AUT-3530
+  @reauth-multiple-rp-tab
   Scenario: Sms user verify that when re-authenticating in tab B and logs out in a tab A they cannot complete the re-authenticate in tab B when they enter a valid password
     Given a user with SMS MFA exists
     And the user is already signed in to their One Login account
@@ -166,7 +166,7 @@ Feature: Reauthentication of user
     Then the user is taken to the "Sorry, the page has expired" page
 
 
-  @reauth-multiple-rp-tab @AUT-3530
+  @reauth-multiple-rp-tab
   Scenario: Sms user verify that when user starts multiple re-authentications and then completes each one
     Given a user with SMS MFA exists
     And the user is already signed in to their One Login account
@@ -183,7 +183,6 @@ Feature: Reauthentication of user
     Then the user is returned to the service
 
 
-  @AUT-3613 @AUT-3530
   Scenario: Sms user enters 6 different incorrect email addresses
     Given a user with SMS MFA exists
     And the user is already signed in to their One Login account
@@ -198,7 +197,6 @@ Feature: Reauthentication of user
     * the user is not blocked from reauthenticating
 
 
-  @AUT-3613 @AUT-3530
   Scenario: Sms user enters incorrect password during reauthentication
     Given a user with SMS MFA exists
     And the user is already signed in to their One Login account
