@@ -50,9 +50,6 @@ public class UserLifecycleStepDef {
         world.userCredentials =
                 userLifecycleService.createUserCredentials(
                         world.userProfile, world.getUserPassword(), MFAMethodType.AUTH_APP);
-        world.userPasskeys =
-                passkeyLifecycleService.buildPasskeyAndPutToDynamoDb(
-                        world.userProfile.getPublicSubjectID());
     }
 
     @Given("a Migrated User with a Default MFA of SMS")
@@ -62,9 +59,6 @@ public class UserLifecycleStepDef {
         world.userCredentials =
                 userLifecycleService.createUserCredentials(
                         world.userProfile, world.getUserPassword(), MFAMethodType.SMS);
-        world.userPasskeys =
-                passkeyLifecycleService.buildPasskeyAndPutToDynamoDb(
-                        world.userProfile.getPublicSubjectID());
     }
 
     @Given("a Migrated User with a Default MFA of {string}")
@@ -76,27 +70,11 @@ public class UserLifecycleStepDef {
                         world.userProfile,
                         world.getUserPassword(),
                         MFAMethodType.fromString(mfaMethodType));
-        world.userPasskeys =
-                passkeyLifecycleService.buildPasskeyAndPutToDynamoDb(
-                        world.userProfile.getPublicSubjectID());
     }
 
     @Given("a User exists")
     @Given("a user exists")
     public void aUserExists() {
-        aUserDoesNotYetExist();
-        userLifecycleService.putUserProfileToDynamodb(world.userProfile);
-        world.userCredentials =
-                userLifecycleService.buildNewUserCredentialsAndPutToDynamodb(
-                        world.userProfile, world.getUserPassword());
-        world.userPasskeys =
-                passkeyLifecycleService.buildPasskeyAndPutToDynamoDb(
-                        world.userProfile.getPublicSubjectID());
-    }
-
-    @Given("a User exists with no passkey")
-    @Given("a user exists with no passkey")
-    public void aUserExistsWithNoPasskey() {
         aUserDoesNotYetExist();
         userLifecycleService.putUserProfileToDynamodb(world.userProfile);
         world.userCredentials =
@@ -133,22 +111,7 @@ public class UserLifecycleStepDef {
     @Given("a user with no passkey and {string} MFA exists")
     @Given("a user with no passkey and {mfaMethod} MFA exists")
     public void aUserExistsWithNoPasskeyAndMfaMethod(String mfaMethod) {
-        aUserExistsWithNoPasskey();
-        switch (mfaMethod) {
-            case "no":
-                break;
-            case "SMS":
-                userLifecycleService.updateUserMfaSms(world.userProfile);
-                break;
-            case "App":
-                world.userProfile.setPhoneNumber(null);
-                world.userProfile.setPhoneNumberVerified(false);
-                userLifecycleService.putUserProfileToDynamodb(world.userProfile);
-                userLifecycleService.updateUserMfaApp(world.userCredentials);
-                break;
-            default:
-                throw new RuntimeException("Invalid MFA Method");
-        }
+        aUserExists(mfaMethod);
     }
 
     @Given("a user with unique international SMS MFA exists")
@@ -197,8 +160,6 @@ public class UserLifecycleStepDef {
         world.setOtherUserCredentials(
                 userLifecycleService.buildNewUserCredentialsAndPutToDynamodb(
                         world.getOtherUserProfile(), world.getOtherUserPassword()));
-        passkeyLifecycleService.buildPasskeyAndPutToDynamoDb(
-                world.getOtherUserProfile().getPublicSubjectID());
     }
 
     @And("the user has not yet accepted the latest terms and conditions")
@@ -220,17 +181,14 @@ public class UserLifecycleStepDef {
         if (world.userProfile != null) {
             System.out.printf(
                     "Deleting user profile with email %s%n", world.userProfile.getEmail());
+            passkeyLifecycleService.deleteAllPasskeysForUser(
+                    world.userProfile.getPublicSubjectID());
             userLifecycleService.deleteUserProfileFromDynamodb(world.userProfile);
         }
         if (world.userCredentials != null) {
             System.out.printf(
                     "Deleting user credentials with email %s%n", world.userCredentials.getEmail());
             userLifecycleService.deleteUserCredentialsFromDynamodb(world.userCredentials);
-        }
-        if (world.userPasskeys != null && !world.userPasskeys.isEmpty()) {
-            System.out.printf(
-                    "Deleting passkeys for user with email %s%n", world.userProfile.getEmail());
-            passkeyLifecycleService.deletePasskeysForUser(world.userPasskeys);
         }
     }
 }

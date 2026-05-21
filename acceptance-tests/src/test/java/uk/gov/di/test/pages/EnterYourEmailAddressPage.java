@@ -15,6 +15,14 @@ public class EnterYourEmailAddressPage extends BasePage {
     public void enterEmailAddressAndContinue(String emailAddress) {
         enterEmailAddress(emailAddress);
         findAndClickContinue();
+        dismissPasskeySignInPageIfPresent();
+    }
+
+    private void dismissPasskeySignInPageIfPresent() {
+        waitForReadyStateComplete();
+        if (Driver.get().getTitle().contains("Sign in with your face, fingerprint or passcode")) {
+            selectLinkByText("Sign in another way");
+        }
     }
 
     public String continueButtonText() {

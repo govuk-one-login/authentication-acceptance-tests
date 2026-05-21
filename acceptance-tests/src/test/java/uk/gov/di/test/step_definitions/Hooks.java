@@ -75,6 +75,8 @@ public class Hooks extends BasePage {
             LOG.info(
                     "After API hook: Deleting user profile with email {}",
                     world.userProfile.getEmail());
+            passkeyLifecycleService.deleteAllPasskeysForUser(
+                    world.userProfile.getPublicSubjectID());
             userLifecycleService.deleteUserProfileFromDynamodb(world.userProfile);
         }
         if (world.userCredentials != null) {
@@ -82,12 +84,6 @@ public class Hooks extends BasePage {
                     "After API hook: Deleting user credentials with email {}",
                     world.userCredentials.getEmail());
             userLifecycleService.deleteUserCredentialsFromDynamodb(world.userCredentials);
-        }
-        if (world.userPasskeys != null && !world.userPasskeys.isEmpty()) {
-            LOG.info(
-                    "After API hook: Deleting user passkeys with email {}",
-                    world.userCredentials.getEmail());
-            passkeyLifecycleService.deletePasskeysForUser(world.userPasskeys);
         }
         Driver.get().manage().deleteAllCookies();
         Driver.closeDriver();

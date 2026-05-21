@@ -35,6 +35,6 @@ public class OrchestrationStubUserInfoPage extends StubUserInfoPage {
 
     @Override
     public void waitForReturnToTheService() {
-        waitForPageLoad(TITLE);
+        waitForReturnToTheServiceDismissingPasskeyRegistration(TITLE);
     }
 }

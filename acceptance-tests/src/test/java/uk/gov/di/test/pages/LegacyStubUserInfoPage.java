@@ -27,6 +27,6 @@ public class LegacyStubUserInfoPage extends StubUserInfoPage {
 
     @Override
     public void waitForReturnToTheService() {
-        waitForPageLoad("Example - GOV.UK - User Info");
+        waitForReturnToTheServiceDismissingPasskeyRegistration("Example - GOV.UK - User Info");
     }
 }

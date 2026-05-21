@@ -334,6 +334,7 @@ Feature: Account interventions
 #    Then the user is taken to the "Reset your password" page
 #    The test needs to stop here in Build, due to there being static data in the AIS stub the reset pw flag is not removed and so the correct path is not followed
 #    When the user enters valid new password and correctly retypes it
+#    And the user dismisses the passkey registration page if present
 #    Then the user is returned to the service
 #    And the user clicks logout
 
@@ -355,6 +356,7 @@ Feature: Account interventions
     When the user enters the six digit security code from their email
     Then the user is taken to the "Reset your password" page
     When the user enters valid new password and correctly retypes it
+    And the user dismisses the passkey registration page if present
     Then the user is returned to the service
 
   @reset_password @build-sp @dev
@@ -373,6 +375,7 @@ Feature: Account interventions
     When the user enters the security code from the auth app
     Then the user is taken to the "Reset your password" page
     When the user enters valid new password and correctly retypes it
+    And the user dismisses the passkey registration page if present
     Then the user is returned to the service
 
   @reset_password @build-sp @dev
@@ -392,6 +395,7 @@ Feature: Account interventions
     When the user enters the six digit security code from their phone
     Then the user is taken to the "Reset your password" page
     When the user enters valid new password and correctly retypes it
+    And the user dismisses the passkey registration page if present
     Then the user is returned to the service
 
   @reset_password @build-sp @dev
@@ -415,6 +419,7 @@ Feature: Account interventions
     When the user enters the six digit security code from their email
     Then the user is taken to the "Reset your password" page
     When the user enters valid new password and correctly retypes it
+    And the user dismisses the passkey registration page if present
     Then the user is returned to the service
 
   @reset_password @build-sp @old-mfa-without-ipv
@@ -438,6 +443,7 @@ Feature: Account interventions
     When the user enters the six digit security code from their email
     Then the user is taken to the "Reset your password" page
     When the user enters valid new password and correctly retypes it
+    And the user dismisses the passkey registration page if present
     Then the user is returned to the service
 
   @under-development @AUT-3921 @old-mfa-without-ipv
@@ -485,4 +491,5 @@ Feature: Account interventions
     When the user enters their password
     Then the user is taken to the "Enter the 6 digit security code shown in your authenticator app" page
     When the user enters the security code from the auth app
+    And the user dismisses the passkey registration page if present
     Then the user is returned to the service

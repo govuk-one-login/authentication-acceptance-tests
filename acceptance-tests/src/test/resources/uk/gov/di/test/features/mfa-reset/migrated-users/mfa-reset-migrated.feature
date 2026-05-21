@@ -32,6 +32,7 @@ And the user enters their mobile phone number
 And the user enters the six digit security code from their phone
 Then the user is taken to the "You’ve changed how you get security codes" page
 When the user clicks the continue button
+    And the user dismisses the passkey registration page if present
 Then the user is returned to the service
 And the User only has a default MFA of "SMS" and remains migrated
 
@@ -59,5 +60,6 @@ When the user adds the secret key on the screen to their auth app
 And the user enters the security code from the auth app
 Then the user is taken to the "You’ve changed how you get security codes" page
 When the user clicks the continue button
+    And the user dismisses the passkey registration page if present
 Then the user is returned to the service
 And the User only has a default MFA of "AUTH_APP" and remains migrated

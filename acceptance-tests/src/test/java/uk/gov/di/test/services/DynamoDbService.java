@@ -4,6 +4,7 @@ import software.amazon.awssdk.enhanced.dynamodb.DynamoDbEnhancedClient;
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbTable;
 import software.amazon.awssdk.enhanced.dynamodb.Key;
 import software.amazon.awssdk.enhanced.dynamodb.TableSchema;
+import software.amazon.awssdk.enhanced.dynamodb.model.QueryConditional;
 import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
 import uk.gov.di.test.entity.Passkey;
 import uk.gov.di.test.entity.SmsInternationalNumberSendLimit;
@@ -126,6 +127,15 @@ public class DynamoDbService {
 
     public void putPasskey(Passkey passkey) {
         authenticatorPasskeyTable.putItem(passkey);
+    }
+
+    public List<Passkey> queryPasskeysByPublicSubjectId(String publicSubjectId) {
+        Key key = Key.builder().partitionValue(publicSubjectId).build();
+        return authenticatorPasskeyTable
+                .query(r -> r.queryConditional(QueryConditional.keyEqualTo(key)))
+                .items()
+                .stream()
+                .toList();
     }
 
     public void deletePasskeys(List<Passkey> passkeys) {

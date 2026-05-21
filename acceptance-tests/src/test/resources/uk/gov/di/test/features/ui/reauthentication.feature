@@ -129,6 +129,7 @@ Feature: Reauthentication of user
     When the user enters an incorrect password 5 times
     And the user opens up new tab in the same browser, performs a silent log in and switches back to the first tab
     When the user enters an incorrect password 1 times
+    And the user dismisses the passkey registration page if present
     Then the user is returned to the service
 
 
@@ -180,6 +181,7 @@ Feature: Reauthentication of user
     And the user enters the six digit security code from their phone
     And the user switches back to the second tab
     And the user enters their email address for reauth
+    And the user dismisses the passkey registration page if present
     Then the user is returned to the service
 
 

@@ -17,6 +17,7 @@ Feature: Reset password
     When the user enters the six digit security code from their phone
     Then the user is taken to the "Reset your password" page
     When the user enters valid new password and correctly retypes it
+    And the user dismisses the passkey registration page if present
     Then the user is returned to the service
 
   Scenario: An auth app user can successfully reset their password
@@ -35,4 +36,5 @@ Feature: Reset password
     When the user enters the security code from the auth app
     Then the user is taken to the "Reset your password" page
     When the user enters valid new password and correctly retypes it
+    And the user dismisses the passkey registration page if present
     Then the user is returned to the service

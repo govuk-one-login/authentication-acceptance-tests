@@ -63,6 +63,7 @@ Feature: International phone numbers
       When the user enters the six digit security code from their phone
       Then the user is taken to the "You’ve created your GOV.UK One Login" page
       When the user clicks the continue button
+    And the user dismisses the passkey registration page if present
       Then the user is returned to the service
 
   @InternationalNumbersForcedMFAReset @InternationalSmsSendingEnabled
@@ -88,6 +89,7 @@ Feature: International phone numbers
       When the user enters the six digit security code from their phone
       Then the user is taken to the "You’ve changed how you get security codes" page
       When the user clicks the continue button
+    And the user dismisses the passkey registration page if present
       Then the user is returned to the service
 
   @InternationalNumbersForcedMFAReset @InternationalSmsSendingEnabled
@@ -102,6 +104,7 @@ Feature: International phone numbers
       When the user enters their email address
       Then the user is taken to the "Enter your password" page
       When the user enters their password
+    And the user dismisses the passkey registration page if present
       Then the user is returned to the service
       When the user comes from the stub relying party with options: [2fa-on,authenticated-2] and is taken to the "Enter a security code to continue" page
       When the user enters the six digit security code from their phone
@@ -113,6 +116,7 @@ Feature: International phone numbers
       And the user enters the six digit security code from their phone
       Then the user is taken to the "You’ve changed how you get security codes" page
       When the user clicks the continue button
+    And the user dismisses the passkey registration page if present
       Then the user is returned to the service
 
   @InternationalNumbersForcedMFAReset @InternationalSmsSendingEnabled
@@ -141,6 +145,7 @@ Feature: International phone numbers
       And the user enters the six digit security code from their phone
       Then the user is taken to the "You’ve changed how you get security codes" page
       When the user clicks the continue button
+    And the user dismisses the passkey registration page if present
       Then the user is returned to the service
 
   @InternationalNumbersForcedMFAReset @InternationalSmsSendingEnabled
@@ -192,6 +197,7 @@ Feature: International phone numbers
       And the user enters the six digit security code from their phone
       Then the user is taken to the "You’ve changed how you get security codes" page
       When the user clicks the continue button
+    And the user dismisses the passkey registration page if present
       Then the user is returned to the service
 
     Scenario: User with international SMS MFA is indefinitely locked out when send limit already set
@@ -220,6 +226,7 @@ Feature: International phone numbers
       When the user enters their email address
       Then the user is taken to the "Enter your password" page
       When the user enters their password
+    And the user dismisses the passkey registration page if present
       Then the user is returned to the service
       When the user comes from the stub relying party with options: [2fa-on,authenticated-2] and is taken to the "Enter a security code to continue" page
       When the user requests the phone otp code to the international numbers limit
@@ -236,6 +243,7 @@ Feature: International phone numbers
       When the user enters their email address
       Then the user is taken to the "Enter your password" page
       When the user enters their password
+    And the user dismisses the passkey registration page if present
       Then the user is returned to the service
       When the user comes from the stub relying party with options: [2fa-on,authenticated-2] and is taken to the "Sorry, there’s a problem" page
       When the user selects "Check if you can change how you get security codes" link
@@ -336,6 +344,7 @@ Feature: International phone numbers
       When the user enters their email address
       Then the user is taken to the "Enter your password" page
       When the user enters their password
+    And the user dismisses the passkey registration page if present
       Then the user is returned to the service
       When the user comes from the stub relying party with options: [2fa-on,authenticated-2] and is taken to the "Sorry, there’s a problem" page
       When the user selects "Check if you can change how you get security codes" link
