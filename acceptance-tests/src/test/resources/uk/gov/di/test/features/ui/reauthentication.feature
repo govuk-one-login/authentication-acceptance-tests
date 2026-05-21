@@ -1,6 +1,6 @@
 @UI @Reauth
 Feature: Reauthentication of user
-  @happy
+
   Scenario: Sms user successfully reauthenticates
     Given a user with SMS MFA exists
     And the user is already signed in to their One Login account
@@ -11,7 +11,6 @@ Feature: Reauthentication of user
     And the user enters the six digit security code from their phone
     Then the user is successfully reauthenticated and returned to the service
 
-  @happy
   Scenario: Auth app user successfully reauthenticates
     Given a user with App MFA exists
     And the user is already signed in to their One Login account
