@@ -83,7 +83,8 @@ public class UserLifecycleStepDef {
 
     @Given("a User exists")
     @Given("a user exists")
-    public void aUserExists() {
+    @Given("a user exists with a passkey")
+    public void aUserExistsWithAPasskey() {
         aUserDoesNotYetExist();
         userLifecycleService.putUserProfileToDynamodb(world.userProfile);
         world.userCredentials =
@@ -111,8 +112,10 @@ public class UserLifecycleStepDef {
 
     @Given("a user with {string} MFA exists")
     @Given("a user with {mfaMethod} MFA exists")
-    public void aUserExists(String mfaMethod) {
-        aUserExists();
+    @Given("a user with {string} MFA and a passkey exists")
+    @Given("a user with {mfaMethod} MFA and a passkey exists")
+    public void aUserExistsWithAPasskey(String mfaMethod) {
+        aUserExistsWithAPasskey();
         switch (mfaMethod) {
             case "no":
                 break;
@@ -153,7 +156,7 @@ public class UserLifecycleStepDef {
 
     @Given("a user with unique international SMS MFA exists")
     public void aUserWithUniqueInternationalSmsMfaExists() {
-        aUserExists();
+        aUserExistsWithAPasskey();
         userLifecycleService.updateUserMfaSmsWithUniqueInternationalNumber(world.userProfile);
     }
 

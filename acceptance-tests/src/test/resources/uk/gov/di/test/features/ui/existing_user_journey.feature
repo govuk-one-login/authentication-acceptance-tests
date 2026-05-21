@@ -71,3 +71,14 @@ Feature: Login Journey
     # Second (silent) sign in
     When the user comes from the stub relying party with option authenticated-2
     Then the user is returned to the service
+
+  @PasskeyUsageEnabled
+  Scenario: Existing user with a passkey tries to create an account with the same email address
+    Given a user exists with a passkey
+    When the user comes from the stub relying party with default options and is taken to the "Create your GOV.UK One Login or sign in" page
+    When the user selects create an account
+    Then the user is taken to the "Enter your email address" page
+    When the user enters their email address
+    Then the user is taken to the "You have a GOV.UK One Login" page
+    When the user clicks the continue button
+    Then the user is taken to the "Sign in with your face, fingerprint or passcode" page
