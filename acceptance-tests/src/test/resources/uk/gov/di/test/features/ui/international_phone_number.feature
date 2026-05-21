@@ -1,4 +1,4 @@
-@UI @build @staging @build-sp @staging-sp @dev
+@UI
 Feature: International phone numbers
 
   @RejectInternationalNumbers

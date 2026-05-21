@@ -1,4 +1,4 @@
-@UI @AccountRecovery @build @staging @build-sp @staging-sp
+@UI @AccountRecovery
 Feature: Account recovery
 
   @old-mfa-without-ipv

@@ -1,4 +1,3 @@
-@UI @LegalAndPolicy @build @staging @build-sp @staging-sp @dev
 Feature: Legal and policy pages
   User clicks on the legal and policy pages
 

@@ -1,8 +1,8 @@
-@UI @AuthApp2FA @build @staging @build-sp @staging-sp
+@UI @AuthApp2FA
 Feature: Authentication App Journeys
   New user creates an account and logs in using an auth app
 
-  @dev @SignInWithoutPasskeys
+  @SignInWithoutPasskeys
   Scenario: User successfully registers with auth app 2FA and login with 2fa-on
     Given a user does not yet exist
     When the user comes from the stub relying party with option 2fa-off and is taken to the "Create your GOV.UK One Login or sign in" page
@@ -69,7 +69,6 @@ Feature: Authentication App Journeys
     When the user chooses to skip passkey registration
     Then the user is returned to the service
 
-  @dev
   Scenario: User successfully login without 2FA
     Given a user with App MFA exists
     When the user comes from the stub relying party with option 2fa-off and is taken to the "Create your GOV.UK One Login or sign in" page
