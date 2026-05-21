@@ -1,7 +1,6 @@
 @UI @AccountInterventions
 Feature: Account interventions
 
-  @suspended
   Scenario: Sms user cannot log in when they have a temporarily suspended account
     Given a user with SMS MFA exists
     And the user has a temporarily suspended intervention
@@ -15,7 +14,6 @@ Feature: Account interventions
     When the user enters the six digit security code from their phone
     Then the user is taken to the "Sorry, there is a problem" page
 
-  @suspended
   Scenario: Auth app user cannot log in when they have a temporarily suspended account
     Given a user with App MFA exists
     And the user has a temporarily suspended intervention
@@ -29,7 +27,6 @@ Feature: Account interventions
     When the user enters the security code from the auth app
     Then the user is taken to the "Sorry, there is a problem" page
 
-  @suspended
   Scenario: Sms user with outdated terms and conditions cannot log in when they have a temporarily suspended account
     Given a user with SMS MFA exists
     And the user has a temporarily suspended intervention
@@ -46,7 +43,6 @@ Feature: Account interventions
     When the user agrees to the updated terms and conditions
     Then the user is taken to the "Sorry, there is a problem" page
 
-  @suspended
   Scenario: Sms user cannot change their password when they have a temporarily suspended account
     Given a user with SMS MFA exists
     And the user has a temporarily suspended intervention
@@ -62,7 +58,6 @@ Feature: Account interventions
     When the user enters the six digit security code from their phone
     Then the user is taken to the "Sorry, there is a problem" page
 
-  @suspended
   Scenario: Auth app user with a current password on the top 100k unacceptable password list cannot change their password when they have a temporarily suspended account
     Given a user with App MFA exists
     And the user's password is on the top 100k unacceptable password list
@@ -79,7 +74,7 @@ Feature: Account interventions
     And the user enters the security code from the auth app
     Then the user is taken to the "Sorry, there is a problem" page
 
-  @suspended @old-mfa-without-ipv
+  @old-mfa-without-ipv
   Scenario: Sms user cannot change the way they get security codes when they have a temporarily suspended account
     Given a user with SMS MFA exists
     And the user has a temporarily suspended intervention
@@ -113,7 +108,7 @@ Feature: Account interventions
     When the user clicks the continue button
     Then the user is taken to the "How do you want to get security codes" page
 
-  @suspended @old-mfa-without-ipv
+  @old-mfa-without-ipv
   Scenario: Auth app user cannot change the way they get security codes when they have a temporarily suspended account
     Given a user with App MFA exists
     And the user has a temporarily suspended intervention
@@ -462,7 +457,7 @@ Feature: Account interventions
     When the user enters the six digit security code from their phone
     Then the user is taken to the "You’ve changed how you get security codes" page
 
-  @suspended @reset_password
+  @reset_password
   Scenario: Auth app user can log in when their One Login account intervention has been removed
     Given a user with App MFA exists
     And the user has a temporarily suspended intervention
