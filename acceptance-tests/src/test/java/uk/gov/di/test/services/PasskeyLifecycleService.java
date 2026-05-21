@@ -39,8 +39,11 @@ public class PasskeyLifecycleService {
         return List.of(passkey);
     }
 
-    public void deletePasskeysForUser(List<Passkey> passkeys) {
-        DYNAMO_DB_SERVICE.deletePasskeys(passkeys);
+    public void deleteAllPasskeysForUser(String publicSubjectId) {
+        List<Passkey> passkeys = DYNAMO_DB_SERVICE.queryPasskeysByPublicSubjectId(publicSubjectId);
+        if (!passkeys.isEmpty()) {
+            DYNAMO_DB_SERVICE.deletePasskeys(passkeys);
+        }
     }
 
     public static String buildSortKey(String passkeyId) {

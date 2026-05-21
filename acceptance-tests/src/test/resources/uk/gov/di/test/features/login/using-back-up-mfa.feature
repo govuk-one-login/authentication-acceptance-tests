@@ -156,6 +156,7 @@ Feature: Login Using Back Up MFA
     When the user clicks the continue button
     Then the user is taken to the "Check your phone" page
     When the user enters the six digit security code from their phone
+    And the user dismisses the passkey registration page if present
     Then the user is returned to the service
 
   Scenario: User requests too many OTPs when authenticating with a Backup SMS MFA
@@ -228,6 +229,7 @@ Feature: Login Using Back Up MFA
     When the user clicks the continue button
     Then the user is taken to the "Check your phone" page
     When the user enters the six digit security code from their phone
+    And the user dismisses the passkey registration page if present
     Then the user is returned to the service
 
   Scenario: A User loses access to their Default Auth App and requests too many OTPs when authenticating with a Backup SMS MFA and lockout
@@ -430,6 +432,7 @@ Feature: Login Using Back Up MFA
     And the user enters the security code from backup MFA auth app
     Then the user is taken to the "Reset your password" page
     When the user enters valid new password and correctly retypes it
+    And the user dismisses the passkey registration page if present
     Then the user is returned to the service
 
   Scenario: User resets password using a Backup SMS MFA
@@ -458,6 +461,7 @@ Feature: Login Using Back Up MFA
     When the user enters the six digit security code from their phone
     Then the user is taken to the "Reset your password" page
     When the user enters valid new password and correctly retypes it
+    And the user dismisses the passkey registration page if present
     Then the user is returned to the service
 
   Scenario: User with Auth App Default MFA requests too many OTPs when resetting their password with a Backup SMS MFA and lockout
@@ -672,6 +676,7 @@ Feature: Login Using Back Up MFA
     When the user enters their email address
     Then the user is taken to the "Enter your password" page
     When the user enters their password
+    And the user dismisses the passkey registration page if present
     Then the user is returned to the service
     When the user comes from the stub relying party with options: [2fa-on,authenticated-2] and is taken to the "Enter a security code to continue" page
     Then the user is taken to the "Enter a security code to continue" page
@@ -682,6 +687,7 @@ Feature: Login Using Back Up MFA
     When the user clicks the continue button
     Then the user is taken to the "Enter a security code to continue" page
     When the user enters the six digit security code from their phone
+    And the user dismisses the passkey registration page if present
     Then the user is returned to the service
 
   Scenario: User with Auth App as Default MFA and SMS as backup MFA switches MFA in uplift journey
@@ -698,6 +704,7 @@ Feature: Login Using Back Up MFA
     When the user enters their email address
     Then the user is taken to the "Enter your password" page
     When the user enters their password
+    And the user dismisses the passkey registration page if present
     Then the user is returned to the service
     When the user comes from the stub relying party with options: [2fa-on,authenticated-2] and is taken to the "Enter a security code to continue" page
     Then the user is taken to the "Enter a security code to continue" page
@@ -707,6 +714,7 @@ Feature: Login Using Back Up MFA
     When the user clicks the continue button
     Then the user is taken to the "Enter a security code to continue" page
     When the user enters the six digit security code from their phone
+    And the user dismisses the passkey registration page if present
     Then the user is returned to the service
 
   Scenario: Sms user successfully reauthenticate with backup phone number
@@ -812,6 +820,7 @@ Feature: Login Using Back Up MFA
     When the user enters their password
     Then the user is taken to the "Check your phone" page
     When the user enters the six digit security code from their phone
+    And the user dismisses the passkey registration page if present
     Then the user is returned to the service
     And the user info JSON is extracted from the stub page
     And the "phone_number_verified" is true
@@ -830,6 +839,7 @@ Feature: Login Using Back Up MFA
     When the user enters their password
     Then the user is taken to the "Check your phone" page
     When the user enters the six digit security code from their phone
+    And the user dismisses the passkey registration page if present
     Then the user is returned to the service
     And the user info JSON is extracted from the stub page
     And the "phone_number_verified" is true
@@ -850,6 +860,7 @@ Feature: Login Using Back Up MFA
     When the user enters their password
     Then the user is taken to the "Enter the 6 digit security code shown in your authenticator app" page
     When the user enters the six digit code for "App"
+    And the user dismisses the passkey registration page if present
     Then the user is returned to the service
     And the user info JSON is extracted from the stub page
     And the "phone_number_verified" is false
@@ -864,6 +875,7 @@ Feature: Login Using Back Up MFA
     When the user enters their password
     Then the user is taken to the "Enter the 6 digit security code shown in your authenticator app" page
     When the user enters the six digit code for "App"
+    And the user dismisses the passkey registration page if present
     Then the user is returned to the service
     And the user info JSON is extracted from the stub page
     And the "phone_number_verified" is false
@@ -879,6 +891,7 @@ Feature: Login Using Back Up MFA
     When the user enters their password
     Then the user is taken to the "Check your phone" page
     When the user enters the six digit security code from their phone
+    And the user dismisses the passkey registration page if present
     Then the user is returned to the service
     And the user info JSON is extracted from the stub page
     And the "phone_number_verified" is true
