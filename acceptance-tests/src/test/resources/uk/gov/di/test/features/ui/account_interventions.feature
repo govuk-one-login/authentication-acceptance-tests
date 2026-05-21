@@ -143,7 +143,6 @@ Feature: Account interventions
     And the user clicks the continue button
     Then the user is taken to the "You cannot change how you get security codes" page
 
-  @locked
   Scenario: Sms user cannot log in when they have a permanently locked account
     Given a user with SMS MFA exists
     And the user has a permanently locked intervention
@@ -157,7 +156,6 @@ Feature: Account interventions
     When the user enters the six digit security code from their phone
     Then the user is taken to the "Your GOV.UK One Login has been permanently locked" page
 
-  @locked
   Scenario: Auth app user cannot log in when they have a permanently locked account
     Given a user with App MFA exists
     And the user has a permanently locked intervention
@@ -171,7 +169,6 @@ Feature: Account interventions
     When the user enters the security code from the auth app
     Then the user is taken to the "Your GOV.UK One Login has been permanently locked" page
 
-  @locked
   Scenario: Auth app user with outdated terms and conditions cannot log in when they have a permanently locked account
     Given a user with App MFA exists
     And the user has a permanently locked intervention
@@ -188,7 +185,6 @@ Feature: Account interventions
     When the user agrees to the updated terms and conditions
     Then the user is taken to the "Your GOV.UK One Login has been permanently locked" page
 
-  @locked
   Scenario: Auth app user cannot create a new account using the email address of a permanently locked account
     Given a user with App MFA exists
     And the user has a permanently locked intervention
@@ -202,7 +198,6 @@ Feature: Account interventions
     When the user enters the security code from the auth app
     Then the user is taken to the "Your GOV.UK One Login has been permanently locked" page
 
-  @locked
   Scenario: Sms user cannot change their password when they have a permanently locked account
     Given a user with SMS MFA exists
     And the user has a permanently locked intervention
@@ -218,7 +213,6 @@ Feature: Account interventions
     When the user enters the six digit security code from their phone
     Then the user is taken to the "Your GOV.UK One Login has been permanently locked" page
 
-  @locked
   Scenario: Sms user with a current password on the top 100k unacceptable password list cannot change their password when they have a permanently locked account
     Given a user with SMS MFA exists
     And the user's password is on the top 100k unacceptable password list
@@ -235,7 +229,7 @@ Feature: Account interventions
     When the user enters the six digit security code from their phone
     Then the user is taken to the "Your GOV.UK One Login has been permanently locked" page
 
-  @locked @old-mfa-without-ipv
+  @old-mfa-without-ipv
   Scenario: Sms user cannot change the way they get security codes when they have a permanently locked account
     Given a user with SMS MFA exists
     And the user has a permanently locked intervention
@@ -272,7 +266,7 @@ Feature: Account interventions
     Then the user is taken to the "You cannot change how you get security codes" page
 
 
-  @locked @old-mfa-without-ipv
+  @old-mfa-without-ipv
   Scenario: Auth app user cannot change the way they get security codes when they have a permanently locked account
     Given a user with App MFA exists
     And the user has a permanently locked intervention
