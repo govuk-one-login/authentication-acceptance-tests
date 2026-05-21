@@ -1,4 +1,4 @@
-@UI @lockouts @lockout_create_account
+@UI
 Feature: Create account lockouts
 
   # ENTER INCORRECT EMAIL OTP TOO MANY TIMES DURING CREATE ACCOUNT - 2690
