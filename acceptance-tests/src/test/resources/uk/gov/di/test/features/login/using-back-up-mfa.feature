@@ -1,4 +1,4 @@
-@Login @API
+@API
 Feature: Login Using Back Up MFA
 
   Scenario Outline: User authenticates using a backup SMS MFA

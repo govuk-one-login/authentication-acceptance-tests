@@ -1,4 +1,4 @@
-@UI @AuthApp2FA
+@UI
 Feature: Authentication App Journeys
   New user creates an account and logs in using an auth app
 

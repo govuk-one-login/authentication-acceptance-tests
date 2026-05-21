@@ -1,4 +1,4 @@
-@UI @ResetPassword
+@UI
 Feature: Reset password
 
   Scenario: An sms user can successfully reset their password

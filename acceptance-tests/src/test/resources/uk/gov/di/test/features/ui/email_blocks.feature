@@ -1,4 +1,4 @@
-@UI @EmailBlocks
+@UI
 Feature: Create account - Experian email check
 
   This scenario covers how Experian checks the email address submitted during One Login account creation.
