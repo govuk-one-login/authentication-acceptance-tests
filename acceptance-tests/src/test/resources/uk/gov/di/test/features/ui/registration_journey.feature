@@ -1,4 +1,4 @@
-@UI @RegistrationJourney @build @staging @build-sp @staging-sp @dev
+@UI @RegistrationJourney
 Feature: Registration Journey
   New user walks through a registration journey
 
@@ -82,7 +82,6 @@ Feature: Registration Journey
     Then the user is returned to the service
 
 
-  @partialRegUser
   Scenario: Partial registered user is able to complete registration when they restart journey and select forgotten password for sms user
     Given a user does not yet exist
     Given the user is partially registered up to "choose how to get security codes" page

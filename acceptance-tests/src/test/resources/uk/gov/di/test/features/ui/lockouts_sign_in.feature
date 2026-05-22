@@ -1,4 +1,4 @@
-@UI @lockouts @lockout_sign_in @build @staging @build-sp @staging-sp @dev
+@UI
 Feature: Sign in lockouts
 
   # ENTER INCORRECT PASSWORD TOO MANY TIMES DURING SIGN IN - 2060
