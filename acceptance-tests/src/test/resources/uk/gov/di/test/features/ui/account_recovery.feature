@@ -1,4 +1,4 @@
-@UI @AccountRecovery
+@UI
 Feature: Account recovery
 
   @old-mfa-without-ipv
