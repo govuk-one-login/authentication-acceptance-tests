@@ -1,4 +1,4 @@
-@mfa-reset @UI @API
+@mfa-reset @UI @API @AccountManagementAPI
 
 Feature: The MFA reset process.
   Begins in Authentication, when a user initiates an MFA reset,
