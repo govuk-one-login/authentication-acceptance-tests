@@ -1,4 +1,4 @@
-@UI @Cookies
+@UI
 Feature: Cookies
   The correct cookies are set on the browser, at the correct time
 
