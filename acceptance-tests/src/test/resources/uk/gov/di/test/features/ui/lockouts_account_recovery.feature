@@ -1,4 +1,4 @@
-@UI @lockout_acc_rec @old-mfa-without-ipv
+@UI @old-mfa-without-ipv
 Feature: Account recovery lockouts
 
   # ENTER INCORRECT EMAIL OTP TOO MANY TIMES DURING ACCOUNT RECOVERY - 2081 - PASS
