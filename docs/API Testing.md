@@ -18,7 +18,7 @@ The API acceptance tests are built using:
 Example from `mfa-methods.feature`:
 
 ```gherkin
-@under-development @API
+@under-development @AccountManagementAPI
 Feature: MFA Method Management API
   Check the MFA Method Management API
   Scenario: Authenticated User successfully Add Backup Phone Number as MFA
