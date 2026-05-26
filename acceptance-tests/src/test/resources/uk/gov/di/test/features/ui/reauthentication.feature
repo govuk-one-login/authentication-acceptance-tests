@@ -248,7 +248,6 @@ Feature: Reauthentication of user
 
 
   # WILL BE REPLACED WITH NEW PROCESS IN V3
-  @reauth-pw-reset
   Scenario: User can change their password during reauthenticates
     Given a user with SMS MFA exists
     And the user is already signed in to their One Login account
