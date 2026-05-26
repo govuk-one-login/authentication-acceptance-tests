@@ -217,7 +217,7 @@ public class UserLifecycleStepDef {
         world.setUserPassword(TOP_100K_PASSWORD);
     }
 
-    //    @After("@UI or @API")
+    //    @After("@UI or @AccountManagementAPI")
     @After("@UI")
     public void theUserIsDeleted() {
         if (world.userProfile != null) {

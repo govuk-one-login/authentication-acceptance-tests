@@ -1,4 +1,4 @@
-@API @AccountManagementAPI
+@AccountManagementAPI
 Feature: Auth App MFA User manages their MFA methods via the Method Management API
 
   As an Authenticated User using an Auth App as Default MFA

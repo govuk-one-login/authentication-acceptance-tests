@@ -1,4 +1,4 @@
-@API @AccountManagementAPI
+@AccountManagementAPI
 Feature: Update Email
 
   Scenario: Authenticated User successfully updates their email address

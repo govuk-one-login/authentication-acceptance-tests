@@ -18,7 +18,7 @@ The API acceptance tests are built using:
 Example from `mfa-methods.feature`:
 
 ```gherkin
-@under-development @API
+@under-development @AccountManagementAPI
 Feature: MFA Method Management API
   Check the MFA Method Management API
   Scenario: Authenticated User successfully Add Backup Phone Number as MFA
@@ -195,7 +195,7 @@ public static void authorizeApiGatewayUse(World world) throws ParseException, JO
 ## 7. Best Practices
 
 ### 1. Tagging
-Always tag API test features with `@API` to distinguish them from UI tests
+Always tag Account management API test features with `@AccountManagementAPI` to distinguish them from UI tests
 Use additional tags like `@under-development` for features still in development
 
 ### 2. Separation of Concerns
@@ -203,7 +203,7 @@ Use additional tags like `@under-development` for features still in development
 **Feature Files**: Use business/user terminology only. Focus on what the user wants to achieve, not how it's implemented.
 
 ```gherkin
-  @API
+  @AccountManagementAPI
   Feature: User Profile Management
     Scenario: Update User's Phone Number
       Given the User is Logged In

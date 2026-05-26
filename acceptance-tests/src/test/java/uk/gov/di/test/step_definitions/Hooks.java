@@ -69,11 +69,11 @@ public class Hooks extends BasePage {
         Driver.closeDriver();
     }
 
-    @After("@API")
+    @After("@AccountManagementAPI")
     public void theUserIsDeleted() {
         if (world.userProfile != null) {
             LOG.info(
-                    "After API hook: Deleting user profile with email {}",
+                    "After Account management API hook: Deleting user profile with email {}",
                     world.userProfile.getEmail());
             userLifecycleService.deleteUserProfileFromDynamodb(world.userProfile);
         }
