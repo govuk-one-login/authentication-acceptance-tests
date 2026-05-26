@@ -202,7 +202,7 @@ Feature: Reauthentication of user
     * the user is not blocked from reauthenticating
 
 
-  @reauth-change-security-code-method-to-auth-app
+  @new-mfa-reset-with-ipv
   Scenario: Sms user can change how they get security codes during reauthentication
     Given a user with SMS MFA exists
     And the user is already signed in to their One Login account
@@ -225,7 +225,7 @@ Feature: Reauthentication of user
     And the user logs out
 
 
-  @reauth-change-security-code-method-to-sms
+  @new-mfa-reset-with-ipv
   Scenario: Auth app user can change how they get security codes during reauthentication
     Given a user with App MFA exists
     And the user is already signed in to their One Login account
@@ -248,7 +248,6 @@ Feature: Reauthentication of user
 
 
   # WILL BE REPLACED WITH NEW PROCESS IN V3
-  @reauth-pw-reset
   Scenario: User can change their password during reauthenticates
     Given a user with SMS MFA exists
     And the user is already signed in to their One Login account
