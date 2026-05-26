@@ -102,7 +102,7 @@ UI: di-authentication-build
 API: di-auth-staging
 UI: di-authentication-staging
 
-CUCUMBER_FILTER_TAGS are used in each environment to run specific feature groups (@UI or @API).
+CUCUMBER_FILTER_TAGS are used in each environment to run specific feature groups (@UI or @AccountManagementAPI).
 
 #### Environmental Configuration
 Tests depend on environment-specific variables from AWS Systems Manager (SSM) Parameter Store.
@@ -165,7 +165,7 @@ See example below:
 | ACCESSIBILITY_CHECKS | false                        |                                                                                                                                  |
 | FAIL_FAST_ENABLED    | false                        |                                                                                                                                  |
 | PARALLEL_BROWSERS    | 1                            |                                                                                                                                  |
-| CUCUMBER_FILTER_TAGS | "@API"                       |                                                                                                                                  |
+| CUCUMBER_FILTER_TAGS | "@AccountManagementAPI"                       |                                                                                                                                  |
 | AWS_PROFILE          | di-auth-development-admin    |                                                                                                                                  |
 | ENVIRONMENT          | dev                          |                                                                                                                                  |
 ````
