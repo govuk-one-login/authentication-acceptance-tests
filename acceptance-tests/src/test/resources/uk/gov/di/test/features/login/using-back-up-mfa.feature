@@ -733,6 +733,8 @@ Feature: Login Using Back Up MFA
     When the user enters their password
     Then the user is taken to the "Check your phone" page
     When the user enters the six digit security code from their phone
+    And the user dismisses the passkey registration page if present
+    Then the user is returned to the service
     Given the RP requires the user to reauthenticate
     When the user enters the same email address for reauth as they used for login
     And the user enters the correct password
@@ -760,6 +762,8 @@ Feature: Login Using Back Up MFA
     When the user enters their password
     Then the user is taken to the "Check your phone" page
     When the user enters the six digit security code from their phone
+    And the user dismisses the passkey registration page if present
+    Then the user is returned to the service
     Given the RP requires the user to reauthenticate
     When the user enters the same email address for reauth as they used for login
     And the user enters the correct password
@@ -788,6 +792,8 @@ Feature: Login Using Back Up MFA
     When the user enters their password
     Then the user is taken to the "Enter the 6 digit security code shown in your authenticator app" page
     When the user enters the security code from the auth app
+    And the user dismisses the passkey registration page if present
+    Then the user is returned to the service
     Given the RP requires the user to reauthenticate
     When the user enters the same email address for reauth as they used for login
     And the user enters the correct password
