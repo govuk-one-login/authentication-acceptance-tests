@@ -5,6 +5,7 @@ import uk.gov.di.test.pages.CheckYourEmailPage;
 import uk.gov.di.test.pages.CheckYourPhonePage;
 import uk.gov.di.test.pages.ChooseHowToGetSecurityCodesPage;
 import uk.gov.di.test.pages.CreateOrSignInPage;
+import uk.gov.di.test.pages.CreatePasskeysPage;
 import uk.gov.di.test.pages.CreateYourPasswordPage;
 import uk.gov.di.test.pages.EnterThe6DigitSecurityCodeShownInYourAuthenticatorAppPage;
 import uk.gov.di.test.pages.EnterYourEmailAddressToSignInPage;
@@ -89,7 +90,7 @@ public class CrossPageFlows extends BasePage {
         }
     }
 
-    private void enterMfaCodeAndContinue() {
+    private void enterMfaCodeAndContinueDismissingPasskeys() {
         switch (world.getMfaType()) {
             case SMS:
                 waitForPageLoad("Check your phone");
@@ -104,6 +105,11 @@ public class CrossPageFlows extends BasePage {
             default:
                 throw new RuntimeException("Invalid MFA type: " + world.getMfaType());
         }
+        dismissPasskeyRegistrationPageIfPresent();
+    }
+
+    private void dismissPasskeyRegistrationPageIfPresent() {
+        new CreatePasskeysPage().dismissIfPresent();
     }
 
     public void successfulSignIn() {
@@ -116,7 +122,7 @@ public class CrossPageFlows extends BasePage {
         enterYourEmailAddressToSignInPage.enterEmailAddressAndContinue(world.getUserEmailAddress());
         enterYourPasswordPage.waitForPage();
         enterYourPasswordPage.enterPasswordAndContinue(world.getUserPassword());
-        enterMfaCodeAndContinue();
+        enterMfaCodeAndContinueDismissingPasskeys();
         stubUserInfoPage.waitForReturnToTheService();
     }
 
@@ -158,7 +164,7 @@ public class CrossPageFlows extends BasePage {
                 world.getUserEmailAddress());
         enterYourPasswordPage.waitForPage();
         enterYourPasswordPage.enterCorrectPasswordAndContinue();
-        enterMfaCodeAndContinue();
+        enterMfaCodeAndContinueDismissingPasskeys();
         stubUserInfoPage.waitForReturnToTheService();
     }
 
@@ -245,6 +251,7 @@ public class CrossPageFlows extends BasePage {
         checkYourPhonePage.enterCorrectPhoneCodeAndContinue();
         waitForPageLoad("You’ve created your GOV.UK One Login");
         findAndClickContinue();
+        dismissPasskeyRegistrationPageIfPresent();
         stubUserInfoPage.waitForReturnToTheService();
         stubUserInfoPage.logoutOfAccount();
     }

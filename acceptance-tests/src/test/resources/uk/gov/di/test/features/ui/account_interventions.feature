@@ -323,6 +323,7 @@ Feature: Account interventions
 #    Then the user is taken to the "Reset your password" page
 #    The test needs to stop here in Build, due to there being static data in the AIS stub the reset pw flag is not removed and so the correct path is not followed
 #    When the user enters valid new password and correctly retypes it
+#    And the user dismisses the passkey registration page if present
 #    Then the user is returned to the service
 #    And the user clicks logout
 
@@ -343,6 +344,7 @@ Feature: Account interventions
     When the user enters the six digit security code from their email
     Then the user is taken to the "Reset your password" page
     When the user enters valid new password and correctly retypes it
+    And the user dismisses the passkey registration page if present
     Then the user is returned to the service
 
   Scenario: Auth app user with a password reset intervention on their account is able to use the I have forgotten my password link
@@ -360,6 +362,7 @@ Feature: Account interventions
     When the user enters the security code from the auth app
     Then the user is taken to the "Reset your password" page
     When the user enters valid new password and correctly retypes it
+    And the user dismisses the passkey registration page if present
     Then the user is returned to the service
 
   Scenario: Sms user is forced to reset their password when they have a password reset intervention on their account and their existing password is on top 100k password list
@@ -378,6 +381,7 @@ Feature: Account interventions
     When the user enters the six digit security code from their phone
     Then the user is taken to the "Reset your password" page
     When the user enters valid new password and correctly retypes it
+    And the user dismisses the passkey registration page if present
     Then the user is returned to the service
 
   Scenario: Auth app user with outdated terms and conditions cannot log in when they have a password reset intervention on their account
@@ -400,6 +404,7 @@ Feature: Account interventions
     When the user enters the six digit security code from their email
     Then the user is taken to the "Reset your password" page
     When the user enters valid new password and correctly retypes it
+    And the user dismisses the passkey registration page if present
     Then the user is returned to the service
 
   @old-mfa-without-ipv
@@ -423,6 +428,7 @@ Feature: Account interventions
     When the user enters the six digit security code from their email
     Then the user is taken to the "Reset your password" page
     When the user enters valid new password and correctly retypes it
+    And the user dismisses the passkey registration page if present
     Then the user is returned to the service
 
   @under-development @old-mfa-without-ipv
@@ -469,4 +475,5 @@ Feature: Account interventions
     When the user enters their password
     Then the user is taken to the "Enter the 6 digit security code shown in your authenticator app" page
     When the user enters the security code from the auth app
+    And the user dismisses the passkey registration page if present
     Then the user is returned to the service

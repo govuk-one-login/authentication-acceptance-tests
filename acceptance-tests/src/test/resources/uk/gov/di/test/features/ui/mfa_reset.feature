@@ -24,6 +24,7 @@ Feature: The MFA reset process.
     And the user enters the six digit security code from their phone
     Then the user is taken to the "You’ve changed how you get security codes" page
     When the user clicks the continue button
+    And the user dismisses the passkey registration page if present
     Then the user is returned to the service
 
 
@@ -44,6 +45,7 @@ Feature: The MFA reset process.
     And the user enters the six digit security code from their phone
     Then the user is taken to the "You’ve changed how you get security codes" page
     When the user clicks the continue button
+    And the user dismisses the passkey registration page if present
     Then the user is returned to the service
 
 # ************************* AUTH APP Section *************************
@@ -65,6 +67,7 @@ Feature: The MFA reset process.
     And the user enters the security code from the auth app
     Then the user is taken to the "You’ve changed how you get security codes" page
     When the user clicks the continue button
+    And the user dismisses the passkey registration page if present
     Then the user is returned to the service
 
 
@@ -86,6 +89,7 @@ Feature: The MFA reset process.
     And the user enters the security code from the auth app
     Then the user is taken to the "You’ve changed how you get security codes" page
     When the user clicks the continue button
+    And the user dismisses the passkey registration page if present
     Then the user is returned to the service
 
 # ************************* Negative tests when for unsuccessful IPV responses **********************
@@ -108,6 +112,7 @@ Feature: The MFA reset process.
     And the user clicks the continue button
     Then the user is taken to the "<Page>" page
     When the user enters the six digit code for "<Mfa Type>"
+    And the user dismisses the passkey registration page if present
     Then the user is returned to the service
     Examples:
       | Mfa Type | Link Text                                     | IPV Response           | Page                                                            |
@@ -168,6 +173,7 @@ Feature: The MFA reset process.
     And the user clicks the continue button
     Then the user is taken to the "<Page>" page
     When the user enters the six digit code for "<Mfa Type>"
+    And the user dismisses the passkey registration page if present
     Then the user is returned to the service
     Examples:
       | Mfa Type | Link Text                                     | IPV Response           | Page                                                            |
@@ -199,6 +205,7 @@ Feature: The MFA reset process.
     And the user clicks the continue button
     Then the user is taken to the "<Page>" page
     When the user enters the six digit code for "<Mfa Type>"
+    And the user dismisses the passkey registration page if present
     Then the user is returned to the service
     Examples:
       | Mfa Type | Link Text                                     | IPV Response              | Page                                                            |
@@ -221,6 +228,7 @@ Feature: The MFA reset process.
     And the user enters the security code from the auth app
     Then the user is taken to the "Reset your password" page
     When the user enters valid new password and correctly retypes it
+    And the user dismisses the passkey registration page if present
     Then the user is returned to the service
     And the user clicks logout
     When the user comes from the stub relying party with default options and is taken to the "Create your GOV.UK One Login or sign in" page
@@ -243,6 +251,7 @@ Feature: The MFA reset process.
     When the user enters the six digit security code from their phone
     Then the user is taken to the "You’ve changed how you get security codes" page
     And the user clicks the continue button
+    And the user dismisses the passkey registration page if present
     Then the user is returned to the service
 
 
@@ -260,6 +269,7 @@ Feature: The MFA reset process.
     When the user enters the six digit security code from their phone
     Then the user is taken to the "Reset your password" page
     When the user enters valid new password and correctly retypes it
+    And the user dismisses the passkey registration page if present
     Then the user is returned to the service
     And the user clicks logout
     When the user comes from the stub relying party with default options and is taken to the "Create your GOV.UK One Login or sign in" page
@@ -281,6 +291,7 @@ Feature: The MFA reset process.
     And the user enters the security code from the auth app
     Then the user is taken to the "You’ve changed how you get security codes" page
     When the user clicks the continue button
+    And the user dismisses the passkey registration page if present
     Then the user is returned to the service
 
 
@@ -319,6 +330,7 @@ Feature: The MFA reset process.
     When the user enters the six digit security code from their phone
     Then the user is taken to the "You’ve created your GOV.UK One Login" page
     When the user clicks the continue button
+    And the user dismisses the passkey registration page if present
     Then the user is returned to the service
 
 
@@ -339,6 +351,7 @@ Feature: The MFA reset process.
     And the user enters the security code from the auth app
     Then the user is taken to the "You’ve created your GOV.UK One Login" page
     When the user clicks the continue button
+    And the user dismisses the passkey registration page if present
     Then the user is returned to the service
 
 
@@ -350,6 +363,7 @@ Feature: The MFA reset process.
     And the user enters their password
     Then the user is taken to the "<Page>" page
     When the user enters the six digit code for "<Mfa Type>"
+    And the user dismisses the passkey registration page if present
     Then the user is returned to the service
 
     Examples:
