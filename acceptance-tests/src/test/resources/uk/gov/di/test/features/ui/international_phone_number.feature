@@ -66,7 +66,7 @@ Feature: International phone numbers
       And the user dismisses the passkey registration page if present
       Then the user is returned to the service
 
-  @InternationalNumbersForcedMFAReset @InternationalSmsSendingEnabled
+  @InternationalSmsSendingEnabled
   Rule: Forced MFA reset during 2FA sign in
 
     Scenario: User with international SMS MFA successfully completes forced MFA reset during sign in
@@ -92,7 +92,7 @@ Feature: International phone numbers
       And the user dismisses the passkey registration page if present
       Then the user is returned to the service
 
-  @InternationalNumbersForcedMFAReset @InternationalSmsSendingEnabled
+  @InternationalSmsSendingEnabled
   Rule: Forced MFA reset during uplift
 
     Scenario: User with international SMS MFA completes forced MFA reset during uplift after 1FA sign in
@@ -119,7 +119,7 @@ Feature: International phone numbers
       And the user dismisses the passkey registration page if present
       Then the user is returned to the service
 
-  @InternationalNumbersForcedMFAReset @InternationalSmsSendingEnabled
+  @InternationalSmsSendingEnabled
   Rule: Forced MFA reset during password reset
 
     Scenario: User with international SMS MFA completes forced MFA reset during password reset
@@ -148,7 +148,7 @@ Feature: International phone numbers
       And the user dismisses the passkey registration page if present
       Then the user is returned to the service
 
-  @InternationalNumbersForcedMFAReset @InternationalSmsSendingEnabled
+  @InternationalSmsSendingEnabled
   Rule: Forced MFA reset during reauthentication
 
   # Reauth scenarios must start with UK SMS MFA for initial sign-in to succeed,
