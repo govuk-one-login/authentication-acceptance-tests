@@ -1,4 +1,4 @@
-@UI @mfa-reset
+@UI
 
 Feature: The MFA reset process.
   The test below covers jira ticket: AUT-4298, AUT-4051, AUT-3993, AUT-3825, AUT-3930, AUT-3931, AUT-3997
