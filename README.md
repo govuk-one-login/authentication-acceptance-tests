@@ -6,10 +6,13 @@ acceptance tests using Cucumber.
 
 **The test suite consists of two main types of tests:**
 - UI Tests: Browser-based end-to-end tests using Selenium WebDriver to
-validate user journeys through the web interface
+validate user journeys through the web interface. These are generally run in
+both the frontend and the internal / external api pipelines.
 
-- API Tests: Direct validation of account management functionality by
+- Account Management API Tests: Direct validation of account management functionality by
 interacting with AWS services that back the private APIs
+
+All tests will need to be tagged as either @UI or @AccountManagementAPI in order to run in an environment.
 
 The API tests work around the limitation of not being able to directly call
 the private APIs by interacting with the underlying AWS services (DynamoDB, Lambda, etc.)
@@ -91,6 +94,9 @@ These follow a consistent naming pattern:
 - /acceptance-tests/build/RP_URL
 
 These parameters must be present as environment variables during execution.
+
+Refer to https://govukverify.atlassian.net/wiki/spaces/LO/pages/6624215042/Acceptance+test+tags for the current values
+of these tags. Please update this document if updating tags.
 
 ### Running the tests from the command line
 
