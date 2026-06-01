@@ -19,6 +19,8 @@ public class OrchestrationStubUserInfoPage extends StubUserInfoPage {
             JsonNode root = mapper.readTree(jsonText);
             return root.get("rp_pairwise_id").asText();
         } catch (Exception e) {
+            System.out.println("[DEBUG] Current URL: " + Driver.get().getCurrentUrl());
+            System.out.println("[DEBUG] Page title: " + Driver.get().getTitle());
             throw new RuntimeException("Failed to extract rp_pairwise_id from user info JSON", e);
         }
     }
