@@ -1,4 +1,4 @@
-@UI @RegistrationJourney
+@UI
 Feature: Registration Journey
   New user walks through a registration journey
 
