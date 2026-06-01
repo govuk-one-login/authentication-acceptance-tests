@@ -1,4 +1,4 @@
-@UI @Existing
+@UI
 Feature: Login Journey
   Existing user walks through a login journey
 
