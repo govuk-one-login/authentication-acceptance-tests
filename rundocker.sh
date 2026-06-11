@@ -33,26 +33,6 @@ case "${ENVIRONMENT}" in
     AWS_PROFILE=di-authentication-development-AdministratorAccessPermission
     ENVIRONMENT=dev
     ;;
-  build-api)
-    TEST_MODE=API
-    AWS_PROFILE=di-authentication-build-ApprovedAdmin
-    ENVIRONMENT=build
-    ;;
-  build-ui)
-    TEST_MODE=UI
-    AWS_PROFILE=di-authentication-build-ApprovedAdmin
-    ENVIRONMENT=build
-    ;;
-  staging-api)
-    TEST_MODE=API
-    AWS_PROFILE=di-authentication-staging-ApprovedAdmin
-    ENVIRONMENT=staging
-    ;;
-  staging-ui)
-    TEST_MODE=UI
-    AWS_PROFILE=di-authentication-staging-ApprovedAdmin
-    ENVIRONMENT=staging
-    ;;
   *)
     echo "Unconfigured environment: $ENVIRONMENT"
     exit 1
