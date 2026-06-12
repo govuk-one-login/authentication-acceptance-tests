@@ -15,7 +15,7 @@ BASE_IMAGE="${2:-}"
 case "${ENVIRONMENT}" in
   authdev*-api)
     TEST_MODE=API
-    AWS_PROFILE=di-auth-development-AdministratorAccessPermission
+    AWS_PROFILE=di-authentication-development-AdministratorAccessPermission
     ENVIRONMENT=${ENVIRONMENT%-*}
     ;;
   authdev*-ui)
@@ -25,33 +25,13 @@ case "${ENVIRONMENT}" in
     ;;
   dev-api)
     TEST_MODE=API
-    AWS_PROFILE=di-auth-development-AdministratorAccessPermission
+    AWS_PROFILE=di-authentication-development-AdministratorAccessPermission
     ENVIRONMENT=dev
     ;;
   dev-ui)
     TEST_MODE=UI
     AWS_PROFILE=di-authentication-development-AdministratorAccessPermission
     ENVIRONMENT=dev
-    ;;
-  build-api)
-    TEST_MODE=API
-    AWS_PROFILE=gds-di-development-admin
-    ENVIRONMENT=build
-    ;;
-  build-ui)
-    TEST_MODE=UI
-    AWS_PROFILE=di-authentication-build-admin
-    ENVIRONMENT=build
-    ;;
-  staging-api)
-    TEST_MODE=API
-    AWS_PROFILE=di-auth-staging-admin
-    ENVIRONMENT=staging
-    ;;
-  staging-ui)
-    TEST_MODE=UI
-    AWS_PROFILE=di-authentication-staging-admin
-    ENVIRONMENT=staging
     ;;
   *)
     echo "Unconfigured environment: $ENVIRONMENT"

@@ -124,6 +124,14 @@ You can override environment variables using local .env files:
 - env-override-api.env
 - env-override-ui.env
 
+These files are appended to the generated env file after SSM parameters are fetched,
+so any variable defined here takes precedence over SSM values. The files are created
+automatically if they don't exist and are gitignored.
+
+Example override to hit the account management API:
+````
+NEW_AM_ENV=true
+````
 Example override to skip specific tests:
 ````
 CUCUMBER_FILTER_TAGS="not (@AccountInterventions or @Re-auth or @old-mfa-without-ipv)"
@@ -152,6 +160,7 @@ See example below:
 | PARALLEL_BROWSERS    | 1                            |                                                                                                                                  |
 | CUCUMBER_FILTER_TAGS | "@AccountManagementAPI"                       |                                                                                                                                  |
 | AWS_PROFILE          | di-auth-development-admin    |                                                                                                                                  |
+| NEW_AM_ENV           | true                         | Required to hit the account management API                                                                                       |
 | ENVIRONMENT          | dev                          |                                                                                                                                  |
 ````
 
