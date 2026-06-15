@@ -3,8 +3,8 @@ name: Build and push ad hoc acceptance tests
 env:
   AWS_REGION: eu-west-2
   SELENIUM_BASE: selenium/standalone-chromium:132.0
-  AD_HOC_DEV_ECR_REPO: dev-ad-hoc-tests-adhoctestrunnerimagerepository-fxyishxmivqj
-  GHA_DEV_ROLE: arn:aws:iam::653994557586:role/dev-auth-deploy-pipeline-GitHubActionsRole-QrtGginNnjDD
+  AD_HOC_DEV_ECR_REPO: dev-ad-hoc-tests-adhoctestrunnerimagerepository-ghvdzd2cyr46
+  GHA_DEV_ROLE: arn:aws:iam::975050272416:role/authentication-api-pipeline-GitHubActionsRole-eoW45BhwCqWg
 
 on:
   workflow_dispatch:
@@ -42,7 +42,7 @@ jobs:
       - name: Set up AWS credentials
         uses: aws-actions/configure-aws-credentials@e7f100cf4c008499ea8adda475de1042d6975c7b # v6.2.0
         with:
-          role-to-assume: ${{ (inputs.environment == 'dev' && env.GHA_DEV_ROLE) || (inputs.environment == 'build' && secrets.GHA_BUILD_ROLE) || (inputs.environment == 'staging' && secrets.GHA_STAGING_ROLE) }}
+          role-to-assume: ${{ env.GHA_DEV_ROLE }}
           aws-region: ${{ env.AWS_REGION }}
 
       - name: Login to Amazon ECR
@@ -58,10 +58,10 @@ jobs:
         with:
           context: .
           push: true
-          target: auth-api
+          target: auth-ad-hoc
           build-args: |
             SELENIUM_BASE=${{ env.SELENIUM_BASE }}
             AD_HOC_CUCUMBER_TAGS=${{ inputs.cucumber_tags }}
-          tags: ${{ format('{0}/{1}:latest', steps.login-ecr.outputs.registry, (inputs.environment == 'dev' && env.AD_HOC_DEV_ECR_REPO) || (inputs.environment == 'build' && secrets.AD_HOC_BUILD_ECR_REPO) || (inputs.environment == 'staging' && secrets.AD_HOC_STAGING_ECR_REPO)) }}
+          tags: ${{ format('{0}/{1}:{2}', steps.login-ecr.outputs.registry, env.AD_HOC_DEV_ECR_REPO, inputs.environment) }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
