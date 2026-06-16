@@ -25,18 +25,24 @@ public class PasskeyLifecycleService {
     }
 
     public List<Passkey> buildPasskeyAndPutToDynamoDb(String publicSubjectId) {
+        var passkey = buildPasskeyRecord(publicSubjectId);
+        putPasskeyInDynamo(passkey);
+        return List.of(passkey);
+    }
+
+    private Passkey buildPasskeyRecord(String publicSubjectId) {
         var testPasskeyId = UUID.randomUUID().toString();
         var created = LocalDateTime.now().toString();
-        var passkey =
-                new Passkey()
-                        .withPublicSubjectId(publicSubjectId)
-                        .withSortKey(buildSortKey(testPasskeyId))
-                        .withCredentialId(testPasskeyId)
-                        .withCreated(created)
-                        .withCredential("testCredential");
+        return new Passkey()
+                .withPublicSubjectId(publicSubjectId)
+                .withSortKey(buildSortKey(testPasskeyId))
+                .withCredentialId(testPasskeyId)
+                .withCreated(created)
+                .withCredential("testCredential");
+    }
 
+    private void putPasskeyInDynamo(Passkey passkey) {
         DYNAMO_DB_SERVICE.putPasskey(passkey);
-        return List.of(passkey);
     }
 
     public void deleteAllPasskeysForUser(String publicSubjectId) {
