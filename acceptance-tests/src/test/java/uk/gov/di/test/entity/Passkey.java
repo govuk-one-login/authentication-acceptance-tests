@@ -15,6 +15,7 @@ public class Passkey extends Authenticator<Passkey> {
     public static final String ATTRIBUTE_PASSKEY_BACKUP_ELIGIBLE = "PasskeyBackupEligible";
     public static final String ATTRIBUTE_PASSKEY_BACKED_UP = "PasskeyBackedUp";
     public static final String ATTRIBUTE_PASSKEY_IS_RESIDENT_KEY = "PasskeyIsResidentKey";
+    public static final String ATTRIBUTE_PASSKEY_ALGORITHM = "PasskeyAlgorithm";
 
     private String passkeyAaguid;
     private boolean passkeyIsAttested;
@@ -23,6 +24,7 @@ public class Passkey extends Authenticator<Passkey> {
     private boolean passkeyBackupEligible;
     private boolean passkeyBackedUp;
     private boolean passkeyIsResidentKey;
+    private int passkeyAlgorithm;
 
     @Override
     protected Passkey self() {
@@ -129,6 +131,20 @@ public class Passkey extends Authenticator<Passkey> {
 
     public Passkey withPasskeyIsResidentKey(boolean passkeyIsResidentKey) {
         this.passkeyIsResidentKey = passkeyIsResidentKey;
+        return this;
+    }
+
+    @DynamoDbAttribute(ATTRIBUTE_PASSKEY_ALGORITHM)
+    public int getPasskeyAlgorithm() {
+        return passkeyAlgorithm;
+    }
+
+    public void setPasskeyAlgorithm(int passkeyAlgorithm) {
+        this.passkeyAlgorithm = passkeyAlgorithm;
+    }
+
+    public Passkey withPasskeyAlgorithm(int passkeyAlgorithm) {
+        this.passkeyAlgorithm = passkeyAlgorithm;
         return this;
     }
 }
