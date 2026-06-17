@@ -3,13 +3,16 @@ package uk.gov.di.test.services;
 import uk.gov.di.test.entity.Passkey;
 
 import java.time.LocalDateTime;
+import java.util.Base64;
+import java.util.Collections;
 import java.util.List;
-import java.util.UUID;
 
 public class PasskeyLifecycleService {
     private static volatile PasskeyLifecycleService instance;
 
     private static final DynamoDbService DYNAMO_DB_SERVICE = DynamoDbService.getInstance();
+    private static final AuthenticatorService AUTHENTICATOR_SERVICE =
+            AuthenticatorService.getInstance();
 
     private PasskeyLifecycleService() {}
 
@@ -24,21 +27,40 @@ public class PasskeyLifecycleService {
         return instance;
     }
 
-    public List<Passkey> buildPasskeyAndPutToDynamoDb(String publicSubjectId) {
-        var passkey = buildPasskeyRecord(publicSubjectId);
+    public void buildPasskeyAndPutToDynamoDb(String publicSubjectId) throws Exception {
+        var startRegistrationOptions =
+                new AuthenticatorService.StartRegistrationOptions(
+                        "account.gov.uk", publicSubjectId);
+        var startRegistrationResponse =
+                AUTHENTICATOR_SERVICE.startRegistration(startRegistrationOptions);
+        var passkey = buildPasskeyRecord(startRegistrationOptions, startRegistrationResponse);
         putPasskeyInDynamo(passkey);
-        return List.of(passkey);
     }
 
-    private Passkey buildPasskeyRecord(String publicSubjectId) {
-        var testPasskeyId = UUID.randomUUID().toString();
+    private Passkey buildPasskeyRecord(
+            AuthenticatorService.StartRegistrationOptions startRegistrationOptions,
+            AuthenticatorService.StartRegistrationResponse startRegistrationResponse) {
         var created = LocalDateTime.now().toString();
+
         return new Passkey()
-                .withPublicSubjectId(publicSubjectId)
-                .withSortKey(buildSortKey(testPasskeyId))
-                .withCredentialId(testPasskeyId)
+                .withPublicSubjectId(startRegistrationOptions.userHandle())
+                .withSortKey(buildSortKey(startRegistrationResponse.credentialId()))
                 .withCreated(created)
-                .withCredential("testCredential");
+                //                .withLastUsed()
+                .withCredential(
+                        Base64.getEncoder()
+                                .encodeToString(
+                                        startRegistrationResponse.credential().getEncoded()))
+                .withCredentialId(startRegistrationResponse.credentialId())
+                .withPasskeyAaguid("00000000-0000-0000-0000-000000000000") // TODO
+                //                .withPasskeyIsAttested()
+                .withPasskeySignCount(startRegistrationResponse.signCount())
+                .withPasskeyTransports(Collections.singletonList("internal")) // TODO
+        //                .withPasskeyBackupEligible()
+        //                .withPasskeyBackedUp()
+        //                .withPasskeyIsResidentKey()
+        //                .withPasskeyAlgorithm()
+        ;
     }
 
     private void putPasskeyInDynamo(Passkey passkey) {
