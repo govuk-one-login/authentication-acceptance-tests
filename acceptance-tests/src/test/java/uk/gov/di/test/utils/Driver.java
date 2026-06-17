@@ -21,7 +21,6 @@ public class Driver {
     protected static final Boolean SELENIUM_HEADLESS =
             Boolean.valueOf(Environment.getOrThrow("SELENIUM_HEADLESS"));
     protected static final String SELENIUM_BROWSER = Environment.getOrThrow("SELENIUM_BROWSER");
-    protected static WebDriver driver;
     private static final InheritableThreadLocal<WebDriver> driverPool =
             new InheritableThreadLocal<>();
 
