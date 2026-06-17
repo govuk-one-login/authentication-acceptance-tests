@@ -79,6 +79,18 @@ RUN chmod 500 /test/run-acceptance-tests.sh
 ENTRYPOINT ["/test/run-acceptance-tests.sh"]
 
 #
+# The Ad-hoc tests that run in new AWS Account with Assume role in Database account in
+# the root directory of the docker image.
+#
+FROM base AS auth-ad-hoc
+ARG AD_HOC_CUCUMBER_TAGS
+ENV AD_HOC_CUCUMBER_TAGS=${AD_HOC_CUCUMBER_TAGS}
+COPY --chown=${SEL_USER}:${SEL_GROUP} docker/run-tests-ad-hoc.sh /test/run-acceptance-ad-hoc-tests.sh
+RUN chmod 500 /test/run-acceptance-ad-hoc-tests.sh
+
+ENTRYPOINT ["/test/run-acceptance-ad-hoc-tests.sh"]
+
+#
 # The UI tests are run on the secure pipeline which expects a file called run-tests.sh in the root
 # directory of the docker image.
 #
