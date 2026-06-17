@@ -7,23 +7,26 @@ import java.security.spec.ECGenParameterSpec;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.util.UUID;
 
-public class AuthenticatorService {
+public class WebAuthnCeremonyService {
     public record StartRegistrationOptions(String rpId, String userHandle) {}
 
     public record StartRegistrationResponse(
             String credentialId, PublicKey credential, int signCount) {}
 
-    private static volatile AuthenticatorService instance;
+    private static volatile WebAuthnCeremonyService instance;
 
-    private AuthenticatorService() {
+    private static final VirtualAuthenticatorLifecycleService virtualAuthenticatorLifecycleService =
+            VirtualAuthenticatorLifecycleService.getInstance();
+
+    private WebAuthnCeremonyService() {
         // Private constructor to prevent direct instantiation
     }
 
-    public static AuthenticatorService getInstance() {
+    public static WebAuthnCeremonyService getInstance() {
         if (instance == null) {
-            synchronized (AuthenticatorService.class) {
+            synchronized (WebAuthnCeremonyService.class) {
                 if (instance == null) {
-                    instance = new AuthenticatorService();
+                    instance = new WebAuthnCeremonyService();
                 }
             }
         }
@@ -39,14 +42,14 @@ public class AuthenticatorService {
                 new StartRegistrationResponse(
                         UUID.randomUUID().toString(), credentialKeyPair.getPublic(), 0);
 
-        Credential customCredential =
+        Credential credential =
                 Credential.createResidentCredential(
                         startRegistrationResponse.credentialId().getBytes(),
                         startRegistrationOptions.rpId(),
                         new PKCS8EncodedKeySpec(credentialKeyPair.getPrivate().getEncoded()),
                         startRegistrationOptions.userHandle().getBytes(),
                         startRegistrationResponse.signCount());
-        putPasskeyInAuthenticator(customCredential);
+        virtualAuthenticatorLifecycleService.putCredentialInAuthenticator(credential);
 
         return startRegistrationResponse;
     }
@@ -61,6 +64,4 @@ public class AuthenticatorService {
 
         return keyGen.generateKeyPair();
     }
-
-    private void putPasskeyInAuthenticator(Credential credential) {}
 }

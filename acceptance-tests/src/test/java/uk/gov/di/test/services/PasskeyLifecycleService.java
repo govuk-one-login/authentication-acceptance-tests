@@ -11,8 +11,8 @@ public class PasskeyLifecycleService {
     private static volatile PasskeyLifecycleService instance;
 
     private static final DynamoDbService DYNAMO_DB_SERVICE = DynamoDbService.getInstance();
-    private static final AuthenticatorService AUTHENTICATOR_SERVICE =
-            AuthenticatorService.getInstance();
+    private static final WebAuthnCeremonyService WEB_AUTHN_CEREMONY_SERVICE =
+            WebAuthnCeremonyService.getInstance();
 
     private PasskeyLifecycleService() {}
 
@@ -29,17 +29,17 @@ public class PasskeyLifecycleService {
 
     public void buildPasskeyAndPutToDynamoDb(String publicSubjectId) throws Exception {
         var startRegistrationOptions =
-                new AuthenticatorService.StartRegistrationOptions(
+                new WebAuthnCeremonyService.StartRegistrationOptions(
                         "account.gov.uk", publicSubjectId);
         var startRegistrationResponse =
-                AUTHENTICATOR_SERVICE.startRegistration(startRegistrationOptions);
+                WEB_AUTHN_CEREMONY_SERVICE.startRegistration(startRegistrationOptions);
         var passkey = buildPasskeyRecord(startRegistrationOptions, startRegistrationResponse);
         putPasskeyInDynamo(passkey);
     }
 
     private Passkey buildPasskeyRecord(
-            AuthenticatorService.StartRegistrationOptions startRegistrationOptions,
-            AuthenticatorService.StartRegistrationResponse startRegistrationResponse) {
+            WebAuthnCeremonyService.StartRegistrationOptions startRegistrationOptions,
+            WebAuthnCeremonyService.StartRegistrationResponse startRegistrationResponse) {
         var created = LocalDateTime.now().toString();
 
         return new Passkey()

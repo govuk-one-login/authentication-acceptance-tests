@@ -1,5 +1,6 @@
 package uk.gov.di.test.services;
 
+import org.openqa.selenium.virtualauthenticator.Credential;
 import org.openqa.selenium.virtualauthenticator.VirtualAuthenticator;
 import org.openqa.selenium.virtualauthenticator.VirtualAuthenticatorOptions;
 import uk.gov.di.test.utils.Driver;
@@ -42,5 +43,9 @@ public class VirtualAuthenticatorLifecycleService {
         var driver = Driver.getAsAuthenticator();
         driver.removeVirtualAuthenticator(authenticator);
         authenticator = null;
+    }
+
+    public void putCredentialInAuthenticator(Credential credential) {
+        authenticator.addCredential(credential);
     }
 }
