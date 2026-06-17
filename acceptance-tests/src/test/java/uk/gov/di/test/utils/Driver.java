@@ -6,6 +6,7 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.remote.RemoteWebDriver;
+import org.openqa.selenium.virtualauthenticator.HasVirtualAuthenticator;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -81,6 +82,15 @@ public class Driver {
                         .setPosition(new org.openqa.selenium.Point(100, 100));
             }
         return driverPool.get();
+    }
+
+    public static HasVirtualAuthenticator getAsAuthenticator() {
+        var d = get();
+        if (d instanceof HasVirtualAuthenticator) {
+            return (HasVirtualAuthenticator) d;
+        }
+        throw new UnsupportedOperationException(
+                "The current driver does not support Virtual Authenticators.");
     }
 
     private static ChromeOptions buildChromeOptions() {
