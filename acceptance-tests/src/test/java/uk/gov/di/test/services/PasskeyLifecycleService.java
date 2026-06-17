@@ -3,7 +3,6 @@ package uk.gov.di.test.services;
 import uk.gov.di.test.entity.Passkey;
 
 import java.time.LocalDateTime;
-import java.util.Base64;
 import java.util.Collections;
 import java.util.List;
 
@@ -30,7 +29,7 @@ public class PasskeyLifecycleService {
     public void buildPasskeyAndPutToDynamoDb(String publicSubjectId) throws Exception {
         var startRegistrationOptions =
                 new WebAuthnCeremonyService.StartRegistrationOptions(
-                        "account.gov.uk", publicSubjectId);
+                        "dev.account.gov.uk", publicSubjectId);
         var startRegistrationResponse =
                 WEB_AUTHN_CEREMONY_SERVICE.startRegistration(startRegistrationOptions);
         var passkey = buildPasskeyRecord(startRegistrationOptions, startRegistrationResponse);
@@ -47,19 +46,16 @@ public class PasskeyLifecycleService {
                 .withSortKey(buildSortKey(startRegistrationResponse.credentialId()))
                 .withCreated(created)
                 //                .withLastUsed()
-                .withCredential(
-                        Base64.getEncoder()
-                                .encodeToString(
-                                        startRegistrationResponse.credential().getEncoded()))
+                .withCredential(startRegistrationResponse.credentialCoseBase64Url())
                 .withCredentialId(startRegistrationResponse.credentialId())
                 .withPasskeyAaguid("00000000-0000-0000-0000-000000000000") // TODO
                 //                .withPasskeyIsAttested()
                 .withPasskeySignCount(startRegistrationResponse.signCount())
                 .withPasskeyTransports(Collections.singletonList("internal")) // TODO
-        //                .withPasskeyBackupEligible()
-        //                .withPasskeyBackedUp()
-        //                .withPasskeyIsResidentKey()
-        //                .withPasskeyAlgorithm()
+                //                .withPasskeyBackupEligible()
+                //                .withPasskeyBackedUp()
+                .withPasskeyIsResidentKey(true) // TODO
+                .withPasskeyAlgorithm(-7) // TODO
         ;
     }
 

@@ -1,26 +1,26 @@
 package uk.gov.di.test.services;
 
 import org.openqa.selenium.virtualauthenticator.Credential;
+import uk.gov.di.test.utils.CoseKeyEncoder;
 
 import java.security.*;
+import java.security.interfaces.ECPublicKey;
 import java.security.spec.ECGenParameterSpec;
 import java.security.spec.PKCS8EncodedKeySpec;
-import java.util.UUID;
+import java.util.Base64;
 
 public class WebAuthnCeremonyService {
     public record StartRegistrationOptions(String rpId, String userHandle) {}
 
     public record StartRegistrationResponse(
-            String credentialId, PublicKey credential, int signCount) {}
+            String credentialId, String credentialCoseBase64Url, int signCount) {}
 
     private static volatile WebAuthnCeremonyService instance;
 
     private static final VirtualAuthenticatorLifecycleService virtualAuthenticatorLifecycleService =
             VirtualAuthenticatorLifecycleService.getInstance();
 
-    private WebAuthnCeremonyService() {
-        // Private constructor to prevent direct instantiation
-    }
+    private WebAuthnCeremonyService() {}
 
     public static WebAuthnCeremonyService getInstance() {
         if (instance == null) {
@@ -38,13 +38,21 @@ public class WebAuthnCeremonyService {
             throws InvalidAlgorithmParameterException, NoSuchAlgorithmException {
         var credentialKeyPair = generateWebAuthnKeyPair();
 
+        byte[] credentialIdBytes = new byte[32];
+        new SecureRandom().nextBytes(credentialIdBytes);
+        String credentialIdBase64Url =
+                Base64.getUrlEncoder().withoutPadding().encodeToString(credentialIdBytes);
+
+        String coseKeyBase64Url =
+                CoseKeyEncoder.ecPublicKeyToCoseBase64Url(
+                        (ECPublicKey) credentialKeyPair.getPublic());
+
         var startRegistrationResponse =
-                new StartRegistrationResponse(
-                        UUID.randomUUID().toString(), credentialKeyPair.getPublic(), 0);
+                new StartRegistrationResponse(credentialIdBase64Url, coseKeyBase64Url, 0);
 
         Credential credential =
                 Credential.createResidentCredential(
-                        startRegistrationResponse.credentialId().getBytes(),
+                        credentialIdBytes,
                         startRegistrationOptions.rpId(),
                         new PKCS8EncodedKeySpec(credentialKeyPair.getPrivate().getEncoded()),
                         startRegistrationOptions.userHandle().getBytes(),
@@ -54,14 +62,10 @@ public class WebAuthnCeremonyService {
         return startRegistrationResponse;
     }
 
-    /** Returns an ES256 (COSE ID: -7) key pair */
     private KeyPair generateWebAuthnKeyPair()
             throws NoSuchAlgorithmException, InvalidAlgorithmParameterException {
         KeyPairGenerator keyGen = KeyPairGenerator.getInstance("EC");
-        // "secp256r1" is the NIST P-256 curve required for ES256
-        ECGenParameterSpec ecSpec = new ECGenParameterSpec("secp256r1");
-        keyGen.initialize(ecSpec);
-
+        keyGen.initialize(new ECGenParameterSpec("secp256r1"));
         return keyGen.generateKeyPair();
     }
 }

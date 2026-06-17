@@ -34,7 +34,9 @@ public class VirtualAuthenticatorLifecycleService {
                 new VirtualAuthenticatorOptions()
                         .setProtocol(VirtualAuthenticatorOptions.Protocol.CTAP2)
                         .setHasResidentKey(true)
-                        .setIsUserVerified(true);
+                        .setHasUserVerification(true)
+                        .setIsUserVerified(true)
+                        .setTransport(VirtualAuthenticatorOptions.Transport.INTERNAL);
 
         authenticator = driver.addVirtualAuthenticator(options);
     }
