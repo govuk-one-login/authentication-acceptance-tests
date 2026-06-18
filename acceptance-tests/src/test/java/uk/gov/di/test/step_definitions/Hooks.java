@@ -18,6 +18,7 @@ import java.util.Calendar;
 
 import static uk.gov.di.test.step_definitions.UserLifecycleStepDef.passkeyLifecycleService;
 import static uk.gov.di.test.step_definitions.UserLifecycleStepDef.userLifecycleService;
+import static uk.gov.di.test.step_definitions.UserLifecycleStepDef.virtualAuthenticatorLifecycleService;
 
 public class Hooks extends BasePage {
     private static final Logger LOG = LogManager.getLogger(Hooks.class);
@@ -44,12 +45,17 @@ public class Hooks extends BasePage {
         AxeStepDef.thereAreNoAccessibilityViolations();
     }
 
-    @After("@UI")
-    public void afterEachUI() {
+    @After(value = "@UI", order = 3)
+    public void deleteAllCookies() {
         Driver.get().manage().deleteAllCookies();
     }
 
-    @After("@UI")
+    @After(value = "@UI", order = 2)
+    public void destroyVirtualAuthenticator() {
+        virtualAuthenticatorLifecycleService.destroyVirtualAuthenticator();
+    }
+
+    @After(value = "@UI", order = 1)
     public void takeScreenshotOnFailure(Scenario scenario) {
         if (scenario.isFailed()) {
             WebDriver driver = Driver.get();
