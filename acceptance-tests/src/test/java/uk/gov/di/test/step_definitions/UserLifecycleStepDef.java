@@ -9,6 +9,7 @@ import uk.gov.di.test.services.PasskeyLifecycleService;
 import uk.gov.di.test.services.PhoneNumberLifecycleService;
 import uk.gov.di.test.services.TestConfigurationService;
 import uk.gov.di.test.services.UserLifecycleService;
+import uk.gov.di.test.services.VirtualAuthenticatorLifecycleService;
 
 import static uk.gov.di.test.services.UserLifecycleService.generateValidPassword;
 import static uk.gov.di.test.utils.Constants.TOP_100K_PASSWORD;
@@ -24,6 +25,8 @@ public class UserLifecycleStepDef {
             TestConfigurationService.getInstance();
     public static final PasskeyLifecycleService passkeyLifecycleService =
             PasskeyLifecycleService.getInstance();
+    public static final VirtualAuthenticatorLifecycleService virtualAuthenticatorLifecycleService =
+            VirtualAuthenticatorLifecycleService.getInstance();
 
     public UserLifecycleStepDef(World world) {
         this.world = world;
@@ -113,6 +116,7 @@ public class UserLifecycleStepDef {
     @Given("a user exists with a passkey")
     public void aUserExistsWithAPasskey() {
         aUserExists();
+        virtualAuthenticatorLifecycleService.createVirtualAuthenticator();
         passkeyLifecycleService.buildAndStorePasskey(world.userProfile.getPublicSubjectID());
     }
 
