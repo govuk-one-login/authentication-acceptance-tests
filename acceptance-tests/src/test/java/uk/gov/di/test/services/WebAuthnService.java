@@ -9,31 +9,32 @@ import java.security.spec.ECGenParameterSpec;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.util.Base64;
 
-public class WebAuthnCeremonyService {
+public class WebAuthnService {
     public record StartRegistrationOptions(String rpId, String userHandle) {}
 
-    public record StartRegistrationResponse(
+    public record AuthenticatorResponse(
             String credentialId, String credentialCoseBase64Url, int signCount) {}
 
-    private static volatile WebAuthnCeremonyService instance;
+    private static volatile WebAuthnService instance;
 
-    private static final VirtualAuthenticatorLifecycleService virtualAuthenticatorLifecycleService =
-            VirtualAuthenticatorLifecycleService.getInstance();
+    private static final VirtualAuthenticatorLifecycleService
+            VIRTUAL_AUTHENTICATOR_LIFECYCLE_SERVICE =
+                    VirtualAuthenticatorLifecycleService.getInstance();
 
-    private WebAuthnCeremonyService() {}
+    private WebAuthnService() {}
 
-    public static WebAuthnCeremonyService getInstance() {
+    public static WebAuthnService getInstance() {
         if (instance == null) {
-            synchronized (WebAuthnCeremonyService.class) {
+            synchronized (WebAuthnService.class) {
                 if (instance == null) {
-                    instance = new WebAuthnCeremonyService();
+                    instance = new WebAuthnService();
                 }
             }
         }
         return instance;
     }
 
-    public StartRegistrationResponse startRegistration(
+    public AuthenticatorResponse startRegistration(
             StartRegistrationOptions startRegistrationOptions)
             throws InvalidAlgorithmParameterException, NoSuchAlgorithmException {
         var credentialKeyPair = generateWebAuthnKeyPair();
@@ -48,7 +49,7 @@ public class WebAuthnCeremonyService {
                         (ECPublicKey) credentialKeyPair.getPublic());
 
         var startRegistrationResponse =
-                new StartRegistrationResponse(credentialIdBase64Url, coseKeyBase64Url, 0);
+                new AuthenticatorResponse(credentialIdBase64Url, coseKeyBase64Url, 0);
 
         Credential credential =
                 Credential.createResidentCredential(
@@ -57,7 +58,7 @@ public class WebAuthnCeremonyService {
                         new PKCS8EncodedKeySpec(credentialKeyPair.getPrivate().getEncoded()),
                         startRegistrationOptions.userHandle().getBytes(),
                         startRegistrationResponse.signCount());
-        virtualAuthenticatorLifecycleService.putCredentialInAuthenticator(credential);
+        VIRTUAL_AUTHENTICATOR_LIFECYCLE_SERVICE.putCredentialInAuthenticator(credential);
 
         return startRegistrationResponse;
     }

@@ -10,8 +10,7 @@ public class PasskeyLifecycleService {
     private static volatile PasskeyLifecycleService instance;
 
     private static final DynamoDbService DYNAMO_DB_SERVICE = DynamoDbService.getInstance();
-    private static final WebAuthnCeremonyService WEB_AUTHN_CEREMONY_SERVICE =
-            WebAuthnCeremonyService.getInstance();
+    private static final WebAuthnService WEB_AUTHN_SERVICE = WebAuthnService.getInstance();
 
     private PasskeyLifecycleService() {}
 
@@ -26,31 +25,29 @@ public class PasskeyLifecycleService {
         return instance;
     }
 
-    public void buildPasskeyAndPutToDynamoDb(String publicSubjectId) throws Exception {
+    public void buildAndStorePasskey(String publicSubjectId) throws Exception {
         var startRegistrationOptions =
-                new WebAuthnCeremonyService.StartRegistrationOptions(
-                        "dev.account.gov.uk", publicSubjectId);
-        var startRegistrationResponse =
-                WEB_AUTHN_CEREMONY_SERVICE.startRegistration(startRegistrationOptions);
-        var passkey = buildPasskeyRecord(startRegistrationOptions, startRegistrationResponse);
+                new WebAuthnService.StartRegistrationOptions("dev.account.gov.uk", publicSubjectId);
+        var authenticatorResponse = WEB_AUTHN_SERVICE.startRegistration(startRegistrationOptions);
+        var passkey = buildPasskeyRecord(startRegistrationOptions, authenticatorResponse);
         putPasskeyInDynamo(passkey);
     }
 
     private Passkey buildPasskeyRecord(
-            WebAuthnCeremonyService.StartRegistrationOptions startRegistrationOptions,
-            WebAuthnCeremonyService.StartRegistrationResponse startRegistrationResponse) {
+            WebAuthnService.StartRegistrationOptions startRegistrationOptions,
+            WebAuthnService.AuthenticatorResponse authenticatorResponse) {
         var created = LocalDateTime.now().toString();
 
         return new Passkey()
                 .withPublicSubjectId(startRegistrationOptions.userHandle())
-                .withSortKey(buildSortKey(startRegistrationResponse.credentialId()))
+                .withSortKey(buildSortKey(authenticatorResponse.credentialId()))
                 .withCreated(created)
                 //                .withLastUsed()
-                .withCredential(startRegistrationResponse.credentialCoseBase64Url())
-                .withCredentialId(startRegistrationResponse.credentialId())
+                .withCredential(authenticatorResponse.credentialCoseBase64Url())
+                .withCredentialId(authenticatorResponse.credentialId())
                 .withPasskeyAaguid("00000000-0000-0000-0000-000000000000") // TODO
                 //                .withPasskeyIsAttested()
-                .withPasskeySignCount(startRegistrationResponse.signCount())
+                .withPasskeySignCount(authenticatorResponse.signCount())
                 .withPasskeyTransports(Collections.singletonList("internal")) // TODO
                 //                .withPasskeyBackupEligible()
                 //                .withPasskeyBackedUp()

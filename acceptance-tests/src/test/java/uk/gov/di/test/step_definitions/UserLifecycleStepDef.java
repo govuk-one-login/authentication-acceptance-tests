@@ -117,8 +117,7 @@ public class UserLifecycleStepDef {
     public void aUserExistsWithAPasskey() throws Exception {
         aUserExists();
         virtualAuthenticatorLifecycleService.createVirtualAuthenticator();
-        passkeyLifecycleService.buildPasskeyAndPutToDynamoDb(
-                world.userProfile.getPublicSubjectID());
+        passkeyLifecycleService.buildAndStorePasskey(world.userProfile.getPublicSubjectID());
     }
 
     @Given("a user with unique international SMS MFA exists")
