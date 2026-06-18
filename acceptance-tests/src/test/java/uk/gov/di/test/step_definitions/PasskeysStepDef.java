@@ -1,6 +1,7 @@
 package uk.gov.di.test.step_definitions;
 
 import io.cucumber.java.en.And;
+import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import uk.gov.di.test.pages.BasePage;
@@ -32,7 +33,12 @@ public class PasskeysStepDef extends BasePage {
         createPasskeysPage.dismissIfPresent();
     }
 
-    @And("the user will fail verification")
+    @Given("the user will succeed verification")
+    public void willSucceedVerification() {
+        virtualAuthenticatorLifecycleService.enableUserVerification();
+    }
+
+    @Given("the user will fail verification")
     public void willFailVerification() {
         virtualAuthenticatorLifecycleService.disableUserVerification();
     }
