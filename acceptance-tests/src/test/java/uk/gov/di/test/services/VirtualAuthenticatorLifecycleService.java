@@ -25,18 +25,16 @@ public class VirtualAuthenticatorLifecycleService {
     public void createVirtualAuthenticator() {
         if (authenticator != null) {
             throw new UnsupportedOperationException(
-                    "Cannot create a second virtual authenticator while one is already attached.");
+                    "Cannot create a second virtual authenticator while one is already attached");
         }
 
         var driver = Driver.getAsAuthenticator();
 
         VirtualAuthenticatorOptions options =
                 new VirtualAuthenticatorOptions()
-                        .setProtocol(VirtualAuthenticatorOptions.Protocol.CTAP2)
                         .setHasResidentKey(true)
                         .setHasUserVerification(true)
-                        .setIsUserVerified(true)
-                        .setTransport(VirtualAuthenticatorOptions.Transport.INTERNAL);
+                        .setIsUserVerified(true);
 
         authenticator = driver.addVirtualAuthenticator(options);
     }
@@ -50,6 +48,10 @@ public class VirtualAuthenticatorLifecycleService {
     }
 
     public void putCredentialInAuthenticator(Credential credential) {
+        if (authenticator == null) {
+            throw new UnsupportedOperationException("No authenticator exists");
+        }
+
         authenticator.addCredential(credential);
     }
 }
