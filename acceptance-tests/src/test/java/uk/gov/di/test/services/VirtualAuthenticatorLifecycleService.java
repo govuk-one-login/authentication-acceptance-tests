@@ -50,4 +50,8 @@ public class VirtualAuthenticatorLifecycleService {
     public void putCredentialInAuthenticator(Credential credential) {
         authenticator.addCredential(credential);
     }
+
+    public void disableUserVerification() {
+        authenticator.setUserVerified(false);
+    }
 }
