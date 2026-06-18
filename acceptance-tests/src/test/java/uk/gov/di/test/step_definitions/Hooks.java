@@ -40,11 +40,6 @@ public class Hooks extends BasePage {
         }
     }
 
-    @Before(value = "@UI", order = 2)
-    public void createVirtualAuthenticator() {
-        virtualAuthenticatorLifecycleService.createVirtualAuthenticator();
-    }
-
     @AfterStep("@UI")
     public void checkAccessibility() {
         AxeStepDef.thereAreNoAccessibilityViolations();

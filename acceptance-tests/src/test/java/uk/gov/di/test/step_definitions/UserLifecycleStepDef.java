@@ -116,6 +116,7 @@ public class UserLifecycleStepDef {
     @Given("a user exists with a passkey")
     public void aUserExistsWithAPasskey() throws Exception {
         aUserExists();
+        virtualAuthenticatorLifecycleService.createVirtualAuthenticator();
         passkeyLifecycleService.buildPasskeyAndPutToDynamoDb(
                 world.userProfile.getPublicSubjectID());
     }
