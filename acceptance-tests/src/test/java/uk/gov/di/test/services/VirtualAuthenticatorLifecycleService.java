@@ -42,6 +42,8 @@ public class VirtualAuthenticatorLifecycleService {
     }
 
     public void destroyVirtualAuthenticator() {
+        if (authenticator == null) return;
+
         var driver = Driver.getAsAuthenticator();
         driver.removeVirtualAuthenticator(authenticator);
         authenticator = null;
