@@ -1,15 +1,20 @@
 package uk.gov.di.test.services;
 
+import org.openqa.selenium.virtualauthenticator.Credential;
 import uk.gov.di.test.entity.Passkey;
+import uk.gov.di.test.utils.PasskeyConfig;
 
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.List;
-import java.util.UUID;
 
 public class PasskeyLifecycleService {
     private static volatile PasskeyLifecycleService instance;
 
     private static final DynamoDbService DYNAMO_DB_SERVICE = DynamoDbService.getInstance();
+    private static final VirtualAuthenticatorLifecycleService
+            VIRTUAL_AUTHENTICATOR_LIFECYCLE_SERVICE =
+                    VirtualAuthenticatorLifecycleService.getInstance();
 
     private PasskeyLifecycleService() {}
 
@@ -24,21 +29,40 @@ public class PasskeyLifecycleService {
         return instance;
     }
 
-    public void buildAndStorePasskey(String publicSubjectId) {
-        var testPasskeyId = UUID.randomUUID().toString();
+    public void buildAndStorePasskey(String publicSubjectId) throws Exception {
+        var passkeyConfig = PasskeyConfig.generatePasskeyConfig();
 
-        putPasskeyInDynamo(publicSubjectId, testPasskeyId);
+        putPasskeyInAuthenticator(publicSubjectId, passkeyConfig);
+        putPasskeyInDynamo(publicSubjectId, passkeyConfig);
     }
 
-    private void putPasskeyInDynamo(String publicSubjectId, String testPasskeyId) {
+    private static void putPasskeyInAuthenticator(
+            String publicSubjectId, PasskeyConfig passkeyConfig) {
+        Credential credential =
+                Credential.createResidentCredential(
+                        passkeyConfig.credentialIdAsBytes(),
+                        "dev.account.gov.uk",
+                        passkeyConfig.privateKeyAsPkcs8(),
+                        publicSubjectId.getBytes(),
+                        0);
+
+        VIRTUAL_AUTHENTICATOR_LIFECYCLE_SERVICE.putCredentialInAuthenticator(credential);
+    }
+
+    private void putPasskeyInDynamo(String publicSubjectId, PasskeyConfig passkeyConfig) {
         var created = LocalDateTime.now().toString();
         var passkey =
                 new Passkey()
                         .withPublicSubjectId(publicSubjectId)
-                        .withSortKey(buildSortKey(testPasskeyId))
-                        .withCredentialId(testPasskeyId)
+                        .withSortKey(buildSortKey(passkeyConfig.credentialIdAsBase64Url()))
                         .withCreated(created)
-                        .withCredential("testCredential");
+                        .withCredential(passkeyConfig.publicKeyAsCoseBase64Url())
+                        .withCredentialId(passkeyConfig.credentialIdAsBase64Url())
+                        .withPasskeyAaguid("00000000-0000-0000-0000-000000000000")
+                        .withPasskeySignCount(0)
+                        .withPasskeyTransports(Collections.singletonList("usb"))
+                        .withPasskeyIsResidentKey(true)
+                        .withPasskeyAlgorithm(-7);
 
         DYNAMO_DB_SERVICE.putPasskey(passkey);
     }
