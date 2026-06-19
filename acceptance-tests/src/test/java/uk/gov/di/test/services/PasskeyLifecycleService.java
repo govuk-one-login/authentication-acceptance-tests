@@ -15,6 +15,8 @@ public class PasskeyLifecycleService {
     private static final VirtualAuthenticatorLifecycleService
             VIRTUAL_AUTHENTICATOR_LIFECYCLE_SERVICE =
                     VirtualAuthenticatorLifecycleService.getInstance();
+    private static final TestConfigurationService TEST_CONFIG_SERVICE =
+            TestConfigurationService.getInstance();
 
     private PasskeyLifecycleService() {}
 
@@ -41,7 +43,7 @@ public class PasskeyLifecycleService {
         Credential credential =
                 Credential.createResidentCredential(
                         passkeyConfig.credentialIdAsBytes(),
-                        "dev.account.gov.uk",
+                        TEST_CONFIG_SERVICE.get("WEBAUTHN_RELYING_PARTY_ID"),
                         passkeyConfig.privateKeyAsPkcs8(),
                         publicSubjectId.getBytes(),
                         0);
