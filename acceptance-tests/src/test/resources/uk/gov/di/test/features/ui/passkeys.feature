@@ -144,3 +144,36 @@ Feature: Passkeys
     Then the user is taken to the "Enter your email address" page
     When the user enters their email address
     Then the user is taken to the "Enter your password" page
+
+  @PasskeyUsageEnabled
+  Scenario: User can retry passkey sign in multiple times
+    Given a user exists with a passkey
+    And the user will fail verification
+    When the user comes from the stub relying party with default options and is taken to the "Create your GOV.UK One Login or sign in" page
+    When the user selects sign in
+    Then the user is taken to the "Enter your email address" page
+    When the user enters their email address
+    Then the user is taken to the "Sign in with your face, fingerprint or passcode" page
+    When the user clicks the continue button
+    Then the user is taken to the "We could not sign you in" page
+    Given the user will fail verification
+    When the user selects radio button "Try signing in with your passkey again"
+    Then the user is taken to the "We could not sign you in" page
+
+    Given the user will succeed verification
+    When the user selects radio button "Try signing in with your passkey again"
+    Then the user is returned to the service
+
+  @PasskeyUsageEnabled
+  Scenario: User can choose to sign in with password if passkey sign in fails
+    Given a user exists with a passkey
+    And the user will fail verification
+    When the user comes from the stub relying party with default options and is taken to the "Create your GOV.UK One Login or sign in" page
+    When the user selects sign in
+    Then the user is taken to the "Enter your email address" page
+    When the user enters their email address
+    Then the user is taken to the "Sign in with your face, fingerprint or passcode" page
+    When the user clicks the continue button
+    Then the user is taken to the "We could not sign you in" page
+    When the user selects radio button "Sign in with your password"
+    Then the user is taken to the "Enter your password" page
