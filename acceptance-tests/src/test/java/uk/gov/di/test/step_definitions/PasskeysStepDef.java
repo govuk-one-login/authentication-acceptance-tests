@@ -5,10 +5,13 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import uk.gov.di.test.pages.BasePage;
 import uk.gov.di.test.pages.CreatePasskeysPage;
+import uk.gov.di.test.services.VirtualAuthenticatorLifecycleService;
 
 public class PasskeysStepDef extends BasePage {
 
     public CreatePasskeysPage createPasskeysPage;
+    public static final VirtualAuthenticatorLifecycleService virtualAuthenticatorLifecycleService =
+            VirtualAuthenticatorLifecycleService.getInstance();
 
     public PasskeysStepDef() {
         this.createPasskeysPage = new CreatePasskeysPage();
@@ -27,5 +30,10 @@ public class PasskeysStepDef extends BasePage {
     @And("the user dismisses the passkey registration page if present")
     public void dismissPasskeyRegistrationPageIfPresent() {
         createPasskeysPage.dismissIfPresent();
+    }
+
+    @And("the user will fail verification")
+    public void willFailVerification() {
+        virtualAuthenticatorLifecycleService.disableUserVerification();
     }
 }

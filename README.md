@@ -147,21 +147,22 @@ PARALLEL_BROWSERS=2
 See example below:
 
 ````
-| Environment Variable | Example Value                | Purpose                                                                                                                          |
-| -------------------- | ---------------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
-| SELENIUM_URL         | http://localhost:4445/wd/hub | Local selenium server firefox = 4444, chrome = 4445                                                                              |
-| SELENIUM_BROWSER     | chrome                       | Browser used to run tests - firefox or chrome                                                                                    |
-| SELENIUM_LOCAL       | true                         |                                                                                                                                  |
-| SELENIUM_HEADLESS    | true                         | Run Selenium headless.                                                                                                           |
-| USE_SSM              | true                         | Specifically for running from the IDE. Tells the test runner to use SSM if a required environment variable is undefined locally. |
-| DEBUG_MODE           | false                        | debug mode waits for user entry on OTP screens so you can enter OTP yourself.                                                    |
-| ACCESSIBILITY_CHECKS | false                        |                                                                                                                                  |
-| FAIL_FAST_ENABLED    | false                        |                                                                                                                                  |
-| PARALLEL_BROWSERS    | 1                            |                                                                                                                                  |
-| CUCUMBER_FILTER_TAGS | "@AccountManagementAPI"                       |                                                                                                                                  |
-| AWS_PROFILE          | di-auth-development-admin    |                                                                                                                                  |
-| NEW_AM_ENV           | true                         | Required to hit the account management API                                                                                       |
-| ENVIRONMENT          | dev                          |                                                                                                                                  |
+| Environment Variable      | Example Value                | Purpose                                                                                                                          |
+| ------------------------- | ---------------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
+| SELENIUM_URL              | http://localhost:4445/wd/hub | Local selenium server firefox = 4444, chrome = 4445                                                                              |
+| SELENIUM_BROWSER          | chrome                       | Browser used to run tests - firefox or chrome                                                                                    |
+| SELENIUM_LOCAL            | true                         |                                                                                                                                  |
+| SELENIUM_HEADLESS         | true                         | Run Selenium headless.                                                                                                           |
+| USE_SSM                   | true                         | Specifically for running from the IDE. Tells the test runner to use SSM if a required environment variable is undefined locally. |
+| DEBUG_MODE                | false                        | debug mode waits for user entry on OTP screens so you can enter OTP yourself.                                                    |
+| ACCESSIBILITY_CHECKS      | false                        |                                                                                                                                  |
+| FAIL_FAST_ENABLED         | false                        |                                                                                                                                  |
+| PARALLEL_BROWSERS         | 1                            |                                                                                                                                  |
+| CUCUMBER_FILTER_TAGS      | "@AccountManagementAPI"      |                                                                                                                                  |
+| AWS_PROFILE               | di-auth-development-admin    |                                                                                                                                  |
+| NEW_AM_ENV                | true                         | Required to hit the account management API                                                                                       |
+| ENVIRONMENT               | dev                          |                                                                                                                                  |
+| WEBAUTHN_RELYING_PARTY_ID | dev.account.gov.uk           |                                                                                                                                  |
 ````
 
 **First-Time Setup Tips**
