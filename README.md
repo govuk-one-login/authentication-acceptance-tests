@@ -142,48 +142,52 @@ PARALLEL_BROWSERS=2
 
 ### Running the tests from IntelliJ
 
-**Create a run configuration using a .env file to provide environment variables**
-See example below:
+You can run individual tests locally from IntelliJ against the dev environment.
+This uses a local browser via Selenium rather than the Dockerised setup.
 
-````
-| Environment Variable      | Example Value                | Purpose                                                                                                                          |
-| ------------------------- | ---------------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
-| SELENIUM_HEADLESS         | true                         | Run Selenium headless.                                                                                                           |
-| USE_SSM                   | true                         | Specifically for running from the IDE. Tells the test runner to use SSM if a required environment variable is undefined locally. |
-| DEBUG_MODE                | false                        | debug mode waits for user entry on OTP screens so you can enter OTP yourself.                                                    |
-| ACCESSIBILITY_CHECKS      | false                        |                                                                                                                                  |
-| FAIL_FAST_ENABLED         | false                        |                                                                                                                                  |
-| PARALLEL_BROWSERS         | 1                            |                                                                                                                                  |
-| CUCUMBER_FILTER_TAGS      | "@AccountManagementAPI"      |                                                                                                                                  |
-| AWS_PROFILE               | di-auth-development-admin    |                                                                                                                                  |
-| NEW_AM_ENV                | true                         | Required to hit the account management API                                                                                       |
-| ENVIRONMENT               | dev                          |                                                                                                                                  |
-| WEBAUTHN_RELYING_PARTY_ID | dev.account.gov.uk           |                                                                                                                                  |
+#### Prerequisites
+- AWS CLI configured with SSO profile `di-authentication-development-AdministratorAccessPermission`
+- Connected to the VPN
+
+#### Step 1: Log in to AWS via SSO
+
+Run the following commands to log in to your AWS account as an admin in the dev account
+
+````bash
+export AWS_PROFILE=di-authentication-development-AdministratorAccessPermission
+source ./scripts/check_aws_creds.sh
 ````
 
-**First-Time Setup Tips**
-- Use chmod +x gradlew if the Gradle wrapper lacks execution permissions.
-- Pull latest Selenium images regularly:
-  - docker pull selenium/standalone-chrome
-- Ensure Docker is running and not blocked by firewall or VPN.
-- Test reports are automatically managed in the test-reports/ directory.
+You will need to re-run this when your AWS session expires or SSM parameters change.
 
-**Deployment**
+#### Step 2: Copy .env.sample into a local .env file
+
+The shared Cucumber run configuration template (`.run/Template Cucumber Java.run.xml`) is already set up to read from `.env`.
+
+#### Step 3: Run a test from IntelliJ
+
+__Note__: If tests fail with authentication errors, run commands in step 1 to refresh credentials.
+
+### Deployment
+
 Tests are deployed using GitHub Actions:
 - Use "Build and Push to API DEV account" to deploy to API
 - Use "Build and Push to UI DEV account" to deploy to UI
 
-**The workflow:**
+The workflow:
 - Builds test containers (Chrome)
 - Pushes images to ECR
 - Tags for the development environment
 
-**Build System**
+### Build System
+
 The project uses Gradle 8 with modern best practices:
 - Version catalog (`gradle/libs.versions.toml`) for centralized dependency management
 - No root build.gradle (single subproject structure)
 - Optimized build performance with caching and parallel execution
 - Java 17 compatibility
+
+### Architecture
 
 **Data Flow**
 
@@ -195,7 +199,7 @@ v                                                         v
 (DynamoDB, SSM)
 ````
 
-### Component Interactions
+**Component Interactions**
 - **Test Runner:** Executes Cucumber features using Gradle 8
 - **Selenium WebDriver:** Drives browser automation
 - **Page Objects:** Abstract web interactions
