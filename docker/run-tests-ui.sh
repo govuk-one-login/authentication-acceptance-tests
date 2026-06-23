@@ -118,9 +118,6 @@ setup_cucumber_run_parameters() {
   processor_cores=$(nproc --all 2> /dev/null || echo 1)
   PARALLEL_BROWSERS=$((processor_cores + 1))
   export PARALLEL_BROWSERS
-
-  SELENIUM_BROWSER="$(cat /opt/selenium/browser_name)"
-  export SELENIUM_BROWSER
 }
 
 setup_environment_variables() {

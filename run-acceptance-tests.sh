@@ -78,7 +78,6 @@ echo -e "Running di-authentication-acceptance-tests..."
 
 if [ "${LOCAL}" == "true" ]; then
   export SELENIUM_URL="http://localhost:4444/wd/hub"
-  export SELENIUM_BROWSER=chrome
   export SELENIUM_LOCAL=true
   export SELENIUM_HEADLESS=true
   export DEBUG_MODE=false
