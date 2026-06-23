@@ -6,7 +6,6 @@ if [ -z "${ENVIRONMENT}" ]; then
   echo "Usage: $0 <environment> [<base_image>]"
 
   echo "Example: $0 dev-ui"
-  echo "Example: $0 staging-api selenium/standalone-firefox:132.0"
   exit 1
 fi
 
