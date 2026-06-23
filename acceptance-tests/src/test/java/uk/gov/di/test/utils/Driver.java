@@ -1,21 +1,19 @@
 package uk.gov.di.test.utils;
 
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.virtualauthenticator.HasVirtualAuthenticator;
 
 public class Driver {
     protected static final Boolean SELENIUM_HEADLESS =
             Boolean.valueOf(Environment.getOrThrow("SELENIUM_HEADLESS"));
-    private static final InheritableThreadLocal<WebDriver> driverPool =
+    private static final InheritableThreadLocal<ChromeDriver> driverPool =
             new InheritableThreadLocal<>();
 
-    public static WebDriver getDriver() {
+    public static ChromeDriver getDriver() {
         return driverPool.get();
     }
 
-    public static WebDriver get() {
+    public static ChromeDriver get() {
 
         if (driverPool.get() == null)
             synchronized (Driver.class) {
@@ -35,15 +33,6 @@ public class Driver {
                         .setPosition(new org.openqa.selenium.Point(100, 100));
             }
         return driverPool.get();
-    }
-
-    public static HasVirtualAuthenticator getAsAuthenticator() {
-        var d = get();
-        if (d instanceof HasVirtualAuthenticator) {
-            return (HasVirtualAuthenticator) d;
-        }
-        throw new UnsupportedOperationException(
-                "The current driver does not support Virtual Authenticators");
     }
 
     private static ChromeOptions buildChromeOptions() {
