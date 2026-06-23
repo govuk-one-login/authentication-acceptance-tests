@@ -204,4 +204,3 @@ v                                                         v
 - **Service Layer:** Handles AWS SDK operations
 - **DynamoDB:** Stores test user state
 - **SSM:** Stores configuration
-- **Nginx:** Handles routing and access control
