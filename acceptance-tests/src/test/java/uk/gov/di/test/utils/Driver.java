@@ -3,16 +3,9 @@ package uk.gov.di.test.utils;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.virtualauthenticator.HasVirtualAuthenticator;
 
-import java.net.MalformedURLException;
-import java.net.URL;
-
 public class Driver {
-    protected static final String SELENIUM_URL = Environment.getOrThrow("SELENIUM_URL");
-    protected static final Boolean SELENIUM_LOCAL =
-            Boolean.valueOf(System.getenv().getOrDefault("SELENIUM_LOCAL", "true"));
     protected static final Boolean SELENIUM_HEADLESS =
             Boolean.valueOf(Environment.getOrThrow("SELENIUM_HEADLESS"));
     private static final InheritableThreadLocal<WebDriver> driverPool =
@@ -27,16 +20,8 @@ public class Driver {
         if (driverPool.get() == null)
             synchronized (Driver.class) {
                 ChromeOptions chromeOptions = buildChromeOptions();
-                if (SELENIUM_LOCAL) {
-                    System.setProperty("webdriver.chrome.whitelistedIps", "");
-                    driverPool.set(new ChromeDriver(chromeOptions));
-                } else {
-                    try {
-                        driverPool.set(new RemoteWebDriver(new URL(SELENIUM_URL), chromeOptions));
-                    } catch (MalformedURLException e) {
-                        throw new RuntimeException(e);
-                    }
-                }
+                System.setProperty("webdriver.chrome.whitelistedIps", "");
+                driverPool.set(new ChromeDriver(chromeOptions));
                 driverPool.get().manage().deleteAllCookies();
                 driverPool
                         .get()
