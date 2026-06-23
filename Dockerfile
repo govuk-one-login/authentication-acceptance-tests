@@ -57,8 +57,6 @@ COPY --chown=${SEL_USER}:${SEL_GROUP} --from=builder /test/acceptance-tests /tes
 
 RUN chmod u+x ./gradlew
 
-ENV SELENIUM_URL="http://localhost:4444/wd/hub"
-ENV SELENIUM_LOCAL=true
 ENV SELENIUM_HEADLESS=true
 ENV DEBUG_MODE=false
 
