@@ -12,6 +12,7 @@ import uk.gov.di.test.services.UserLifecycleService;
 import uk.gov.di.test.services.VirtualAuthenticatorLifecycleService;
 
 import static uk.gov.di.test.services.UserLifecycleService.generateValidPassword;
+import static uk.gov.di.test.utils.Constants.CREATION_DATE_NEWER_THAN_2_HOURS;
 import static uk.gov.di.test.utils.Constants.TOP_100K_PASSWORD;
 
 public class UserLifecycleStepDef {
@@ -85,6 +86,16 @@ public class UserLifecycleStepDef {
                         world.userProfile, world.getUserPassword());
     }
 
+    @Given("a user with a new account exists")
+    public void aUserExistsWithANewAccount() {
+        aUserDoesNotYetExist();
+        world.userProfile.setCreated(CREATION_DATE_NEWER_THAN_2_HOURS);
+        userLifecycleService.putUserProfileToDynamodb(world.userProfile);
+        world.userCredentials =
+                userLifecycleService.buildNewUserCredentialsAndPutToDynamodb(
+                        world.userProfile, world.getUserPassword());
+    }
+
     @ParameterType("SMS|App|no")
     public String mfaMethod(String mfaMethodType) {
         return mfaMethodType;
@@ -96,6 +107,16 @@ public class UserLifecycleStepDef {
     @Given("a user with no passkey and {mfaMethod} MFA exists")
     public void aUserExists(String mfaMethod) {
         aUserExists();
+        setMfaMethodOnUser(mfaMethod);
+    }
+
+    @Given("a user with a new account and no passkey and {mfaMethod} MFA exists")
+    public void aUserExistsWithANewAccount(String mfaMethod) {
+        aUserExistsWithANewAccount();
+        setMfaMethodOnUser(mfaMethod);
+    }
+
+    private void setMfaMethodOnUser(String mfaMethod) {
         switch (mfaMethod) {
             case "no":
                 break;
