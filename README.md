@@ -148,8 +148,6 @@ See example below:
 ````
 | Environment Variable      | Example Value                | Purpose                                                                                                                          |
 | ------------------------- | ---------------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
-| SELENIUM_URL              | http://localhost:4444/wd/hub | Local Selenium server URL                                                                                                        |
-| SELENIUM_LOCAL            | true                         |                                                                                                                                  |
 | SELENIUM_HEADLESS         | true                         | Run Selenium headless.                                                                                                           |
 | USE_SSM                   | true                         | Specifically for running from the IDE. Tells the test runner to use SSM if a required environment variable is undefined locally. |
 | DEBUG_MODE                | false                        | debug mode waits for user entry on OTP screens so you can enter OTP yourself.                                                    |
