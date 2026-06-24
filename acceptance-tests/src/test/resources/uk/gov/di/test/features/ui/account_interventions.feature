@@ -74,23 +74,6 @@ Feature: Account interventions
     And the user enters the security code from the auth app
     Then the user is taken to the "Sorry, there is a problem" page
 
-  @old-mfa-without-ipv
-  Scenario: Sms user cannot change the way they get security codes when they have a temporarily suspended account
-    Given a user with SMS MFA exists
-    And the user has a temporarily suspended intervention
-    When the user comes from the stub relying party with option 2fa-on and is taken to the "Create your GOV.UK One Login or sign in" page
-    And the user selects sign in
-    Then the user is taken to the "Enter your email" page
-    When the user enters their email address
-    Then the user is taken to the "Enter your password" page
-    When the user enters their password
-    Then the user is taken to the "Check your phone" page
-    When the user selects "Problems with the code?" link
-    When the user selects "change how you get security codes" link
-    Then the user is taken to the "Check your email" page
-    When the user enters the six digit security code from their email
-    Then the user is taken to the "Sorry, there is a problem" page
-
   @under-development
   Scenario: Sms user cannot change the way they get security codes when they have a temporarily suspended account (Dev Only test)
     Given a user with SMS MFA exists
@@ -107,23 +90,6 @@ Feature: Account interventions
     Then the user is taken to the IPV stub page
     When the user clicks the continue button
     Then the user is taken to the "How do you want to get security codes" page
-
-  @old-mfa-without-ipv
-  Scenario: Auth app user cannot change the way they get security codes when they have a temporarily suspended account
-    Given a user with App MFA exists
-    And the user has a temporarily suspended intervention
-    When the user comes from the stub relying party with option 2fa-on and is taken to the "Create your GOV.UK One Login or sign in" page
-    And the user selects sign in
-    Then the user is taken to the "Enter your email" page
-    When the user enters their email address
-    Then the user is taken to the "Enter your password" page
-    When the user enters their password
-    Then the user is taken to the "Enter the 6 digit security code shown in your authenticator app" page
-    When the user selects "I do not have access to the authenticator app" link
-    When the user selects "change how you get security codes" link
-    Then the user is taken to the "Check your email" page
-    When the user enters the six digit security code from their email
-    Then the user is taken to the "Sorry, there is a problem" page
 
   @under-development
   Scenario: Auth app user cannot change the way they get security codes when they have a temporarily suspended account (Dev only Test)
@@ -229,23 +195,6 @@ Feature: Account interventions
     When the user enters the six digit security code from their phone
     Then the user is taken to the "Your GOV.UK One Login has been permanently locked" page
 
-  @old-mfa-without-ipv
-  Scenario: Sms user cannot change the way they get security codes when they have a permanently locked account
-    Given a user with SMS MFA exists
-    And the user has a permanently locked intervention
-    When the user comes from the stub relying party with option 2fa-on and is taken to the "Create your GOV.UK One Login or sign in" page
-    And the user selects sign in
-    Then the user is taken to the "Enter your email" page
-    When the user enters their email address
-    Then the user is taken to the "Enter your password" page
-    When the user enters their password
-    Then the user is taken to the "Check your phone" page
-    When the user selects "Problems with the code?" link
-    When the user selects "change how you get security codes" link
-    Then the user is taken to the "Check your email" page
-    When the user enters the six digit security code from their email
-    Then the user is taken to the "Your GOV.UK One Login has been permanently locked" page
-
   @under-development
   Scenario: Sms user cannot change the way they get security codes when they have a permanently locked account (Dev only Test)
     Given a user with SMS MFA exists
@@ -264,24 +213,6 @@ Feature: Account interventions
     When "Identity check failed" radio option selected
     And the user clicks the continue button
     Then the user is taken to the "You cannot change how you get security codes" page
-
-
-  @old-mfa-without-ipv
-  Scenario: Auth app user cannot change the way they get security codes when they have a permanently locked account
-    Given a user with App MFA exists
-    And the user has a permanently locked intervention
-    When the user comes from the stub relying party with option 2fa-on and is taken to the "Create your GOV.UK One Login or sign in" page
-    And the user selects sign in
-    Then the user is taken to the "Enter your email" page
-    When the user enters their email address
-    Then the user is taken to the "Enter your password" page
-    When the user enters their password
-    Then the user is taken to the "Enter the 6 digit security code shown in your authenticator app" page
-    When the user selects "I do not have access to the authenticator app" link
-    When the user selects "change how you get security codes" link
-    Then the user is taken to the "Check your email" page
-    When the user enters the six digit security code from their email
-    Then the user is taken to the "Your GOV.UK One Login has been permanently locked" page
 
   @under-development
   Scenario: Auth app user cannot change the way they get security codes when they have a permanently locked account (Dev Only Test)
@@ -406,52 +337,6 @@ Feature: Account interventions
     When the user enters valid new password and correctly retypes it
     And the user dismisses the passkey registration page if present
     Then the user is returned to the service
-
-  @old-mfa-without-ipv
-  Scenario: Auth app user cannot change the way they get security codes when they have a password reset intervention on their account
-    Given a user with App MFA exists
-    And the user has a password reset intervention
-    When the user comes from the stub relying party with option 2fa-on and is taken to the "Create your GOV.UK One Login or sign in" page
-    And the user selects sign in
-    Then the user is taken to the "Enter your email" page
-    When the user enters their email address
-    Then the user is taken to the "Enter your password" page
-    When the user enters their password
-    Then the user is taken to the "Enter the 6 digit security code shown in your authenticator app" page
-    When the user selects "I do not have access to the authenticator app" link
-    When the user selects "change how you get security codes" link
-    Then the user is taken to the "Check your email" page
-    When the user enters the six digit security code from their email
-    Then the user is taken to the "You need to reset your password" page
-    When the user clicks the continue button
-    Then the user is taken to the "Check your email" page
-    When the user enters the six digit security code from their email
-    Then the user is taken to the "Reset your password" page
-    When the user enters valid new password and correctly retypes it
-    And the user dismisses the passkey registration page if present
-    Then the user is returned to the service
-
-  @under-development @old-mfa-without-ipv
-  Scenario: Auth app user cannot change the way they get security codes when they have a password reset intervention on their account (Dev Only Test)
-    Given a user with App MFA exists
-    And the user has a password reset intervention
-    When the user comes from the stub relying party with option 2fa-on and is taken to the "Create your GOV.UK One Login or sign in" page
-    And the user selects sign in
-    Then the user is taken to the "Enter your email" page
-    When the user enters their email address
-    Then the user is taken to the "Enter your password" page
-    When the user enters their password
-    Then the user is taken to the "Enter the 6 digit security code shown in your authenticator app" page
-    When the user selects "I do not have access to the authenticator app" link
-    When the user selects "check if you can change how you get security codes" link
-    Then the user is taken to the IPV stub page
-    When the user clicks the continue button
-    Then the user is taken to the "How do you want to get security codes" page
-    When the user selects radio button "Text message"
-    Then the user is taken to the "Enter your mobile phone number" page
-    And the user enters their mobile phone number
-    When the user enters the six digit security code from their phone
-    Then the user is taken to the "You’ve changed how you get security codes" page
 
   Scenario: Auth app user can log in when their One Login account intervention has been removed
     Given a user with App MFA exists

@@ -133,7 +133,7 @@ NEW_AM_ENV=true
 ````
 Example override to skip specific tests:
 ````
-CUCUMBER_FILTER_TAGS="not (@AccountInterventions or @Re-auth or @old-mfa-without-ipv)"
+CUCUMBER_FILTER_TAGS="not (@AccountInterventions or @Re-auth)"
 ````
 Example for additional concurrency:
 ````
