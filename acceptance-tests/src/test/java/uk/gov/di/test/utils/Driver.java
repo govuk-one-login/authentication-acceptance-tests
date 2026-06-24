@@ -1,74 +1,25 @@
 package uk.gov.di.test.utils;
 
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.firefox.FirefoxOptions;
-import org.openqa.selenium.remote.RemoteWebDriver;
-import org.openqa.selenium.virtualauthenticator.HasVirtualAuthenticator;
-
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.time.Duration;
-
-import static java.time.temporal.ChronoUnit.SECONDS;
 
 public class Driver {
-    protected static final String FIREFOX_BROWSER = "firefox";
-    protected static final String SELENIUM_URL = Environment.getOrThrow("SELENIUM_URL");
-    protected static final Boolean SELENIUM_LOCAL =
-            Boolean.valueOf(System.getenv().getOrDefault("SELENIUM_LOCAL", "true"));
     protected static final Boolean SELENIUM_HEADLESS =
             Boolean.valueOf(Environment.getOrThrow("SELENIUM_HEADLESS"));
-    protected static final String SELENIUM_BROWSER = Environment.getOrThrow("SELENIUM_BROWSER");
-    private static final InheritableThreadLocal<WebDriver> driverPool =
+    private static final InheritableThreadLocal<ChromeDriver> driverPool =
             new InheritableThreadLocal<>();
 
-    public static WebDriver getDriver() {
+    public static ChromeDriver getDriver() {
         return driverPool.get();
     }
 
-    public static WebDriver get() {
+    public static ChromeDriver get() {
 
         if (driverPool.get() == null)
             synchronized (Driver.class) {
-                switch (SELENIUM_BROWSER) {
-                    case "chrome" -> {
-                        ChromeOptions chromeOptions = buildChromeOptions();
-                        if (SELENIUM_LOCAL) {
-                            System.setProperty("webdriver.chrome.whitelistedIps", "");
-                            driverPool.set(new ChromeDriver(chromeOptions));
-                        } else {
-                            try {
-                                driverPool.set(
-                                        new RemoteWebDriver(new URL(SELENIUM_URL), chromeOptions));
-                            } catch (MalformedURLException e) {
-                                throw new RuntimeException(e);
-                            }
-                        }
-                    }
-
-                    case FIREFOX_BROWSER -> {
-                        FirefoxOptions firefoxOptions = new FirefoxOptions();
-                        if (SELENIUM_HEADLESS) {
-                            firefoxOptions.addArguments("--headless");
-                        }
-                        firefoxOptions.setPageLoadTimeout(Duration.of(30, SECONDS));
-                        firefoxOptions.setImplicitWaitTimeout(Duration.of(30, SECONDS));
-                        if (SELENIUM_LOCAL) {
-                            driverPool.set(new FirefoxDriver(firefoxOptions));
-                        } else {
-                            try {
-                                driverPool.set(
-                                        new RemoteWebDriver(new URL(SELENIUM_URL), firefoxOptions));
-                            } catch (MalformedURLException e) {
-                                throw new RuntimeException(e);
-                            }
-                        }
-                    }
-                    default -> throw new RuntimeException("Invalid driver: " + SELENIUM_BROWSER);
-                }
+                ChromeOptions chromeOptions = buildChromeOptions();
+                System.setProperty("webdriver.chrome.whitelistedIps", "");
+                driverPool.set(new ChromeDriver(chromeOptions));
                 driverPool.get().manage().deleteAllCookies();
                 driverPool
                         .get()
@@ -82,15 +33,6 @@ public class Driver {
                         .setPosition(new org.openqa.selenium.Point(100, 100));
             }
         return driverPool.get();
-    }
-
-    public static HasVirtualAuthenticator getAsAuthenticator() {
-        var d = get();
-        if (d instanceof HasVirtualAuthenticator) {
-            return (HasVirtualAuthenticator) d;
-        }
-        throw new UnsupportedOperationException(
-                "The current driver does not support Virtual Authenticators");
     }
 
     private static ChromeOptions buildChromeOptions() {

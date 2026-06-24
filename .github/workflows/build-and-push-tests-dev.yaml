@@ -5,7 +5,6 @@ env:
   DEV_GHA_DEPLOYER_ROLE: arn:aws:iam::653994557586:role/dev-auth-deploy-pipeline-GitHubActionsRole-QrtGginNnjDD
   DEV_ACCEPTANCE_ECR_REPO: acceptance-test-dev-testrunnerimagerepository-yh8assqv55do
   SELENIUM_BASE_CHROMIUM: selenium/standalone-chromium:132.0
-  SELENIUM_BASE_FIREFOX: selenium/standalone-firefox:132.0
 
 on:
   workflow_dispatch:
@@ -61,46 +60,3 @@ jobs:
           tags: |
             "${{ steps.login-ecr.outputs.registry }}/${{ env.DEV_ACCEPTANCE_ECR_REPO }}:sp-latest"
             "${{ steps.login-ecr.outputs.registry }}/${{ env.DEV_ACCEPTANCE_ECR_REPO }}:sp-latest-chromium"
-
-  build-push-firefox:
-    runs-on: ubuntu-latest
-    timeout-minutes: 60
-    permissions:
-      id-token: write
-      contents: read
-    steps:
-      - name: Checkout
-        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
-
-      - name: Set up AWS credentials
-        uses: aws-actions/configure-aws-credentials@e7f100cf4c008499ea8adda475de1042d6975c7b # v6.2.0
-        with:
-          role-to-assume: ${{ env.DEV_GHA_DEPLOYER_ROLE }}
-          aws-region: ${{ env.AWS_REGION }}
-
-      - name: Login to Amazon ECR
-        id: login-ecr
-        uses: aws-actions/amazon-ecr-login@d539f0932e70871a027e9d5a9d8fc38589180a64 # v2.1.6
-
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@d7f5e7f509e45cec5c76c4d5afdd7de93d0b3df5 # v4.1.0
-
-      - name: Build and push API tests (non-sp)
-        uses: docker/build-push-action@f9f3042f7e2789586610d6e8b85c8f03e5195baf # v7.2.0
-        with:
-          context: .
-          push: true
-          target: auth-api
-          build-args: |
-            SELENIUM_BASE=${{ env.SELENIUM_BASE_FIREFOX }}
-          tags: "${{ steps.login-ecr.outputs.registry }}/${{ env.DEV_ACCEPTANCE_ECR_REPO }}:latest-firefox"
-
-      - name: Build and push UI tests (sp)
-        uses: docker/build-push-action@f9f3042f7e2789586610d6e8b85c8f03e5195baf # v7.2.0
-        with:
-          context: .
-          push: true
-          target: auth-ui
-          build-args: |
-            SELENIUM_BASE=${{ env.SELENIUM_BASE_FIREFOX }}
-          tags: "${{ steps.login-ecr.outputs.registry }}/${{ env.DEV_ACCEPTANCE_ECR_REPO }}:sp-latest-firefox"

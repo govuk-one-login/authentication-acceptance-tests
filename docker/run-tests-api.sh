@@ -47,11 +47,6 @@ log_run_configuration() {
   fi
 }
 
-setup_cucumber_run_parameters() {
-  SELENIUM_BROWSER="$(cat /opt/selenium/browser_name)"
-  export SELENIUM_BROWSER
-}
-
 copy_test_reports() {
   if [ -d "/test/acceptance-tests/target/cucumber-report/" ]; then
     cp -r /test/acceptance-tests/target/cucumber-report/* "$(pwd)"/results/
@@ -72,7 +67,6 @@ execute_tests() {
 }
 
 check_guard_conditions
-setup_cucumber_run_parameters
 setup_environment_variables
 log_run_configuration
 execute_tests

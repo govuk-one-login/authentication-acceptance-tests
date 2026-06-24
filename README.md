@@ -24,7 +24,6 @@ MFA method updates and user profile changes by manipulating the same backend ser
 - Multifactor authentication testing via both UI and API (SMS and authenticator app)
 - Account recovery and password reset validation
 - Security features testing (lockouts, interventions)
-- Multi-browser support (Chrome, Firefox)
 - Docker-based test execution
 - AWS integration for test data management
 - Welsh language support testing
@@ -44,7 +43,7 @@ with docker -v and docker-compose -v
 - AWS CLI configuration - Download from https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2.html
 Configure with appropriate credentials (Dan - Tech Lead can help with credential access)
 - Gradle 8.x - Download from https://gradle.org/releases/ or use the included ./gradlew
-- Chrome or Firefox browser - Install from https://www.google.com/chrome/ or https://www.mozilla.org/firefox/
+- Chrome browser - Install from https://www.google.com/chrome/
 
 ### Test Setup
 #### Clone the repository:
@@ -149,9 +148,6 @@ See example below:
 ````
 | Environment Variable      | Example Value                | Purpose                                                                                                                          |
 | ------------------------- | ---------------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
-| SELENIUM_URL              | http://localhost:4445/wd/hub | Local selenium server firefox = 4444, chrome = 4445                                                                              |
-| SELENIUM_BROWSER          | chrome                       | Browser used to run tests - firefox or chrome                                                                                    |
-| SELENIUM_LOCAL            | true                         |                                                                                                                                  |
 | SELENIUM_HEADLESS         | true                         | Run Selenium headless.                                                                                                           |
 | USE_SSM                   | true                         | Specifically for running from the IDE. Tells the test runner to use SSM if a required environment variable is undefined locally. |
 | DEBUG_MODE                | false                        | debug mode waits for user entry on OTP screens so you can enter OTP yourself.                                                    |
@@ -169,7 +165,6 @@ See example below:
 - Use chmod +x gradlew if the Gradle wrapper lacks execution permissions.
 - Pull latest Selenium images regularly:
   - docker pull selenium/standalone-chrome
-  - docker pull selenium/standalone-firefox
 - Ensure Docker is running and not blocked by firewall or VPN.
 - Test reports are automatically managed in the test-reports/ directory.
 
@@ -179,7 +174,7 @@ Tests are deployed using GitHub Actions:
 - Use "Build and Push to UI DEV account" to deploy to UI
 
 **The workflow:**
-- Builds test containers (Chrome and Firefox)
+- Builds test containers (Chrome)
 - Pushes images to ECR
 - Tags for the development environment
 
@@ -207,4 +202,3 @@ v                                                         v
 - **Service Layer:** Handles AWS SDK operations
 - **DynamoDB:** Stores test user state
 - **SSM:** Stores configuration
-- **Nginx:** Handles routing and access control
