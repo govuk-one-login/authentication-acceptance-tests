@@ -141,7 +141,8 @@ public class UserLifecycleService {
                 .withPublicSubjectID(UUID.randomUUID().toString())
                 .withSubjectID(UUID.randomUUID().toString())
                 .withSalt(Crypto.generateSalt())
-                .withTermsAndConditions(buildTermsAndConditions());
+                .withTermsAndConditions(buildTermsAndConditions())
+                .withCreated(CREATION_DATE_OLDER_THAN_2_HOURS);
     }
 
     public UserProfile buildNewMigratedUserProfile() {

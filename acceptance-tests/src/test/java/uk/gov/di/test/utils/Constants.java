@@ -1,5 +1,8 @@
 package uk.gov.di.test.utils;
 
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+
 public final class Constants {
 
     public static final String INVALID_EMAIL = "joe.bloggs";
@@ -28,6 +31,10 @@ public final class Constants {
             "+447700900000";
     public static final String UK_MOBILE_PHONE_NUMBER_INCORRECT_FORMAT = "077009000000000";
     public static final String UK_MOBILE_PHONE_NUMBER_NON_DIGIT_CHARS = "0770090*a45";
+    public static final String CREATION_DATE_OLDER_THAN_2_HOURS =
+            LocalDateTime.now(ZoneOffset.UTC).minusDays(2).toString();
+    public static final String CREATION_DATE_NEWER_THAN_2_HOURS =
+            LocalDateTime.now(ZoneOffset.UTC).minusMinutes(20).toString();
 
     public static final String DEFAULT_TIMESTAMP = "1970-01-01T00:00:00.000000";
 
