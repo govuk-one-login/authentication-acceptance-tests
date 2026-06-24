@@ -3,6 +3,8 @@ package uk.gov.di.test.utils;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 
+import java.io.File;
+
 public class Driver {
     protected static final Boolean SELENIUM_HEADLESS =
             Boolean.valueOf(Environment.getOrThrow("SELENIUM_HEADLESS"));
@@ -18,6 +20,10 @@ public class Driver {
         if (driverPool.get() == null)
             synchronized (Driver.class) {
                 ChromeOptions chromeOptions = buildChromeOptions();
+                File chromedriver = new File("/usr/bin/chromedriver");
+                if (chromedriver.exists()) {
+                    System.setProperty("webdriver.chrome.driver", chromedriver.getAbsolutePath());
+                }
                 System.setProperty("webdriver.chrome.whitelistedIps", "");
                 driverPool.set(new ChromeDriver(chromeOptions));
                 driverPool.get().manage().deleteAllCookies();
