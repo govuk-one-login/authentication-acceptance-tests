@@ -134,3 +134,13 @@ Feature: Passkeys
     Given the user will succeed verification
     When the user selects radio button "Try signing in with your passkey again"
     Then the user is returned to the service
+
+  @PasskeyUsageEnabled
+  Scenario: Existing user with a passkey is routed to Enter Password if JavaScript is disabled
+    Given a user exists with a passkey
+    And JavaScript is disabled
+    When the user comes from the stub relying party with default options and is taken to the "Create your GOV.UK One Login or sign in" page
+    When the user selects sign in
+    Then the user is taken to the "Enter your email address" page
+    When the user enters their email address
+    Then the user is taken to the "Enter your password" page

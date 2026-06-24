@@ -11,6 +11,7 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import uk.gov.di.test.pages.BasePage;
 import uk.gov.di.test.pages.CreateOrSignInPage;
@@ -43,6 +44,13 @@ public class CommonStepDef extends BasePage {
     }
 
     String idToken;
+
+    @Given("JavaScript is disabled")
+    public void javaScriptIsDisabled() {
+        ChromeDriver driver = Driver.get();
+        driver.executeCdpCommand(
+                "Emulation.setScriptExecutionDisabled", java.util.Map.of("value", true));
+    }
 
     @Then("the user email is not blocked to proceed with account creation")
     public void emailNotBlocked() {
