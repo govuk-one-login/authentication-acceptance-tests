@@ -1,5 +1,6 @@
 package uk.gov.di.test.utils;
 
+import org.jspecify.annotations.NonNull;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 
@@ -15,8 +16,8 @@ public class Driver {
         return driverPool.get();
     }
 
-    public static ChromeDriver get() {
-
+    @NonNull
+    public static ChromeDriver getOrCreate() {
         if (driverPool.get() == null)
             synchronized (Driver.class) {
                 ChromeOptions chromeOptions = buildChromeOptions();

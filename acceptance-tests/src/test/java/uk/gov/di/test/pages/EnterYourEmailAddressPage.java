@@ -18,10 +18,10 @@ public class EnterYourEmailAddressPage extends BasePage {
     }
 
     public String continueButtonText() {
-        return Driver.get().findElement(continueButton).getText();
+        return Driver.getOrCreate().findElement(continueButton).getText();
     }
 
     public String backButtonText() {
-        return Driver.get().findElement(backButton).getText();
+        return Driver.getOrCreate().findElement(backButton).getText();
     }
 }

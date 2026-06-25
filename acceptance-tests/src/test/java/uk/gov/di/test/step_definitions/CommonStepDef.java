@@ -47,7 +47,7 @@ public class CommonStepDef extends BasePage {
 
     @Given("JavaScript is disabled")
     public void javaScriptIsDisabled() {
-        ChromeDriver driver = Driver.get();
+        ChromeDriver driver = Driver.getOrCreate();
         driver.executeCdpCommand(
                 "Emulation.setScriptExecutionDisabled", java.util.Map.of("value", true));
     }
@@ -111,7 +111,7 @@ public class CommonStepDef extends BasePage {
 
     @And("the user's cookies are cleared")
     public void theUsersCookiesAreCleared() {
-        Driver.get().manage().deleteAllCookies();
+        Driver.getOrCreate().manage().deleteAllCookies();
     }
 
     @Then("the user is shown an error message")
@@ -122,7 +122,7 @@ public class CommonStepDef extends BasePage {
     @Then("the user is not shown any error messages")
     public void theNewUserIsNotShownAnErrorMessage() {
         switchDefaultTimeout("off");
-        List<WebElement> errorFields = Driver.get().findElements(By.id("code-error"));
+        List<WebElement> errorFields = Driver.getOrCreate().findElements(By.id("code-error"));
         switchDefaultTimeout("on");
         if (!errorFields.isEmpty()) {
             System.out.println("setup-authenticator-app error: " + errorFields.get(0));
@@ -168,7 +168,7 @@ public class CommonStepDef extends BasePage {
 
     @Given("the user's session has ended")
     public void theUsersSessionHasEnded() {
-        Driver.get().manage().deleteAllCookies();
+        Driver.getOrCreate().manage().deleteAllCookies();
     }
 
     @When(
@@ -224,7 +224,7 @@ public class CommonStepDef extends BasePage {
 
     @Then("the {string} cookie has been set")
     public void theCookieHasBeenSet(String cookieName) {
-        var cookie = Driver.get().manage().getCookieNamed(cookieName);
+        var cookie = Driver.getOrCreate().manage().getCookieNamed(cookieName);
         assertNotNull(cookie);
     }
 
@@ -251,7 +251,7 @@ public class CommonStepDef extends BasePage {
 
     @And("the user info JSON is extracted from the stub page")
     public void extractUserInfoJsonFromStubPage() {
-        WebDriver driver = Driver.get();
+        WebDriver driver = Driver.getOrCreate();
         JavascriptExecutor js = (JavascriptExecutor) driver;
 
         String json;

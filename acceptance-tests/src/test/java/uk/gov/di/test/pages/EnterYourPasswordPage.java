@@ -24,7 +24,7 @@ public class EnterYourPasswordPage extends BasePage {
     }
 
     public void clickForgottenPasswordLink() {
-        Driver.get().findElement(forgottenPasswordLink).click();
+        Driver.getOrCreate().findElement(forgottenPasswordLink).click();
     }
 
     public void enterPasswordAndContinue(String pw) {

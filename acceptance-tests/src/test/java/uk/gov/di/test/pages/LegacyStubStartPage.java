@@ -36,7 +36,7 @@ public class LegacyStubStartPage extends StubStartPage {
             if (ignoredOptions.contains(id)) {
                 continue;
             }
-            Driver.get().findElement(By.id(id)).click();
+            Driver.getOrCreate().findElement(By.id(id)).click();
         }
     }
 

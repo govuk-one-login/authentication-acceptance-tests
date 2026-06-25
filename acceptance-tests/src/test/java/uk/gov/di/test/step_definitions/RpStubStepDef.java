@@ -57,13 +57,13 @@ public class RpStubStepDef extends BasePage {
     @Then("the user is forcibly logged out")
     @Then("the logged-in User is forcibly logged out")
     public void theUserIsLoggedOut() {
-        new WebDriverWait(Driver.get(), DEFAULT_PAGE_LOAD_WAIT_TIME)
+        new WebDriverWait(Driver.getOrCreate(), DEFAULT_PAGE_LOAD_WAIT_TIME)
                 .until(
                         driver -> {
                             String url = driver.getCurrentUrl();
                             return url != null && url.contains("error=login_required");
                         });
         // Clear all cookies to ensure clean session for next user
-        Driver.get().manage().deleteAllCookies();
+        Driver.getOrCreate().manage().deleteAllCookies();
     }
 }

@@ -47,7 +47,7 @@ public class Hooks extends BasePage {
 
     @After(value = "@UI", order = 3)
     public void deleteAllCookies() {
-        Driver.get().manage().deleteAllCookies();
+        Driver.getOrCreate().manage().deleteAllCookies();
     }
 
     @After(value = "@UI", order = 2)
@@ -58,7 +58,7 @@ public class Hooks extends BasePage {
     @After(value = "@UI", order = 1)
     public void takeScreenshotOnFailure(Scenario scenario) {
         if (scenario.isFailed()) {
-            WebDriver driver = Driver.get();
+            WebDriver driver = Driver.getOrCreate();
             final byte[] screenshot = ((TakesScreenshot) driver).getScreenshotAs(OutputType.BYTES);
 
             scenario.attach(
@@ -91,7 +91,7 @@ public class Hooks extends BasePage {
                     world.userCredentials.getEmail());
             userLifecycleService.deleteUserCredentialsFromDynamodb(world.userCredentials);
         }
-        Driver.get().manage().deleteAllCookies();
+        Driver.getOrCreate().manage().deleteAllCookies();
         Driver.closeDriver();
     }
 }

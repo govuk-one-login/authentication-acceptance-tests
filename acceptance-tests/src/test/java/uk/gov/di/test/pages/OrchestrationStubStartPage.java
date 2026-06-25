@@ -55,7 +55,7 @@ public class OrchestrationStubStartPage extends StubStartPage {
                 default:
                     break;
             }
-            Driver.get().findElement(By.id(id)).click();
+            Driver.getOrCreate().findElement(By.id(id)).click();
         }
     }
 

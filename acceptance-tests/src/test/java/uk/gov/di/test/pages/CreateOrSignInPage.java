@@ -11,20 +11,20 @@ public class CreateOrSignInPage extends BasePage {
     By linkToSwitchToEnglish = By.xpath("//a[@href='?lng=en']");
 
     public void clickCreateAGovUkOneLoginButton() {
-        Driver.get().findElement(createAGovUkOneLogin).click();
+        Driver.getOrCreate().findElement(createAGovUkOneLogin).click();
     }
 
     public void clickSignInButton() {
-        Driver.get().findElement(signInButton).click();
+        Driver.getOrCreate().findElement(signInButton).click();
     }
 
     public void switchLanguageTo(String language) {
         switch (language.toLowerCase()) {
             case "welsh":
-                Driver.get().findElement(linkToSwitchToWelsh).click();
+                Driver.getOrCreate().findElement(linkToSwitchToWelsh).click();
                 break;
             case "english":
-                Driver.get().findElement(linkToSwitchToEnglish).click();
+                Driver.getOrCreate().findElement(linkToSwitchToEnglish).click();
                 break;
             default:
                 throw new RuntimeException("Invalid language: " + language);

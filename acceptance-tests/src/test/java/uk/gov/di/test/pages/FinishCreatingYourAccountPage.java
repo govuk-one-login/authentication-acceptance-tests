@@ -10,10 +10,10 @@ public class FinishCreatingYourAccountPage extends BasePage {
     public void selectAuthMethodAndContinue(String method) {
         switch (method.toLowerCase()) {
             case "text message":
-                Driver.get().findElement(textMessageRadioButton).click();
+                Driver.getOrCreate().findElement(textMessageRadioButton).click();
                 break;
             case "auth app":
-                Driver.get().findElement(authAppRadioButton).click();
+                Driver.getOrCreate().findElement(authAppRadioButton).click();
                 break;
             default:
                 throw new RuntimeException("Invalid method type: " + method);

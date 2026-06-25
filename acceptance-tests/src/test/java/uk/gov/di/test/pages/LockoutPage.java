@@ -8,6 +8,6 @@ public class LockoutPage extends BasePage {
     By lockoutScreenText = By.cssSelector("#main-content .govuk-grid-column-two-thirds");
 
     public String getLockoutScreenText() {
-        return Driver.get().findElement(lockoutScreenText).getText();
+        return Driver.getOrCreate().findElement(lockoutScreenText).getText();
     }
 }

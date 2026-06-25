@@ -14,25 +14,25 @@ public class OrchestrationStubUserInfoPage extends StubUserInfoPage {
     @Override
     public String getIdToken() {
         try {
-            String jsonText = Driver.get().findElement(userInfoField).getText();
+            String jsonText = Driver.getOrCreate().findElement(userInfoField).getText();
             ObjectMapper mapper = new ObjectMapper();
             JsonNode root = mapper.readTree(jsonText);
             return root.get("rp_pairwise_id").asText();
         } catch (Exception e) {
-            System.out.println("[DEBUG] Current URL: " + Driver.get().getCurrentUrl());
-            System.out.println("[DEBUG] Page title: " + Driver.get().getTitle());
+            System.out.println("[DEBUG] Current URL: " + Driver.getOrCreate().getCurrentUrl());
+            System.out.println("[DEBUG] Page title: " + Driver.getOrCreate().getTitle());
             throw new RuntimeException("Failed to extract rp_pairwise_id from user info JSON", e);
         }
     }
 
     @Override
     public String getAccessToken() {
-        return Driver.get().findElement(accessTokenField).getText();
+        return Driver.getOrCreate().findElement(accessTokenField).getText();
     }
 
     @Override
     public void logoutOfAccount() {
-        Driver.get().manage().deleteAllCookies();
+        Driver.getOrCreate().manage().deleteAllCookies();
     }
 
     @Override

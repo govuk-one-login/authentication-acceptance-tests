@@ -29,7 +29,7 @@ public class VirtualAuthenticatorLifecycleService {
                     "Cannot create a second virtual authenticator while one is already attached");
         }
 
-        var driver = Driver.get();
+        var driver = Driver.getOrCreate();
 
         VirtualAuthenticatorOptions options =
                 new VirtualAuthenticatorOptions()

@@ -49,15 +49,15 @@ public class BasePage {
     protected void waitForPageLoad(String titleContains) {
         Instant start = Instant.now();
         try {
-            new WebDriverWait(Driver.get(), DEFAULT_PAGE_LOAD_WAIT_TIME)
+            new WebDriverWait(Driver.getOrCreate(), DEFAULT_PAGE_LOAD_WAIT_TIME)
                     .until(ExpectedConditions.titleContains(titleContains));
         } catch (WebDriverException e) {
             throw new SessionContextExceptions.WaitForPageLoadException(
                     titleContains,
-                    Driver.get().getCurrentUrl(),
-                    Driver.get().getTitle(),
+                    Driver.getOrCreate().getCurrentUrl(),
+                    Driver.getOrCreate().getTitle(),
                     start,
-                    new OneLoginSession(Driver.get().manage().getCookies()),
+                    new OneLoginSession(Driver.getOrCreate().manage().getCookies()),
                     e);
         }
         waitForReadyStateComplete();
@@ -67,20 +67,20 @@ public class BasePage {
         waitForPageLoad(page.getShortTitle());
         assertEquals(
                 page.getRoute(),
-                URI.create(Objects.requireNonNull(Driver.get().getCurrentUrl())).getPath());
-        assertEquals(page.getFullTitle(), Driver.get().getTitle());
+                URI.create(Objects.requireNonNull(Driver.getOrCreate().getCurrentUrl())).getPath());
+        assertEquals(page.getFullTitle(), Driver.getOrCreate().getTitle());
     }
 
     protected WebElement findElement(By selector) {
         waitForReadyStateComplete();
         try {
-            return Driver.get().findElement(selector);
+            return Driver.getOrCreate().findElement(selector);
         } catch (WebDriverException e) {
             throw new SessionContextExceptions.FindElementException(
                     selector.toString(),
-                    Driver.get().getCurrentUrl(),
-                    Driver.get().getTitle(),
-                    new OneLoginSession(Driver.get().manage().getCookies()),
+                    Driver.getOrCreate().getCurrentUrl(),
+                    Driver.getOrCreate().getTitle(),
+                    new OneLoginSession(Driver.getOrCreate().manage().getCookies()),
                     e);
         }
     }
@@ -106,10 +106,13 @@ public class BasePage {
     public void switchDefaultTimeout(String status) {
         switch (status.toLowerCase()) {
             case "on":
-                Driver.get().manage().timeouts().implicitlyWait(DEFAULT_PAGE_LOAD_WAIT_TIME);
+                Driver.getOrCreate()
+                        .manage()
+                        .timeouts()
+                        .implicitlyWait(DEFAULT_PAGE_LOAD_WAIT_TIME);
                 break;
             case "off":
-                Driver.get().manage().timeouts().implicitlyWait(NO_PAGE_LOAD_WAIT_TIME);
+                Driver.getOrCreate().manage().timeouts().implicitlyWait(NO_PAGE_LOAD_WAIT_TIME);
                 break;
             default:
                 throw new RuntimeException("Invalid status: " + status);
@@ -119,7 +122,7 @@ public class BasePage {
     protected boolean isLinkTextDisplayedImmediately(String linkText) {
         switchDefaultTimeout("off");
         List<WebElement> elements =
-                Driver.get()
+                Driver.getOrCreate()
                         .findElements(
                                 By.xpath("//*[text()[normalize-space() = '" + linkText + "']]"));
         switchDefaultTimeout("on");
@@ -127,7 +130,7 @@ public class BasePage {
     }
 
     public void waitForThisErrorMessage(String expectedMessage) {
-        new WebDriverWait(Driver.get(), DEFAULT_PAGE_LOAD_WAIT_TIME)
+        new WebDriverWait(Driver.getOrCreate(), DEFAULT_PAGE_LOAD_WAIT_TIME)
                 .until(
                         ExpectedConditions.visibilityOf(
                                 findElement(
@@ -135,7 +138,7 @@ public class BasePage {
     }
 
     public void waitForThisText(String expectedText) {
-        new WebDriverWait(Driver.get(), DEFAULT_PAGE_LOAD_WAIT_TIME)
+        new WebDriverWait(Driver.getOrCreate(), DEFAULT_PAGE_LOAD_WAIT_TIME)
                 .until(
                         ExpectedConditions.visibilityOf(
                                 findElement(
@@ -170,14 +173,14 @@ public class BasePage {
     }
 
     public void switchToTabByIndex(Integer idx) {
-        ArrayList<String> tabs = new ArrayList<>(Driver.get().getWindowHandles());
-        Driver.get().switchTo().window(tabs.get(idx));
+        ArrayList<String> tabs = new ArrayList<>(Driver.getOrCreate().getWindowHandles());
+        Driver.getOrCreate().switchTo().window(tabs.get(idx));
     }
 
     public void switchToTabWithTitleContaining(String titleToSwitchTo) {
-        Set<String> allTabs = Driver.get().getWindowHandles();
+        Set<String> allTabs = Driver.getOrCreate().getWindowHandles();
         for (String tab : allTabs) {
-            String title = Driver.get().switchTo().window(tab).getTitle();
+            String title = Driver.getOrCreate().switchTo().window(tab).getTitle();
             assert title != null;
             if (title.contains(titleToSwitchTo)) {
                 break;
@@ -186,7 +189,7 @@ public class BasePage {
     }
 
     protected void closeActiveTab() {
-        Driver.get().close();
+        Driver.getOrCreate().close();
     }
 
     public void enterCorrectAuthAppCodeAndContinue(String authAppSecretKey) {
@@ -196,23 +199,23 @@ public class BasePage {
     }
 
     public void setAnalyticsCookieTo(Boolean state) {
-        Driver.get()
+        Driver.getOrCreate()
                 .manage()
                 .addCookie(new Cookie("cookies_preferences_set", "{\"analytics\":" + state + "}"));
     }
 
     public void waitUntilElementClickable(By by) {
-        new WebDriverWait(Driver.get(), DEFAULT_PAGE_LOAD_WAIT_TIME)
+        new WebDriverWait(Driver.getOrCreate(), DEFAULT_PAGE_LOAD_WAIT_TIME)
                 .until(ExpectedConditions.elementToBeClickable(findElement(by)));
     }
 
     public void waitUntilElementClickable(WebElement element) {
-        new WebDriverWait(Driver.get(), DEFAULT_PAGE_LOAD_WAIT_TIME)
+        new WebDriverWait(Driver.getOrCreate(), DEFAULT_PAGE_LOAD_WAIT_TIME)
                 .until(ExpectedConditions.elementToBeClickable(element));
     }
 
     public static void waitForReadyStateComplete() {
-        new WebDriverWait(Driver.get(), DEFAULT_PAGE_LOAD_WAIT_TIME)
+        new WebDriverWait(Driver.getOrCreate(), DEFAULT_PAGE_LOAD_WAIT_TIME)
                 .until(
                         (ExpectedCondition<Boolean>)
                                 wd ->

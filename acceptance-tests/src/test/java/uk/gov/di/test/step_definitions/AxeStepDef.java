@@ -21,10 +21,10 @@ public class AxeStepDef extends BasePage {
     public static void thereAreNoAccessibilityViolations() {
         //        System.out.println(ACCESSIBILITY_CHECKS);
         if (ACCESSIBILITY_CHECKS) {
-            System.out.println("Page in test = " + Driver.get().getTitle());
+            System.out.println("Page in test = " + Driver.getOrCreate().getTitle());
 
             JSONObject responseJSON =
-                    new AXE.Builder(Driver.get(), scriptUrl)
+                    new AXE.Builder(Driver.getOrCreate(), scriptUrl)
                             .options("{ runOnly: { type: 'tag', values: ['wcag2a','wcag21aa'] } }")
                             .analyze();
 

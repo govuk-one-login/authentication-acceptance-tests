@@ -27,15 +27,15 @@ public class CheckYourPhonePage extends BasePage {
     }
 
     public void clickProblemsWithTheCodeLink() {
-        Driver.get().findElement(problemsWithTheCodeLink).click();
+        Driver.getOrCreate().findElement(problemsWithTheCodeLink).click();
     }
 
     public void clickChangeHowYouGetSecurityCodesLink() {
-        Driver.get().findElement(changeHowYouGetSecurityCodesLink).click();
+        Driver.getOrCreate().findElement(changeHowYouGetSecurityCodesLink).click();
     }
 
     public void clickSendTheCodeAgainLink() {
-        Driver.get().findElement(sendTheCodeAgainLink).click();
+        Driver.getOrCreate().findElement(sendTheCodeAgainLink).click();
     }
 
     public void enterIncorrectPhoneSecurityCodeNumberOfTimes(Integer numberOfTimes) {
