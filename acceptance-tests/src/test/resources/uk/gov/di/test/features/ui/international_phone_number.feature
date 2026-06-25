@@ -89,7 +89,6 @@ Feature: International phone numbers
       When the user enters the six digit security code from their phone
       Then the user is taken to the "You’ve changed how you get security codes" page
       When the user clicks the continue button
-      And the user dismisses the passkey registration page if present
       Then the user is returned to the service
 
   @InternationalSmsSendingEnabled
@@ -116,7 +115,6 @@ Feature: International phone numbers
       And the user enters the six digit security code from their phone
       Then the user is taken to the "You’ve changed how you get security codes" page
       When the user clicks the continue button
-      And the user dismisses the passkey registration page if present
       Then the user is returned to the service
 
   @InternationalSmsSendingEnabled
@@ -145,7 +143,6 @@ Feature: International phone numbers
       And the user enters the six digit security code from their phone
       Then the user is taken to the "You’ve changed how you get security codes" page
       When the user clicks the continue button
-      And the user dismisses the passkey registration page if present
       Then the user is returned to the service
 
   @InternationalSmsSendingEnabled
@@ -197,7 +194,6 @@ Feature: International phone numbers
       And the user enters the six digit security code from their phone
       Then the user is taken to the "You’ve changed how you get security codes" page
       When the user clicks the continue button
-      And the user dismisses the passkey registration page if present
       Then the user is returned to the service
 
     Scenario: User with international SMS MFA is indefinitely locked out when send limit already set
