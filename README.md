@@ -154,8 +154,7 @@ This uses a local browser via Selenium rather than the Dockerised setup.
 Run the following commands to log in to your AWS account as an admin in the dev account
 
 ````bash
-export AWS_PROFILE=di-authentication-development-AdministratorAccessPermission
-source ./scripts/check_aws_creds.sh
+aws sso login --profile di-authentication-development-AdministratorAccessPermission
 ````
 
 You will need to re-run this when your AWS session expires or SSM parameters change.
