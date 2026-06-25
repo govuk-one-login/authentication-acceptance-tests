@@ -37,7 +37,6 @@ public class BasePage {
     protected static final Duration DEFAULT_PAGE_LOAD_WAIT_TIME = Duration.ofSeconds(20);
     protected static final Duration NO_PAGE_LOAD_WAIT_TIME = Duration.ofSeconds(0);
 
-    protected static WebDriver driver;
     protected static Scenario scenario;
 
     public void waitForPage() {
