@@ -44,10 +44,9 @@ public class VirtualAuthenticatorLifecycleService {
         var authenticator = authenticatorPool.get();
         if (authenticator == null) return;
 
-        var driver = Driver.getDriver();
-        if (driver != null) {
-            driver.removeVirtualAuthenticator(authenticator);
-        }
+        Driver.get()
+                .ifPresent(chromeDriver -> chromeDriver.removeVirtualAuthenticator(authenticator));
+
         authenticatorPool.remove();
     }
 

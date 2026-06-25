@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 public class BrowserTabs {
     public static void createNewTab() {
-        ((JavascriptExecutor) Driver.getDriver()).executeScript("window.open()");
+        ((JavascriptExecutor) Driver.get().orElseThrow()).executeScript("window.open()");
     }
 
     public static void switchToTabByOrdinalNumber(String ordinalNumber) {
@@ -19,7 +19,8 @@ public class BrowserTabs {
     }
 
     public static void switchToTabByIndex(int index) {
-        ArrayList<String> tabs = new ArrayList<>(Driver.getDriver().getWindowHandles());
-        Driver.getDriver().switchTo().window(tabs.get(index));
+        var driver = Driver.get().orElseThrow();
+        ArrayList<String> tabs = new ArrayList<>(driver.getWindowHandles());
+        driver.switchTo().window(tabs.get(index));
     }
 }

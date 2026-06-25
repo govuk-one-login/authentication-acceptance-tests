@@ -24,7 +24,7 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.*;
-import static uk.gov.di.test.utils.Driver.getDriver;
+import static uk.gov.di.test.utils.Driver.get;
 
 public class CommonStepDef extends BasePage {
     public CrossPageFlows crossPageFlows;
@@ -201,24 +201,25 @@ public class CommonStepDef extends BasePage {
     @Then("the user email is blocked and taken to {string} page")
     @Then("the URL is present with suffix {string}")
     public void theUrlIsPresentWithSuffix(String expectedSuffix) {
-        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(10));
+        var driver = get().orElseThrow();
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         Boolean urlContainsSuffix =
                 wait.until(
-                        driver ->
-                                driver.getCurrentUrl() != null
-                                        && driver.getCurrentUrl().contains(expectedSuffix));
+                        d ->
+                                d.getCurrentUrl() != null
+                                        && d.getCurrentUrl().contains(expectedSuffix));
         assertTrue(
                 urlContainsSuffix,
                 "Expected URL to contain suffix: "
                         + expectedSuffix
                         + " but was: "
-                        + getDriver().getCurrentUrl());
+                        + driver.getCurrentUrl());
     }
 
     @And("the user navigates to the previous page")
     @And("the user attempt to navigates to the previous page")
     public void theUserNavigatesToThePreviousPage() {
-        WebDriver driver = getDriver();
+        WebDriver driver = get().orElseThrow();
         driver.navigate().back();
     }
 

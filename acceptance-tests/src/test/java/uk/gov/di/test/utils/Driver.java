@@ -5,6 +5,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 
 import java.io.File;
+import java.util.Optional;
 
 public class Driver {
     protected static final Boolean SELENIUM_HEADLESS =
@@ -12,8 +13,9 @@ public class Driver {
     private static final InheritableThreadLocal<ChromeDriver> driverPool =
             new InheritableThreadLocal<>();
 
-    public static ChromeDriver getDriver() {
-        return driverPool.get();
+    @NonNull
+    public static Optional<ChromeDriver> get() {
+        return Optional.ofNullable(driverPool.get());
     }
 
     @NonNull
