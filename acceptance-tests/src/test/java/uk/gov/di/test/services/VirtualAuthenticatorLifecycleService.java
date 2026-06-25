@@ -7,7 +7,8 @@ import uk.gov.di.test.utils.Driver;
 
 public class VirtualAuthenticatorLifecycleService {
     private static volatile VirtualAuthenticatorLifecycleService instance;
-    private VirtualAuthenticator authenticator;
+    private static final InheritableThreadLocal<VirtualAuthenticator> authenticatorPool =
+            new InheritableThreadLocal<>();
 
     private VirtualAuthenticatorLifecycleService() {}
 
@@ -23,7 +24,7 @@ public class VirtualAuthenticatorLifecycleService {
     }
 
     public void createVirtualAuthenticator() {
-        if (authenticator != null) {
+        if (authenticatorPool.get() != null) {
             throw new UnsupportedOperationException(
                     "Cannot create a second virtual authenticator while one is already attached");
         }
@@ -36,26 +37,29 @@ public class VirtualAuthenticatorLifecycleService {
                         .setHasUserVerification(true)
                         .setIsUserVerified(true);
 
-        authenticator = driver.addVirtualAuthenticator(options);
+        authenticatorPool.set(driver.addVirtualAuthenticator(options));
     }
 
     public void destroyVirtualAuthenticator() {
+        var authenticator = authenticatorPool.get();
         if (authenticator == null) return;
 
-        var driver = Driver.get();
-        driver.removeVirtualAuthenticator(authenticator);
-        authenticator = null;
+        var driver = Driver.getDriver();
+        if (driver != null) {
+            driver.removeVirtualAuthenticator(authenticator);
+        }
+        authenticatorPool.remove();
     }
 
     public void putCredentialInAuthenticator(Credential credential) {
-        authenticator.addCredential(credential);
+        authenticatorPool.get().addCredential(credential);
     }
 
     public void enableUserVerification() {
-        authenticator.setUserVerified(true);
+        authenticatorPool.get().setUserVerified(true);
     }
 
     public void disableUserVerification() {
-        authenticator.setUserVerified(false);
+        authenticatorPool.get().setUserVerified(false);
     }
 }
