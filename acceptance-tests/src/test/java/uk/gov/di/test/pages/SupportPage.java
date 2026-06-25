@@ -8,7 +8,7 @@ public class SupportPage extends BasePage {
     By supportLink = By.xpath("//*[contains(text(), 'Support (opens in new tab)')]");
     By moreDetailsField = By.id("moreDetailDescription");
     By successMessage = By.cssSelector(".govuk-panel--confirmation");
-    By mfaSupportLinkText = By.cssSelector("form[id='form-tracking'] p:nth-child(2)");
+    By mfaSupportLinkText = By.cssSelector("div[class='govuk-details__text'] p:nth-child(2)");
     By mfaSupportLinkAppText =
             By.cssSelector("div[class='govuk-details__text'] p[class='govuk-body']");
 
