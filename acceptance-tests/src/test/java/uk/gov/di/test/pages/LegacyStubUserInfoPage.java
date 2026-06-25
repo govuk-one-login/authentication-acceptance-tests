@@ -11,18 +11,18 @@ public class LegacyStubUserInfoPage extends StubUserInfoPage {
 
     @Override
     public String getIdToken() {
-        return Driver.get().findElement(idTokenField).getText();
+        return Driver.getOrCreate().findElement(idTokenField).getText();
     }
 
     @Override
     public String getAccessToken() {
-        return Driver.get().findElement(accessTokenField).getText();
+        return Driver.getOrCreate().findElement(accessTokenField).getText();
     }
 
     @Override
     public void logoutOfAccount() {
-        Driver.get().findElement(logoutButton).click();
-        Driver.get().manage().deleteAllCookies();
+        Driver.getOrCreate().findElement(logoutButton).click();
+        Driver.getOrCreate().manage().deleteAllCookies();
     }
 
     @Override

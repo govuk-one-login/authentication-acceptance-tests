@@ -67,7 +67,7 @@ public class LockoutsStepDef extends BasePage {
 
     @Then("no lockout is triggered and the user remains on the {string} page")
     public void noLockoutIsTriggered(String pageTitle) {
-        assertTrue(Objects.requireNonNull(Driver.get().getTitle()).contains(pageTitle));
+        assertTrue(Objects.requireNonNull(Driver.getOrCreate().getTitle()).contains(pageTitle));
     }
 
     // Utility

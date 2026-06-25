@@ -15,13 +15,15 @@ public class SetUpAnAuthenticatorAppPage extends BasePage {
     By authAppCodeField = By.id("code");
 
     public void iCannotScanQrCodeClick() {
-        Driver.get().findElement(iCannotScanTheQrCode).click();
+        Driver.getOrCreate().findElement(iCannotScanTheQrCode).click();
     }
 
     public String getSecretFieldText() {
-        new WebDriverWait(Driver.get(), DEFAULT_PAGE_LOAD_WAIT_TIME)
-                .until(ExpectedConditions.visibilityOf(Driver.get().findElement(secretKeyField)));
-        List<WebElement> secretKeyComponents = Driver.get().findElements(secretKeyBlocks);
+        new WebDriverWait(Driver.getOrCreate(), DEFAULT_PAGE_LOAD_WAIT_TIME)
+                .until(
+                        ExpectedConditions.visibilityOf(
+                                Driver.getOrCreate().findElement(secretKeyField)));
+        List<WebElement> secretKeyComponents = Driver.getOrCreate().findElements(secretKeyBlocks);
         StringBuilder secretKeyText = new StringBuilder();
         for (int i = 1; i < secretKeyComponents.size(); i++) {
             secretKeyText.append(secretKeyComponents.get(i).getText());

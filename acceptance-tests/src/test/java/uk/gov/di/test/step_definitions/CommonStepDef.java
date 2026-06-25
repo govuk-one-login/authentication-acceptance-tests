@@ -24,7 +24,7 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.*;
-import static uk.gov.di.test.utils.Driver.getDriver;
+import static uk.gov.di.test.utils.Driver.get;
 
 public class CommonStepDef extends BasePage {
     public CrossPageFlows crossPageFlows;
@@ -47,7 +47,7 @@ public class CommonStepDef extends BasePage {
 
     @Given("JavaScript is disabled")
     public void javaScriptIsDisabled() {
-        ChromeDriver driver = Driver.get();
+        ChromeDriver driver = Driver.getOrCreate();
         driver.executeCdpCommand(
                 "Emulation.setScriptExecutionDisabled", java.util.Map.of("value", true));
     }
@@ -111,7 +111,7 @@ public class CommonStepDef extends BasePage {
 
     @And("the user's cookies are cleared")
     public void theUsersCookiesAreCleared() {
-        Driver.get().manage().deleteAllCookies();
+        Driver.getOrCreate().manage().deleteAllCookies();
     }
 
     @Then("the user is shown an error message")
@@ -122,7 +122,7 @@ public class CommonStepDef extends BasePage {
     @Then("the user is not shown any error messages")
     public void theNewUserIsNotShownAnErrorMessage() {
         switchDefaultTimeout("off");
-        List<WebElement> errorFields = Driver.get().findElements(By.id("code-error"));
+        List<WebElement> errorFields = Driver.getOrCreate().findElements(By.id("code-error"));
         switchDefaultTimeout("on");
         if (!errorFields.isEmpty()) {
             System.out.println("setup-authenticator-app error: " + errorFields.get(0));
@@ -168,7 +168,7 @@ public class CommonStepDef extends BasePage {
 
     @Given("the user's session has ended")
     public void theUsersSessionHasEnded() {
-        Driver.get().manage().deleteAllCookies();
+        Driver.getOrCreate().manage().deleteAllCookies();
     }
 
     @When(
@@ -201,30 +201,31 @@ public class CommonStepDef extends BasePage {
     @Then("the user email is blocked and taken to {string} page")
     @Then("the URL is present with suffix {string}")
     public void theUrlIsPresentWithSuffix(String expectedSuffix) {
-        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(10));
+        var driver = get().orElseThrow();
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         Boolean urlContainsSuffix =
                 wait.until(
-                        driver ->
-                                driver.getCurrentUrl() != null
-                                        && driver.getCurrentUrl().contains(expectedSuffix));
+                        d ->
+                                d.getCurrentUrl() != null
+                                        && d.getCurrentUrl().contains(expectedSuffix));
         assertTrue(
                 urlContainsSuffix,
                 "Expected URL to contain suffix: "
                         + expectedSuffix
                         + " but was: "
-                        + getDriver().getCurrentUrl());
+                        + driver.getCurrentUrl());
     }
 
     @And("the user navigates to the previous page")
     @And("the user attempt to navigates to the previous page")
     public void theUserNavigatesToThePreviousPage() {
-        WebDriver driver = getDriver();
+        WebDriver driver = get().orElseThrow();
         driver.navigate().back();
     }
 
     @Then("the {string} cookie has been set")
     public void theCookieHasBeenSet(String cookieName) {
-        var cookie = Driver.get().manage().getCookieNamed(cookieName);
+        var cookie = Driver.getOrCreate().manage().getCookieNamed(cookieName);
         assertNotNull(cookie);
     }
 
@@ -251,7 +252,7 @@ public class CommonStepDef extends BasePage {
 
     @And("the user info JSON is extracted from the stub page")
     public void extractUserInfoJsonFromStubPage() {
-        WebDriver driver = Driver.get();
+        WebDriver driver = Driver.getOrCreate();
         JavascriptExecutor js = (JavascriptExecutor) driver;
 
         String json;

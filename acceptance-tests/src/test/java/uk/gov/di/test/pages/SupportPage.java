@@ -13,17 +13,17 @@ public class SupportPage extends BasePage {
             By.cssSelector("div[class='govuk-details__text'] p[class='govuk-body']");
 
     public void clickSupportLink() {
-        Driver.get().findElement(supportLink).click();
+        Driver.getOrCreate().findElement(supportLink).click();
     }
 
     public void selectSupportRadioButtonByLabelText(String option) {
-        Driver.get()
+        Driver.getOrCreate()
                 .findElement(By.xpath("//div[label[contains(text(), '" + option + "')]]/input"))
                 .click();
     }
 
     public void enterMoreDetails(String details) {
-        Driver.get().findElement(moreDetailsField).sendKeys(details);
+        Driver.getOrCreate().findElement(moreDetailsField).sendKeys(details);
     }
 
     public void canWeReplyViaEmail(String option) {
@@ -35,7 +35,7 @@ public class SupportPage extends BasePage {
     }
 
     public boolean isSuccessMessageDisplayed() {
-        return Driver.get().findElement(successMessage).isDisplayed();
+        return Driver.getOrCreate().findElement(successMessage).isDisplayed();
     }
 
     public void selectRadioButtonAndProceed(String radioButtonLabel) {
@@ -52,15 +52,15 @@ public class SupportPage extends BasePage {
     }
 
     public String getLinkText() {
-        return Driver.get().findElement(mfaSupportLinkText).getText();
+        return Driver.getOrCreate().findElement(mfaSupportLinkText).getText();
     }
 
     public String getLinkAppText() {
-        return Driver.get().findElement(mfaSupportLinkAppText).getText();
+        return Driver.getOrCreate().findElement(mfaSupportLinkAppText).getText();
     }
 
     public void selectRadioButtonForPhoneAndProceed(String text, String mobilenumber) {
-        Driver.get()
+        Driver.getOrCreate()
                 .findElement(
                         By.xpath(
                                 "//label[contains(., '"

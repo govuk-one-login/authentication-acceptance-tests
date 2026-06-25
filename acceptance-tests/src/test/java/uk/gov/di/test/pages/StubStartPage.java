@@ -16,7 +16,7 @@ public abstract class StubStartPage extends BasePage {
 
     public void goToRpStub() {
         System.out.println("Go to RP stub page: " + RP_URL);
-        Driver.get().get(RP_URL);
+        Driver.getOrCreate().get(RP_URL);
         waitForStubToLoad();
     }
 
@@ -106,8 +106,8 @@ public abstract class StubStartPage extends BasePage {
     }
 
     protected void enterReauthIdToken(String token) {
-        Driver.get().findElement(getReauthIdField()).clear();
-        Driver.get().findElement(getReauthIdField()).sendKeys(token);
+        Driver.getOrCreate().findElement(getReauthIdField()).clear();
+        Driver.getOrCreate().findElement(getReauthIdField()).sendKeys(token);
     }
 
     public static StubType getStubType() {

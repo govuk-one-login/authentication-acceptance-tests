@@ -7,7 +7,7 @@ public class GetSecurityCodePage extends BasePage {
     By getSecurityCodeButton = By.xpath("//button[contains(text(), 'Get security code')]");
 
     public void pressGetSecurityCodeButton() {
-        Driver.get().findElement(getSecurityCodeButton).click();
+        Driver.getOrCreate().findElement(getSecurityCodeButton).click();
     }
 
     @Override

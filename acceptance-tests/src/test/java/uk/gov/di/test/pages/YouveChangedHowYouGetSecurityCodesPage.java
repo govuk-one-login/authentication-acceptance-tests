@@ -8,6 +8,6 @@ public class YouveChangedHowYouGetSecurityCodesPage extends BasePage {
     By securityCodeConfirmationText = By.cssSelector("form .govuk-body");
 
     public String getSecurityCodeMessageText() {
-        return Driver.get().findElement(securityCodeConfirmationText).getText();
+        return Driver.getOrCreate().findElement(securityCodeConfirmationText).getText();
     }
 }

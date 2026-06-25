@@ -8,6 +8,6 @@ public class TermsAndConditionsPage extends BasePage {
     By agreeAndContinueButton = By.name("termsAndConditionsResult");
 
     public void pressAgreeAndContinueButton() {
-        Driver.get().findElement(agreeAndContinueButton).click();
+        Driver.getOrCreate().findElement(agreeAndContinueButton).click();
     }
 }

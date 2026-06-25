@@ -10,10 +10,10 @@ public class ChooseHowToGetSecurityCodesPage extends BasePage {
     public void selectAuthMethodAndContinue(String method) {
         switch (method.toLowerCase()) {
             case "text message":
-                Driver.get().findElement(textMessageRadioButton).click();
+                Driver.getOrCreate().findElement(textMessageRadioButton).click();
                 break;
             case "auth app":
-                Driver.get().findElement(authAppRadioButton).click();
+                Driver.getOrCreate().findElement(authAppRadioButton).click();
                 break;
             default:
                 throw new RuntimeException("Invalid method type: " + method);
@@ -22,10 +22,10 @@ public class ChooseHowToGetSecurityCodesPage extends BasePage {
     }
 
     public Boolean getTextMessageRadioButtonStatus() {
-        return Driver.get().findElement(textMessageRadioButton).isSelected();
+        return Driver.getOrCreate().findElement(textMessageRadioButton).isSelected();
     }
 
     public Boolean getAuthAppRadioButtonStatus() {
-        return Driver.get().findElement(authAppRadioButton).isSelected();
+        return Driver.getOrCreate().findElement(authAppRadioButton).isSelected();
     }
 }

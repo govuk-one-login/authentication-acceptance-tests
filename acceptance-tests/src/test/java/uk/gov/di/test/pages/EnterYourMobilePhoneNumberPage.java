@@ -11,11 +11,11 @@ public class EnterYourMobilePhoneNumberPage extends BasePage {
     By ukPhoneNumberField = By.id("phoneNumber");
 
     public boolean isInternationalMobileNumberFieldDisplayed() {
-        return Driver.get().findElement(internationalPhoneNumberField).isDisplayed();
+        return Driver.getOrCreate().findElement(internationalPhoneNumberField).isDisplayed();
     }
 
     public void tickIDoNotHaveUkMobileNumber() {
-        Driver.get().findElement(iDoNotHaveUkMobilePhoneNumberCheckbox).click();
+        Driver.getOrCreate().findElement(iDoNotHaveUkMobilePhoneNumberCheckbox).click();
     }
 
     public void enterInternationalMobilePhoneNumberAndContinue(

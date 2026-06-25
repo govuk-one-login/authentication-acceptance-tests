@@ -1,9 +1,11 @@
 package uk.gov.di.test.utils;
 
+import org.jspecify.annotations.NonNull;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 
 import java.io.File;
+import java.util.Optional;
 
 public class Driver {
     protected static final Boolean SELENIUM_HEADLESS =
@@ -11,12 +13,13 @@ public class Driver {
     private static final InheritableThreadLocal<ChromeDriver> driverPool =
             new InheritableThreadLocal<>();
 
-    public static ChromeDriver getDriver() {
-        return driverPool.get();
+    @NonNull
+    public static Optional<ChromeDriver> get() {
+        return Optional.ofNullable(driverPool.get());
     }
 
-    public static ChromeDriver get() {
-
+    @NonNull
+    public static ChromeDriver getOrCreate() {
         if (driverPool.get() == null)
             synchronized (Driver.class) {
                 ChromeOptions chromeOptions = buildChromeOptions();

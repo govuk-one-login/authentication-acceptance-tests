@@ -16,26 +16,26 @@ public class DocAppPage extends BasePage {
     By idToken = By.id("user-info-phone-number");
 
     public void continueButtonClick() {
-        Driver.get().findElement(continueButton).click();
+        Driver.getOrCreate().findElement(continueButton).click();
     }
 
     public void accountLinkClick() {
-        Driver.get().findElement(myAccountLink).click();
+        Driver.getOrCreate().findElement(myAccountLink).click();
     }
 
     public void enterPayLoad(String jsonPayLoad) {
-        Driver.get().findElement(payloadInputField).sendKeys(jsonPayLoad);
+        Driver.getOrCreate().findElement(payloadInputField).sendKeys(jsonPayLoad);
     }
 
     public void clickSubmitButton() {
-        Driver.get().findElement(submitButton).click();
+        Driver.getOrCreate().findElement(submitButton).click();
     }
 
     public Boolean docAppCredentialsDisplayed() {
-        return Driver.get().findElement(docAppCredentials).isDisplayed();
+        return Driver.getOrCreate().findElement(docAppCredentials).isDisplayed();
     }
 
     public Boolean idTokenDisplayed() {
-        return Driver.get().findElement(idToken).isDisplayed();
+        return Driver.getOrCreate().findElement(idToken).isDisplayed();
     }
 }

@@ -21,7 +21,7 @@ public class LegalAndPolicyStepDef extends BasePage {
 
     @And("the user clicks link {string}")
     public void theUserClicksLink(String linkText) {
-        Driver.get().findElement(By.partialLinkText(linkText)).click();
+        Driver.getOrCreate().findElement(By.partialLinkText(linkText)).click();
     }
 
     @Then("the user is taken to the accessibility statement page")
@@ -46,12 +46,12 @@ public class LegalAndPolicyStepDef extends BasePage {
 
     private void waitForPageLoadThenValidate(SupportingPages page) {
         waitForPageLoad(page.getShortTitle());
-        assertEquals(page.getRoute(), URI.create(Driver.get().getCurrentUrl()).getPath());
+        assertEquals(page.getRoute(), URI.create(Driver.getOrCreate().getCurrentUrl()).getPath());
     }
 
     private void checkPageLoadThenGoBackToSignIn(SupportingPages page) {
         waitForPageLoadThenValidate(page);
-        Driver.get().navigate().back();
+        Driver.getOrCreate().navigate().back();
         waitForPageLoad("Create your GOV.UK One Login or sign in");
     }
 }

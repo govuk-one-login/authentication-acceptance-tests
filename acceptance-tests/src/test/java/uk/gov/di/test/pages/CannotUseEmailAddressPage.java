@@ -16,22 +16,22 @@ public class CannotUseEmailAddressPage extends BasePage {
 
     @Override
     public void waitForPage() {
-        WebDriverWait wait = new WebDriverWait(Driver.get(), DEFAULT_PAGE_LOAD_WAIT_TIME);
+        WebDriverWait wait = new WebDriverWait(Driver.getOrCreate(), DEFAULT_PAGE_LOAD_WAIT_TIME);
         wait.until(ExpectedConditions.urlContains(PATH));
         wait.until(ExpectedConditions.visibilityOfElementLocated(h1));
     }
 
     public String heading() {
-        return Driver.get().findElement(h1).getText();
+        return Driver.getOrCreate().findElement(h1).getText();
     }
 
     public String screenText() {
-        WebElement el = Driver.get().findElement(bodyText);
+        WebElement el = Driver.getOrCreate().findElement(bodyText);
         return el.getText();
     }
 
     public void clickTryAnotherEmail() {
-        WebDriverWait wait = new WebDriverWait(Driver.get(), DEFAULT_PAGE_LOAD_WAIT_TIME);
+        WebDriverWait wait = new WebDriverWait(Driver.getOrCreate(), DEFAULT_PAGE_LOAD_WAIT_TIME);
         wait.until(ExpectedConditions.elementToBeClickable(tryAnotherEmailLink)).click();
     }
 

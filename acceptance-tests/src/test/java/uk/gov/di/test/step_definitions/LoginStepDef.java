@@ -174,21 +174,21 @@ public class LoginStepDef extends BasePage {
     public void theUserIsTakenToTheIdentityProviderWelshLoginPage() {
         assertEquals(
                 "Creu eich GOV.UK One Login neu fewngofnodi - GOV.UK One Login",
-                Driver.get().getTitle());
+                Driver.getOrCreate().getTitle());
     }
 
     @Then("the user is taken to the Welsh enter your email page")
     public void theUserIsTakenToTheWelshEnterYourEmailPage() {
         assertEquals(
                 "Rhowch eich cyfeiriad e-bost i fewngofnodi i’ch GOV.UK One Login - GOV.UK One Login",
-                Driver.get().getTitle());
+                Driver.getOrCreate().getTitle());
         Assertions.assertNotEquals("Continue", enterYourEmailAddressPage.continueButtonText());
         Assertions.assertNotEquals("Back", enterYourEmailAddressPage.backButtonText());
     }
 
     @Then("the user is prompted for their password in Welsh")
     public void theUserIsPromptedForTheirPasswordInWelsh() {
-        assertEquals("Rhowch eich cyfrinair - GOV.UK One Login", Driver.get().getTitle());
+        assertEquals("Rhowch eich cyfrinair - GOV.UK One Login", Driver.getOrCreate().getTitle());
     }
 
     @When("the user enters their email address in Welsh")

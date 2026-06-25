@@ -14,21 +14,21 @@ public class CreatePasskeysPage extends BasePage {
 
     @Override
     public void waitForPage() {
-        WebDriverWait wait = new WebDriverWait(Driver.get(), DEFAULT_PAGE_LOAD_WAIT_TIME);
+        WebDriverWait wait = new WebDriverWait(Driver.getOrCreate(), DEFAULT_PAGE_LOAD_WAIT_TIME);
         wait.until(ExpectedConditions.urlContains(PATH));
         wait.until(ExpectedConditions.visibilityOfElementLocated(h1));
     }
 
     public void clickSkipButton() {
-        Driver.get().findElement(skipButton).click();
+        Driver.getOrCreate().findElement(skipButton).click();
     }
 
     public void dismissIfPresent() {
         // Prevents a race condition after MFA code submission. In non-MFA flows this is a no-op.
-        new WebDriverWait(Driver.get(), DEFAULT_PAGE_LOAD_WAIT_TIME)
+        new WebDriverWait(Driver.getOrCreate(), DEFAULT_PAGE_LOAD_WAIT_TIME)
                 .until(ExpectedConditions.not(ExpectedConditions.urlContains("/enter-code")));
         waitForReadyStateComplete();
-        if (Driver.get().getCurrentUrl().contains(PATH)) {
+        if (Driver.getOrCreate().getCurrentUrl().contains(PATH)) {
             clickSkipButton();
         }
     }
