@@ -30,6 +30,8 @@ public class CreatePasskeysPage extends BasePage {
         waitForReadyStateComplete();
         if (Driver.getOrCreate().getCurrentUrl().contains(PATH)) {
             clickSkipButton();
+            new WebDriverWait(Driver.getOrCreate(), DEFAULT_PAGE_LOAD_WAIT_TIME)
+                    .until(ExpectedConditions.not(ExpectedConditions.urlContains(PATH)));
         }
     }
 }
