@@ -12,6 +12,7 @@ public class EnterThe6DigitSecurityCodeShownInYourAuthenticatorAppPage extends B
 
     public void enterIncorrectAuthAppCodeNumberOfTimes(int numberOfTimes) {
         for (int index = 0; index < numberOfTimes; index++) {
+            waitForPageLoad("Enter the 6 digit security code shown in your authenticator app");
             enterIncorrectAuthAppCodeAndContinue();
             System.out.println("Incorrect auth app security code count: " + (index + 1));
         }
