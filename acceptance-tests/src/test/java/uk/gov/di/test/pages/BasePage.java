@@ -155,8 +155,9 @@ public class BasePage {
     }
 
     protected void clearFieldAndEnter(By ele, String text) {
-        findElement(ele).clear();
-        findElement(ele).sendKeys(text);
+        WebElement element = findElement(ele);
+        element.clear();
+        element.sendKeys(text);
     }
 
     public Boolean isErrorSummaryDisplayed() {
