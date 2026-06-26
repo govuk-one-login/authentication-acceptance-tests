@@ -6,6 +6,7 @@ import org.openqa.selenium.Cookie;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
@@ -159,7 +160,15 @@ public class BasePage {
     }
 
     public Boolean isErrorSummaryDisplayed() {
-        return findElement(By.className("govuk-error-summary")).isDisplayed();
+        try {
+            new WebDriverWait(Driver.getOrCreate(), DEFAULT_PAGE_LOAD_WAIT_TIME)
+                    .until(
+                            ExpectedConditions.visibilityOfElementLocated(
+                                    By.className("govuk-error-summary")));
+            return true;
+        } catch (TimeoutException e) {
+            return false;
+        }
     }
 
     public String getPageHeading() {
