@@ -5,6 +5,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.Cookie;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.OutputType;
+import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
@@ -74,7 +75,9 @@ public class BasePage {
     protected WebElement findElement(By selector) {
         waitForReadyStateComplete();
         try {
-            return Driver.getOrCreate().findElement(selector);
+            return new WebDriverWait(Driver.getOrCreate(), DEFAULT_PAGE_LOAD_WAIT_TIME)
+                    .ignoring(StaleElementReferenceException.class)
+                    .until(ExpectedConditions.presenceOfElementLocated(selector));
         } catch (WebDriverException e) {
             throw new SessionContextExceptions.FindElementException(
                     selector.toString(),
