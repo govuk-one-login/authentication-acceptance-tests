@@ -1,7 +1,6 @@
 @UI
 
 Feature: The MFA reset process.
-  The test below covers jira ticket: AUT-4298, AUT-4051, AUT-3993, AUT-3825, AUT-3930, AUT-3931, AUT-3997
   Begins in Authentication, when a user initiates an MFA reset
   they are redirected to Identity to determine their verification status. Identity verifies
   whether the user is classified as authentication-only or identity-verified.
@@ -24,7 +23,6 @@ Feature: The MFA reset process.
     And the user enters the six digit security code from their phone
     Then the user is taken to the "You’ve changed how you get security codes" page
     When the user clicks the continue button
-    And the user dismisses the passkey registration page if present
     Then the user is returned to the service
 
 
@@ -45,7 +43,6 @@ Feature: The MFA reset process.
     And the user enters the six digit security code from their phone
     Then the user is taken to the "You’ve changed how you get security codes" page
     When the user clicks the continue button
-    And the user dismisses the passkey registration page if present
     Then the user is returned to the service
 
 # ************************* AUTH APP Section *************************
@@ -67,7 +64,6 @@ Feature: The MFA reset process.
     And the user enters the security code from the auth app
     Then the user is taken to the "You’ve changed how you get security codes" page
     When the user clicks the continue button
-    And the user dismisses the passkey registration page if present
     Then the user is returned to the service
 
 
@@ -89,7 +85,6 @@ Feature: The MFA reset process.
     And the user enters the security code from the auth app
     Then the user is taken to the "You’ve changed how you get security codes" page
     When the user clicks the continue button
-    And the user dismisses the passkey registration page if present
     Then the user is returned to the service
 
 # ************************* Negative tests when for unsuccessful IPV responses **********************
@@ -251,7 +246,6 @@ Feature: The MFA reset process.
     When the user enters the six digit security code from their phone
     Then the user is taken to the "You’ve changed how you get security codes" page
     And the user clicks the continue button
-    And the user dismisses the passkey registration page if present
     Then the user is returned to the service
 
 
@@ -291,7 +285,6 @@ Feature: The MFA reset process.
     And the user enters the security code from the auth app
     Then the user is taken to the "You’ve changed how you get security codes" page
     When the user clicks the continue button
-    And the user dismisses the passkey registration page if present
     Then the user is returned to the service
 
 
