@@ -107,8 +107,7 @@ Feature: The MFA reset process.
     And the user clicks the continue button
     Then the user is taken to the "<Page>" page
     When the user enters the six digit code for "<Mfa Type>"
-    Then the user is taken to the "Sign in faster with your face, fingerprint or passcode - GOV.UK One Login" page
-    When the user chooses to skip passkey registration
+    And the user dismisses the passkey registration page if present
     Then the user is returned to the service
     Examples:
       | Mfa Type | Link Text                                     | IPV Response           | Page                                                            |
@@ -169,8 +168,7 @@ Feature: The MFA reset process.
     And the user clicks the continue button
     Then the user is taken to the "<Page>" page
     When the user enters the six digit code for "<Mfa Type>"
-    Then the user is taken to the "Sign in faster with your face, fingerprint or passcode - GOV.UK One Login" page
-    When the user chooses to skip passkey registration
+    And the user dismisses the passkey registration page if present
     Then the user is returned to the service
     Examples:
       | Mfa Type | Link Text                                     | IPV Response           | Page                                                            |
@@ -202,8 +200,7 @@ Feature: The MFA reset process.
     And the user clicks the continue button
     Then the user is taken to the "<Page>" page
     When the user enters the six digit code for "<Mfa Type>"
-    Then the user is taken to the "Sign in faster with your face, fingerprint or passcode - GOV.UK One Login" page
-    When the user chooses to skip passkey registration
+    And the user dismisses the passkey registration page if present
     Then the user is returned to the service
     Examples:
       | Mfa Type | Link Text                                     | IPV Response              | Page                                                            |
