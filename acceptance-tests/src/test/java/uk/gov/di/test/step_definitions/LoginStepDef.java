@@ -179,9 +179,7 @@ public class LoginStepDef extends BasePage {
 
     @Then("the user is taken to the Welsh enter your email page")
     public void theUserIsTakenToTheWelshEnterYourEmailPage() {
-        assertEquals(
-                "Rhowch eich cyfeiriad e-bost i fewngofnodi i’ch GOV.UK One Login - GOV.UK One Login",
-                Driver.getOrCreate().getTitle());
+        waitForPageLoad("Rhowch eich cyfeiriad e-bost i fewngofnodi i’ch GOV.UK One Login");
         Assertions.assertNotEquals("Continue", enterYourEmailAddressPage.continueButtonText());
         Assertions.assertNotEquals("Back", enterYourEmailAddressPage.backButtonText());
     }
