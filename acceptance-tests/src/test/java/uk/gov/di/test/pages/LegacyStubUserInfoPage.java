@@ -22,6 +22,7 @@ public class LegacyStubUserInfoPage extends StubUserInfoPage {
     @Override
     public void logoutOfAccount() {
         Driver.getOrCreate().findElement(logoutButton).click();
+        waitForPageLoad("Signed out");
         Driver.getOrCreate().manage().deleteAllCookies();
     }
 
