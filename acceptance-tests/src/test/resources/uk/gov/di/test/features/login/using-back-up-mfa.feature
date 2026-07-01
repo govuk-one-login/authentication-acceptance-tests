@@ -432,7 +432,6 @@ Feature: Login Using Back Up MFA
     And the user enters the security code from backup MFA auth app
     Then the user is taken to the "Reset your password" page
     When the user enters valid new password and correctly retypes it
-    And the user dismisses the passkey registration page if present
     Then the user is returned to the service
 
   Scenario: User resets password using a Backup SMS MFA
@@ -461,7 +460,6 @@ Feature: Login Using Back Up MFA
     When the user enters the six digit security code from their phone
     Then the user is taken to the "Reset your password" page
     When the user enters valid new password and correctly retypes it
-    And the user dismisses the passkey registration page if present
     Then the user is returned to the service
 
   Scenario: User with Auth App Default MFA requests too many OTPs when resetting their password with a Backup SMS MFA and lockout
