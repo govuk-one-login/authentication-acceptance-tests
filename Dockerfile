@@ -1,4 +1,4 @@
-ARG SELENIUM_BASE=selenium/standalone-chromium:148.0
+ARG SELENIUM_BASE=selenium/standalone-chromium:132.0
 FROM gradle:8-jdk17 AS builder
 
 WORKDIR /test

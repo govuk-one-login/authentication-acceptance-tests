@@ -4,7 +4,7 @@ env:
   AWS_REGION: eu-west-2
   DEV_GHA_DEPLOYER_ROLE: arn:aws:iam::653994557586:role/dev-auth-deploy-pipeline-GitHubActionsRole-QrtGginNnjDD
   DEV_ACCEPTANCE_ECR_REPO: acceptance-test-dev-testrunnerimagerepository-yh8assqv55do
-  SELENIUM_BASE_CHROMIUM: selenium/standalone-chromium:148.0
+  SELENIUM_BASE_CHROMIUM: selenium/standalone-chromium:132.0
 
 on:
   workflow_dispatch:
