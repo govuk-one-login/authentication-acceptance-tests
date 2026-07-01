@@ -2,7 +2,7 @@ name: Build and Push Acceptance Tests
 
 env:
   AWS_REGION: eu-west-2
-  SELENIUM_BASE: selenium/standalone-chromium:148.0
+  SELENIUM_BASE: selenium/standalone-chromium:132.0
 
 #Role to Assume is  dev-auth-deploy-pipeline githubaction Role
 #ECR repo is acceptance test ECR repo

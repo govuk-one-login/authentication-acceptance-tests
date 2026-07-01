@@ -2,7 +2,7 @@ name: Build and Push to UI DEV account
 
 env:
   AWS_REGION: eu-west-2
-  SELENIUM_BASE: selenium/standalone-chromium:148.0
+  SELENIUM_BASE: selenium/standalone-chromium:132.0
 
 on:
   workflow_dispatch:
