@@ -685,7 +685,6 @@ Feature: Login Using Back Up MFA
     When the user clicks the continue button
     Then the user is taken to the "Enter a security code to continue" page
     When the user enters the six digit security code from their phone
-    And the user dismisses the passkey registration page if present
     Then the user is returned to the service
 
   Scenario: User with Auth App as Default MFA and SMS as backup MFA switches MFA in uplift journey
@@ -712,7 +711,6 @@ Feature: Login Using Back Up MFA
     When the user clicks the continue button
     Then the user is taken to the "Enter a security code to continue" page
     When the user enters the six digit security code from their phone
-    And the user dismisses the passkey registration page if present
     Then the user is returned to the service
 
   Scenario: Sms user successfully reauthenticate with backup phone number

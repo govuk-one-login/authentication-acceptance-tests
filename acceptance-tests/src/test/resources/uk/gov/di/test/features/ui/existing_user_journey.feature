@@ -47,12 +47,10 @@ Feature: Login Journey
     When the user enters their email address
     Then the user is taken to the "Enter your password" page
     When the user enters their password
-    And the user dismisses the passkey registration page if present
     Then the user is returned to the service
     When the user comes from the stub relying party with options: [2fa-on,authenticated-2] and is taken to the "Enter a security code to continue" page
     Then the user is taken to the "Enter a security code to continue" page
     When the user enters the six digit security code from their phone
-    And the user dismisses the passkey registration page if present
     Then the user is returned to the service
     And the user clicks logout
 

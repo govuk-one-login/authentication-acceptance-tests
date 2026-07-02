@@ -42,7 +42,6 @@ Feature: Authentication App Journeys
     When the user enters their email address
     Then the user is taken to the "Enter your password" page
     When the user enters their password
-    And the user dismisses the passkey registration page if present
     Then the user is returned to the service
 
   Scenario: User signs in auth app without 2FA, then uplifts
@@ -53,7 +52,6 @@ Feature: Authentication App Journeys
     When the user enters their email address
     Then the user is taken to the "Enter your password" page
     When the user enters their password
-    And the user dismisses the passkey registration page if present
     Then the user is returned to the service
 
     Then the user comes from the stub relying party with options: [2fa-on,authenticated-2] and is taken to the "Enter a security code to continue" page
