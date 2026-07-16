@@ -108,6 +108,28 @@ Feature: Passkeys
     And the user clicks the continue button
     Then the user is taken to the "Sign in faster with your face, fingerprint or passcode - GOV.UK One Login" page
 
+  @EnvironmentWithAMCStubDeployed @AccountInterventions
+  Scenario: Existing user with interventions added after they start the passkey create journey is redirected to relevant error screen even if they need to accept terms and conditions
+    Given a user with no passkey and SMS MFA exists
+    And the user has not yet accepted the latest terms and conditions
+    When the user comes from the stub relying party with default options and is taken to the "Create your GOV.UK One Login or sign in" page
+    When the user selects sign in
+    Then the user is taken to the "Enter your email" page
+    When the user enters their email address
+    Then the user is taken to the "Enter your password" page
+    When the user enters their password
+    Then the user is taken to the "Check your phone" page
+    When the user enters the six digit security code from their phone
+    Then the user is taken to the "Sign in faster with your face, fingerprint or passcode - GOV.UK One Login" page
+    When the user clicks the continue button
+    Then the user is taken to the AMC stub page passkey create page
+    When "Account Interventions Failure" radio option selected
+    And the "Reset password" checkbox is selected
+    And the "Suspended" checkbox is selected
+    And the user has a password reset intervention
+    And the user clicks the continue button
+    Then the user is taken to the "You need to reset your password" page
+
   @PasskeyUsageEnabled
   Scenario: Existing user with a passkey sign in
     Given a user exists with a passkey

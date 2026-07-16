@@ -192,6 +192,11 @@ public class CommonStepDef extends BasePage {
         selectRadioOptionWithText(value);
     }
 
+    @And("the {string} checkbox is selected")
+    public void checkboxIsSelected(String value) {
+        selectCheckboxWithText(value);
+    }
+
     @Then("User is taken to {string}")
     public void userIsTakenTo(String pageTitle) {
         waitForPageLoad(pageTitle);

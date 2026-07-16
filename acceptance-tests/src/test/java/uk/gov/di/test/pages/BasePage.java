@@ -246,4 +246,9 @@ public class BasePage {
         findElement(By.xpath(String.format("//label[normalize-space(text())='%s']", textValue)))
                 .click();
     }
+
+    public void selectCheckboxWithText(String textValue) {
+        findElement(By.xpath(String.format("//label[normalize-space(text())='%s']", textValue)))
+                .click();
+    }
 }
