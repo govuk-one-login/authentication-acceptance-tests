@@ -109,7 +109,7 @@ Feature: Passkeys
     Then the user is taken to the "Sign in faster with your face, fingerprint or passcode - GOV.UK One Login" page
 
   @EnvironmentWithAMCStubDeployed @AccountInterventions
-  Scenario: Existing user with interventions added after they start the passkey create journey is redirected to relevant error screen even if they need to accept terms and conditions
+  Scenario: Existing user with interventions added after they start the passkey create journey is redirected to terms and conditions before intervention screen
     Given a user with no passkey and SMS MFA exists
     And the user has not yet accepted the latest terms and conditions
     When the user comes from the stub relying party with default options and is taken to the "Create your GOV.UK One Login or sign in" page
@@ -128,6 +128,8 @@ Feature: Passkeys
     And the "Suspended" checkbox is selected
     And the user has a password reset intervention
     And the user clicks the continue button
+    Then the user is taken to the "We’ve updated our terms of use" page
+    When the user agrees to the updated terms and conditions
     Then the user is taken to the "You need to reset your password" page
 
   @PasskeyUsageEnabled
