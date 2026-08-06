@@ -14,11 +14,14 @@ updates:
       - dependency-name: "gradle"
         versions: [ "[9.0,)" ]
     groups:
-      gradle-most-dependencies:
+      gradle-minor-and-patch:
         patterns:
           - "*"
         exclude-patterns:
           - "*selenium*"
+        update-types:
+          - "minor"
+          - "patch"
     target-branch: main
     commit-message:
       prefix: BAU
@@ -29,9 +32,12 @@ updates:
       cronjob: "0 3 1,15 * *"
     open-pull-requests-limit: 10
     groups:
-      gha-all-dependencies:
+      gha-minor-and-patch:
         patterns:
           - "*"
+        update-types:
+          - "minor"
+          - "patch"
     target-branch: main
     commit-message:
       prefix: BAU
