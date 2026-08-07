@@ -15,6 +15,7 @@ Feature: Passkeys
     Then the user is taken to the "Sign in faster with your face, fingerprint or passcode - GOV.UK One Login" page
     When the user chooses to skip passkey registration
     Then the user is returned to the service
+    And the user clicks logout
     When the user comes from the stub relying party with default options and is taken to the "Create your GOV.UK One Login or sign in" page
     When the user selects sign in
     Then the user is taken to the "Enter your email" page
