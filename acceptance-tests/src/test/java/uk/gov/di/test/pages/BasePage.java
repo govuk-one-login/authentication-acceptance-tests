@@ -51,6 +51,7 @@ public class BasePage {
         Instant start = Instant.now();
         try {
             new WebDriverWait(Driver.getOrCreate(), DEFAULT_PAGE_LOAD_WAIT_TIME)
+                    .ignoring(WebDriverException.class)
                     .until(ExpectedConditions.titleContains(titleContains));
         } catch (WebDriverException e) {
             throw new SessionContextExceptions.WaitForPageLoadException(
