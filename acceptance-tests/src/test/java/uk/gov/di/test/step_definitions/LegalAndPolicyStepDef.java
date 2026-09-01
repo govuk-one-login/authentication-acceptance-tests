@@ -24,11 +24,6 @@ public class LegalAndPolicyStepDef extends BasePage {
         Driver.getOrCreate().findElement(By.partialLinkText(linkText)).click();
     }
 
-    @Then("the user is taken to the accessibility statement page")
-    public void theUserIsTakenToTheAccessibilityStatementPage() {
-        checkPageLoadThenGoBackToSignIn(SupportingPages.ACCESSIBILITY_STATEMENT);
-    }
-
     @Then("the user is taken to the GOV.UK cookies page")
     public void theUserIsTakenToTheGOVUKCookiesPage() {
         checkPageLoadThenGoBackToSignIn(SupportingPages.GOV_UK_ACCOUNTS_COOKIES);
@@ -37,11 +32,6 @@ public class LegalAndPolicyStepDef extends BasePage {
     @Then("the user is taken to the terms and conditions page")
     public void theUserIsTakenToTheTermsAndConditionsPage() {
         checkPageLoadThenGoBackToSignIn(SupportingPages.TERMS_AND_CONDITIONS);
-    }
-
-    @Then("the user is taken to the privacy notice page")
-    public void theUserIsTakenToThePrivacyNoticePage() {
-        checkPageLoadThenGoBackToSignIn(SupportingPages.PRIVACY_NOTICE);
     }
 
     private void waitForPageLoadThenValidate(SupportingPages page) {
