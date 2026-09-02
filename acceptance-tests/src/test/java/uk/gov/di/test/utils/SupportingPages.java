@@ -1,13 +1,8 @@
 package uk.gov.di.test.utils;
 
 public enum SupportingPages {
-    ACCESSIBILITY_STATEMENT(
-            "/accessibility-statement", "Accessibility statement for GOV.UK One Login"),
     GOV_UK_ACCOUNTS_COOKIES("/cookies", "GOV.UK One Login cookies policy"),
-    TERMS_AND_CONDITIONS("/terms-and-conditions", "Terms and conditions"),
-    PRIVACY_NOTICE(
-            "/government/publications/govuk-one-login-privacy-notice",
-            "GOV.UK One Login privacy notice - GOV.UK");
+    TERMS_AND_CONDITIONS("/terms-and-conditions", "Terms and conditions");
 
     private static final String PRODUCT_NAME = "GOV.UK One Login";
 
