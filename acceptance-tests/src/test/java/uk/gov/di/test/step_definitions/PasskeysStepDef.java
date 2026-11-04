@@ -28,6 +28,11 @@ public class PasskeysStepDef extends BasePage {
         waitForThisText("AMC stub (passkey create)");
     }
 
+    @Then("the user is taken to the AMC stub page account delete page")
+    public void theUserIsTakenToTheAMCStubPageAccountDeletePage() {
+        waitForThisText("AMC stub (account delete)");
+    }
+
     @And("the user dismisses the passkey registration page if present")
     public void dismissPasskeyRegistrationPageIfPresent() {
         createPasskeysPage.dismissIfPresent();
