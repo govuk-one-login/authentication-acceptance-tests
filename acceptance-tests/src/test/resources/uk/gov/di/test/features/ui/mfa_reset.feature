@@ -139,10 +139,14 @@ Feature: The MFA reset process.
       | SMS      | Problems with the code?                       | Identity did not match    |
       | SMS      | Problems with the code?                       | Identity check failed     |
       | App      | I do not have access to the authenticator app | Identity did not match    |
-      | App      | I do not have access to the authenticator app | No identity available     |
       | SMS      | Problems with the code?                       | Identity check incomplete |
-      | SMS      | Problems with the code?                       | No identity available     |
       | App      | I do not have access to the authenticator app | Identity check incomplete |
+
+    @SelfServeAccountDeletionDisabled
+    Examples:
+      | Mfa Type | Link Text                                     | IPV Response              |
+      | App      | I do not have access to the authenticator app | No identity available     |
+      | SMS      | Problems with the code?                       | No identity available     |
 
 # ************************* Additional tests for IPV MFA journey **********************
   @new-mfa-reset-with-ipv
@@ -204,11 +208,14 @@ Feature: The MFA reset process.
     Then the user is returned to the service
     Examples:
       | Mfa Type | Link Text                                     | IPV Response              | Page                                                            |
-      | App      | I do not have access to the authenticator app | No identity available     | Enter the 6 digit security code shown in your authenticator app |
       | SMS      | Problems with the code?                       | Identity check incomplete | Check your phone                                                |
-      | SMS      | Problems with the code?                       | No identity available     | Check your phone                                                |
       | App      | I do not have access to the authenticator app | Identity check incomplete | Enter the 6 digit security code shown in your authenticator app |
 
+    @SelfServeAccountDeletionDisabled
+    Examples:
+      | Mfa Type | Link Text                                     | IPV Response              | Page                                                            |
+      | App      | I do not have access to the authenticator app | No identity available     | Enter the 6 digit security code shown in your authenticator app |
+      | SMS      | Problems with the code?                       | No identity available     | Check your phone                                                |
 
   @new-mfa-reset-with-ipv
   Scenario: MFA reset is switched on and APP user can reset their MFA method after resetting their password
