@@ -257,6 +257,30 @@ Feature: The MFA reset process.
       | App      | I do not have access to the authenticator app |
       | SMS      | Problems with the code?                       |
 
+  @new-mfa-reset-with-ipv @SelfServeAccountDeletionEnabled
+  Scenario Outline: Mfa User with no identity available who wants to try their current method again is returned to the service
+    Given a user with "<Mfa Type>" MFA exists
+    When the user comes from the stub relying party with default options and is taken to the "Create your GOV.UK One Login or sign in" page
+    And the user selects sign in
+    And the user enters their email address
+    And the user enters their password
+    And the user selects "<Link Text>" link
+    And the user selects "check if you can change how you get security codes" link
+    Then the user is taken to the IPV stub page
+    When "No identity available" radio option selected
+    And the user clicks the continue button
+    Then the URL is present with suffix "cannot-change-security-codes-no-identity"
+    When "You want to try using your current method again" radio option selected
+    And the user clicks the continue button
+    Then the user is taken to the "<Page>" page
+    When the user enters the six digit code for "<Mfa Type>"
+    And the user dismisses the passkey registration page if present
+    Then the user is returned to the service
+    Examples:
+      | Mfa Type | Link Text                                     | Page                                                            |
+      | App      | I do not have access to the authenticator app | Enter the 6 digit security code shown in your authenticator app |
+      | SMS      | Problems with the code?                       | Check your phone                                                |
+
 
   @new-mfa-reset-with-ipv
   Scenario: MFA reset is switched on and APP user can reset their MFA method after resetting their password
