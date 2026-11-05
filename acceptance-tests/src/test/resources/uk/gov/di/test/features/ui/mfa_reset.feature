@@ -139,10 +139,14 @@ Feature: The MFA reset process.
       | SMS      | Problems with the code?                       | Identity did not match    |
       | SMS      | Problems with the code?                       | Identity check failed     |
       | App      | I do not have access to the authenticator app | Identity did not match    |
-      | App      | I do not have access to the authenticator app | No identity available     |
       | SMS      | Problems with the code?                       | Identity check incomplete |
-      | SMS      | Problems with the code?                       | No identity available     |
       | App      | I do not have access to the authenticator app | Identity check incomplete |
+
+    @SelfServeAccountDeletionDisabled
+    Examples:
+      | Mfa Type | Link Text                                     | IPV Response              |
+      | App      | I do not have access to the authenticator app | No identity available     |
+      | SMS      | Problems with the code?                       | No identity available     |
 
 # ************************* Additional tests for IPV MFA journey **********************
   @new-mfa-reset-with-ipv
@@ -204,10 +208,78 @@ Feature: The MFA reset process.
     Then the user is returned to the service
     Examples:
       | Mfa Type | Link Text                                     | IPV Response              | Page                                                            |
-      | App      | I do not have access to the authenticator app | No identity available     | Enter the 6 digit security code shown in your authenticator app |
       | SMS      | Problems with the code?                       | Identity check incomplete | Check your phone                                                |
-      | SMS      | Problems with the code?                       | No identity available     | Check your phone                                                |
       | App      | I do not have access to the authenticator app | Identity check incomplete | Enter the 6 digit security code shown in your authenticator app |
+
+    @SelfServeAccountDeletionDisabled
+    Examples:
+      | Mfa Type | Link Text                                     | IPV Response              | Page                                                            |
+      | App      | I do not have access to the authenticator app | No identity available     | Enter the 6 digit security code shown in your authenticator app |
+      | SMS      | Problems with the code?                       | No identity available     | Check your phone                                                |
+
+  @new-mfa-reset-with-ipv @SelfServeAccountDeletionEnabled
+  Scenario Outline: Mfa User with no identity available is taken to the cannot change security codes no identity page
+    Given a user with "<Mfa Type>" MFA exists
+    When the user comes from the stub relying party with default options and is taken to the "Create your GOV.UK One Login or sign in" page
+    And the user selects sign in
+    And the user enters their email address
+    And the user enters their password
+    And the user selects "<Link Text>" link
+    And the user selects "check if you can change how you get security codes" link
+    Then the user is taken to the IPV stub page
+    When "No identity available" radio option selected
+    And the user clicks the continue button
+    Then the user is taken to the "You cannot change how you get security codes" page
+    And the URL is present with suffix "cannot-change-security-codes-no-identity"
+    Examples:
+      | Mfa Type | Link Text                                     |
+      | App      | I do not have access to the authenticator app |
+      | SMS      | Problems with the code?                       |
+
+  @new-mfa-reset-with-ipv @SelfServeAccountDeletionEnabled @EnvironmentWithAMCStubDeployed
+  Scenario Outline: Mfa User with no identity available who cannot use their current method is taken to AMC to delete their account
+    Given a user with "<Mfa Type>" MFA exists
+    When the user comes from the stub relying party with default options and is taken to the "Create your GOV.UK One Login or sign in" page
+    And the user selects sign in
+    And the user enters their email address
+    And the user enters their password
+    And the user selects "<Link Text>" link
+    And the user selects "check if you can change how you get security codes" link
+    Then the user is taken to the IPV stub page
+    When "No identity available" radio option selected
+    And the user clicks the continue button
+    Then the URL is present with suffix "cannot-change-security-codes-no-identity"
+    When "You cannot use your current method anymore" radio option selected
+    And the user clicks the continue button
+    Then the user is taken to the AMC stub page account delete page
+    Examples:
+      | Mfa Type | Link Text                                     |
+      | App      | I do not have access to the authenticator app |
+      | SMS      | Problems with the code?                       |
+
+  @new-mfa-reset-with-ipv @SelfServeAccountDeletionEnabled
+  Scenario Outline: Mfa User with no identity available who wants to try their current method again is returned to the service
+    Given a user with "<Mfa Type>" MFA exists
+    When the user comes from the stub relying party with default options and is taken to the "Create your GOV.UK One Login or sign in" page
+    And the user selects sign in
+    And the user enters their email address
+    And the user enters their password
+    And the user selects "<Link Text>" link
+    And the user selects "check if you can change how you get security codes" link
+    Then the user is taken to the IPV stub page
+    When "No identity available" radio option selected
+    And the user clicks the continue button
+    Then the URL is present with suffix "cannot-change-security-codes-no-identity"
+    When "You want to try using your current method again" radio option selected
+    And the user clicks the continue button
+    Then the user is taken to the "<Page>" page
+    When the user enters the six digit code for "<Mfa Type>"
+    And the user dismisses the passkey registration page if present
+    Then the user is returned to the service
+    Examples:
+      | Mfa Type | Link Text                                     | Page                                                            |
+      | App      | I do not have access to the authenticator app | Enter the 6 digit security code shown in your authenticator app |
+      | SMS      | Problems with the code?                       | Check your phone                                                |
 
 
   @new-mfa-reset-with-ipv
