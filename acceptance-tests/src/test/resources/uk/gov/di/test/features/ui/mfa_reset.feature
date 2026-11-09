@@ -252,6 +252,10 @@ Feature: The MFA reset process.
     When "You cannot use your current method anymore" radio option selected
     And the user clicks the continue button
     Then the user is taken to the AMC stub page account delete page
+    When "Success" radio option selected
+    And the user clicks the continue button
+    Then the user is taken to the "You’ve deleted your GOV.UK One Login" page
+    And the URL is present with suffix "account-deleted"
     Examples:
       | Mfa Type | Link Text                                     |
       | App      | I do not have access to the authenticator app |
