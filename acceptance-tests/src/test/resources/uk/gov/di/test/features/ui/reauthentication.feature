@@ -204,7 +204,7 @@ Feature: Reauthentication of user
     * the user is not blocked from reauthenticating
 
 
-  @new-mfa-reset-with-ipv
+  @new-mfa-reset-with-ipv @EnvironmentWithIpvStubDeployed
   Scenario: Sms user can change how they get security codes during reauthentication
     Given a user with SMS MFA exists
     And the user is already signed in to their One Login account
@@ -227,7 +227,7 @@ Feature: Reauthentication of user
     And the user logs out
 
 
-  @new-mfa-reset-with-ipv
+  @new-mfa-reset-with-ipv @EnvironmentWithIpvStubDeployed
   Scenario: Auth app user can change how they get security codes during reauthentication
     Given a user with App MFA exists
     And the user is already signed in to their One Login account
