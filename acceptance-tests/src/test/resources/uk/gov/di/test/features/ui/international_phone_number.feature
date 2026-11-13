@@ -168,7 +168,7 @@ Feature: International phone numbers
     When the user clicks the continue button
     Then the user is successfully reauthenticated and returned to the service
 
-  @InternationalNumbersIndefiniteLockout @new-mfa-reset-with-ipv @InternationalSmsSendingEnabled
+  @InternationalNumbersIndefiniteLockout @new-mfa-reset-with-ipv @EnvironmentWithIpvStubDeployed @InternationalSmsSendingEnabled
   Rule: Indefinite lockout during 2FA sign in
 
     @under-development
@@ -208,7 +208,7 @@ Feature: International phone numbers
       When the user selects "Check if you can change how you get security codes" link
       Then the user is taken to the IPV stub page
 
-  @InternationalNumbersIndefiniteLockout @new-mfa-reset-with-ipv @InternationalSmsSendingEnabled
+  @InternationalNumbersIndefiniteLockout @new-mfa-reset-with-ipv @EnvironmentWithIpvStubDeployed @InternationalSmsSendingEnabled
   Rule: Indefinite lockout during uplift
 
     @under-development
@@ -276,7 +276,7 @@ Feature: International phone numbers
       Then the user is taken to the "There’s a problem with this service" page
       And the link "Check if you can change how you get security codes" is not available
 
-  @InternationalNumbersIndefiniteLockout @new-mfa-reset-with-ipv @InternationalSmsSendingEnabled
+  @InternationalNumbersIndefiniteLockout @new-mfa-reset-with-ipv @EnvironmentWithIpvStubDeployed @InternationalSmsSendingEnabled
   Rule: Indefinite lockout during reauthentication
 
     # Reauth scenarios must start with UK SMS MFA for initial sign-in to succeed,
@@ -309,7 +309,7 @@ Feature: International phone numbers
       When the user selects "Check if you can change how you get security codes" link
       Then the user is taken to the IPV stub page
 
-  @InternationalSmsSendingDisabled @new-mfa-reset-with-ipv
+  @InternationalSmsSendingDisabled @new-mfa-reset-with-ipv @EnvironmentWithIpvStubDeployed
   Rule: International SMS disabled during 2FA sign in
 
     Scenario: User with international SMS MFA is sent to error screen when international SMS is disabled during sign in
@@ -325,7 +325,7 @@ Feature: International phone numbers
       When the user selects "Check if you can change how you get security codes" link
       Then the user is taken to the IPV stub page
 
-  @InternationalSmsSendingDisabled @new-mfa-reset-with-ipv
+  @InternationalSmsSendingDisabled @new-mfa-reset-with-ipv @EnvironmentWithIpvStubDeployed
   Rule: International SMS disabled during uplift
 
     Scenario: User with international SMS MFA is sent to error screen when international SMS is disabled during uplift
@@ -359,7 +359,7 @@ Feature: International phone numbers
       Then the user is taken to the "There’s a problem with this service" page
       And the link "Check if you can change how you get security codes" is not available
 
-  @InternationalSmsSendingDisabled @new-mfa-reset-with-ipv
+  @InternationalSmsSendingDisabled @new-mfa-reset-with-ipv @EnvironmentWithIpvStubDeployed
   Rule: International SMS disabled during reauthentication
 
     # Reauth scenarios must start with UK SMS MFA for initial sign-in to succeed,
