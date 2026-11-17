@@ -217,6 +217,27 @@ Feature: The MFA reset process.
       | App      | I do not have access to the authenticator app | No identity available     | Enter the 6 digit security code shown in your authenticator app |
       | SMS      | Problems with the code?                       | No identity available     | Check your phone                                                |
 
+  @EnvironmentWithIpvStubDeployed
+  Scenario Outline: Mfa User uses the browser back button from IPV and signs in with their current method
+    Given a user with "<Mfa Type>" MFA exists
+    When the user comes from the stub relying party with default options and is taken to the "Create your GOV.UK One Login or sign in" page
+    And the user selects sign in
+    And the user enters their email address
+    And the user enters their password
+    And the user selects "<Link Text>" link
+    And the user selects "check if you can change how you get security codes" link
+    Then the user is taken to the IPV stub page
+    When the user navigates to the previous page
+    Then the user is taken to the "<Page>" page
+    And the URL is present with suffix "<Suffix>"
+    When the user enters the six digit code for "<Mfa Type>"
+    And the user dismisses the passkey registration page if present
+    Then the user is returned to the service
+    Examples:
+      | Mfa Type | Link Text                                     | Page                                                            | Suffix                       |
+      | App      | I do not have access to the authenticator app | Enter the 6 digit security code shown in your authenticator app | enter-authenticator-app-code |
+      | SMS      | Problems with the code?                       | Check your phone                                                | enter-code                   |
+
   @EnvironmentWithIpvStubDeployed @SelfServeAccountDeletionEnabled
   Scenario Outline: Mfa User with no identity available is taken to the cannot change security codes no identity page
     Given a user with "<Mfa Type>" MFA exists
