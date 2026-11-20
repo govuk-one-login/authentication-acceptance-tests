@@ -1,10 +1,9 @@
-@UI
+@UI @SelfServeAccountDeletionEnabled @EnvironmentWithIpvStubDeployed
 
 Feature: Self serve account deletion.
   Begins in the MFA reset process, when Identity reports that a user has no identity available.
   The user can delete their account in the account management component or carry on with their current method.
 
-  @EnvironmentWithIpvStubDeployed @SelfServeAccountDeletionEnabled
   Scenario Outline: Mfa User with no identity available is taken to the cannot change security codes no identity page
     Given a user with "<Mfa Type>" MFA exists
     When the user comes from the stub relying party with default options and is taken to the "Create your GOV.UK One Login or sign in" page
@@ -23,7 +22,7 @@ Feature: Self serve account deletion.
       | App      | I do not have access to the authenticator app |
       | SMS      | Problems with the code?                       |
 
-  @EnvironmentWithIpvStubDeployed @SelfServeAccountDeletionEnabled @EnvironmentWithAMCStubDeployed
+  @EnvironmentWithAMCStubDeployed
   Scenario Outline: Mfa User with no identity available who cannot use their current method is taken to AMC to delete their account
     Given a user with "<Mfa Type>" MFA exists
     When the user comes from the stub relying party with default options and is taken to the "Create your GOV.UK One Login or sign in" page
@@ -48,7 +47,7 @@ Feature: Self serve account deletion.
       | App      | I do not have access to the authenticator app |
       | SMS      | Problems with the code?                       |
 
-  @EnvironmentWithIpvStubDeployed @SelfServeAccountDeletionEnabled @EnvironmentWithAMCStubDeployed
+  @EnvironmentWithAMCStubDeployed
   Scenario Outline: Mfa User with no identity available who leaves AMC without deleting their account is returned to their code page
     Given a user with "<Mfa Type>" MFA exists
     When the user comes from the stub relying party with default options and is taken to the "Create your GOV.UK One Login or sign in" page
@@ -78,7 +77,6 @@ Feature: Self serve account deletion.
       | SMS      | Problems with the code?                       | Back         | Check your phone                                                | enter-code                   |
       | SMS      | Problems with the code?                       | Abort        | Check your phone                                                | enter-code                   |
 
-  @EnvironmentWithIpvStubDeployed @SelfServeAccountDeletionEnabled
   Scenario Outline: Mfa User with no identity available who wants to try their current method again is returned to the service
     Given a user with "<Mfa Type>" MFA exists
     When the user comes from the stub relying party with default options and is taken to the "Create your GOV.UK One Login or sign in" page
